@@ -1,0 +1,97 @@
+# Provisional example only. This is not a stable MNCS Commons schema.
+apiVersion: commons.mncs.dev/v0alpha1
+kind: Observation
+
+metadata:
+  id: commons:observation:example-0001
+  createdAt: 2026-08-06T18:00:00Z
+  author:
+    type: agent
+    id: agent:forge-worker-example
+  labels:
+    - compiler-behavior
+    - intentional-exception
+
+subject:
+  repository: example/project
+  revision: sha256:EXAMPLE
+  paths:
+    - src/dispatch.c
+  contracts:
+    - mncs:contract:control-flow-equivalence
+
+scope:
+  operatingSystem: linux
+  architecture: x86_64
+  compiler:
+    name: clang
+    version: "EXAMPLE"
+  optimizationLevel: O2
+  limitations:
+    - Not yet tested with other compilers.
+    - Not yet reproduced on a second architecture.
+
+statement:
+  summary: >-
+    A control-flow pattern flagged as suspicious appears intentional and
+    preserves the referenced contract under the tested compiler configuration.
+  details: >-
+    The pattern should not be normalized until its compiler behavior and
+    portability limits have been independently reproduced.
+
+evidence:
+  artifacts:
+    - uri: artifact://example/compile-log
+      digest: sha256:EXAMPLE
+      mediaType: text/plain
+    - uri: artifact://example/verifier-result
+      digest: sha256:EXAMPLE
+      mediaType: application/json
+  observedResults:
+    - The focused verifier passed.
+    - Generated control flow matched the expected artifact fingerprint.
+
+reproduction:
+  prerequisites:
+    - Resolve the referenced source revision.
+    - Use the compiler and target declared in scope.
+    - Run the named contract verifier in an isolated environment.
+  procedure:
+    - command: mncs-verify --contract control-flow-equivalence src/dispatch.c
+      authorityRequired: verification-only
+  expected:
+    - Verifier exits successfully.
+    - Evidence digest matches or differences are explained.
+
+confidence:
+  level: medium
+  rationale: >-
+    The behavior was observed repeatedly in one environment but has not yet
+    been independently reproduced.
+
+requestedActions:
+  - kind: Replication
+    targetScope:
+      architecture: aarch64
+  - kind: Replication
+    targetScope:
+      compiler: gcc
+
+security:
+  sensitivity: public
+  executableAttachments: false
+  instructionsAreUntrusted: true
+
+status:
+  state: proposed
+  acceptedBy: []
+  disputedBy: []
+  reviewWhen:
+    - compiler version changes
+    - referenced contract changes
+    - source revision changes
+
+provenance:
+  sourceRun: run:EXAMPLE
+  parentRecords: []
+  contentDigest: sha256:EXAMPLE
