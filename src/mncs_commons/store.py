@@ -59,7 +59,7 @@ def _atomic_write(path: Path, data: bytes) -> None:
             os.fsync(handle.fileno())
         os.replace(temporary, path)
         try:
-            directory = os.open(path.parent, os.O_DIRECTORY)
+            directory = os.open(path.parent, os.O_DIRECTORY)  # type: ignore[attr-defined]
         except (AttributeError, OSError):
             return
         try:
@@ -92,11 +92,11 @@ def _file_lock(path: Path) -> Iterator[None]:
         else:
             import fcntl
 
-            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)  # type: ignore[attr-defined]
             try:
                 yield
             finally:
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)  # type: ignore[attr-defined]
 
 
 class CommonsStore:
