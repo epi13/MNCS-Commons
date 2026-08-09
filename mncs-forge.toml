@@ -1,0 +1,129 @@
+version = 1
+environment_allowlist = ["PATH", "LANG", "LC_ALL"]
+
+[project]
+name = "MNCS Commons"
+identity = "mncs-commons-0.3-development"
+root = "."
+
+[paths]
+candidates = ["src", "scripts", "tests"]
+generated = [".forge-generated"]
+contracts = ["schemas"]
+references = ["compat"]
+evaluators = [".forge-evaluators"]
+acceptance_policies = ["SECURITY.md"]
+development_evidence = [".forge-evidence"]
+protected = ["docs", "examples"]
+outputs = [".forge-output"]
+
+[limits]
+timeout_seconds = 120
+output_bytes = 2097152
+
+[verifier_limits]
+max_batch = 8
+request_bytes = 65536
+batch_timeout_seconds = 300
+witness_bytes = 32768
+stderr_bytes = 8192
+result_bytes = 262144
+max_changed_paths = 128
+max_dependency_identities = 64
+max_question_parameters = 32
+
+[authority.development]
+may_write_candidates = true
+may_write_generated = true
+may_run_providers = false
+
+[authority.evaluator]
+candidate_read_only = true
+authority_read_only = true
+require_frozen_identities = true
+withhold_repair_feedback = true
+
+[policies]
+selection = ".forge-policies/selection.json"
+useful_benefit_objective = "docs/PROTOCOL.md"
+
+[[workflows]]
+name = "compileall"
+category = "build"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "compileall"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "status-only"
+
+[[workflows]]
+name = "ruff"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "ruff"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "status-only"
+
+[[workflows]]
+name = "mypy"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "mypy"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "status-only"
+
+[[workflows]]
+name = "pytest"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "pytest"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "examples"
+category = "mncs_bundle_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "examples"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "status-only"
+
+[[workflows]]
+name = "compatibility"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "compatibility"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "live-compat"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "live-compat"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "security-inertness"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "security-inertness"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "cli-help"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "cli-help"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "status-only"

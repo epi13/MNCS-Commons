@@ -110,6 +110,7 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 - a hash-chained, content-addressed filesystem store with writer locking, recoverable transactions, bounded reads, and corruption diagnostics;
 - structured filters, exact scope compatibility checks, bounded graph/correlation reports, and deterministic protocol-version diagnostics;
 - structured, inert translation results for Forge, Fabric, MNEL, RAVEL, and MNCS Language boundaries; and
+- an explicit producer-contract registry with bounded local fingerprint/drift inspection; and
 - deterministic, bounded Commons Bundles for local interchange and idempotent import.
 - a reusable library plus the `mncs-commons` CLI.
 
@@ -135,6 +136,8 @@ mncs-commons bundle verify /tmp/commons.bundle.zip
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
 The wire protocol remains `commons.mncs.dev/v0alpha1`; package version and wire version are separate.
+Forge-governed development configuration is in [`mncs-forge.toml`](mncs-forge.toml), and producer
+compatibility behavior is documented in [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md).
 Distributed transport, authentication, protected custody, consensus, reputation, autonomous execution,
 and broad security-finding dissemination remain intentionally deferred. See [`compat/README.md`](compat/README.md)
 for the producer snapshots represented by this iteration.
