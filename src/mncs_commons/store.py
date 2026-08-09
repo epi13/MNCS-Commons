@@ -10,6 +10,7 @@ import json
 import os
 import shutil
 import tempfile
+import time
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -76,7 +77,16 @@ def _file_lock(path: Path) -> Iterator[None]:
     """Serialize writers with an advisory lock on POSIX and Windows."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a+b") as handle:
+    deadline = time.monotonic() + 30.0
+    while True:
+        try:
+            handle = path.open("a+b")
+            break
+        except PermissionError:
+            if os.name != "nt" or time.monotonic() >= deadline:
+                raise
+            time.sleep(0.01)
+    with handle:
         if os.name == "nt":
             import msvcrt
 
