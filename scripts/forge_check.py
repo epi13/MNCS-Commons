@@ -21,6 +21,7 @@ CHECKS: dict[str, tuple[str, ...]] = {
     "compatibility": ("python", "scripts/validate_compat.py"),
     "live-compat": ("python", "scripts/validate_live_compat.py"),
     "security-inertness": ("pytest", "-q", "-k", "inert"),
+    "evidence-lineage": ("pytest", "-q", "tests/test_evidence.py"),
     "cli-help": ("python", "-m", "mncs_commons.cli", "--help"),
 }
 
