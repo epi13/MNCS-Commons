@@ -87,8 +87,9 @@ def _file_lock(path: Path) -> Iterator[None]:
             try:
                 yield
             finally:
-                handle.seek(0)
-                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore[attr-defined]
+                # Windows releases the region when this handle closes. Explicit
+                # LK_UNLCK is unreliable on the hosted Windows runner.
+                handle.flush()
         else:
             import fcntl
 
