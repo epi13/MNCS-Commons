@@ -1,0 +1,9 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "LifecycleEvent",
+  "metadata": {"createdAt": "2026-08-08T18:50:00Z", "author": {"type": "project", "id": "project:example"}},
+  "target": {"contentDigest": "sha256:f3725cc38b6f756db10377642554a330aa483188acb317bfe52df81ffeade82e"},
+  "transition": {"from": "verified", "to": "accepted"},
+  "authority": {"domain": "example:project-local", "actor": "project:example", "rationale": "this project accepts reuse within the declared scope"},
+  "evidence": [{"id": "review:example:scope", "relation": "supports", "status": "PASS"}]
+}

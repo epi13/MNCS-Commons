@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Replication",
+  "metadata": {"recordId": "commons:replication:compiler-pattern-failed-0001", "createdAt": "2026-08-08T20:00:00Z", "author": {"type": "verifier", "id": "verifier:gcc-aarch64"}, "labels": ["negative-result", "replication"]},
+  "subject": {"type": "repository-revision", "identity": "example/project@sha256:source-revision", "repository": "example/project", "revision": "sha256:source-revision"},
+  "scope": {"context": {"sourceRevision": "sha256:source-revision", "compiler": {"name": "gcc", "version": "14"}, "target": {"os": "linux", "architecture": "aarch64"}}, "limitations": ["failure does not prove the original observation false"]},
+  "statement": {"summary": "The unconventional control-flow observation did not replicate under GCC on aarch64.", "details": "The failed attempt is retained as a boundary on the claim rather than discarded."},
+  "evidence": [{"id": "forge:verifier-result:gcc-aarch64", "relation": "supports", "status": "FAIL"}],
+  "reproduction": {"prerequisites": ["source revision and GCC 14"], "procedure": [{"command": "mncs-verify --target aarch64", "authorityRequired": "verification-only"}], "expected": ["record FAIL and diagnostic" ]},
+  "dependencies": [],
+  "affectedContracts": ["mncs:contract:control-flow-equivalence"],
+  "provenance": {"producer": {"type": "verifier", "id": "verifier:gcc-aarch64"}, "sourceRecords": ["commons:observation:compiler-pattern-0001"], "environment": {"machineIdentity": "machine:aarch64"}, "ancestry": ["forge:run:gcc-aarch64"]},
+  "confidence": {"level": "high", "rationale": "bounded failed reproduction with diagnostic evidence"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": false},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["compiler version changes", "source revision changes"]},
+  "relationships": [{"type": "failed_to_replicate", "target": "commons:observation:compiler-pattern-0001"}],
+  "details": {"targetRecord": "commons:observation:compiler-pattern-0001", "outcome": "FAIL", "independence": {"modelFamily": "none", "promptSource": "source-record", "harness": "sha256:harness-gcc", "compiler": "gcc-14", "machine": "machine:aarch64", "provider": "verifier:gcc-aarch64", "artifactAncestry": ["sha256:source-revision"]}}
+}

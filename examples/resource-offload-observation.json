@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Observation",
+  "metadata": {"recordId": "commons:observation:sequential-offload-0001", "createdAt": "2026-08-08T19:00:00Z", "author": {"type": "mnel", "id": "provider:placement-study"}, "labels": ["resource-policy", "negative-evidence"]},
+  "subject": {"type": "experiment", "identity": "mnel:study:offload-example"},
+  "scope": {"context": {"machineIdentity": "machine:cuda-example", "gpu": {"name": "example-gpu", "vramGiB": 12}, "modelIdentity": "model:example", "providerVersion": "provider:example-1"}, "limitations": ["machine-scoped measurement", "not a universal GPU or model recommendation"]},
+  "statement": {"summary": "Full CUDA placement exceeds the desired VRAM budget while sequential CPU offload fits the bounded experiment.", "details": "The offload policy reduces persistent VRAM use but increases host RAM use and transfer cost."},
+  "evidence": [{"id": "mnel:measurement:offload", "relation": "supports", "status": "PASS"}, {"id": "mnel:measurement:full-cuda", "relation": "contradicts", "status": "FAIL"}],
+  "reproduction": {"prerequisites": ["same model and provider identities", "machine with declared VRAM"], "procedure": [{"command": "run bounded placement benchmark", "authorityRequired": "experiment-only"}], "expected": ["record VRAM, RAM, and transfer measurements"]},
+  "dependencies": ["mnel:placement-policy"],
+  "affectedContracts": [],
+  "provenance": {"producer": {"type": "mnel", "id": "provider:placement-study"}, "sourceRecords": ["mnel:run:offload"], "environment": {"machineIdentity": "machine:cuda-example"}, "ancestry": ["mnel:run:offload"]},
+  "confidence": {"level": "medium", "rationale": "bounded measurement with explicit resource tradeoff"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": false},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["provider version changes", "machine changes", "model changes"]},
+  "relationships": [],
+  "details": {"outcome": "PASS", "negative": true, "measurements": {"fullCudaVramGiB": 14.2, "sequentialOffloadVramGiB": 5.1, "sequentialOffloadRamGiB": 18.4, "transferCost": "higher"}}
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Claim",
+  "metadata": {"recordId": "commons:claim:compiler-pattern-narrowed-0001", "createdAt": "2026-08-08T21:00:00Z", "author": {"type": "reviewer", "id": "reviewer:mncs"}, "labels": ["narrowed-claim", "scope"]},
+  "subject": {"type": "repository-revision", "identity": "example/project@sha256:source-revision", "repository": "example/project", "revision": "sha256:source-revision", "contracts": ["mncs:contract:control-flow-equivalence"]},
+  "scope": {"context": {"sourceRevision": "sha256:source-revision", "compiler": {"name": "clang", "version": "18.1.8"}, "target": {"os": "linux", "architecture": "x86_64", "optimization": "O2"}}, "limitations": ["not established for GCC or aarch64"]},
+  "statement": {"summary": "The pattern is intentional and contract-preserving only for the declared Clang/x86_64 scope.", "details": "The failed GCC/aarch64 replication narrows, but does not erase, the original observation."},
+  "evidence": [{"id": "commons:observation:compiler-pattern-0001", "relation": "supports", "status": "PASS"}, {"id": "commons:replication:compiler-pattern-failed-0001", "relation": "narrows", "status": "FAIL"}],
+  "reproduction": {"prerequisites": ["declared source and toolchain"], "procedure": [{"command": "run the scoped contract verifier", "authorityRequired": "verification-only"}], "expected": ["PASS only within declared scope"]},
+  "dependencies": ["mncs:contract:control-flow-equivalence"],
+  "affectedContracts": ["mncs:contract:control-flow-equivalence"],
+  "provenance": {"producer": {"type": "reviewer", "id": "reviewer:mncs"}, "sourceRecords": ["commons:observation:compiler-pattern-0001", "commons:replication:compiler-pattern-failed-0001"], "ancestry": ["forge:run:example", "forge:run:gcc-aarch64"]},
+  "confidence": {"level": "medium", "rationale": "supported in one environment and explicitly narrowed by a failed replication"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": true},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["compiler version changes", "contract changes"]},
+  "relationships": [{"type": "narrows", "target": "commons:observation:compiler-pattern-0001"}, {"type": "derived_from", "target": "commons:replication:compiler-pattern-failed-0001"}],
+  "details": {"outcome": "UNKNOWN", "falsifier": "a scoped counterexample under Clang/x86_64"}
+}

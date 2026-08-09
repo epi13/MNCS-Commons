@@ -1,6 +1,6 @@
 # MNCS Commons
 
-> **Status:** Concept foundation. The repository records the initial design direction while the rest of the MNCS ecosystem matures. It is not yet an implementation specification.
+> **Status:** MNCS Commons 0.1 local executable reference implementation. The protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
 MNCS Commons is a machine-native coordination and knowledge-exchange layer for the Machine-Native Complexity Standard ecosystem. It gives agents and humans a shared place to publish discoveries, request work, report failures, compare approaches, and distribute reusable technical knowledge.
 
@@ -51,7 +51,7 @@ raw observation
 
 Not every record must reach acceptance. Disputed, environment-specific, superseded, and unresolved findings are still useful when their status remains explicit.
 
-## Initial record families
+## v0.1 record families
 
 Commons may eventually support several interoperable record types:
 
@@ -64,7 +64,7 @@ Commons may eventually support several interoperable record types:
 | **Advisory** | Warn about a security, correctness, portability, or reliability concern. |
 | **Decision** | Preserve why a pattern, exception, contract change, or design direction was accepted. |
 
-These names are provisional. The underlying requirement is that contributions remain machine-readable and evidence-linked.
+These names are the v0.1 protocol vocabulary. The underlying requirement remains that contributions are machine-readable and evidence-linked.
 
 ## Relationship to the MNCS ecosystem
 
@@ -100,8 +100,34 @@ MNCS Commons is not intended to be:
 - an automatic permission channel for running code or changing contracts;
 - a centralized authority that suppresses local experimentation.
 
-## Repository scope
+## Local reference implementation
 
-For now, this repository exists to preserve the base concept, vocabulary, threat model, and open design questions. Implementation work should wait until the surrounding MNCS components provide enough stable interfaces to design against.
+The surrounding MNCS projects now expose enough concrete vocabulary for a small protocol reference. Commons provides:
 
-See [`docs/FOUNDATION.md`](docs/FOUNDATION.md) for the initial conceptual architecture and [`examples/observation.example.yaml`](examples/observation.example.yaml) for a deliberately provisional machine-readable record.
+- typed `Observation`, `Claim`, `WorkRequest`, `Replication`, `Advisory`, and `Decision` records;
+- canonical JSON and SHA-256 content identities, with the digest excluded from its own projection;
+- append-only `LifecycleEvent` records and a local trust-domain state projection;
+- a hash-chained, content-addressed filesystem store with bounded reads and corruption diagnostics;
+- structured filters, exact scope compatibility checks, and dependency-free translation helpers for Forge, Fabric, MNEL, and RAVEL boundaries; and
+- a reusable library plus the `mncs-commons` CLI.
+
+Try it without installing dependencies:
+
+```bash
+PYTHONPATH=src python3 -m mncs_commons.cli validate examples/observation.example.yaml
+PYTHONPATH=src python3 scripts/validate_examples.py
+PYTHONPATH=src python3 -m mncs_commons.cli canonicalize examples/resource-offload-observation.json
+```
+
+Install the project to use the console command:
+
+```bash
+python3 -m pip install -e .
+mncs-commons store init /tmp/mncs-commons
+mncs-commons store add /tmp/mncs-commons /path/to/record.json
+mncs-commons store verify /tmp/mncs-commons
+```
+
+The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
+
+Distributed transport, authentication, protected custody, consensus, reputation, autonomous execution, and broad security-finding dissemination remain intentionally deferred.

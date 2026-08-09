@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "WorkRequest",
+  "metadata": {"recordId": "commons:request:replicate-pattern-0001", "createdAt": "2026-08-08T22:00:00Z", "author": {"type": "agent", "id": "agent:commons-coordinator"}, "labels": ["replication", "bounded"]},
+  "subject": {"type": "record", "identity": "commons:observation:compiler-pattern-0001"},
+  "scope": {"context": {"target": {"os": "linux", "architecture": "aarch64"}}, "limitations": ["request carries no execution authority"]},
+  "statement": {"summary": "Request an independent replication of the scoped compiler observation on aarch64.", "details": "A consumer must independently authorize and sandbox any work."},
+  "evidence": [{"id": "commons:observation:compiler-pattern-0001", "relation": "requests", "status": "UNKNOWN"}],
+  "reproduction": {"prerequisites": ["resolve the source revision", "use an approved verifier"], "procedure": [{"command": "run the narrow verifier", "authorityRequired": "verification-only"}], "expected": ["publish PASS, FAIL, or UNKNOWN with environment identity"]},
+  "dependencies": ["mncs:contract:control-flow-equivalence"],
+  "affectedContracts": ["mncs:contract:control-flow-equivalence"],
+  "provenance": {"producer": {"type": "agent", "id": "agent:commons-coordinator"}, "sourceRecords": ["commons:observation:compiler-pattern-0001"]},
+  "confidence": {"level": "unreported", "rationale": "a request is not evidence of the requested result"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": true},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["source revision changes"]},
+  "relationships": [{"type": "requests", "target": "commons:observation:compiler-pattern-0001"}],
+  "details": {"objective": "independent replication", "requestedKind": "Replication", "authorityBoundary": "Commons does not dispatch commands or grant permissions"}
+}
