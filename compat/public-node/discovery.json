@@ -1,0 +1,18 @@
+{
+  "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+  "recordVersions": ["commons.mncs.dev/v0alpha1"],
+  "serverMode": "anonymous-public",
+  "participantIdentity": {
+    "assertion": "SELF_ASSERTED",
+    "authenticated": false,
+    "technicalAuthority": "NONE_GRANTED"
+  },
+  "transport": {
+    "binding": "https-reverse-proxy",
+    "encrypted": true,
+    "serverAuthenticated": true,
+    "clientAuthenticated": false
+  },
+  "features": {"remoteTransport": true, "pushSubscriptions": false},
+  "securityProfile": {"identityAssertion": "self-asserted", "technicalAuthority": "not-granted"}
+}

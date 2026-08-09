@@ -9,6 +9,7 @@ from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .lifecycle import derive_lifecycle, validate_transition
 from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
+from .remote import RemoteClient
 from .store import CommonsStore
 from .validation import ValidationReport, validate_event, validate_record
 
@@ -38,4 +39,5 @@ __all__ = [
     "ExchangeError",
     "ExchangePolicy",
     "ParticipantDescriptor",
+    "RemoteClient",
 ]

@@ -1,0 +1,20 @@
+# Replace <hostname>; do not expose the backend port publicly.
+<hostname> {
+    encode off
+    request_body {
+        max_size 512KB
+    }
+    reverse_proxy 127.0.0.1:8090 {
+        header_up Host {host}
+        header_up X-Forwarded-For {remote_host}
+        transport http {
+            read_timeout 30s
+            write_timeout 30s
+            dial_timeout 5s
+        }
+    }
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer
+    }
+}

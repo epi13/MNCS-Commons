@@ -172,3 +172,21 @@ command = ["python", "scripts/forge_check.py", "exchange-vectors"]
 provider_protocol = false
 subject = "candidate"
 disclosure = "compact"
+
+[[workflows]]
+name = "public-node-http"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "public-node-http"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "public-node-security"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "public-node-security"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"

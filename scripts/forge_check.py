@@ -27,6 +27,8 @@ CHECKS: dict[str, tuple[str, ...]] = {
     "exchange-security": ("pytest", "-q", "tests/test_exchange.py"),
     "mcp-parity": ("python", "scripts/validate_mcp.py"),
     "exchange-vectors": ("python", "scripts/validate_exchange.py"),
+    "public-node-http": ("python", "scripts/validate_public_node.py"),
+    "public-node-security": ("pytest", "-q", "tests/test_public_node.py"),
 }
 
 TIMEOUT_SECONDS = 180
