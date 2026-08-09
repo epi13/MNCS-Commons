@@ -28,6 +28,7 @@ MAX_LEDGER_BYTES = 64 * 1024 * 1024
 MAX_LEDGER_ROWS = 100_000
 MAX_TRANSACTION_BYTES = 16 * 1024 * 1024
 TRANSACTION_VERSION = 1
+MAX_SYNC_ENTRIES = 1_000
 
 
 class StoreError(RuntimeError):
@@ -421,6 +422,76 @@ class CommonsStore:
 
     def events(self) -> list[Mapping[str, Any]]:
         return list(self._payloads_from_rows(self._rows_for_read(), "event"))
+
+    def _store_identity(self) -> str:
+        return canonical_digest({"storePath": str(self.root.resolve())}, projected=False)
+
+    def _cursor_for(self, sequence: int, entry_digest: str | None) -> dict[str, object]:
+        return {
+            "storeId": self._store_identity(),
+            "sequence": sequence,
+            "entryDigest": entry_digest,
+        }
+
+    def current_cursor(self) -> dict[str, object]:
+        """Return a node-local cursor; possession is not authentication."""
+
+        self._require_initialized()
+        tail = self._load_tail_locked()
+        return self._cursor_for(tail.sequence, tail.entry_digest)
+
+    def sync_since(
+        self,
+        cursor: Mapping[str, Any] | None = None,
+        *,
+        limit: int = MAX_SYNC_ENTRIES,
+        kind: str | None = None,
+    ) -> dict[str, object]:
+        """Read an ordered ledger slice without skipping entries."""
+
+        self._require_initialized()
+        if limit < 1 or limit > MAX_SYNC_ENTRIES:
+            raise StoreError(f"sync limit must be between 1 and {MAX_SYNC_ENTRIES}")
+        rows = self._rows()
+        sequence = 0
+        entry_digest: str | None = None
+        if cursor is not None:
+            if cursor.get("storeId") != self._store_identity():
+                raise StoreError("INVALID_CURSOR: cursor belongs to another store")
+            try:
+                sequence = int(cursor.get("sequence", -1))
+            except (TypeError, ValueError) as error:
+                raise StoreError("INVALID_CURSOR: sequence is not an integer") from error
+            entry_digest = cursor.get("entryDigest")
+            if sequence < 0 or sequence > len(rows):
+                raise StoreError("STALE_CURSOR: cursor sequence is outside the ledger")
+            if sequence == 0 and entry_digest is not None:
+                raise StoreError("INVALID_CURSOR: empty cursor must not have an entry digest")
+            if sequence and rows[sequence - 1].get("entryDigest") != entry_digest:
+                raise StoreError("STALE_CURSOR: cursor entry digest does not match ledger")
+        selected: list[dict[str, Any]] = []
+        scanned = sequence
+        for row in rows[sequence:]:
+            scanned = int(row.get("sequence", scanned + 1))
+            payload = row.get("payload")
+            if kind is not None and (
+                not isinstance(payload, Mapping) or payload.get("kind") != kind
+            ):
+                continue
+            selected.append(row)
+            if len(selected) >= limit:
+                break
+        next_row = rows[scanned - 1] if scanned else None
+        next_cursor = self._cursor_for(
+            scanned, str(next_row.get("entryDigest")) if next_row is not None else None
+        )
+        return {
+            "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+            "entries": selected,
+            "nextCursor": next_cursor,
+            "hasMore": scanned < len(rows),
+            "truncated": len(selected) >= limit and scanned < len(rows),
+        }
 
     def get(self, digest: str) -> Mapping[str, Any] | None:
         for item in (*self.records(), *self.events()):

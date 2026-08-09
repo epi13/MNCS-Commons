@@ -1,0 +1,10 @@
+{
+  "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+  "recordVersions": ["commons.mncs.dev/v0alpha1"],
+  "implementation": {"name": "mncs-commons", "version": "0.4.0.dev0"},
+  "domain": "example:local",
+  "recordKinds": ["Advisory", "Claim", "Decision", "Observation", "Replication", "WorkRequest"],
+  "relationshipVocabulary": ["contradicts", "failed_to_replicate", "narrows", "responds_to", "supports"],
+  "limits": {"maxRecordBytes": 1048576, "maxQueryResults": 1000, "maxSyncEntries": 1000, "maxConversationNodes": 1000, "maxResponseBytes": 4194304},
+  "securityProfile": {"identityAssertion": "self-asserted", "technicalAuthority": "not-granted", "instructionsAreUntrusted": true}
+}

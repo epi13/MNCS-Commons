@@ -1,5 +1,8 @@
 import io.shiftleft.semanticcpg.language.*
 
+@main def commonsQueries(cpgFile: String): Unit = {
+  importCpg(cpgFile)
+
 val targets = List("validate_record", "validate_event", "validate_transition", "derive_lifecycle", "add_record", "add_event", "verify", "query", "main", "load_document")
 println("METHOD_COUNT=" + cpg.method.name.l.filter(targets.contains).size)
 targets.foreach { name =>
@@ -11,3 +14,4 @@ targets.foreach { name =>
 val dangerous = Set("system", "popen", "run", "Popen", "exec", "eval", "shell")
 println("DANGEROUS_CALL_NAMES=" + cpg.call.name.l.filter(dangerous.contains).distinct.sorted.mkString(","))
 println("CONTROL_STRUCTURES=" + cpg.controlStructure.size)
+}

@@ -23,6 +23,10 @@ CHECKS: dict[str, tuple[str, ...]] = {
     "security-inertness": ("pytest", "-q", "-k", "inert"),
     "evidence-lineage": ("pytest", "-q", "tests/test_evidence.py"),
     "cli-help": ("python", "-m", "mncs_commons.cli", "--help"),
+    "agent-exchange": ("python", "scripts/validate_agent_exchange.py"),
+    "exchange-security": ("pytest", "-q", "tests/test_exchange.py"),
+    "mcp-parity": ("python", "scripts/validate_mcp.py"),
+    "exchange-vectors": ("python", "scripts/validate_exchange.py"),
 }
 
 TIMEOUT_SECONDS = 180

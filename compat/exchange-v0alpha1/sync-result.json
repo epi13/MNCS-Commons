@@ -1,0 +1,7 @@
+{
+  "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+  "entries": [],
+  "nextCursor": {"storeId": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "sequence": 0, "entryDigest": null},
+  "hasMore": false,
+  "truncated": false
+}

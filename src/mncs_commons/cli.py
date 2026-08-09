@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .application import CommonsApplication, CompatibilityApplication
+from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
 from .models import RecordKind
 from .query import QueryFilter
@@ -108,6 +109,36 @@ def build_parser() -> argparse.ArgumentParser:
         command.add_argument("--record-type")
         command.add_argument("--schema-version")
         command.add_argument("--contract-id")
+
+    exchange = commands.add_parser("exchange")
+    exchange_commands = exchange.add_subparsers(dest="exchange_command", required=True)
+    describe = exchange_commands.add_parser("describe")
+    describe.add_argument("--domain", default="local")
+    describe.add_argument("--public", action="store_true")
+    publish = exchange_commands.add_parser("publish")
+    publish.add_argument("path")
+    publish.add_argument("record")
+    publish.add_argument("--domain", default="local")
+    publish.add_argument("--public", action="store_true")
+    publish.add_argument("--participant-id")
+    publish.add_argument("--implementation", default="unknown-participant")
+    publish.add_argument("--software-version")
+    publish.add_argument("--model-provider")
+    publish.add_argument("--instance-id")
+    sync = exchange_commands.add_parser("sync")
+    sync.add_argument("path")
+    sync.add_argument("--cursor")
+    sync.add_argument("--limit", type=int, default=1000)
+    sync.add_argument("--kind")
+    conversation = exchange_commands.add_parser("conversation")
+    conversation.add_argument("path")
+    conversation.add_argument("root")
+    conversation.add_argument("--depth", type=int, default=2)
+    conversation.add_argument("--max-nodes", type=int, default=1000)
+    work = exchange_commands.add_parser("work-list")
+    work.add_argument("path")
+    work.add_argument("--limit", type=int, default=100)
+    work.add_argument("--domain")
     return parser
 
 
@@ -119,6 +150,19 @@ def _repositories(values: list[str]) -> dict[str, Path]:
             raise ValueError("--repo must use one unique PRODUCER=PATH value")
         result[producer] = Path(path)
     return result
+
+
+def _cursor(value: str | None) -> Mapping[str, Any] | None:
+    if value is None:
+        return None
+    candidate = value
+    path = Path(value)
+    if path.exists():
+        candidate = path.read_text(encoding="utf-8")
+    parsed = json.loads(candidate)
+    if not isinstance(parsed, Mapping):
+        raise ValueError("cursor must be a JSON object")
+    return parsed
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -183,6 +227,44 @@ def main(argv: list[str] | None = None) -> int:
             "evidence",
         }:
             application = CommonsApplication(CommonsStore(args.path))
+        if args.command == "exchange":
+            if args.exchange_command == "describe":
+                policy = ExchangePolicy.public_profile() if args.public else ExchangePolicy()
+                _print(CommonsApplication.describe(domain=args.domain, policy=policy))
+                return 0
+            application = CommonsApplication(CommonsStore(args.path))
+            if args.exchange_command == "publish":
+                participant = None
+                if args.participant_id:
+                    participant = ParticipantDescriptor(
+                        args.participant_id,
+                        args.implementation,
+                        args.software_version,
+                        args.model_provider,
+                        args.instance_id,
+                    )
+                policy = ExchangePolicy.public_profile() if args.public else ExchangePolicy()
+                _print(
+                    application.publish(
+                        _read(args.record),
+                        participant=participant,
+                        policy=policy,
+                        domain=args.domain,
+                    )
+                )
+                return 0
+            if args.exchange_command == "sync":
+                _print(application.sync(_cursor(args.cursor), limit=args.limit, kind=args.kind))
+                return 0
+            if args.exchange_command == "conversation":
+                _print(
+                    application.conversation(
+                        args.root, depth=args.depth, max_nodes=args.max_nodes
+                    )
+                )
+                return 0
+            _print(application.work_queue(limit=args.limit, domain=args.domain))
+            return 0
         if args.command == "show":
             shown = application.require_store().get(args.digest)
             if shown is None:
