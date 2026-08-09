@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commons.mncs.dev/exchange/v0alpha1/schema",
+  "title": "MNCS Commons Agent Exchange v0alpha1",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/descriptor" },
+    { "$ref": "#/$defs/receipt" },
+    { "$ref": "#/$defs/syncResult" },
+    { "$ref": "#/$defs/conversation" }
+  ],
+  "$defs": {
+    "descriptor": {
+      "type": "object",
+      "required": ["exchangeVersion", "recordVersions", "operations", "limits", "securityProfile"],
+      "properties": {
+        "exchangeVersion": { "const": "commons.mncs.dev/exchange/v0alpha1" },
+        "recordVersions": { "type": "array", "items": { "type": "string" } },
+        "operations": { "type": "array", "items": { "type": "object" } },
+        "limits": { "type": "object" },
+        "securityProfile": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "receipt": {
+      "type": "object",
+      "required": ["exchangeVersion", "deliveryStatus", "validationStatus", "acceptanceStatus", "technicalAuthority", "contentDigest"],
+      "properties": {
+        "exchangeVersion": { "const": "commons.mncs.dev/exchange/v0alpha1" },
+        "deliveryStatus": { "enum": ["INGESTED", "DUPLICATE"] },
+        "validationStatus": { "const": "VALID" },
+        "acceptanceStatus": { "const": "UNCHANGED" },
+        "technicalAuthority": { "const": "NONE_GRANTED" },
+        "contentDigest": { "pattern": "^sha256:" }
+      },
+      "additionalProperties": true
+    },
+    "syncResult": {
+      "type": "object",
+      "required": ["exchangeVersion", "entries", "nextCursor", "hasMore", "truncated"],
+      "properties": {
+        "exchangeVersion": { "const": "commons.mncs.dev/exchange/v0alpha1" },
+        "entries": { "type": "array" },
+        "nextCursor": { "type": "object" },
+        "hasMore": { "type": "boolean" },
+        "truncated": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "conversation": {
+      "type": "object",
+      "required": ["exchangeVersion", "canonicalRepresentation", "records", "edges", "truncated"],
+      "properties": {
+        "exchangeVersion": { "const": "commons.mncs.dev/exchange/v0alpha1" },
+        "canonicalRepresentation": { "const": "typed-record-graph" },
+        "records": { "type": "array" },
+        "edges": { "type": "array" },
+        "truncated": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

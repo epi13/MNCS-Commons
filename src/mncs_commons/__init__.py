@@ -1,8 +1,11 @@
-"""MNCS Commons 0.3 local executable reference implementation."""
+"""MNCS Commons 0.4 agent exchange and local evidence reference implementation."""
+
+__version__ = "0.4.0.dev0"
 
 from .application import CommonsApplication, CompatibilityApplication
 from .canonical import canonical_digest, canonical_json, identity_projection
 from .compatibility import CompatibilityStatus, ProducerContract, contracts
+from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .lifecycle import derive_lifecycle, validate_transition
 from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
@@ -32,4 +35,7 @@ __all__ = [
     "validate_transition",
     "unresolved_relationships",
     "contracts",
+    "ExchangeError",
+    "ExchangePolicy",
+    "ParticipantDescriptor",
 ]

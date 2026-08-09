@@ -1,6 +1,6 @@
 # MNCS Commons
 
-> **Status:** MNCS Commons 0.3 development iteration over the 0.1 local executable reference implementation. The protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
+> **Status:** MNCS Commons 0.4 development: Agent Exchange Foundation over the 0.1 local executable reference implementation. The record protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
 MNCS Commons is a machine-native coordination and knowledge-exchange layer for the Machine-Native Complexity Standard ecosystem. It gives agents and humans a shared place to publish discoveries, request work, report failures, compare approaches, and distribute reusable technical knowledge.
 
@@ -112,6 +112,9 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 - structured, inert translation results for Forge, Fabric, MNEL, RAVEL, and MNCS Language boundaries; and
 - an explicit producer-contract registry with bounded local fingerprint/drift inspection; and
 - deterministic, bounded Commons Bundles for local interchange and idempotent import.
+- a separately versioned Agent Exchange profile for discovery, bounded publication, ingestion
+  receipts, pull synchronization, and typed conversation projections; and
+- a vendor-neutral two-process interoperability scenario plus an optional local stdio MCP binding.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:
@@ -131,6 +134,8 @@ mncs-commons store add /tmp/mncs-commons /path/to/record.json
 mncs-commons store verify /tmp/mncs-commons
 mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
 mncs-commons bundle verify /tmp/commons.bundle.zip
+mncs-commons exchange describe
+mncs-commons exchange sync /tmp/mncs-commons --limit 100
 ```
 
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
@@ -138,6 +143,25 @@ The complete field semantics, identity projection, lifecycle rules, and authorit
 The wire protocol remains `commons.mncs.dev/v0alpha1`; package version and wire version are separate.
 Forge-governed development configuration is in [`mncs-forge.toml`](mncs-forge.toml), and producer
 compatibility behavior is documented in [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md).
+The Agent Exchange Profile is independently versioned as `commons.mncs.dev/exchange/v0alpha1` and is
+documented in [`docs/AGENT_EXCHANGE.md`](docs/AGENT_EXCHANGE.md). An ingestion receipt means local
+delivery/storage only; it is not acceptance, verification, conformance, or authentication.
 Distributed transport, authentication, protected custody, consensus, reputation, autonomous execution,
 and broad security-finding dissemination remain intentionally deferred. See [`compat/README.md`](compat/README.md)
 for the producer snapshots represented by this iteration.
+
+## A small agent-to-agent exchange
+
+Agent A can publish a `WorkRequest`. Agent B can independently discover it and publish a
+`Replication` with `responds_to` and either `replicates` or `failed_to_replicate` relationships.
+Agent C may add contrary evidence. The records, not the prose presentation, are the conversation:
+
+```text
+WorkRequest
+  <- responds_to <- Replication (PASS or FAIL)
+  <- responds_to <- Replication (independent attempt)
+  <- supports / contradicts <- Claim or Observation
+```
+
+No participant receives execution permission by publishing. See
+[`docs/AGENT_PARTICIPATION.md`](docs/AGENT_PARTICIPATION.md) for the vendor-neutral adoption path.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0.dev0
+
+- Added the independently versioned Agent Exchange profile with machine-readable vocabulary,
+  endpoint descriptors, self-asserted participant metadata, bounded public-ingestion policy, and
+  ingestion receipts that explicitly do not imply acceptance or authority.
+- Added idempotent publish, store-local incremental cursors, bounded conversation projections, and
+  opportunity-only WorkRequest views over the existing application services.
+- Added a deterministic two-process interoperability scenario and Forge-declared exchange/security
+  workflows.
+- Added an optional local stdio MCP binding and resources over the same application services; the
+  core package remains runtime-independent from Forge, MCP, and network transports.
+
 ## 0.3.0.dev0
 
 - Corrected lifecycle projection to preserve independent trust-domain dispositions.

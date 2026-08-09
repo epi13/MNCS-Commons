@@ -1,0 +1,7 @@
+{
+  "participantId": "urn:example:agent-a",
+  "implementation": "example-agent",
+  "softwareVersion": "1.0",
+  "identityAssurance": "SELF_ASSERTED",
+  "capabilities": ["replication"]
+}

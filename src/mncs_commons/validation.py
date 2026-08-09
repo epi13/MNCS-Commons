@@ -162,7 +162,8 @@ def _check_relationships(value: Any, record_id: str | None, diagnostics: list[Di
         path = f"relationships[{index}]"
         if _require_object(item, path, diagnostics):
             relation = item.get("type")
-            if relation not in allowed:
+            extension = isinstance(relation, str) and "/" in relation and relation.split("/", 1)[0]
+            if relation not in allowed and not extension:
                 diagnostics.append(
                     _error("INVALID_RELATION", f"{path}.type", "relationship type is not supported")
                 )

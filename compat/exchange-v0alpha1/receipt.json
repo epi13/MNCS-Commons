@@ -1,0 +1,12 @@
+{
+  "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+  "deliveryStatus": "INGESTED",
+  "validationStatus": "VALID",
+  "storageStatus": "STORED",
+  "acceptanceStatus": "UNCHANGED",
+  "technicalAuthority": "NONE_GRANTED",
+  "contentDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "logicalRecordId": "commons:record:example",
+  "domain": "example:local",
+  "participant": {"participantId": "urn:example:agent-a", "identityAssurance": "SELF_ASSERTED"}
+}

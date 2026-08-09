@@ -3,7 +3,7 @@ environment_allowlist = ["PATH", "LANG", "LC_ALL"]
 
 [project]
 name = "MNCS Commons"
-identity = "mncs-commons-0.3-development"
+identity = "mncs-commons-0.4-development"
 root = "."
 
 [paths]
@@ -136,3 +136,39 @@ command = ["python", "scripts/forge_check.py", "cli-help"]
 provider_protocol = false
 subject = "candidate"
 disclosure = "status-only"
+
+[[workflows]]
+name = "agent-exchange"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "agent-exchange"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "exchange-security"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "exchange-security"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "mcp-parity"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "mcp-parity"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "exchange-vectors"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "exchange-vectors"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"

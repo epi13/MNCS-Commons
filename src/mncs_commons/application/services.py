@@ -16,9 +16,18 @@ from ..compatibility import (
     resolve_contract,
 )
 from ..evidence import evidence_lineage
+from ..exchange import (
+    ExchangeError,
+    ExchangePolicy,
+    IngestionReceipt,
+    ParticipantDescriptor,
+    descriptor,
+    validate_for_exchange,
+    validate_participant,
+)
 from ..models import EVENT_KIND
 from ..query import QueryFilter, bounded_graph, replication_correlation
-from ..store import CommonsStore
+from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
 
 
@@ -93,6 +102,88 @@ class CommonsApplication:
         return evidence_lineage(
             self.require_store().records(), [root], max_depth=depth, max_nodes=max_nodes
         ).as_dict()
+
+    @staticmethod
+    def describe(
+        *, domain: str = "local", policy: ExchangePolicy | None = None
+    ) -> dict[str, object]:
+        return descriptor(domain=domain, policy=policy)
+
+    def publish(
+        self,
+        value: Mapping[str, Any],
+        *,
+        participant: ParticipantDescriptor | None = None,
+        policy: ExchangePolicy | None = None,
+        domain: str = "local",
+    ) -> dict[str, object]:
+        policy = policy or ExchangePolicy()
+        if not policy.allow_write:
+            raise ExchangeError("PUBLIC_POLICY_REJECTED", "this exchange profile is read-only")
+        validate_participant(participant)
+        validate_for_exchange(value, policy)
+        store = self.require_store()
+        digest = str(value.get("contentDigest", canonical_digest(value)))
+        duplicate = store.get(digest) is not None
+        added = self.add(value)
+        cursor = store.current_cursor()
+        return IngestionReceipt(
+            "DUPLICATE" if duplicate else "INGESTED",
+            added.digest,
+            str(value.get("metadata", {}).get("recordId", added.digest)),
+            domain,
+            cursor,
+            participant.as_dict() if participant else None,
+        ).as_dict()
+
+    def sync(
+        self,
+        cursor: Mapping[str, Any] | None = None,
+        *,
+        limit: int = 1000,
+        kind: str | None = None,
+    ) -> dict[str, object]:
+        try:
+            return self.require_store().sync_since(cursor, limit=limit, kind=kind)
+        except StoreError as error:
+            message = str(error)
+            code = "STALE_CURSOR" if message.startswith("STALE_CURSOR") else "INVALID_CURSOR"
+            raise ExchangeError(code, message) from error
+
+    def conversation(
+        self, root: str, *, depth: int = 2, max_nodes: int = 1000
+    ) -> dict[str, object]:
+        graph = self.related(root, depth=depth, max_nodes=max_nodes)
+        records = graph.get("records", [])
+        if isinstance(records, list):
+            records.sort(
+                key=lambda item: (
+                    str(item.get("metadata", {}).get("createdAt", "")),
+                    str(item.get("contentDigest", "")),
+                )
+            )
+        return {
+            "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+            "root": root,
+            "canonicalRepresentation": "typed-record-graph",
+            "records": records,
+            "edges": graph.get("edges", []),
+            "unresolved": graph.get("unresolved", []),
+            "truncated": graph.get("truncated", False),
+            "authority": "presentation view; graph records remain authoritative",
+        }
+
+    def work_queue(
+        self, *, limit: int = 100, now=None, domain: str | None = None
+    ) -> dict[str, object]:
+        values = self.query(
+            QueryFilter(open_work_requests=True, now=now, domain=domain)
+        )[: max(1, min(limit, 1000))]
+        return {
+            "records": values,
+            "truncated": len(values) >= max(1, min(limit, 1000)),
+            "authority": "opportunity list, not commands or permissions",
+        }
 
     def create_bundle(
         self, output: str | Path, *, roots: list[str] | None = None, max_depth: int = 2
