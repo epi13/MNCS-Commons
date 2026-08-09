@@ -1,0 +1,9 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "LifecycleEvent",
+  "metadata": {"createdAt": "2026-08-08T18:30:00Z", "author": {"type": "verifier", "id": "verifier:example"}},
+  "target": {"contentDigest": "sha256:f3725cc38b6f756db10377642554a330aa483188acb317bfe52df81ffeade82e"},
+  "transition": {"from": "proposed", "to": "reproduced"},
+  "authority": {"domain": "example:compiler-replication", "actor": "verifier:example", "rationale": "independent scoped reproduction was recorded"},
+  "evidence": [{"id": "forge:replication:example", "relation": "supports", "status": "PASS"}]
+}

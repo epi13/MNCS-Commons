@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Advisory",
+  "metadata": {"recordId": "commons:advisory:scope-replay-0001", "createdAt": "2026-08-08T23:00:00Z", "author": {"type": "reviewer", "id": "reviewer:commons"}, "labels": ["staleness", "fail-closed"]},
+  "subject": {"type": "record-family", "identity": "commons:observation:compiler-pattern-0001"},
+  "scope": {"context": {"sourceRevision": "sha256:source-revision"}, "limitations": ["metadata-only advisory until local policy reviews it"]},
+  "statement": {"summary": "Do not reuse the observation after its source revision, compiler, target, or contract changes without review."},
+  "evidence": [{"id": "commons:observation:compiler-pattern-0001", "relation": "supports", "status": "UNKNOWN"}],
+  "reproduction": {"procedure": [{"command": "compare current scope context", "authorityRequired": "read-only review"}], "expected": ["report compatible, incompatible, review-required, or unknown"]},
+  "dependencies": [],
+  "affectedContracts": [],
+  "provenance": {"producer": {"type": "reviewer", "id": "reviewer:commons"}, "sourceRecords": ["commons:observation:compiler-pattern-0001"]},
+  "confidence": {"level": "high", "rationale": "scope compatibility is deliberately conservative"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": false},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["review policy changes"]},
+  "relationships": [{"type": "references_artifact", "target": "commons:observation:compiler-pattern-0001"}],
+  "details": {"severity": "correctness", "concern": "stale evidence may be replayed outside its declared scope"}
+}

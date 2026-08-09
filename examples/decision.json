@@ -1,0 +1,18 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Decision",
+  "metadata": {"recordId": "commons:decision:keep-history-0001", "createdAt": "2026-08-08T23:30:00Z", "author": {"type": "project", "id": "project:mncs-commons"}, "labels": ["architecture"]},
+  "subject": {"type": "protocol", "identity": "commons:protocol:v0alpha1"},
+  "scope": {"context": {"protocol": "commons.mncs.dev/v0alpha1"}, "limitations": ["does not establish global acceptance or authentication"]},
+  "statement": {"summary": "Preserve original records and append lifecycle events instead of rewriting evidence."},
+  "evidence": [{"id": "docs:adr:0002", "relation": "supports", "status": "PASS"}],
+  "reproduction": {"procedure": [{"command": "inspect ledger and derive state", "authorityRequired": "read-only"}], "expected": ["historical payloads remain unchanged"]},
+  "dependencies": [],
+  "affectedContracts": [],
+  "provenance": {"producer": {"type": "project", "id": "project:mncs-commons"}, "sourceRecords": ["docs:FOUNDATION.md"]},
+  "confidence": {"level": "high", "rationale": "append-only lineage is implemented and tested locally"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": false},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["protocol version changes"]},
+  "relationships": [],
+  "details": {"domain": "storage-and-history", "rationale": "preserve evidence and make disputes inspectable", "authorityScope": "local reference implementation"}
+}

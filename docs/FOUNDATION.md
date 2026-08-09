@@ -218,7 +218,13 @@ RAVEL may consume records only after filtering by scope, evidence quality, statu
 
 Fabric may eventually supply transport, routing, discovery, addressing, identity, and policy enforcement. Commons should define the semantics of exchanged knowledge without prematurely assuming a single transport.
 
-## 10. Deferred implementation questions
+## 10. Local reference direction
+
+The initial foundation intentionally deferred implementation while surrounding MNCS projects were still establishing interfaces. That condition has changed enough to support a bounded local reference protocol. The current implementation uses canonical JSON, SHA-256 content-derived identities, immutable records, append-only lifecycle events, and a filesystem store. It keeps the conceptual distinctions above intact: integrity is not authenticity, reproducibility is not truth, and local acceptance is not global authority.
+
+The implementation is a reference for record semantics and local evidence handling. It is not a service, transport, custody system, or execution policy engine. See [`PROTOCOL.md`](PROTOCOL.md) and the ADRs for durable decisions.
+
+## 11. Deferred implementation questions
 
 The repository intentionally leaves the following questions open:
 
@@ -235,8 +241,8 @@ The repository intentionally leaves the following questions open:
 11. How can Commons remain useful for small local systems without requiring distributed infrastructure?
 12. Which concepts should remain independent of the broader MNCS architecture?
 
-## 11. Near-term boundary
+## 12. Near-term boundary
 
-No production service, autonomous execution path, consensus protocol, reputation system, or cryptographic certification mechanism is proposed at this stage.
+No production service, autonomous execution path, consensus protocol, reputation system, or cryptographic certification mechanism is proposed at this stage. The local store provides crash-conscious atomic file replacement and hash-chain diagnostics, but it is not tamper-proof and does not establish external witnessing or protected final custody.
 
-The near-term purpose of MNCS Commons is to preserve a coherent concept that can later be tested against the actual interfaces and failure modes of the Forge, the verifier network, RAVEL, Fabric, and MNCS contracts.
+The near-term purpose of MNCS Commons is now twofold: provide a small executable record protocol that the Forge, verifier work, RAVEL, Fabric, and MNCS contract systems can reference; and preserve a coherent concept that can be tested against their actual interfaces and failure modes.
