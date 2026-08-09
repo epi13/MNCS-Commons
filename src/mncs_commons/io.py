@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
@@ -28,10 +29,10 @@ def load_document(path: Path) -> Any:
         if path.suffix.lower() not in {".yaml", ".yml"}:
             raise ValueError(f"invalid JSON: {json_error}") from json_error
         try:
-            import yaml  # type: ignore[import-not-found]
+            yaml_module: Any = import_module("yaml")
         except ImportError as yaml_error:
             raise ValueError("YAML input requires the optional 'yaml' dependency") from yaml_error
-        value = yaml.safe_load(raw)
+        value = yaml_module.safe_load(raw)
         if value is None:
             raise ValueError("document is empty") from None
         return value

@@ -9,6 +9,7 @@ import pytest
 
 from mncs_commons.adapters.mnel import from_mnel_observation
 from mncs_commons.canonical import canonical_digest, canonical_json
+from mncs_commons.io import load_document
 from mncs_commons.lifecycle import derive_lifecycle, validate_transition
 from mncs_commons.models import RecordKind
 from mncs_commons.query import QueryFilter, ScopeAssessment, assess_scope, unresolved_relationships
@@ -298,6 +299,22 @@ def test_schema_snapshot_has_all_protocol_kinds() -> None:
         "Advisory",
         "Decision",
     }
+
+
+def test_yaml_dependency_is_optional_and_failure_is_inert(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    document = tmp_path / "record.yaml"
+    document.write_text("kind: Observation\n", encoding="utf-8")
+
+    def missing_yaml(name: str) -> object:
+        if name == "yaml":
+            raise ImportError("PyYAML unavailable")
+        raise AssertionError(f"unexpected optional import: {name}")
+
+    monkeypatch.setattr("mncs_commons.io.import_module", missing_yaml)
+    with pytest.raises(ValueError, match="optional 'yaml' dependency"):
+        load_document(document)
 
 
 def test_mnel_adapter_is_valid_observation() -> None:
