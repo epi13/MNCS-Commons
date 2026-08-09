@@ -14,7 +14,7 @@ import time
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterator, Mapping, Sequence
+from typing import Any, BinaryIO, Iterator, Mapping, Sequence
 
 from .canonical import canonical_digest, canonical_json
 from .lifecycle import LifecycleView, derive_lifecycle, domain_views, validate_transition
@@ -78,36 +78,46 @@ def _file_lock(path: Path) -> Iterator[None]:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     deadline = time.monotonic() + 30.0
+    handle: BinaryIO | None = None
     while True:
+        candidate: BinaryIO | None = None
         try:
-            handle = path.open("a+b")
+            candidate = path.open("a+b")
+            if os.name == "nt":
+                import msvcrt
+
+                candidate.seek(0)
+                candidate.write(b"\0")
+                candidate.flush()
+                lock_mode = msvcrt.LK_LOCK  # type: ignore[attr-defined]
+                msvcrt.locking(  # type: ignore[attr-defined]
+                    candidate.fileno(), lock_mode, 1
+                )
+            else:
+                import fcntl
+
+                fcntl.flock(candidate.fileno(), fcntl.LOCK_EX)  # type: ignore[attr-defined]
+            handle = candidate
             break
         except PermissionError:
+            if candidate is not None:
+                candidate.close()
             if os.name != "nt" or time.monotonic() >= deadline:
                 raise
             time.sleep(0.01)
-    with handle:
+    assert handle is not None
+    try:
+        yield
+    finally:
         if os.name == "nt":
-            import msvcrt
-
-            handle.seek(0)
-            handle.write(b"\0")
+            # Windows releases the region when this handle closes. Explicit
+            # LK_UNLCK is unreliable on the hosted Windows runner.
             handle.flush()
-            msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)  # type: ignore[attr-defined]
-            try:
-                yield
-            finally:
-                # Windows releases the region when this handle closes. Explicit
-                # LK_UNLCK is unreliable on the hosted Windows runner.
-                handle.flush()
         else:
             import fcntl
 
-            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)  # type: ignore[attr-defined]
-            try:
-                yield
-            finally:
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)  # type: ignore[attr-defined]
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)  # type: ignore[attr-defined]
+        handle.close()
 
 
 class CommonsStore:
