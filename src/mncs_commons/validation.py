@@ -363,6 +363,14 @@ def validate_event(value: Any) -> ValidationReport:
     target = value.get("target")
     if _require_object(target, "target", diagnostics):
         _require_string(target.get("contentDigest"), "target.contentDigest", diagnostics)
+        if not _valid_digest(target.get("contentDigest")):
+            diagnostics.append(
+                _error(
+                    "INVALID_DIGEST",
+                    "target.contentDigest",
+                    "must be a sha256: digest",
+                )
+            )
     transition = value.get("transition")
     if _require_object(transition, "transition", diagnostics):
         if transition.get("from") not in {item.value for item in LifecycleState}:

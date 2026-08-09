@@ -77,11 +77,13 @@ def assess_scope(
     if not isinstance(scope, Mapping):
         return ScopeAssessment.UNKNOWN
     review_at = scope.get("reviewAt")
+    review_clock_unknown = False
     if review_at:
         try:
             moment = _parse_timestamp(str(review_at))
             if now is not None and now.tzinfo is not None and moment <= now:
                 return ScopeAssessment.REVIEW_REQUIRED
+            review_clock_unknown = now is None or now.tzinfo is None
         except ValueError:
             return ScopeAssessment.UNKNOWN
     declared = scope.get("context")
@@ -94,6 +96,8 @@ def assess_scope(
         compared = True
         if current_context[key] != expected:
             return ScopeAssessment.INCOMPATIBLE
+    if review_clock_unknown:
+        return ScopeAssessment.UNKNOWN
     return ScopeAssessment.COMPATIBLE if compared else ScopeAssessment.UNKNOWN
 
 

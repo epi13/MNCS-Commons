@@ -135,6 +135,8 @@ def create_bundle(
             }
         )
     external: set[str] = set()
+    if root_refs is not None:
+        external.update(reference for reference in root_refs if reference not in selected)
     for record in records:
         for relation in record.get("relationships", []):
             if isinstance(relation, Mapping) and isinstance(relation.get("target"), str):

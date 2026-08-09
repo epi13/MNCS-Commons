@@ -26,7 +26,7 @@ from mncs_commons.query import (
     unresolved_relationships,
 )
 from mncs_commons.store import CommonsStore, StoreError
-from mncs_commons.validation import validate_record
+from mncs_commons.validation import validate_event, validate_record
 
 
 def make_record(kind: str = "Observation") -> dict:
@@ -219,6 +219,11 @@ def test_lifecycle_legal_and_illegal_transitions() -> None:
     )
     forbidden = validate_transition("accepted", "verified", events[-1])
     assert not forbidden.valid
+
+
+def test_lifecycle_event_target_identity_is_strict() -> None:
+    event = make_event("not-a-digest", "proposed", "reproduced")
+    assert any(item.code == "INVALID_DIGEST" for item in validate_event(event).diagnostics)
 
 
 @pytest.mark.parametrize(
@@ -458,6 +463,7 @@ def test_scope_staleness_and_unknown() -> None:
         assess_scope(record, context, now=datetime(2026, 9, 1, tzinfo=timezone.utc))
         == ScopeAssessment.COMPATIBLE
     )
+    assert assess_scope(record, context) == ScopeAssessment.UNKNOWN
     changed = copy.deepcopy(context)
     changed["compiler"]["version"] = "19"
     assert assess_scope(record, changed) == ScopeAssessment.INCOMPATIBLE
