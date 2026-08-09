@@ -14,7 +14,9 @@ from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
 from .models import RecordKind
 from .query import QueryFilter
+from .remote import RemoteClient
 from .store import CommonsStore, StoreError
+from .visibility import VisibilityPolicy
 
 
 def _read(path: str) -> Mapping[str, Any]:
@@ -49,6 +51,21 @@ def build_parser() -> argparse.ArgumentParser:
     store_commands.add_parser("diagnose").add_argument("path")
     store_commands.add_parser("recover").add_argument("path")
     store_commands.add_parser("list").add_argument("path")
+    store_commands.add_parser("stats").add_argument("path")
+    seed = store_commands.add_parser("seed-public")
+    seed.add_argument("path")
+    seed.add_argument("--domain", default="public")
+
+    visibility = commands.add_parser("visibility")
+    visibility_commands = visibility.add_subparsers(dest="visibility_command", required=True)
+    visibility_set = visibility_commands.add_parser("set")
+    visibility_set.add_argument("policy")
+    visibility_set.add_argument("digest")
+    visibility_set.add_argument("--reason", required=True)
+    visibility_clear = visibility_commands.add_parser("clear")
+    visibility_clear.add_argument("policy")
+    visibility_clear.add_argument("digest")
+    visibility_commands.add_parser("list").add_argument("policy")
 
     show = commands.add_parser("show")
     show.add_argument("path")
@@ -139,6 +156,29 @@ def build_parser() -> argparse.ArgumentParser:
     work.add_argument("path")
     work.add_argument("--limit", type=int, default=100)
     work.add_argument("--domain")
+
+    server = commands.add_parser("serve")
+    server.add_argument("--server-args", nargs=argparse.REMAINDER)
+
+    remote = commands.add_parser("remote")
+    remote_commands = remote.add_subparsers(dest="remote_command", required=True)
+    remote_commands.add_parser("describe").add_argument("url")
+    remote_commands.add_parser("work").add_argument("url")
+    remote_get = remote_commands.add_parser("get")
+    remote_get.add_argument("url")
+    remote_get.add_argument("digest")
+    remote_validate = remote_commands.add_parser("validate")
+    remote_validate.add_argument("url")
+    remote_validate.add_argument("record")
+    remote_publish = remote_commands.add_parser("publish")
+    remote_publish.add_argument("url")
+    remote_publish.add_argument("record")
+    remote_sync = remote_commands.add_parser("sync")
+    remote_sync.add_argument("url")
+    remote_sync.add_argument("--cursor")
+    remote_sync.add_argument("--limit", type=int, default=100)
+    for command in remote_commands.choices.values():
+        command.add_argument("--allow-http", action="store_true")
     return parser
 
 
@@ -194,10 +234,32 @@ def main(argv: list[str] | None = None) -> int:
                 added = application.add(value)
                 _print({"contentDigest": added.digest})
                 return 0
+            if args.store_command == "seed-public":
+                from .bootstrap import seed_public
+
+                _print(seed_public(Path(args.path), args.domain))
+                return 0
             if args.store_command == "verify":
                 verification = application.verify_store()
                 _print(verification)
                 return 0 if verification["valid"] else 2
+            if args.store_command == "stats":
+                records = application.list_records()
+                by_kind: dict[str, int] = {}
+                for record in records:
+                    kind = str(record.get("kind", "UNKNOWN"))
+                    by_kind[kind] = by_kind.get(kind, 0) + 1
+                work_records = application.work_queue(limit=1000).get("records", [])
+                _print(
+                    {
+                        "usage": application.require_store().storage_usage(),
+                        "recordsByKind": dict(sorted(by_kind.items())),
+                        "openWorkRequests": len(work_records)
+                        if isinstance(work_records, list)
+                        else 0,
+                    }
+                )
+                return 0
             if args.store_command == "diagnose":
                 diagnostic = application.diagnose_store()
                 _print(diagnostic)
@@ -217,6 +279,33 @@ def main(argv: list[str] | None = None) -> int:
                     for item in records
                 ]
             )
+            return 0
+        if args.command == "visibility":
+            visibility_policy = VisibilityPolicy(Path(args.policy))
+            if args.visibility_command == "set":
+                visibility_policy.set_withheld(args.digest, args.reason)
+            elif args.visibility_command == "clear":
+                visibility_policy.clear(args.digest)
+            _print(visibility_policy.entries())
+            return 0
+        if args.command == "serve":
+            from .http_server import server_main
+
+            return server_main(args.server_args or [])
+        if args.command == "remote":
+            client = RemoteClient(args.url, allow_http=args.allow_http)
+            if args.remote_command == "describe":
+                _print(client.describe())
+            elif args.remote_command == "work":
+                _print(client.work())
+            elif args.remote_command == "get":
+                _print(client.get(args.digest))
+            elif args.remote_command == "validate":
+                _print(client.validate(_read(args.record)))
+            elif args.remote_command == "publish":
+                _print(client.publish(_read(args.record)))
+            else:
+                _print(client.sync(_cursor(args.cursor), args.limit))
             return 0
         if args.command in {
             "show",
@@ -258,9 +347,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
             if args.exchange_command == "conversation":
                 _print(
-                    application.conversation(
-                        args.root, depth=args.depth, max_nodes=args.max_nodes
-                    )
+                    application.conversation(args.root, depth=args.depth, max_nodes=args.max_nodes)
                 )
                 return 0
             _print(application.work_queue(limit=args.limit, domain=args.domain))

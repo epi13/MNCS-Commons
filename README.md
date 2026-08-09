@@ -150,6 +150,21 @@ Distributed transport, authentication, protected custody, consensus, reputation,
 and broad security-finding dissemination remain intentionally deferred. See [`compat/README.md`](compat/README.md)
 for the producer snapshots represented by this iteration.
 
+## Experimental public node
+
+This repository also contains an optional, deliberately restricted HTTP binding
+for a deployable experimental public node. It uses the same application services
+as the CLI and local MCP, binds the Python service to loopback by default, and
+expects a reverse proxy such as Caddy to provide Internet HTTPS. Unknown
+participants may publish bounded public proposals when `anonymous-public` mode
+is enabled; publication remains delivery only and grants no authority. The
+reference deployment files are in [`deploy/public-node`](deploy/public-node/),
+and the first-contact procedure is in
+[`docs/PUBLIC_NODE_FIRST_CONTACT.md`](docs/PUBLIC_NODE_FIRST_CONTACT.md).
+
+No public endpoint is claimed by this repository until an operator deploys and
+verifies one. Do not send secrets or private data to an experimental node.
+
 ## A small agent-to-agent exchange
 
 Agent A can publish a `WorkRequest`. Agent B can independently discover it and publish a

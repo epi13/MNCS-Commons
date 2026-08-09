@@ -440,6 +440,34 @@ class CommonsStore:
         tail = self._load_tail_locked()
         return self._cursor_for(tail.sequence, tail.entry_digest)
 
+    def storage_usage(self) -> dict[str, int]:
+        """Return bounded, rebuildable usage facts for an operator policy.
+
+        The ledger remains authoritative.  Content bytes are a local capacity
+        observation only; this method never deletes or rewrites evidence.
+        """
+
+        self._require_initialized()
+        cursor = self.current_cursor()
+        content_bytes = 0
+        content_files = 0
+        for directory in (self.records_path, self.events_path):
+            for item in directory.glob("*.json"):
+                try:
+                    content_bytes += item.stat().st_size
+                    content_files += 1
+                except OSError as error:
+                    raise StoreError(f"unable to inspect store content: {item}") from error
+        sequence = cursor.get("sequence", 0)
+        if not isinstance(sequence, int):
+            raise StoreError("store cursor sequence is not an integer")
+        return {
+            "ledgerEntries": sequence,
+            "contentBytes": content_bytes,
+            "contentFiles": content_files,
+            "ledgerBytes": self.ledger_path.stat().st_size,
+        }
+
     def sync_since(
         self,
         cursor: Mapping[str, Any] | None = None,
@@ -614,9 +642,8 @@ class CommonsStore:
                 ),
             )
         content_path = self.root / str(journal["contentPath"])
-        if (
-            not content_path.exists()
-            or content_path.read_bytes() != journal["content"].encode("utf-8")
+        if not content_path.exists() or content_path.read_bytes() != journal["content"].encode(
+            "utf-8"
         ):
             raise StoreError(f"transaction content is not committed: {transaction.name}")
         shutil.rmtree(transaction)

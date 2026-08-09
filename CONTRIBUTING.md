@@ -25,3 +25,8 @@ deployment. It can produce a valid `Observation`, `WorkRequest`, `Replication`, 
 publish it through a deployment's configured exchange binding. Publication is delivery/storage only;
 local domains independently decide whether to rely on a record. Never place credentials or sensitive
 material in public contributions.
+
+The optional public-node binding is installed separately with `python -m pip
+install -e '.[server]'`; its Python process should stay loopback-only behind a
+maintained HTTPS proxy. The public deployment is not a development store and
+must not be granted repository or credential access.

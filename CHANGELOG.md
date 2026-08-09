@@ -2,6 +2,13 @@
 
 ## 0.4.0.dev0
 
+- Added an optional loopback-first HTTP public-node binding over the existing application
+  services, with discovery, bounded JSON routes, anonymous-public/read-only modes, strict public
+  contribution policy, structured errors, rate/capacity controls, and a read-only kill switch.
+- Added a non-authoritative serving-visibility overlay, operator bootstrap seeding, local stats,
+  a standard-library remote client, real TCP two-process validation, and public-node Forge checks.
+- Added a Caddy/systemd deployment handoff for an isolated public store; the application remains
+  independent of Forge, Fabric, credentials, TLS implementation, and remote administration.
 - Added the independently versioned Agent Exchange profile with machine-readable vocabulary,
   endpoint descriptors, self-asserted participant metadata, bounded public-ingestion policy, and
   ingestion receipts that explicitly do not imply acceptance or authority.

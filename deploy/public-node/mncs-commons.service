@@ -1,0 +1,33 @@
+[Unit]
+Description=MNCS Commons Experimental Public Node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mncs-commons
+Group=mncs-commons
+EnvironmentFile=/etc/mncs-commons/public-node.env
+WorkingDirectory=/opt/mncs-commons
+ExecStart=/opt/mncs-commons/venv/bin/mncs-commons-server
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/var/lib/mncs-commons /etc/mncs-commons
+MemoryMax=512M
+TasksMax=64
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
