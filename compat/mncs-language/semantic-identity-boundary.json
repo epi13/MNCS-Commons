@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.2",
+  "semantic_graph_identity": "mncs-semantic-graph:Examples.SemanticFoundation:after",
+  "source_representation_identity": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+  "node_identity": "mncs-node:record",
+  "machine_intent": {"operation": "record", "inputs": ["value"]},
+  "lowering_obligation": "preserve nonnegative precondition",
+  "semantic_patch": null
+}

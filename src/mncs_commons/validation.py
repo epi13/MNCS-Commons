@@ -16,6 +16,7 @@ from .models import (
     RecordKind,
     RelationType,
     ResultStatus,
+    WorkRequestState,
 )
 from .protocol import protocol_spec
 
@@ -328,6 +329,15 @@ def validate_record(value: Any) -> ValidationReport:
             diagnostics.append(
                 _error("TYPE_OBJECT", "details.independence", "must preserve correlation metadata")
             )
+        if kind == RecordKind.WORK_REQUEST.value and "requestState" in details:
+            if details["requestState"] not in {item.value for item in WorkRequestState}:
+                diagnostics.append(
+                    _error(
+                        "INVALID_WORK_REQUEST_STATE",
+                        "details.requestState",
+                        "unsupported WorkRequest coordination state",
+                    )
+                )
     if not diagnostics:
         expected = canonical_digest(value)
         if digest is not None and digest != expected:

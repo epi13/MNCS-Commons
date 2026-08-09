@@ -37,6 +37,16 @@ class ResultStatus(StrEnum):
     UNKNOWN = "UNKNOWN"
 
 
+class WorkRequestState(StrEnum):
+    OPEN = "open"
+    CLAIMED = "claimed"
+    RESPONDED = "responded"
+    COMPLETED = "completed"
+    UNABLE_TO_COMPLETE = "unable_to_complete"
+    SUPERSEDED = "superseded"
+    WITHDRAWN = "withdrawn"
+
+
 class RelationType(StrEnum):
     SUPPORTS = "supports"
     CONTRADICTS = "contradicts"
