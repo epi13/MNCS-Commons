@@ -1,0 +1,9 @@
+{
+  "schema_version": "mncs-fabric.job-plan.v0.1",
+  "job_id": "job:synthetic",
+  "candidate_identity": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "artifact_manifest_identity": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "argv": ["@python", "task.py"],
+  "required_capabilities": ["python"],
+  "network_policy": "DECLARED_OFFLINE"
+}

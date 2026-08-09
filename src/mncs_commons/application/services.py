@@ -11,9 +11,11 @@ from ..compatibility import (
     CompatibilityStatus,
     check_local,
     compatibility_report,
+    contract_for,
     contracts,
-    contracts_for,
+    resolve_contract,
 )
+from ..evidence import evidence_lineage
 from ..models import EVENT_KIND
 from ..query import QueryFilter, bounded_graph, replication_correlation
 from ..store import CommonsStore
@@ -85,6 +87,13 @@ class CommonsApplication:
     def replications(self, target: str) -> dict[str, object]:
         return dict(replication_correlation(self.require_store().records(), target).as_dict())
 
+    def trace_evidence(
+        self, root: str, *, depth: int = 3, max_nodes: int = 1_000
+    ) -> dict[str, object]:
+        return evidence_lineage(
+            self.require_store().records(), [root], max_depth=depth, max_nodes=max_nodes
+        ).as_dict()
+
     def create_bundle(
         self, output: str | Path, *, roots: list[str] | None = None, max_depth: int = 2
     ) -> dict[str, object]:
@@ -107,13 +116,35 @@ class CompatibilityApplication:
         return [item.as_dict() for item in contracts()]
 
     @staticmethod
-    def contract(producer: str):
-        matches = contracts_for(producer)
-        return matches[0] if matches else None
+    def contract(
+        producer: str,
+        *,
+        record_type: str | None = None,
+        schema_version: str | None = None,
+        contract_id: str | None = None,
+    ):
+        return contract_for(
+            producer,
+            record_type=record_type,
+            schema_version=schema_version,
+            contract_id=contract_id,
+        )
 
     @staticmethod
-    def check(producer: str, repository: Path) -> dict[str, object]:
-        contract = CompatibilityApplication.contract(producer)
+    def check(
+        producer: str,
+        repository: Path,
+        *,
+        record_type: str | None = None,
+        schema_version: str | None = None,
+        contract_id: str | None = None,
+    ) -> dict[str, object]:
+        contract = CompatibilityApplication.contract(
+            producer,
+            record_type=record_type,
+            schema_version=schema_version,
+            contract_id=contract_id,
+        )
         if contract is None:
             return {
                 "status": CompatibilityStatus.UNKNOWN.value,
@@ -127,6 +158,15 @@ class CompatibilityApplication:
                 ],
             }
         return check_local(contract, repository).as_dict()
+
+    @staticmethod
+    def resolve(record: Mapping[str, object]) -> dict[str, object]:
+        resolution = resolve_contract(record)
+        return {
+            "contract": resolution.contract.as_dict() if resolution.contract else None,
+            "diagnostics": [item.as_dict() for item in resolution.diagnostics],
+            "resolved": resolution.contract is not None and not resolution.diagnostics,
+        }
 
     @staticmethod
     def report(repositories: Mapping[str, Path]) -> list[dict[str, object]]:

@@ -1,0 +1,10 @@
+{
+  "candidate_training_evaluations": 10,
+  "matched_training_evaluations": 8,
+  "ratio_q20": 160,
+  "maximum_ratio_q20": 200,
+  "reference_available": false,
+  "threshold_identity": "threshold:synthetic",
+  "comparator_identity": "comparator:unavailable",
+  "partition_identity": "partition:synthetic"
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "mnel-calibration-record/0.4",
+  "record_identity": "mnel-calibration:synthetic",
+  "snapshot_identity": "snapshot:synthetic",
+  "source_record_identity": "source:synthetic",
+  "expected_label": "UNKNOWN",
+  "visibility": "diagnostic",
+  "authority": "diagnostic-only",
+  "semantics": {"status": "UNKNOWN"}
+}

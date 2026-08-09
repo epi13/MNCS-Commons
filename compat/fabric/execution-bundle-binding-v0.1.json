@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.1",
+  "record_type": "mncs-fabric.execution-bundle-binding",
+  "binding_identity": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+  "job_identity": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "candidate_identity": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "bundle_identity": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "archive_identity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "receipt_identity": "receipt.synthetic-v1",
+  "claim_boundary": "package integrity and identity linkage only; no assurance, correctness, conformance, custody, or independence claim"
+}

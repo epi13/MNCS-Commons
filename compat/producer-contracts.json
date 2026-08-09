@@ -1,97 +1,354 @@
 {
-  "lockVersion": 1,
-  "commonsProtocol": "commons.mncs.dev/v0alpha1",
   "contracts": [
     {
+      "adapter": "adapters.forge.from_forge_result",
+      "contractId": "forge:cell-execution:0.1",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/forge/forge-cell-execution-0.1.json",
+      "knownUnresolvedFields": [
+        "result_identity"
+      ],
       "producer": "forge",
       "recordType": "forge-cell-execution",
       "schemaVersion": "0.1",
-      "sourceRepository": "mncs-forge-mcp",
-      "sourceCommit": "bc9388d0ad8e8be554791def5d8aa6ff2f44d72d",
-      "sourcePath": "examples/forge-cell/execution-record.json",
+      "sourceCommit": "5a5691709b26a2f923e14674138bdb215471a5a7",
       "sourceFingerprint": "sha256:5c9982b94cd7f443ac45445e95ca94b3032712babcdf71e62e5fa0489eef9fbc",
-      "fixturePath": "compat/forge/forge-cell-execution-0.1.json",
-      "adapter": "adapters.forge.from_forge_result",
+      "sourcePath": "examples/forge-cell/execution-record.json",
+      "sourceRepository": "mncs-forge-mcp"
+    },
+    {
+      "adapter": "adapters.forge.from_execution_receipt",
+      "contractId": "forge:execution-receipt:0.1",
       "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
-      "knownUnresolvedFields": ["result_identity"]
+      "fixturePath": "compat/forge/mncs-execution-receipt-0.1.json",
+      "knownUnresolvedFields": [
+        "producer_result_fixture"
+      ],
+      "producer": "forge",
+      "recordType": "mncs-execution-receipt",
+      "schemaVersion": "0.1",
+      "sourceCommit": "5a5691709b26a2f923e14674138bdb215471a5a7",
+      "sourceFingerprint": "sha256:f2e1860405052a40b100bead7c27dbe0cc3ac11d03dccca3fcb643b350ecab6e",
+      "sourcePath": "tests/fixtures/mncs-execution-receipt-0.1.schema.json",
+      "sourceRepository": "mncs-forge-mcp"
     },
     {
-      "producer": "fabric",
-      "recordType": "fabric-execution",
-      "schemaVersion": "UNKNOWN",
-      "sourceRepository": "mncs-fabric",
-      "sourceCommit": null,
-      "sourcePath": null,
-      "sourceFingerprint": null,
-      "fixturePath": null,
       "adapter": "adapters.fabric.from_fabric_execution",
-      "expectedStatus": "UNKNOWN",
-      "knownUnresolvedFields": ["source_schema", "source_commit"]
+      "contractId": "fabric:execution-record:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/fabric/execution-record-v0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "fabric",
+      "recordType": "fabric-execution-record",
+      "schemaVersion": "mncs-fabric.execution-record.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:687599514a8eaff7da131854c1144ca2e53c9cd72deaee8440c2ef3bd7abcb87",
+      "sourcePath": "schemas/execution-record-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
     },
     {
+      "adapter": "adapters.fabric.from_fabric_artifact_manifest",
+      "contractId": "fabric:artifact-manifest:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/fabric/artifact-manifest-v0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "fabric",
+      "recordType": "fabric-artifact-manifest",
+      "schemaVersion": "mncs-fabric.artifact-manifest.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:9926d4b998de80c5f33f26520fad8fa3778f2f3d3275d1432c59ae0970f47b57",
+      "sourcePath": "schemas/artifact-manifest-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": "adapters.fabric.from_fabric_bundle_binding",
+      "contractId": "fabric:execution-bundle-binding:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/fabric/execution-bundle-binding-v0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "fabric",
+      "recordType": "fabric-execution-bundle-binding",
+      "schemaVersion": "0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:1c954c562a2a6f4e9f6bc51c2fc1d9edc1ee7fd0098eae82e3f8eaacf2d0bc85",
+      "sourcePath": "schemas/mncs-fabric.execution-bundle-binding.v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": "adapters.fabric.from_fabric_job_plan",
+      "contractId": "fabric:job-plan:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/fabric/job-plan-v0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "fabric",
+      "recordType": "fabric-job-plan",
+      "schemaVersion": "mncs-fabric.job-plan.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:86eab2fc88c3c4a26909cccac77c1b395aa778dc70d0cb9b2c061fa98101965b",
+      "sourcePath": "schemas/job-plan-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": "adapters.fabric.from_fabric_node_capabilities",
+      "contractId": "fabric:node-capabilities:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/fabric/node-capabilities-v0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "fabric",
+      "recordType": "fabric-node-capabilities",
+      "schemaVersion": "mncs-fabric.node-capabilities.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:c390a90f12e745d180439e518559635be385027f8ee4b19447889497c4459de1",
+      "sourcePath": "schemas/node-capabilities-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": "adapters.fabric.from_fabric_cohort_result",
+      "contractId": "fabric:cohort-result:0.1",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/fabric/cohort-result-v0.1.json",
+      "knownUnresolvedFields": [
+        "independence"
+      ],
+      "producer": "fabric",
+      "recordType": "fabric-cohort-result",
+      "schemaVersion": "mncs-fabric.cohort-result.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:1e0ca6d77d4afa02685687d7313ad97dd5ea1991d94ecd256d4d4507ae22e204",
+      "sourcePath": "schemas/cohort-result-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": null,
+      "contractId": "fabric:protocol-envelope:0.1",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": null,
+      "knownUnresolvedFields": [
+        "authentication"
+      ],
+      "producer": "fabric",
+      "recordType": "fabric-protocol-envelope",
+      "schemaVersion": "mncs-fabric.protocol.v0.1",
+      "sourceCommit": "fd6a1e1fe617b77402a3d40c278776dd8f159fb0",
+      "sourceFingerprint": "sha256:4516129e40e9c3228ef751512b6c649637b33e2c4e2af3d0135fb0ad578de313",
+      "sourcePath": "schemas/protocol-envelope-v0.1.schema.json",
+      "sourceRepository": "mncs-fabric"
+    },
+    {
+      "adapter": "adapters.mnel.from_mnel_observation",
+      "contractId": "mnel:ledger-record:0.1",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/mnel/mnel-episode-0.1.json",
+      "knownUnresolvedFields": [],
       "producer": "mnel",
       "recordType": "mnel-ledger-record",
       "schemaVersion": "mnel-ledger-record/0.1",
-      "sourceRepository": "Machine-Native-Experimental-Learning",
-      "sourceCommit": "7e11fbd15680a034a27e14db32762451c2bd7d17",
-      "sourcePath": "schemas/mnel-records.schema.json",
+      "sourceCommit": "3a44380c56ded6a1fae1aa7a6a908f28ad1dd953",
       "sourceFingerprint": "sha256:b45e609ddc64c2dd4859c3824048c39516f381e6036e9a3b047ce58b09088d90",
-      "fixturePath": "compat/mnel/mnel-episode-0.1.json",
-      "adapter": "adapters.mnel.from_mnel_observation",
-      "expectedStatus": "COMPATIBLE",
-      "knownUnresolvedFields": []
+      "sourcePath": "schemas/mnel-records.schema.json",
+      "sourceRepository": "Machine-Native-Experimental-Learning"
     },
     {
+      "adapter": "adapters.mnel.from_provider_study_record",
+      "contractId": "mnel:provider-study:0.4",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/mnel/provider-portfolio-0.4.json",
+      "knownUnresolvedFields": [
+        "source_record_family"
+      ],
+      "producer": "mnel",
+      "recordType": "mnel-provider-study",
+      "schemaVersion": "0.4",
+      "sourceCommit": "3a44380c56ded6a1fae1aa7a6a908f28ad1dd953",
+      "sourceFingerprint": "sha256:77dc97a8207e48fa83db537599b9ff1d7a2a432170d6751a910d9145d37cba0a",
+      "sourcePath": "schemas/mnel-provider-study.schema.json",
+      "sourceRepository": "Machine-Native-Experimental-Learning"
+    },
+    {
+      "adapter": "adapters.mnel.from_provider_study_record",
+      "contractId": "mnel:calibration:0.4",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/mnel/calibration-0.4.json",
+      "knownUnresolvedFields": [],
+      "producer": "mnel",
+      "recordType": "mnel-calibration-record",
+      "schemaVersion": "mnel-calibration-record/0.4",
+      "sourceCommit": "3a44380c56ded6a1fae1aa7a6a908f28ad1dd953",
+      "sourceFingerprint": "sha256:62078745b8766a00ad8848c605bc4749ad583c5360ef8ade4986f53027c3aca9",
+      "sourcePath": "schemas/mnel-calibration.schema.json",
+      "sourceRepository": "Machine-Native-Experimental-Learning"
+    },
+    {
+      "adapter": "adapters.ravel.knowledge_view",
+      "contractId": "ravel:development-record:0.6",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/ravel/ravel-0.6-development-record.json",
+      "knownUnresolvedFields": [
+        "promotion_authority",
+        "learning_disposition"
+      ],
       "producer": "ravel",
       "recordType": "ravel-development-record",
       "schemaVersion": "ravel-development-record/0.6-preregistration",
-      "sourceRepository": "RAVEL",
-      "sourceCommit": "2bc3003f5195fc2d9abbce576615cec5d4279337",
-      "sourcePath": "ravel_versions/0.6/ravel-0.6-development-record.json",
+      "sourceCommit": "4b7c3c5503ec6bd11a7ffb96cbb32599cd1f342c",
       "sourceFingerprint": "sha256:45c6cf730df5a8f8da09923bf114f2f5fe0b51d71e7fdeafbcc2c5ac493d4839",
-      "fixturePath": "compat/ravel/ravel-0.6-development-record.json",
-      "adapter": "adapters.ravel.knowledge_view",
-      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
-      "knownUnresolvedFields": ["promotion_authority", "learning_disposition"]
+      "sourcePath": "ravel_versions/0.6/ravel-0.6-development-record.json",
+      "sourceRepository": "RAVEL"
     },
     {
-      "producer": "mncs-language",
-      "recordType": "semantic-identities",
+      "adapter": "adapters.ravel.from_development_record",
+      "contractId": "ravel:matched-compute:0.6",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/ravel/matched-compute-0.6.json",
+      "knownUnresolvedFields": [
+        "comparator_result"
+      ],
+      "producer": "ravel",
+      "recordType": "ravel-matched-compute",
       "schemaVersion": "0.1",
-      "sourceRepository": "mncs-language",
-      "sourceCommit": "bbc3cef7142844443a5f75e8be01f4a148572fa8",
-      "sourcePath": "crates/mncs-model/src/identity.rs",
-      "sourceFingerprint": "sha256:8fd43741728c7879fa2b7717e1d762787521af7ef80b2f4f18803b06dbe464f2",
-      "fixturePath": "compat/mncs-language/semantic-identity-boundary.json",
-      "adapter": "adapters.language.from_language_identity",
-      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
-      "knownUnresolvedFields": ["semantic_graph_payload"]
+      "sourceCommit": "4b7c3c5503ec6bd11a7ffb96cbb32599cd1f342c",
+      "sourceFingerprint": "sha256:5da7b39b3faa61985bdc4c1403752d2e3f55db293186e14f9a19e5ef9f9cd5b2",
+      "sourcePath": "ravel_versions/0.6/ravel-0.6-matched-compute.schema.json",
+      "sourceRepository": "RAVEL"
     },
     {
+      "adapter": "adapters.ravel.from_development_record",
+      "contractId": "ravel:transaction:0.6",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/ravel/transaction-0.6.json",
+      "knownUnresolvedFields": [
+        "authority"
+      ],
+      "producer": "ravel",
+      "recordType": "ravel-transaction",
+      "schemaVersion": "0.1",
+      "sourceCommit": "4b7c3c5503ec6bd11a7ffb96cbb32599cd1f342c",
+      "sourceFingerprint": "sha256:ffc6b887e95ff4ad2c0ace210cb775f80343f0da9ad7a90896333263d517ecc4",
+      "sourcePath": "ravel_versions/0.6/ravel-0.6-transaction.schema.json",
+      "sourceRepository": "RAVEL"
+    },
+    {
+      "adapter": "adapters.mncs.from_mncs_result",
+      "contractId": "mncs:gate-result:0.2",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": null,
+      "knownUnresolvedFields": [
+        "producer_result_fixture"
+      ],
       "producer": "mncs",
       "recordType": "mncs-gate-result",
       "schemaVersion": "0.2",
-      "sourceRepository": "machine-native-complexity-standard",
-      "sourceCommit": "160358365c4bec8c2c0038e2e2e69da7c4b06911",
-      "sourcePath": "schemas/mncs-gate-result.schema.json",
+      "sourceCommit": "49400a41f3b7b36de8a25e6cac1141d3980878be",
       "sourceFingerprint": "sha256:324bac4cab9521eb1a9e34e352287be2c0c1ba1e0335b5f2da0b6beaf6817588",
-      "fixturePath": null,
-      "adapter": "adapters.mncs.from_mncs_result",
-      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
-      "knownUnresolvedFields": ["producer_result_fixture"]
+      "sourcePath": "schemas/mncs-gate-result.schema.json",
+      "sourceRepository": "machine-native-complexity-standard"
     },
     {
+      "adapter": "adapters.mncs.from_mncs_execution_receipt",
+      "contractId": "mncs:execution-receipt:0.1-experimental",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/mncs/execution-receipt-0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "mncs",
+      "recordType": "mncs-execution-receipt",
+      "schemaVersion": "0.1-experimental",
+      "sourceCommit": "49400a41f3b7b36de8a25e6cac1141d3980878be",
+      "sourceFingerprint": "sha256:f2e1860405052a40b100bead7c27dbe0cc3ac11d03dccca3fcb643b350ecab6e",
+      "sourcePath": "schemas/mncs-execution-receipt-0.1.schema.json",
+      "sourceRepository": "machine-native-complexity-standard"
+    },
+    {
+      "adapter": "adapters.mncs.from_mncs_execution_bundle",
+      "contractId": "mncs:execution-bundle:0.1-experimental",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/mncs/execution-bundle-0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "mncs",
+      "recordType": "mncs-execution-bundle",
+      "schemaVersion": "0.1-experimental",
+      "sourceCommit": "49400a41f3b7b36de8a25e6cac1141d3980878be",
+      "sourceFingerprint": "sha256:4c90c6351dc0cb434761437c479028c359023493b5281a6a43a7e36b1537fc21",
+      "sourcePath": "schemas/mncs-execution-bundle-0.1.schema.json",
+      "sourceRepository": "machine-native-complexity-standard"
+    },
+    {
+      "adapter": "adapters.mncs.from_mncs_execution_placement",
+      "contractId": "mncs:execution-placement:0.1-experimental",
+      "expectedStatus": "COMPATIBLE",
+      "fixturePath": "compat/mncs/execution-placement-0.1.json",
+      "knownUnresolvedFields": [],
+      "producer": "mncs",
+      "recordType": "mncs-execution-placement",
+      "schemaVersion": "0.1-experimental",
+      "sourceCommit": "49400a41f3b7b36de8a25e6cac1141d3980878be",
+      "sourceFingerprint": "sha256:6da5b4ba11a95385d758cbc114fb25fe0f8153034153aa4e3f4560e5af77af24",
+      "sourcePath": "schemas/mncs-execution-placement-evidence.schema.json",
+      "sourceRepository": "machine-native-complexity-standard"
+    },
+    {
+      "adapter": "adapters.language.from_language_identity",
+      "contractId": "mncs-language:semantic-identities:0.1",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/mncs-language/semantic-identity-boundary.json",
+      "knownUnresolvedFields": [
+        "semantic_graph_payload"
+      ],
+      "producer": "mncs-language",
+      "recordType": "semantic-identities",
+      "schemaVersion": "0.1",
+      "sourceCommit": "26cd7f015cb857abe3f0601780de096e04dea7b4",
+      "sourceFingerprint": "sha256:8fd43741728c7879fa2b7717e1d762787521af7ef80b2f4f18803b06dbe464f2",
+      "sourcePath": "crates/mncs-model/src/identity.rs",
+      "sourceRepository": "mncs-language"
+    },
+    {
+      "adapter": "adapters.language.from_executable_artifact",
+      "contractId": "mncs-language:executable-body:0.2",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/mncs-language/executable-body-0.2.json",
+      "knownUnresolvedFields": [
+        "semantic_graph_payload"
+      ],
+      "producer": "mncs-language",
+      "recordType": "executable-semantic-body",
+      "schemaVersion": "0.2",
+      "sourceCommit": "26cd7f015cb857abe3f0601780de096e04dea7b4",
+      "sourceFingerprint": "sha256:29863bd69f45fe1c177585e55269b51aeda617e8dd952abd513b139142ce3179",
+      "sourcePath": "crates/mncs-model/src/body.rs",
+      "sourceRepository": "mncs-language"
+    },
+    {
+      "adapter": "adapters.language.from_verifier_artifact",
+      "contractId": "mncs-language:verifier-artifact:0.2",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "fixturePath": "compat/mncs-language/verifier-result-0.2.json",
+      "knownUnresolvedFields": [
+        "current_semantic_identities"
+      ],
+      "producer": "mncs-language",
+      "recordType": "verifier-artifact",
+      "schemaVersion": "0.2",
+      "sourceCommit": "26cd7f015cb857abe3f0601780de096e04dea7b4",
+      "sourceFingerprint": "sha256:bcadbba5859cca67a02ff18dc0206104b4b1abc55dfaeaa9c6e0b150590f9de4",
+      "sourcePath": "crates/mncs-model/src/verifier.rs",
+      "sourceRepository": "mncs-language"
+    },
+    {
+      "adapter": null,
+      "contractId": "mncs-validator-rs:conformance-corpus:l5",
+      "expectedStatus": "UNKNOWN",
+      "fixturePath": null,
+      "knownUnresolvedFields": [
+        "validator_output_contract"
+      ],
       "producer": "mncs-validator-rs",
       "recordType": "conformance-corpus",
       "schemaVersion": "fixture-l5-pass",
-      "sourceRepository": "mncs-validator-rs",
       "sourceCommit": "4c050b77b8cef10128c61adb009d20683643af5c",
-      "sourcePath": "fixtures/conformance-corpus/valid/l5-pass/manifest.json",
       "sourceFingerprint": "sha256:cc16ac61c294ee224e7d20198a26014326960a0f6b7611005d5fd77037b3831f",
-      "fixturePath": null,
-      "adapter": null,
-      "expectedStatus": "UNKNOWN",
-      "knownUnresolvedFields": ["validator_output_contract"]
+      "sourcePath": "fixtures/conformance-corpus/valid/l5-pass/manifest.json",
+      "sourceRepository": "mncs-validator-rs"
     }
-  ]
+  ],
+  "lockVersion": 2
 }

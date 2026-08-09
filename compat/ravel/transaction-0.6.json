@@ -1,0 +1,29 @@
+{
+  "committed": false,
+  "threshold_identity": "threshold:synthetic",
+  "rejection_reason": "comparator unavailable",
+  "failed_constraint_mask": 1,
+  "rollback_byte_identical": true,
+  "raw": {
+    "objective_before_q20": 1,
+    "objective_after_q20": 1,
+    "base_accuracy_before_q20": 1,
+    "base_accuracy_after_q20": 1,
+    "retention_accuracy_before_q20": 1,
+    "retention_accuracy_after_q20": 1,
+    "retention_accuracy_delta_q20": 0,
+    "representation_before_q20": 1,
+    "representation_after_q20": 1,
+    "prediction_rmse_before_q20": 1,
+    "prediction_rmse_after_q20": 1,
+    "transition_support_losses": 0,
+    "expert_count": 1,
+    "births": 0,
+    "retirements": 0,
+    "replay_records": 1,
+    "update_passes": 0,
+    "compute_evaluations": 1,
+    "matched_compute_evaluations": 0,
+    "matched_compute_reference_available": false
+  }
+}

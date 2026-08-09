@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1-experimental",
+  "record_type": "mncs-execution-bundle",
+  "bundle_id": "bundle.synthetic-v1",
+  "bundle_identity": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "bundle_format": "mncs-execution-bundle-zip-0.1",
+  "entries": [],
+  "entrypoints": [],
+  "runtime_requirements": [],
+  "policy_references": [],
+  "harness_identity": "harness:synthetic",
+  "input_snapshot_identity": "input:synthetic",
+  "policy_identity": "policy:synthetic",
+  "limits": {},
+  "extensions": {}
+}

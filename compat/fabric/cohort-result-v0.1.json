@@ -1,0 +1,13 @@
+{
+  "schema_version": "mncs-fabric.cohort-result.v0.1",
+  "cohort_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+  "record_identities": ["sha256:1111111111111111111111111111111111111111111111111111111111111111"],
+  "machine_labels": ["synthetic-node"],
+  "record_count": 1,
+  "outcome": "PASS",
+  "reasons": [],
+  "evidence_class": "LOCAL_REPRODUCTION",
+  "independent_evaluation": "UNKNOWN",
+  "protected_custody": "UNKNOWN",
+  "limitations": []
+}

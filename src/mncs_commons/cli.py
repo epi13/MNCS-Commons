@@ -72,6 +72,13 @@ def build_parser() -> argparse.ArgumentParser:
     replications = commands.add_parser("replications")
     replications.add_argument("path")
     replications.add_argument("target")
+    evidence = commands.add_parser("evidence")
+    evidence_commands = evidence.add_subparsers(dest="evidence_command", required=True)
+    trace = evidence_commands.add_parser("trace")
+    trace.add_argument("path")
+    trace.add_argument("root")
+    trace.add_argument("--depth", type=int, default=3)
+    trace.add_argument("--max-nodes", type=int, default=1000)
     lifecycle = commands.add_parser("lifecycle")
     lifecycle.add_argument("path")
     lifecycle.add_argument("digest")
@@ -97,6 +104,10 @@ def build_parser() -> argparse.ArgumentParser:
     check = compat_commands.add_parser("check-local")
     check.add_argument("--producer", required=True)
     check.add_argument("--repo", required=True)
+    for command in (check,):
+        command.add_argument("--record-type")
+        command.add_argument("--schema-version")
+        command.add_argument("--contract-id")
     return parser
 
 
@@ -163,7 +174,14 @@ def main(argv: list[str] | None = None) -> int:
                 ]
             )
             return 0
-        if args.command in {"show", "lifecycle", "related", "replications", "query"}:
+        if args.command in {
+            "show",
+            "lifecycle",
+            "related",
+            "replications",
+            "query",
+            "evidence",
+        }:
             application = CommonsApplication(CommonsStore(args.path))
         if args.command == "show":
             shown = application.require_store().get(args.digest)
@@ -173,11 +191,13 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "lifecycle":
             _print(application.lifecycle(args.digest, domain=args.domain))
         elif args.command == "related":
-            _print(
-                application.related(args.digest, depth=args.depth, max_nodes=args.max_nodes)
-            )
+            _print(application.related(args.digest, depth=args.depth, max_nodes=args.max_nodes))
         elif args.command == "replications":
             _print(application.replications(args.target))
+        elif args.command == "evidence":
+            _print(
+                application.trace_evidence(args.root, depth=args.depth, max_nodes=args.max_nodes)
+            )
         elif args.command == "query":
             query_now = None
             if args.now:
@@ -221,7 +241,15 @@ def main(argv: list[str] | None = None) -> int:
             elif args.compat_command == "report":
                 _print(CompatibilityApplication.report(_repositories(args.repo)))
             else:
-                _print(CompatibilityApplication.check(args.producer, Path(args.repo)))
+                _print(
+                    CompatibilityApplication.check(
+                        args.producer,
+                        Path(args.repo),
+                        record_type=args.record_type,
+                        schema_version=args.schema_version,
+                        contract_id=args.contract_id,
+                    )
+                )
         return 0
     except (OSError, ValueError, StoreError) as error:
         print(json.dumps({"valid": False, "error": str(error)}), file=sys.stderr)

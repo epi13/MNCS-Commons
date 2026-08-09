@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1",
+  "record_type": "mncs-execution-receipt",
+  "record_id": "forge-receipt.synthetic-v1",
+  "receipt_identity": "forge-receipt:synthetic",
+  "bundle": {"test_bundle_identity": "forge-bundle:synthetic"},
+  "environment": {"identity": "env:synthetic"},
+  "runner": {"identity": "runner:forge"},
+  "lifecycle": {"started_at": "2026-08-08T00:00:00Z"},
+  "process": {"harness_status": "PASS"},
+  "artifacts": [],
+  "claim_boundary": {"correctness": "not-asserted"}
+}
