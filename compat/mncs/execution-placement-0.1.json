@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1-experimental",
+  "profile": "execution-placement-evidence",
+  "record_id": "placement.synthetic-v1",
+  "identities": {"environment_id": "env:synthetic", "provider_id": "provider:synthetic", "runtime_id": "runtime:synthetic"},
+  "identity_bindings": {},
+  "references": {},
+  "requested_policy": {},
+  "capability_observations": {},
+  "actual_execution": {"status": "PASS"},
+  "residency": {},
+  "resource_policy": {},
+  "precision": {},
+  "fallback": {},
+  "measurements": {},
+  "placement_evidence": [],
+  "results": {"status": "PASS"},
+  "claim_boundary": {},
+  "extensions": {}
+}

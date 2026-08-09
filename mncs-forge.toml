@@ -120,6 +120,15 @@ subject = "candidate"
 disclosure = "compact"
 
 [[workflows]]
+name = "evidence-lineage"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "evidence-lineage"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
 name = "cli-help"
 category = "inspection"
 mode = "development"

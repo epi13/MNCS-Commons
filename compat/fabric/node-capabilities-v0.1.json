@@ -1,0 +1,10 @@
+{
+  "schema_version": "mncs-fabric.node-capabilities.v0.1",
+  "machine_label": "synthetic-node",
+  "os": "Linux",
+  "architecture": "x86_64",
+  "python_version": "3.11",
+  "node_fingerprint": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "captured_at": "2026-08-08T00:00:00Z",
+  "record_id": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+}

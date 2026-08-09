@@ -1,0 +1,6 @@
+{
+  "schema_version": "0.2",
+  "body_identity": "body:synthetic",
+  "module": "synthetic",
+  "functions": [{"name": "main", "blocks": []}]
+}

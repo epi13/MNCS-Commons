@@ -1,6 +1,6 @@
-# MNCS Commons 0.2 development protocol
+# MNCS Commons 0.3 development protocol
 
-The package is in `0.2.0.dev0`; the wire-level version remains `commons.mncs.dev/v0alpha1`. The
+The package is in `0.3.0.dev0`; the wire-level version remains `commons.mncs.dev/v0alpha1`. The
 explicit protocol registry rejects unknown wire versions. JSON is normative at the canonicalization
 boundary. YAML may be loaded by the CLI when the optional PyYAML dependency is installed; the core
 does not import PyYAML at module import time.
@@ -87,4 +87,14 @@ The checked-in `compat/` snapshots name the source repository and commit represe
 fixtures. Producer adapters return structured results with source version, recognition state,
 unresolved fields, and diagnostics. Missing producer identity or source time is explicit; Commons
 does not invent a durable identity or use a synthetic epoch timestamp. The local workspace did not
-contain `mncs-fabric`, so Fabric compatibility remains a conservative, unverified boundary.
+contain an authoritative validator-rs result envelope, so that boundary remains `UNKNOWN`. Current
+Fabric execution, bundle-binding, manifest, job-plan, node, and cohort schemas are fingerprinted and
+translated as inert evidence. MNCS execution bundles remain execution-package records; a Commons
+Bundle remains a record/event interchange artifact.
+
+## Evidence lineage
+
+The application service and CLI can produce a bounded evidence trace from a record identity. It
+follows typed relationships, preserves unresolved external references, and checks known execution
+bundle/receipt bindings. The trace reports incompatible or missing links; it never turns a chain of
+records into a confidence score, conformance result, independent verification, or command.

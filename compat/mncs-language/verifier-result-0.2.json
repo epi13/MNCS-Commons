@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.2",
+  "result_identity": "verifier-result:synthetic",
+  "obligation": "obligation:synthetic",
+  "subject": "subject:synthetic",
+  "scope": "synthetic-scope",
+  "status": "unknown",
+  "verifier": {"identity": "verifier:synthetic", "name": "synthetic", "version": "0.2", "independence": "generator"},
+  "authority": "diagnostic_observation",
+  "method": "capability_consistency",
+  "assumptions": [],
+  "dependencies": ["body:synthetic"],
+  "dependency_fingerprints": {"body:synthetic": "fingerprint:synthetic"},
+  "artifact": null,
+  "limitations": ["synthetic fixture"],
+  "freshness": "current"
+}

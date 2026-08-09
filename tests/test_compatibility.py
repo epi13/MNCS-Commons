@@ -7,7 +7,13 @@ from pathlib import Path
 from mncs_commons.adapters.fabric import from_fabric_execution
 from mncs_commons.adapters.mncs import from_mncs_result
 from mncs_commons.adapters.mnel import from_mnel_observation
-from mncs_commons.compatibility import CompatibilityStatus, check_local, contracts
+from mncs_commons.compatibility import (
+    CompatibilityStatus,
+    check_local,
+    contract_for,
+    contracts,
+    resolve_contract,
+)
 from mncs_commons.validation import validate_record
 
 
@@ -131,3 +137,32 @@ def test_compatibility_lock_detects_same_version_source_drift(tmp_path: Path) ->
     assessment = check_local(contract, tmp_path)
     assert assessment.status == CompatibilityStatus.DRIFTED
     assert any(item.code == "SOURCE_SCHEMA_DRIFT" for item in assessment.diagnostics)
+
+
+def test_multi_contract_resolution_fails_closed_without_family() -> None:
+    try:
+        contract_for("fabric")
+    except ValueError as error:
+        assert "AMBIGUOUS_PRODUCER_CONTRACT" in str(error)
+    else:
+        raise AssertionError("producer-only resolution must be ambiguous for Fabric")
+
+    contract = contract_for(
+        "fabric",
+        record_type="fabric-execution-record",
+        schema_version="mncs-fabric.execution-record.v0.1",
+    )
+    assert contract is not None
+    assert contract.contract_id == "fabric:execution-record:0.1"
+
+
+def test_record_resolution_reports_unknown_family() -> None:
+    result = resolve_contract(
+        {
+            "producer": "fabric",
+            "record_type": "fabric-not-a-real-record",
+            "schema_version": "0.1",
+        }
+    )
+    assert result.contract is None
+    assert result.diagnostics[0].code == "UNKNOWN_RECORD_TYPE"

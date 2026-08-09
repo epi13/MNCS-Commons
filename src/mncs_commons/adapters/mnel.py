@@ -98,3 +98,94 @@ def from_mnel_observation(
             "mnelRecord": dict(observation),
         },
     )
+
+
+def from_provider_study_record(
+    record: Mapping[str, Any], *, subject_identity: str, created_at: str | None = None
+) -> AdapterResult:
+    """Translate MNEL 0.4 portfolio records as diagnostic-only observations."""
+
+    schema = record.get("schema")
+    if not isinstance(schema, str) or not schema.startswith("mnel-") or not schema.endswith("/0.4"):
+        return AdapterResult(
+            None,
+            (
+                Diagnostic(
+                    "UNSUPPORTED_SOURCE_VERSION",
+                    "schema",
+                    "MNEL provider-study schema is not supported",
+                ),
+            ),
+            str(schema) if schema else None,
+            recognized=False,
+            unresolved_fields=("schema",),
+        )
+    identity_keys = (
+        "metadata_identity",
+        "case_identity",
+        "policy_identity",
+        "selection_identity",
+        "study_identity",
+        "run_identity",
+        "metric_identity",
+        "comparison_identity",
+        "transition_identity",
+        "measurement_identity",
+        "rollback_identity",
+        "study_identity",
+    )
+    source_identity = next(
+        (
+            str(record[key])
+            for key in identity_keys
+            if isinstance(record.get(key), str) and record[key]
+        ),
+        None,
+    )
+    unresolved: list[str] = []
+    diagnostics: list[Diagnostic] = []
+    if source_identity is None:
+        diagnostics.append(
+            Diagnostic(
+                "MISSING_SOURCE_IDENTITY",
+                "identity",
+                "MNEL provider record identity is unresolved",
+                severity="warning",
+            )
+        )
+        unresolved.append("source_identity")
+    return observation_from_external(
+        producer_type="mnel",
+        producer_id="Machine-Native-Experimental-Learning",
+        source_identity=source_identity,
+        subject_type="learned-provider-study",
+        subject_identity=subject_identity,
+        summary="MNEL provider-portfolio record preserved as diagnostic evidence; not a verdict",
+        evidence_ids=[str(item) for item in record.get("evidence_identities", []) if item]
+        if isinstance(record.get("evidence_identities"), list)
+        else [],
+        scope_context={
+            "providerId": record.get("provider_id"),
+            "providerFamily": record.get("provider_family"),
+            "architectureFamily": record.get("architecture_family"),
+            "objectiveFamily": record.get("objective_family"),
+            "modelIdentity": record.get("model_identity"),
+            "artifactIdentity": record.get("artifact_identity"),
+            "trainingDatasetIdentity": record.get("training_dataset_identity"),
+            "calibrationDatasetIdentity": record.get("calibration_dataset_identity"),
+        },
+        created_at=created_at,
+        source_version=schema,
+        diagnostics=diagnostics,
+        unresolved_fields=unresolved,
+        details={
+            "outcome": "UNKNOWN",
+            "diagnosticOnly": True,
+            "mnelSchema": schema,
+            "mnelProviderRecord": dict(record),
+            "sourceStatus": record.get("status"),
+            "abstained": record.get("abstained"),
+            "outOfDistribution": record.get("out_of_distribution"),
+            "confirmedUseful": record.get("confirmed_useful"),
+        },
+    )

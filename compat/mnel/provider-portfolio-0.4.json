@@ -1,0 +1,16 @@
+{
+  "schema": "mnel-provider-run/0.4",
+  "run_identity": "mnel-run:synthetic",
+  "provider_id": "provider:synthetic",
+  "provider_family": "synthetic-diagnostic",
+  "architecture_family": "linear",
+  "objective_family": "calibration",
+  "model_identity": "model:synthetic",
+  "artifact_identity": "artifact:synthetic",
+  "training_dataset_identity": "dataset:synthetic-train",
+  "calibration_dataset_identity": "dataset:synthetic-calibration",
+  "status": "abstained",
+  "abstained": true,
+  "out_of_distribution": true,
+  "confirmed_useful": false
+}

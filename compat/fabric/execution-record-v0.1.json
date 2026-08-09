@@ -1,0 +1,15 @@
+{
+  "schema_version": "mncs-fabric.execution-record.v0.1",
+  "record_id": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "job_identity": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "candidate_identity": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "artifact_manifest_identity": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "node": {"environment_identity": "env:synthetic-linux"},
+  "outcome": "PASS",
+  "termination_reason": "completed",
+  "stdout": "synthetic execution output",
+  "stderr": "",
+  "results": {"status": "PASS"},
+  "limitations": [],
+  "created_at": "2026-08-08T00:00:00Z"
+}

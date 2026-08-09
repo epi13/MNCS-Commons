@@ -27,11 +27,17 @@ also declared as the Forge `live-compat` project workflow. The Forge result is `
 available locked boundaries are complete, `FAIL` on drift, and `UNKNOWN` when a required producer
 checkout or fixture is unavailable.
 
-Current explicit gaps:
+The registry now contains multiple contracts per producer. Resolution requires the producer,
+record family, and schema version when those dimensions are ambiguous; producer-only resolution
+fails closed. Current explicit gaps are:
 
-- `mncs-fabric` is present locally, but no frozen source-schema fingerprint is registered yet, so
-  its disclosed execution envelope remains an unverified adapter contract.
 - `mncs-validator-rs` provides a conformance corpus identity, but no stable producer-result
-  envelope was available for a Commons adapter.
-- The MNCS gate-result schema is fingerprinted and translated inertly, but no current producer
+  envelope was available for a Commons adapter, so it remains `UNKNOWN`.
+- Forge and RAVEL development records retain unresolved producer-specific authority fields.
+- The MNCS gate-result boundary is fingerprinted and translated inertly, but no current producer
   result fixture is checked in.
+
+The current local Fabric checkout is fingerprint-compatible for execution records, artifact
+manifests, bundle bindings, job plans, node capabilities, and cohort results. A changed source
+fingerprint is `DRIFTED`, even when the producer keeps the same version string. A moved commit with
+matching bytes is reported as a warning rather than silently treated as a new schema.
