@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import StrEnum
 from typing import Any, Iterable, Mapping
 
@@ -23,8 +23,10 @@ class QueryFilter:
     contract: str | None = None
     artifact: str | None = None
     related: str | None = None
+    domain: str | None = None
     open_work_requests: bool = False
     needs_review: bool = False
+    now: datetime | None = None
 
 
 def _parse_timestamp(value: str) -> datetime:
@@ -43,8 +45,7 @@ def assess_scope(
     if review_at:
         try:
             moment = _parse_timestamp(str(review_at))
-            current_time = now or datetime.now(timezone.utc)
-            if moment <= current_time:
+            if now is not None and moment <= now:
                 return ScopeAssessment.REVIEW_REQUIRED
         except ValueError:
             return ScopeAssessment.UNKNOWN
@@ -59,6 +60,18 @@ def assess_scope(
         if current_context[key] != expected:
             return ScopeAssessment.INCOMPATIBLE
     return ScopeAssessment.COMPATIBLE if compared else ScopeAssessment.UNKNOWN
+
+
+def review_required(record: Mapping[str, Any], *, now: datetime | None) -> bool:
+    """Return a definite review result; an omitted clock is intentionally unknown."""
+
+    review_at = record.get("scope", {}).get("reviewAt")
+    if not review_at or now is None:
+        return False
+    try:
+        return _parse_timestamp(str(review_at)) <= now
+    except ValueError:
+        return False
 
 
 def record_matches(record: Mapping[str, Any], query: QueryFilter, state: str | None = None) -> bool:
@@ -129,3 +142,13 @@ def unresolved_relationships(
         for relationship in record.get("relationships", [])
         if isinstance(relationship, Mapping) and relationship.get("target") not in known_references
     ]
+
+
+def state_matches(state: str, query: QueryFilter, domain_states: Mapping[str, str]) -> bool:
+    """Match one explicit domain or any domain without inventing a global state."""
+
+    if not query.state:
+        return True
+    if query.domain:
+        return state == query.state
+    return query.state in domain_states.values() or state == query.state

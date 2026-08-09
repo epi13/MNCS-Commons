@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -184,8 +185,14 @@ def test_lifecycle_legal_and_illegal_transitions() -> None:
         make_event(digest, "reproduced", "verified"),
         make_event(digest, "verified", "accepted"),
     ]
-    view = derive_lifecycle({**record, "contentDigest": digest}, events)
+    view = derive_lifecycle(
+        {**record, "contentDigest": digest}, events, domain="commons:test-domain"
+    )
     assert view.valid and view.current_state == "accepted"
+    assert (
+        derive_lifecycle({**record, "contentDigest": digest}, events).current_state
+        == "domain-scoped"
+    )
     forbidden = validate_transition("accepted", "verified", events[-1])
     assert not forbidden.valid
 
@@ -223,12 +230,115 @@ def test_store_append_query_tamper_and_duplicate(tmp_path: Path) -> None:
     assert not store.verify().valid
 
 
+def test_lifecycle_acceptance_is_independent_per_domain(tmp_path: Path) -> None:
+    store = CommonsStore(tmp_path / "commons")
+    store.init()
+    record = store.add_record(make_record())
+    accepted = make_event(record.content_digest, "proposed", "reproduced")
+    accepted["authority"]["domain"] = "project:a"
+    store.add_event(accepted)
+    accepted = make_event(record.content_digest, "reproduced", "verified")
+    accepted["authority"]["domain"] = "project:a"
+    store.add_event(accepted)
+    accepted = make_event(record.content_digest, "verified", "accepted")
+    accepted["authority"]["domain"] = "project:a"
+    store.add_event(accepted)
+    disputed = make_event(record.content_digest, "proposed", "disputed")
+    disputed["authority"]["domain"] = "project:b"
+    store.add_event(disputed)
+
+    assert store.lifecycle(record.content_digest, domain="project:a").current_state == "accepted"
+    assert store.lifecycle(record.content_digest, domain="project:b").current_state == "disputed"
+    assert store.lifecycle(record.content_digest, domain="project:c").current_state == "proposed"
+    assert {
+        domain: view.current_state
+        for domain, view in store.domain_views(record.content_digest).items()
+    } == {"project:a": "accepted", "project:b": "disputed"}
+    assert store.lifecycle(record.content_digest).current_state == "domain-scoped"
+    assert len(store.query(QueryFilter(state="disputed"))) == 1
+    assert len(store.query(QueryFilter(state="accepted", domain="project:a"))) == 1
+
+
 def test_store_rejects_invalid_event_and_unresolved_target(tmp_path: Path) -> None:
     store = CommonsStore(tmp_path / "commons")
     store.init()
     event = make_event("sha256:" + "0" * 64, "proposed", "verified")
     with pytest.raises(StoreError):
         store.add_event(event)
+
+
+def test_store_transaction_recovery_is_explicit_and_idempotent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    store = CommonsStore(tmp_path / "commons")
+    store.init()
+
+    def interrupted(_: object) -> None:
+        raise OSError("simulated interruption")
+
+    monkeypatch.setattr(store, "_append_row", interrupted)
+    with pytest.raises(OSError, match="simulated interruption"):
+        store.add_record(make_record())
+    assert any(item.code == "PENDING_TRANSACTION" for item in store.verify().diagnostics)
+    monkeypatch.undo()
+    assert store.recover().valid
+    assert store.recover().valid
+    assert len(store.records()) == 1
+    assert store.verify().valid
+
+
+def test_store_concurrent_duplicate_inserts_are_idempotent(tmp_path: Path) -> None:
+    root = tmp_path / "commons"
+    CommonsStore(root).init()
+    value = make_record()
+
+    def insert(_: int) -> str:
+        return CommonsStore(root).add_record(value).content_digest
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        digests = list(executor.map(insert, range(8)))
+    assert len(set(digests)) == 1
+    assert len(CommonsStore(root).records()) == 1
+    assert CommonsStore(root).verify().valid
+
+
+def test_logical_record_revision_requires_lineage(tmp_path: Path) -> None:
+    store = CommonsStore(tmp_path / "commons")
+    store.init()
+    first = store.add_record(make_record())
+    changed = make_record()
+    changed["statement"]["summary"] = "A deliberately revised bounded observation."
+    with pytest.raises(StoreError, match="changed logical record"):
+        store.add_record(changed)
+    changed["metadata"]["revision"] = 2
+    changed["metadata"]["previousDigest"] = first.content_digest
+    second = store.add_record(changed)
+    assert second.content_digest != first.content_digest
+
+
+def test_store_rejects_relationship_cycles(tmp_path: Path) -> None:
+    store = CommonsStore(tmp_path / "commons")
+    store.init()
+    first = make_record()
+    first["metadata"]["recordId"] = "record:a"
+    store.add_record(first)
+    second = make_record()
+    second["metadata"]["recordId"] = "record:b"
+    second["relationships"] = [{"type": "depends_on", "target": "record:a"}]
+    store.add_record(second)
+    first_cycle = make_record()
+    first_cycle["metadata"]["recordId"] = "record:c"
+    first_cycle["relationships"] = [{"type": "depends_on", "target": "record:b"}]
+    store.add_record(first_cycle)
+    second_cycle = make_record()
+    second_cycle["metadata"]["recordId"] = "record:d"
+    second_cycle["relationships"] = [{"type": "depends_on", "target": "record:c"}]
+    store.add_record(second_cycle)
+    cycle = make_record()
+    cycle["metadata"]["recordId"] = "record:e"
+    cycle["relationships"] = [{"type": "depends_on", "target": "record:e"}]
+    with pytest.raises(StoreError, match="itself"):
+        store.add_record(cycle)
 
 
 def test_store_detects_corrupt_ledger_and_orphans(tmp_path: Path) -> None:
