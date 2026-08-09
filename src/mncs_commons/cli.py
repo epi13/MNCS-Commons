@@ -9,13 +9,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
-from .bundle import create_bundle, import_bundle, verify_bundle
-from .canonical import canonical_digest, canonical_json
+from .application import CommonsApplication, CompatibilityApplication
 from .io import load_document
-from .models import EVENT_KIND, LifecycleEvent, RecordKind
-from .query import QueryFilter, bounded_graph, replication_correlation
+from .models import RecordKind
+from .query import QueryFilter
 from .store import CommonsStore, StoreError
-from .validation import validate_event, validate_record
 
 
 def _read(path: str) -> Mapping[str, Any]:
@@ -27,11 +25,6 @@ def _read(path: str) -> Mapping[str, Any]:
 
 def _print(value: Any) -> None:
     print(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2))
-
-
-def _validate(value: Mapping[str, Any]) -> dict[str, Any]:
-    report = validate_event(value) if value.get("kind") == EVENT_KIND else validate_record(value)
-    return report.as_dict()
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -95,7 +88,26 @@ def build_parser() -> argparse.ArgumentParser:
     bundle_import = bundle_commands.add_parser("import")
     bundle_import.add_argument("bundle")
     bundle_import.add_argument("path")
+
+    compat = commands.add_parser("compat")
+    compat_commands = compat.add_subparsers(dest="compat_command", required=True)
+    compat_commands.add_parser("list")
+    report = compat_commands.add_parser("report")
+    report.add_argument("--repo", action="append", default=[], metavar="PRODUCER=PATH")
+    check = compat_commands.add_parser("check-local")
+    check.add_argument("--producer", required=True)
+    check.add_argument("--repo", required=True)
     return parser
+
+
+def _repositories(values: list[str]) -> dict[str, Path]:
+    result: dict[str, Path] = {}
+    for value in values:
+        producer, separator, path = value.partition("=")
+        if not separator or not producer or not path or producer in result:
+            raise ValueError("--repo must use one unique PRODUCER=PATH value")
+        result[producer] = Path(path)
+    return result
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -103,51 +115,43 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command in {"validate", "canonicalize", "id"}:
             value = _read(args.record)
+            application = CommonsApplication()
             if args.command == "validate":
-                result = _validate(value)
+                result = application.validate(value)
                 _print(result)
                 return 0 if result["valid"] else 2
             if args.command == "id":
-                print(canonical_digest(value))
+                print(application.identity(value))
                 return 0
-            normalized = json.loads(canonical_json(value).decode("utf-8"))
+            normalized = json.loads(application.canonicalize(value).decode("utf-8"))
             if "contentDigest" not in normalized:
-                normalized["contentDigest"] = canonical_digest(normalized)
-            print(canonical_json(normalized).decode("utf-8"))
+                normalized["contentDigest"] = application.identity(normalized)
+            print(application.canonicalize(normalized).decode("utf-8"))
             return 0
         if args.command == "store":
-            store = CommonsStore(args.path)
+            application = CommonsApplication(CommonsStore(args.path))
             if args.store_command == "init":
-                store.init()
-                _print({"initialized": str(store.root)})
+                application.require_store().init()
+                _print({"initialized": str(application.require_store().root)})
                 return 0
             if args.store_command == "add":
                 value = _read(args.record)
-                add_result = (
-                    store.add_event(value)
-                    if value.get("kind") == EVENT_KIND
-                    else store.add_record(value)
-                )
-                _print(
-                    {
-                        "contentDigest": add_result.event_digest
-                        if isinstance(add_result, LifecycleEvent)
-                        else add_result.content_digest
-                    }
-                )
+                added = application.add(value)
+                _print({"contentDigest": added.digest})
                 return 0
             if args.store_command == "verify":
-                verification = store.verify()
-                _print(verification.as_dict())
-                return 0 if verification.valid else 2
+                verification = application.verify_store()
+                _print(verification)
+                return 0 if verification["valid"] else 2
             if args.store_command == "diagnose":
-                _print(store.diagnose().as_dict())
-                return 0 if store.diagnose().valid else 2
+                diagnostic = application.diagnose_store()
+                _print(diagnostic)
+                return 0 if diagnostic["valid"] else 2
             if args.store_command == "recover":
-                verification = store.recover()
-                _print(verification.as_dict())
-                return 0 if verification.valid else 2
-            records = store.records()
+                recovery = application.recover_store()
+                _print(recovery)
+                return 0 if recovery["valid"] else 2
+            records = application.list_records()
             _print(
                 [
                     {
@@ -160,32 +164,27 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
         if args.command in {"show", "lifecycle", "related", "replications", "query"}:
-            store = CommonsStore(args.path)
+            application = CommonsApplication(CommonsStore(args.path))
         if args.command == "show":
-            shown = store.get(args.digest)
+            shown = application.require_store().get(args.digest)
             if shown is None:
                 raise StoreError(f"not found: {args.digest}")
             _print(shown)
         elif args.command == "lifecycle":
-            _print(store.lifecycle(args.digest, domain=args.domain).as_dict())
+            _print(application.lifecycle(args.digest, domain=args.domain))
         elif args.command == "related":
             _print(
-                bounded_graph(
-                    store.records(),
-                    [args.digest],
-                    max_depth=args.depth,
-                    max_nodes=args.max_nodes,
-                ).as_dict()
+                application.related(args.digest, depth=args.depth, max_nodes=args.max_nodes)
             )
         elif args.command == "replications":
-            _print(replication_correlation(store.records(), args.target).as_dict())
+            _print(application.replications(args.target))
         elif args.command == "query":
             query_now = None
             if args.now:
                 query_now = datetime.fromisoformat(args.now.replace("Z", "+00:00"))
             elif args.needs_review:
                 query_now = datetime.now(timezone.utc)
-            query_records = store.query(
+            query_records = application.query(
                 QueryFilter(
                     kind=args.kind,
                     state=args.state,
@@ -202,21 +201,27 @@ def main(argv: list[str] | None = None) -> int:
             _print(query_records)
         elif args.command == "bundle":
             if args.bundle_command == "create":
-                manifest = create_bundle(
-                    CommonsStore(args.path),
-                    args.output,
-                    roots=args.root,
-                    max_depth=args.depth,
+                manifest = CommonsApplication(CommonsStore(args.path)).create_bundle(
+                    args.output, roots=args.root, max_depth=args.depth
                 )
                 _print(manifest)
             elif args.bundle_command in {"verify", "inspect"}:
-                bundle_verification = verify_bundle(args.bundle)
-                _print(bundle_verification.as_dict())
-                return 0 if bundle_verification.valid else 2
+                bundle_verification = CommonsApplication.verify_bundle(args.bundle)
+                _print(bundle_verification)
+                return 0 if bundle_verification["valid"] else 2
             else:
-                bundle_verification = import_bundle(args.bundle, CommonsStore(args.path))
-                _print(bundle_verification.as_dict())
-                return 0 if bundle_verification.valid else 2
+                bundle_verification = CommonsApplication.import_bundle(
+                    args.bundle, CommonsStore(args.path)
+                )
+                _print(bundle_verification)
+                return 0 if bundle_verification["valid"] else 2
+        elif args.command == "compat":
+            if args.compat_command == "list":
+                _print(CompatibilityApplication.list_contracts())
+            elif args.compat_command == "report":
+                _print(CompatibilityApplication.report(_repositories(args.repo)))
+            else:
+                _print(CompatibilityApplication.check(args.producer, Path(args.repo)))
         return 0
     except (OSError, ValueError, StoreError) as error:
         print(json.dumps({"valid": False, "error": str(error)}), file=sys.stderr)

@@ -12,3 +12,10 @@
 ## 0.1.0
 
 - Initial local executable reference implementation.
+## 0.3 development
+
+- Added Forge-controlled project configuration and structured check evidence.
+- Added fingerprinted producer contracts, live compatibility inspection, and explicit drift states.
+- Corrected MNEL ledger-envelope translation and replaced the provisional Fabric boundary with the
+  current disclosed execution-field contract.
+- Added inert MNCS gate-result translation and shared application services used by the CLI.

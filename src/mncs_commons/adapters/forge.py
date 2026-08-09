@@ -54,6 +54,9 @@ def from_forge_result(
     if source_time is None and isinstance(execution, Mapping):
         value = execution.get("started_at")
         source_time = str(value) if value else None
+    if source_time is None:
+        value = result.get("recorded_at") or result.get("created_at")
+        source_time = str(value) if value else None
     raw_status = result.get("result", result.get("status", "UNKNOWN"))
     status = str(raw_status)
     if status not in {item.value for item in ResultStatus}:

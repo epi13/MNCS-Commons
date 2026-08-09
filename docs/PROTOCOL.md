@@ -71,6 +71,11 @@ Reproduction procedures, URLs, attachments, source snippets, and suggested actio
 
 ## MNCS-family boundaries
 
+Producer compatibility is an explicit read-only contract. `compat/producer-contracts.json` locks
+source paths and content fingerprints; `mncs-commons compat report` can inspect supplied sibling
+checkouts without fetching or modifying them. `DRIFTED` source is not silently interpreted, and
+missing producer checkouts or result fixtures remain `UNKNOWN`.
+
 - Forge remains the execution/orchestration and micro-verification authority. Commons can reference Forge run, candidate, result, failure, evidence-gap, and work-request identities.
 - Fabric remains transport/execution infrastructure. Commons records can carry artifact, execution, node, environment, and reconciliation references.
 - MNEL observations and learned-provider findings are diagnostic evidence, including negative/resource-placement results; Commons does not treat them as verdicts.
