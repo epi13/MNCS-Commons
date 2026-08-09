@@ -1,0 +1,30 @@
+{
+  "schema": "ravel-development-record/0.6-preregistration",
+  "record_id": "ravel-0.6-development-record-initial",
+  "study_id": "ravel.retention-constrained-adaptation.epoch-1",
+  "preregistration_id": "ravel-0.6-preregistration-revision-1",
+  "recorded_at": "2026-08-01T00:00:00Z",
+  "record_class": "operator_controlled_preregistration_state",
+  "candidate": {
+    "implementation_status": "DEVELOPMENT_CANDIDATE_INTEGRATED",
+    "candidate_id": "ravel-0.6-candidate-001",
+    "generated_source_sha256": "b71faca6aff74be89139f8d0c9d9eadfc1485c1e81d12b6ccd945f98e8a81c9a",
+    "generator": "tools/ravel_0_6_build.py",
+    "selected_candidate_id": null,
+    "frozen": false,
+    "manifest_identity": null
+  },
+  "development_evaluation": {"status": "UNKNOWN", "executed": false, "evidence": []},
+  "final_evaluation": {"status": "UNKNOWN", "executed": false, "evidence": []},
+  "authority": {
+    "protected_custody": "UNKNOWN",
+    "independent_evaluation": "UNKNOWN",
+    "external_custodian_assigned": false,
+    "external_evaluator_assigned": false
+  },
+  "formal_status": {"mncs": "UNKNOWN", "mncds": "UNKNOWN", "promotion_authorized": false},
+  "limitations": [
+    "Preregistration is not implementation or evaluation evidence.",
+    "No local record can create independence, protected custody, governance approval, certification, or promotion."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "mnel-ledger-record/0.1",
+  "sequence": 1,
+  "timestamp": "2026-08-02T00:00:00Z",
+  "record_type": "episode",
+  "actor": "mnel:reference",
+  "previous_digest": "genesis",
+  "payload": {
+    "observation_id": "mnel:observation:placement-001",
+    "experiment_id": "mnel:experiment:placement-001",
+    "outcome_class": "success",
+    "metrics": {"peak_vram_bytes": 4294967296, "wall_seconds": 2.5},
+    "operation_count": 3,
+    "wall_seconds": 2.5,
+    "provider_identity": "provider:synthetic-cpu-offload"
+  },
+  "record_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+}

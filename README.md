@@ -1,6 +1,6 @@
 # MNCS Commons
 
-> **Status:** MNCS Commons 0.1 local executable reference implementation. The protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
+> **Status:** MNCS Commons 0.2 development iteration over the 0.1 local executable reference implementation. The protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
 MNCS Commons is a machine-native coordination and knowledge-exchange layer for the Machine-Native Complexity Standard ecosystem. It gives agents and humans a shared place to publish discoveries, request work, report failures, compare approaches, and distribute reusable technical knowledge.
 
@@ -106,9 +106,11 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 
 - typed `Observation`, `Claim`, `WorkRequest`, `Replication`, `Advisory`, and `Decision` records;
 - canonical JSON and SHA-256 content identities, with the digest excluded from its own projection;
-- append-only `LifecycleEvent` records and a local trust-domain state projection;
-- a hash-chained, content-addressed filesystem store with bounded reads and corruption diagnostics;
-- structured filters, exact scope compatibility checks, and dependency-free translation helpers for Forge, Fabric, MNEL, and RAVEL boundaries; and
+- append-only `LifecycleEvent` records and independent local trust-domain projections;
+- a hash-chained, content-addressed filesystem store with writer locking, recoverable transactions, bounded reads, and corruption diagnostics;
+- structured filters, exact scope compatibility checks, bounded graph/correlation reports, and deterministic protocol-version diagnostics;
+- structured, inert translation results for Forge, Fabric, MNEL, RAVEL, and MNCS Language boundaries; and
+- deterministic, bounded Commons Bundles for local interchange and idempotent import.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:
@@ -126,8 +128,13 @@ python3 -m pip install -e .
 mncs-commons store init /tmp/mncs-commons
 mncs-commons store add /tmp/mncs-commons /path/to/record.json
 mncs-commons store verify /tmp/mncs-commons
+mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
+mncs-commons bundle verify /tmp/commons.bundle.zip
 ```
 
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
-Distributed transport, authentication, protected custody, consensus, reputation, autonomous execution, and broad security-finding dissemination remain intentionally deferred.
+The wire protocol remains `commons.mncs.dev/v0alpha1`; package version and wire version are separate.
+Distributed transport, authentication, protected custody, consensus, reputation, autonomous execution,
+and broad security-finding dissemination remain intentionally deferred. See [`compat/README.md`](compat/README.md)
+for the producer snapshots represented by this iteration.

@@ -16,7 +16,9 @@ from .models import (
     RecordKind,
     RelationType,
     ResultStatus,
+    WorkRequestState,
 )
+from .protocol import protocol_spec
 
 _RECORD_KEYS = {
     "apiVersion",
@@ -107,7 +109,12 @@ def _check_timestamp(value: Any, path: str, diagnostics: list[Diagnostic]) -> No
 def _check_metadata(value: Any, diagnostics: list[Diagnostic]) -> None:
     if not _require_object(value, "metadata", diagnostics):
         return
-    _check_keys(value, {"recordId", "createdAt", "author", "labels"}, "metadata", diagnostics)
+    _check_keys(
+        value,
+        {"recordId", "createdAt", "author", "labels", "revision", "previousDigest"},
+        "metadata",
+        diagnostics,
+    )
     _check_timestamp(value.get("createdAt"), "metadata.createdAt", diagnostics)
     author = value.get("author")
     if _require_object(author, "metadata.author", diagnostics):
@@ -116,6 +123,18 @@ def _check_metadata(value: Any, diagnostics: list[Diagnostic]) -> None:
     labels = value.get("labels", [])
     if not isinstance(labels, list) or not all(isinstance(item, str) for item in labels):
         diagnostics.append(_error("TYPE_LABELS", "metadata.labels", "must be a list of strings"))
+    if "revision" in value and (
+        not isinstance(value["revision"], int)
+        or isinstance(value["revision"], bool)
+        or value["revision"] < 1
+    ):
+        diagnostics.append(
+            _error("INVALID_REVISION", "metadata.revision", "must be a positive integer")
+        )
+    if "previousDigest" in value and not _valid_digest(value["previousDigest"]):
+        diagnostics.append(
+            _error("INVALID_DIGEST", "metadata.previousDigest", "must be a sha256: digest")
+        )
 
 
 def _check_evidence(value: Any, path: str, diagnostics: list[Diagnostic]) -> None:
@@ -263,7 +282,7 @@ def validate_record(value: Any) -> ValidationReport:
     if not _require_object(value, "<root>", diagnostics):
         return ValidationReport(tuple(diagnostics))
     _check_keys(value, _RECORD_KEYS, "<root>", diagnostics)
-    if value.get("apiVersion") != API_VERSION:
+    if protocol_spec(value.get("apiVersion")) is None:
         diagnostics.append(
             _error("UNSUPPORTED_API_VERSION", "apiVersion", f"expected {API_VERSION}")
         )
@@ -310,6 +329,15 @@ def validate_record(value: Any) -> ValidationReport:
             diagnostics.append(
                 _error("TYPE_OBJECT", "details.independence", "must preserve correlation metadata")
             )
+        if kind == RecordKind.WORK_REQUEST.value and "requestState" in details:
+            if details["requestState"] not in {item.value for item in WorkRequestState}:
+                diagnostics.append(
+                    _error(
+                        "INVALID_WORK_REQUEST_STATE",
+                        "details.requestState",
+                        "unsupported WorkRequest coordination state",
+                    )
+                )
     if not diagnostics:
         expected = canonical_digest(value)
         if digest is not None and digest != expected:
@@ -322,7 +350,7 @@ def validate_event(value: Any) -> ValidationReport:
     if not _require_object(value, "<root>", diagnostics):
         return ValidationReport(tuple(diagnostics))
     _check_keys(value, _EVENT_KEYS, "<root>", diagnostics)
-    if value.get("apiVersion") != API_VERSION:
+    if protocol_spec(value.get("apiVersion")) is None:
         diagnostics.append(
             _error("UNSUPPORTED_API_VERSION", "apiVersion", f"expected {API_VERSION}")
         )
@@ -335,6 +363,14 @@ def validate_event(value: Any) -> ValidationReport:
     target = value.get("target")
     if _require_object(target, "target", diagnostics):
         _require_string(target.get("contentDigest"), "target.contentDigest", diagnostics)
+        if not _valid_digest(target.get("contentDigest")):
+            diagnostics.append(
+                _error(
+                    "INVALID_DIGEST",
+                    "target.contentDigest",
+                    "must be a sha256: digest",
+                )
+            )
     transition = value.get("transition")
     if _require_object(transition, "transition", diagnostics):
         if transition.get("from") not in {item.value for item in LifecycleState}:

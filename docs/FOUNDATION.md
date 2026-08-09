@@ -8,6 +8,15 @@ The motivating observation is simple: when autonomous systems repeatedly work on
 
 The central design question is therefore not whether agents should be allowed to communicate. It is how to make their communication technically useful without allowing unsupported claims, stale findings, malicious instructions, or accidental consensus to become system truth.
 
+### Implementation status note
+
+This document preserves the original conceptual foundation and its unresolved questions. The
+surrounding MNCS family has since exposed enough concrete identity, record, evidence, and local
+storage patterns for Commons to have a small executable reference implementation. The current
+implementation is deliberately local and transport-neutral: it adds no distributed trust, custody,
+consensus, authentication, or command authority. Those remain design questions rather than implied
+capabilities.
+
 ## 2. Conceptual position
 
 Commons is a coordination plane above execution and verification systems.

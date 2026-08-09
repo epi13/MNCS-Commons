@@ -1,0 +1,48 @@
+{
+  "record_type": "forge-cell-execution",
+  "schema_version": "0.1",
+  "request_id": "reference-run-0001",
+  "policy_id": "forge-cell-reference-linux-0.1",
+  "challenge_nonce": "reference-nonce-0000000000000001",
+  "requested_assurance": ["policy-bound", "process-isolated"],
+  "enforced_assurance": ["policy-bound"],
+  "unmet_assurance": ["process-isolated"],
+  "identities": {
+    "candidate": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "test_bundle": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "runner": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+    "sandbox_policy": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "rootfs": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "executable": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+    "environment": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+  },
+  "execution": {
+    "started_at": "2026-08-01T22:00:00Z",
+    "finished_at": "2026-08-01T22:00:02Z",
+    "duration_ms": 2000,
+    "exit_code": 0,
+    "termination": "exited"
+  },
+  "result": "PASS",
+  "outputs": {
+    "stdout_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "stderr_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "manifest_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "stdout_bytes": 128,
+    "stderr_bytes": 0
+  },
+  "attestation": {
+    "kind": "none",
+    "verification_status": "ABSENT",
+    "nonce_binding": false
+  },
+  "resource_observations": {
+    "peak_memory_bytes": 67108864,
+    "cpu_time_ms": 1500,
+    "max_pids": 4
+  },
+  "limitations": [
+    "This reference record demonstrates that a test PASS can coexist with UNKNOWN isolation assurance.",
+    "No operating-system sandbox or external attestation was used."
+  ]
+}
