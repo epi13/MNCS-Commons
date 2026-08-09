@@ -11,3 +11,4 @@ build/
 coverage.xml
 mncs-commons-store/
 workspace/
+.mncs-forge/

@@ -1,0 +1,97 @@
+{
+  "lockVersion": 1,
+  "commonsProtocol": "commons.mncs.dev/v0alpha1",
+  "contracts": [
+    {
+      "producer": "forge",
+      "recordType": "forge-cell-execution",
+      "schemaVersion": "0.1",
+      "sourceRepository": "mncs-forge-mcp",
+      "sourceCommit": "bc9388d0ad8e8be554791def5d8aa6ff2f44d72d",
+      "sourcePath": "examples/forge-cell/execution-record.json",
+      "sourceFingerprint": "sha256:5c9982b94cd7f443ac45445e95ca94b3032712babcdf71e62e5fa0489eef9fbc",
+      "fixturePath": "compat/forge/forge-cell-execution-0.1.json",
+      "adapter": "adapters.forge.from_forge_result",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "knownUnresolvedFields": ["result_identity"]
+    },
+    {
+      "producer": "fabric",
+      "recordType": "fabric-execution",
+      "schemaVersion": "UNKNOWN",
+      "sourceRepository": "mncs-fabric",
+      "sourceCommit": null,
+      "sourcePath": null,
+      "sourceFingerprint": null,
+      "fixturePath": null,
+      "adapter": "adapters.fabric.from_fabric_execution",
+      "expectedStatus": "UNKNOWN",
+      "knownUnresolvedFields": ["source_schema", "source_commit"]
+    },
+    {
+      "producer": "mnel",
+      "recordType": "mnel-ledger-record",
+      "schemaVersion": "mnel-ledger-record/0.1",
+      "sourceRepository": "Machine-Native-Experimental-Learning",
+      "sourceCommit": "7e11fbd15680a034a27e14db32762451c2bd7d17",
+      "sourcePath": "schemas/mnel-records.schema.json",
+      "sourceFingerprint": "sha256:b45e609ddc64c2dd4859c3824048c39516f381e6036e9a3b047ce58b09088d90",
+      "fixturePath": "compat/mnel/mnel-episode-0.1.json",
+      "adapter": "adapters.mnel.from_mnel_observation",
+      "expectedStatus": "COMPATIBLE",
+      "knownUnresolvedFields": []
+    },
+    {
+      "producer": "ravel",
+      "recordType": "ravel-development-record",
+      "schemaVersion": "ravel-development-record/0.6-preregistration",
+      "sourceRepository": "RAVEL",
+      "sourceCommit": "2bc3003f5195fc2d9abbce576615cec5d4279337",
+      "sourcePath": "ravel_versions/0.6/ravel-0.6-development-record.json",
+      "sourceFingerprint": "sha256:45c6cf730df5a8f8da09923bf114f2f5fe0b51d71e7fdeafbcc2c5ac493d4839",
+      "fixturePath": "compat/ravel/ravel-0.6-development-record.json",
+      "adapter": "adapters.ravel.knowledge_view",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "knownUnresolvedFields": ["promotion_authority", "learning_disposition"]
+    },
+    {
+      "producer": "mncs-language",
+      "recordType": "semantic-identities",
+      "schemaVersion": "0.1",
+      "sourceRepository": "mncs-language",
+      "sourceCommit": "bbc3cef7142844443a5f75e8be01f4a148572fa8",
+      "sourcePath": "crates/mncs-model/src/identity.rs",
+      "sourceFingerprint": "sha256:8fd43741728c7879fa2b7717e1d762787521af7ef80b2f4f18803b06dbe464f2",
+      "fixturePath": "compat/mncs-language/semantic-identity-boundary.json",
+      "adapter": "adapters.language.from_language_identity",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "knownUnresolvedFields": ["semantic_graph_payload"]
+    },
+    {
+      "producer": "mncs",
+      "recordType": "mncs-gate-result",
+      "schemaVersion": "0.2",
+      "sourceRepository": "machine-native-complexity-standard",
+      "sourceCommit": "160358365c4bec8c2c0038e2e2e69da7c4b06911",
+      "sourcePath": "schemas/mncs-gate-result.schema.json",
+      "sourceFingerprint": "sha256:324bac4cab9521eb1a9e34e352287be2c0c1ba1e0335b5f2da0b6beaf6817588",
+      "fixturePath": null,
+      "adapter": "adapters.mncs.from_mncs_result",
+      "expectedStatus": "COMPATIBLE_WITH_UNRESOLVED_FIELDS",
+      "knownUnresolvedFields": ["producer_result_fixture"]
+    },
+    {
+      "producer": "mncs-validator-rs",
+      "recordType": "conformance-corpus",
+      "schemaVersion": "fixture-l5-pass",
+      "sourceRepository": "mncs-validator-rs",
+      "sourceCommit": "4c050b77b8cef10128c61adb009d20683643af5c",
+      "sourcePath": "fixtures/conformance-corpus/valid/l5-pass/manifest.json",
+      "sourceFingerprint": "sha256:cc16ac61c294ee224e7d20198a26014326960a0f6b7611005d5fd77037b3831f",
+      "fixturePath": null,
+      "adapter": null,
+      "expectedStatus": "UNKNOWN",
+      "knownUnresolvedFields": ["validator_output_contract"]
+    }
+  ]
+}
