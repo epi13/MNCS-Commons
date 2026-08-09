@@ -82,7 +82,7 @@ def _file_lock(path: Path) -> Iterator[None]:
     while True:
         candidate: BinaryIO | None = None
         try:
-            candidate = path.open("a+b")
+            candidate = path.open("a+b", buffering=0)
             if os.name == "nt":
                 import msvcrt
 
