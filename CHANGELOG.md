@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0.dev1
+
+- Made the documented `python -m mncs_commons.mcp_server` stdio entry point
+  executable so controller harnesses can launch the fixed local-agent MCP seam.
+- Accepted the current Fabric execution `started_at` timestamp while retaining
+  legacy `created_at` compatibility in inert Observation translation.
+- Added controller-mediated Local Harness integration guidance without changing
+  the record, exchange, or local-agent profile wire versions.
+
 ## 0.5.0.dev0
 
 - Added the versioned Local Commons Agent Node profile and shared service descriptor for the

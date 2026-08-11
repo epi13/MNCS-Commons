@@ -1,6 +1,6 @@
 # MNCS Commons 0.5 development protocol
 
-The package is in `0.5.0.dev0`; the record wire-level version remains `commons.mncs.dev/v0alpha1`. The
+The package is in `0.5.0.dev1`; the record wire-level version remains `commons.mncs.dev/v0alpha1`. The
 explicit protocol registry rejects unknown wire versions. JSON is normative at the canonicalization
 boundary. YAML may be loaded by the CLI when the optional PyYAML dependency is installed; the core
 does not import PyYAML at module import time.

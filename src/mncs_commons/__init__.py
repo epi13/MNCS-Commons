@@ -1,6 +1,6 @@
 """MNCS Commons 0.5 local agent knowledge service reference implementation."""
 
-__version__ = "0.5.0.dev0"
+__version__ = "0.5.0.dev1"
 
 from .application import CommonsApplication, CompatibilityApplication
 from .canonical import canonical_digest, canonical_json, identity_projection

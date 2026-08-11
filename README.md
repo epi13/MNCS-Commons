@@ -142,6 +142,10 @@ mncs-commons exchange sync /tmp/mncs-commons --limit 100
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
+Its Local Harness/Fabric boundary is documented in
+[`docs/FUTURE_COMMONS_OVER_FABRIC.md`](docs/FUTURE_COMMONS_OVER_FABRIC.md): the Harness
+mediates policy and tools, Fabric carries remote inference and execution evidence, and
+Commons remains the controller-local persistent knowledge service.
 The wire protocol remains `commons.mncs.dev/v0alpha1`; the Agent Exchange remains
 `commons.mncs.dev/exchange/v0alpha1`; package, service-descriptor, and wire versions are separate.
 Forge-governed development configuration is in [`mncs-forge.toml`](mncs-forge.toml), and producer
