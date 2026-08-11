@@ -8,6 +8,8 @@ from copy import deepcopy
 from pathlib import Path
 from threading import Event
 
+import pytest
+
 from mncs_commons.adapters.fabric import from_fabric_execution
 from mncs_commons.application import CommonsApplication
 from mncs_commons.canonical import canonical_digest
@@ -73,6 +75,7 @@ def test_descriptor_operations_and_participant_provenance_are_additive() -> None
 
 
 def test_mcp_module_entrypoint_starts_the_stdio_server(tmp_path: Path) -> None:
+    pytest.importorskip("mcp", reason="optional MCP extra is not installed")
     store_path = tmp_path / "commons"
     CommonsStore(store_path).init()
     request = {
