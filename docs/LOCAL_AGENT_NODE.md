@@ -1,5 +1,21 @@
 # Controller-local Commons Agent Node
 
+## Local Harness operator access
+
+The controller-mediated integration uses one local Agent Node for both actors:
+
+```text
+human -> elh CLI/TUI -> Commons MCP -> controller store
+remote model -> Fabric -> Local Harness -> Commons MCP -> controller store
+```
+
+The Harness operator commands and TUI browser call the same bounded MCP methods
+as mediated model tools; they do not read store files directly or create another
+query engine. Displayed record and WorkRequest content is untrusted inert data.
+Worker registry and model residency remain Fabric/Harness concerns and do not
+change `commons.mncs.dev/v0alpha1`, the exchange profile, or the local-agent node
+profile. Worker-local Commons and federation remain future work.
+
 Commons can run as a persistent local knowledge and coordination service for a controller without
 requiring Fabric or a network listener:
 
