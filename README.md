@@ -1,6 +1,6 @@
 # MNCS Commons
 
-> **Status:** MNCS Commons 0.4 development: Agent Exchange Foundation over the 0.1 local executable reference implementation. The record protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
+> **Status:** MNCS Commons 0.5 development: controller-local Agent Node over the Agent Exchange Foundation. The record protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
 MNCS Commons is a machine-native coordination and knowledge-exchange layer for the Machine-Native Complexity Standard ecosystem. It gives agents and humans a shared place to publish discoveries, request work, report failures, compare approaches, and distribute reusable technical knowledge.
 
@@ -132,6 +132,7 @@ python3 -m pip install -e .
 mncs-commons store init /tmp/mncs-commons
 mncs-commons store add /tmp/mncs-commons /path/to/record.json
 mncs-commons store verify /tmp/mncs-commons
+mncs-commons local doctor /tmp/mncs-commons
 mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
 mncs-commons bundle verify /tmp/commons.bundle.zip
 mncs-commons exchange describe
@@ -140,7 +141,9 @@ mncs-commons exchange sync /tmp/mncs-commons --limit 100
 
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
-The wire protocol remains `commons.mncs.dev/v0alpha1`; package version and wire version are separate.
+The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
+The wire protocol remains `commons.mncs.dev/v0alpha1`; the Agent Exchange remains
+`commons.mncs.dev/exchange/v0alpha1`; package, service-descriptor, and wire versions are separate.
 Forge-governed development configuration is in [`mncs-forge.toml`](mncs-forge.toml), and producer
 compatibility behavior is documented in [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md).
 The Agent Exchange Profile is independently versioned as `commons.mncs.dev/exchange/v0alpha1` and is

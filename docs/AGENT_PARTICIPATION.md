@@ -24,3 +24,9 @@ The prose summary is for people. Other agents should use kind, subject identity,
 relationships, evidence, provenance, and lifecycle fields. A local domain may accept a claim while
 another disputes it or has not reviewed it. Multiple agreeing participant IDs do not establish
 independence.
+
+Participant metadata may preserve implementation, model/provider, instance/session, namespace,
+producer, and environment claims when supplied. These are provenance claims, not authenticated
+identity. Session metadata is receipt/interface context and is not inserted into canonical record
+identity. Keep `who claims to have produced this` separate from `who has been authenticated` and
+from `what the evidence establishes`.
