@@ -72,6 +72,42 @@ def test_descriptor_operations_and_participant_provenance_are_additive() -> None
     assert participant.as_dict()["sessionId"] == "session:a"
 
 
+def test_mcp_module_entrypoint_starts_the_stdio_server(tmp_path: Path) -> None:
+    store_path = tmp_path / "commons"
+    CommonsStore(store_path).init()
+    request = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+            "protocolVersion": "2025-11-25",
+            "capabilities": {},
+            "clientInfo": {"name": "commons-entrypoint-test", "version": "1"},
+        },
+    }
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "mncs_commons.mcp_server",
+            "--store",
+            str(store_path),
+            "--domain",
+            "test",
+        ],
+        cwd=ROOT,
+        input=json.dumps(request) + "\n",
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        timeout=5,
+    )
+    assert completed.returncode == 0
+    response = json.loads(completed.stdout.splitlines()[0])
+    assert response["result"]["serverInfo"]["name"] == "mncs-commons"
+
+
 def test_fabric_push_translation_keeps_source_outcome_separate(tmp_path: Path) -> None:
     source = json.loads(
         (ROOT / "compat/fabric/execution-record-v0.1.json").read_text(encoding="utf-8")
@@ -90,6 +126,18 @@ def test_fabric_push_translation_keeps_source_outcome_separate(tmp_path: Path) -
     result = CommonsApplication(store).ingest_adapter_result(translated, publish=True)
     assert result["published"] is True
     assert result["receipt"]["acceptanceStatus"] == "UNCHANGED"
+
+
+def test_fabric_translation_uses_current_execution_start_timestamp() -> None:
+    source = json.loads(
+        (ROOT / "compat/fabric/execution-record-v0.1.json").read_text(encoding="utf-8")
+    )
+    source.pop("created_at", None)
+    source["started_at"] = "2026-08-10T00:00:00Z"
+    translated = from_fabric_execution(source, subject_identity="artifact:test")
+    assert translated.valid
+    assert translated.record is not None
+    assert translated.record["metadata"]["createdAt"] == "2026-08-10T00:00:00Z"
 
 
 def test_participant_metadata_does_not_enter_record_identity(tmp_path: Path) -> None:

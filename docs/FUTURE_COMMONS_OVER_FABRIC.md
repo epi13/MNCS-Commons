@@ -1,7 +1,8 @@
 # Future Commons-over-Fabric integration
 
-This document records a boundary for a later cross-repository integration. It does not implement a
-Fabric transport, poll a repository, contact a worker, or change Fabric APIs.
+This document records the implemented first-stage boundary and the explicitly deferred
+federation boundary. Commons itself does not poll Fabric, contact workers, or acquire execution
+authority.
 
 ## Recommended first stage
 
@@ -18,9 +19,15 @@ one controller-local MNCS Commons
 persistent local store
 ```
 
-Inference placement is outside Commons. A model can run elsewhere while its knowledge operations
-remain controller-mediated. The current descriptor and application API are intended to make that
-wiring explicit without freezing a future Fabric transport.
+Inference placement is outside Commons. In the Local Harness 0.5.0 integration a model can run on
+an enrolled Fabric worker while its Commons operations remain controller-mediated through the
+fixed stdio MCP binding. The worker receives tool schemas and bounded results, never the Commons
+store path, subprocess command, controller filesystem, credentials, or direct MCP channel.
+
+Fabric execution records may be translated with `from_fabric_execution` and optionally published
+as inert Commons Observations. A source execution outcome such as `PASS` remains an observed
+Fabric outcome; `details.claimVerificationStatus` remains `UNKNOWN`. Commons validation and a
+local ingestion receipt do not promote that outcome to verified truth.
 
 ## Possible later stages
 
@@ -49,7 +56,7 @@ preserve source outcome, Commons validation state, and local publication receipt
 
 | Profile | Purpose | Current state |
 | --- | --- | --- |
-| controller-local | persistent service for one operator/controller | implemented |
+| controller-local | persistent service for one operator/controller | implemented and Harness-integrated |
 | worker-local | optional locality near a worker | future design |
 | public experimental | bounded anonymous HTTP knowledge distribution | experimental binding |
 | federated | multi-node exchange and conflict handling | explicitly deferred |

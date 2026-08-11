@@ -136,7 +136,12 @@ def from_fabric_execution(
         subject_type="artifact",
         subject_identity=subject_identity,
         summary="Fabric execution record referenced without transport or verification authority",
-        created_at=created_at or str(execution.get("created_at") or "") or None,
+        created_at=(
+            created_at
+            or str(execution.get("created_at") or "")
+            or str(execution.get("started_at") or "")
+            or None
+        ),
         source_version=source_version,
         diagnostics=diagnostics,
         evidence_ids=[source_identity] if source_identity else [],
