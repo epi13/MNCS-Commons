@@ -1,1 +1,1 @@
-{"required_workflows":["compileall","ruff","mypy","pytest","examples","compatibility","live-compat","security-inertness","cli-help"],"selection":"all required checks PASS when producer checkouts are available; otherwise preserve UNKNOWN"}
+{"required_workflows":["compileall","ruff","mypy","pytest","examples","compatibility","live-compat","security-inertness","cli-help","local-agent","knowledge-lifecycle"],"selection":"all required checks PASS when producer checkouts are available; otherwise preserve UNKNOWN"}

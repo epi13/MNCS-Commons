@@ -56,6 +56,17 @@ def build_parser() -> argparse.ArgumentParser:
     seed.add_argument("path")
     seed.add_argument("--domain", default="public")
 
+    local = commands.add_parser("local", help="operate a controller-local Commons node")
+    local_commands = local.add_subparsers(dest="local_command", required=True)
+    local_init = local_commands.add_parser("init")
+    local_init.add_argument("path")
+    local_status = local_commands.add_parser("status")
+    local_status.add_argument("path")
+    local_status.add_argument("--domain", default="local")
+    local_doctor = local_commands.add_parser("doctor")
+    local_doctor.add_argument("path")
+    local_doctor.add_argument("--domain", default="local")
+
     visibility = commands.add_parser("visibility")
     visibility_commands = visibility.add_subparsers(dest="visibility_command", required=True)
     visibility_set = visibility_commands.add_parser("set")
@@ -142,6 +153,11 @@ def build_parser() -> argparse.ArgumentParser:
     publish.add_argument("--software-version")
     publish.add_argument("--model-provider")
     publish.add_argument("--instance-id")
+    publish.add_argument("--namespace")
+    publish.add_argument("--model-identity")
+    publish.add_argument("--session-id")
+    publish.add_argument("--producer-identity")
+    publish.add_argument("--environment-identity")
     sync = exchange_commands.add_parser("sync")
     sync.add_argument("path")
     sync.add_argument("--cursor")
@@ -156,6 +172,23 @@ def build_parser() -> argparse.ArgumentParser:
     work.add_argument("path")
     work.add_argument("--limit", type=int, default=100)
     work.add_argument("--domain")
+    ingest = exchange_commands.add_parser("ingest-fabric-execution")
+    ingest.add_argument("path")
+    ingest.add_argument("record")
+    ingest.add_argument("--subject-identity", required=True)
+    ingest.add_argument("--created-at")
+    ingest.add_argument("--publish", action="store_true")
+    ingest.add_argument("--domain", default="local")
+    ingest.add_argument("--participant-id")
+    ingest.add_argument("--implementation", default="unknown-participant")
+    ingest.add_argument("--software-version")
+    ingest.add_argument("--model-provider")
+    ingest.add_argument("--instance-id")
+    ingest.add_argument("--namespace")
+    ingest.add_argument("--model-identity")
+    ingest.add_argument("--session-id")
+    ingest.add_argument("--producer-identity")
+    ingest.add_argument("--environment-identity")
 
     server = commands.add_parser("serve")
     server.add_argument("--server-args", nargs=argparse.REMAINDER)
@@ -203,6 +236,24 @@ def _cursor(value: str | None) -> Mapping[str, Any] | None:
     if not isinstance(parsed, Mapping):
         raise ValueError("cursor must be a JSON object")
     return parsed
+
+
+def _participant(args: argparse.Namespace) -> ParticipantDescriptor | None:
+    if not args.participant_id:
+        return None
+    return ParticipantDescriptor(
+        args.participant_id,
+        args.implementation,
+        args.software_version,
+        args.model_provider,
+        args.instance_id,
+        (),
+        args.namespace,
+        args.model_identity,
+        args.session_id,
+        args.producer_identity,
+        args.environment_identity,
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -280,6 +331,19 @@ def main(argv: list[str] | None = None) -> int:
                 ]
             )
             return 0
+        if args.command == "local":
+            store = CommonsStore(args.path)
+            application = CommonsApplication(store)
+            if args.local_command == "init":
+                store.init()
+                _print(application.local_status())
+                return 0
+            if args.local_command == "status":
+                _print(application.local_status(domain=args.domain))
+                return 0
+            result = application.local_doctor(domain=args.domain)
+            _print(result)
+            return 0 if result["valid"] else 2
         if args.command == "visibility":
             visibility_policy = VisibilityPolicy(Path(args.policy))
             if args.visibility_command == "set":
@@ -319,19 +383,15 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "exchange":
             if args.exchange_command == "describe":
                 policy = ExchangePolicy.public_profile() if args.public else ExchangePolicy()
-                _print(CommonsApplication.describe(domain=args.domain, policy=policy))
+                _print(
+                    CommonsApplication.describe(
+                        domain=args.domain, policy=policy, binding="cli"
+                    )
+                )
                 return 0
             application = CommonsApplication(CommonsStore(args.path))
             if args.exchange_command == "publish":
-                participant = None
-                if args.participant_id:
-                    participant = ParticipantDescriptor(
-                        args.participant_id,
-                        args.implementation,
-                        args.software_version,
-                        args.model_provider,
-                        args.instance_id,
-                    )
+                participant = _participant(args)
                 policy = ExchangePolicy.public_profile() if args.public else ExchangePolicy()
                 _print(
                     application.publish(
@@ -342,6 +402,23 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 )
                 return 0
+            if args.exchange_command == "ingest-fabric-execution":
+                from .adapters.fabric import from_fabric_execution
+
+                translated = from_fabric_execution(
+                    _read(args.record),
+                    subject_identity=args.subject_identity,
+                    created_at=args.created_at,
+                )
+                _print(
+                    application.ingest_adapter_result(
+                        translated,
+                        publish=args.publish,
+                        participant=_participant(args),
+                        domain=args.domain,
+                    )
+                )
+                return 0 if translated.valid else 2
             if args.exchange_command == "sync":
                 _print(application.sync(_cursor(args.cursor), limit=args.limit, kind=args.kind))
                 return 0

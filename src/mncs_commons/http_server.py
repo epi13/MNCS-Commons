@@ -19,7 +19,14 @@ from typing import Any, Mapping, Sequence, cast
 from urllib.parse import unquote
 
 from .application import CommonsApplication
-from .exchange import EXCHANGE_VERSION, ExchangeError, ExchangePolicy, descriptor
+from .exchange import (
+    EXCHANGE_VERSION,
+    PUBLIC_NODE_PROFILE,
+    ExchangeError,
+    ExchangePolicy,
+    ParticipantDescriptor,
+    descriptor,
+)
 from .query import QueryFilter
 from .store import CommonsStore, StoreError
 from .visibility import VisibilityPolicy
@@ -161,7 +168,12 @@ class PublicNodeApplication:
         )
 
     def _descriptor(self) -> dict[str, object]:
-        result = descriptor(domain=self.config.domain, policy=self._policy())
+        result = descriptor(
+            domain=self.config.domain,
+            policy=self._policy(),
+            binding="http",
+            profile=PUBLIC_NODE_PROFILE,
+        )
         result["nodeId"] = self.config.node_id
         result["baseUrl"] = self.config.base_url
         result["serverMode"] = self.config.mode
@@ -477,17 +489,7 @@ private data, or unrestricted exploit material.</p>
             if not isinstance(record, Mapping):
                 raise ExchangeError("INVALID_RECORD", "publish record must be an object")
             if isinstance(participant_value, Mapping):
-                from .exchange import ParticipantDescriptor
-
-                participant = ParticipantDescriptor(
-                    str(participant_value.get("participantId", "unknown")),
-                    str(participant_value.get("implementation", "unknown")),
-                    participant_value.get("softwareVersion"),
-                    participant_value.get("modelProvider"),
-                    participant_value.get("instanceId"),
-                    tuple(str(item) for item in participant_value.get("capabilities", [])),
-                    participant_value.get("namespace"),
-                )
+                participant = ParticipantDescriptor.from_mapping(participant_value)
             receipt = self.application.publish(
                 record, participant=participant, policy=self._policy(), domain=self.config.domain
             )

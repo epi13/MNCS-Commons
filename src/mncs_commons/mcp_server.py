@@ -13,8 +13,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Mapping
 
+from . import __version__
 from .application import CommonsApplication
-from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor, descriptor
+from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .query import QueryFilter
 from .store import CommonsStore, StoreError
 from .vocabulary import vocabulary
@@ -90,7 +91,22 @@ def build_server(
                 "required": ["record"],
                 "properties": {
                     "record": {"type": "object"},
-                    "participant": {"type": "object"},
+                    "participant": {
+                        "type": "object",
+                        "properties": {
+                            "participantId": {"type": "string"},
+                            "implementation": {"type": "string"},
+                            "softwareVersion": {"type": "string"},
+                            "modelProvider": {"type": "string"},
+                            "modelIdentity": {"type": "string"},
+                            "instanceId": {"type": "string"},
+                            "sessionId": {"type": "string"},
+                            "producerIdentity": {"type": "string"},
+                            "environmentIdentity": {"type": "string"},
+                            "namespace": {"type": "string"},
+                            "capabilities": {"type": "array", "items": {"type": "string"}},
+                        },
+                    },
                 },
             },
         ),
@@ -108,7 +124,19 @@ def build_server(
             description="Run a bounded structured Commons query.",
             input_schema={
                 "type": "object",
-                "properties": {"kind": {"type": "string"}, "limit": {"type": "integer"}},
+                "properties": {
+                    "kind": {"type": "string"},
+                    "state": {"type": "string"},
+                    "subject": {"type": "string"},
+                    "contract": {"type": "string"},
+                    "artifact": {"type": "string"},
+                    "related": {"type": "string"},
+                    "domain": {"type": "string"},
+                    "openWorkRequests": {"type": "boolean"},
+                    "needsReview": {"type": "boolean"},
+                    "now": {"type": "string"},
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 1000},
+                },
             },
         ),
         Tool(
@@ -173,7 +201,9 @@ def build_server(
         arguments = params.arguments or {}
         try:
             if params.name == "commons_describe":
-                result: object = descriptor(domain=domain, policy=policy)
+                result: object = application.describe(
+                    domain=domain, policy=policy, binding="stdio-mcp"
+                )
             elif params.name == "commons_validate_record":
                 value = arguments.get("record")
                 result = (
@@ -198,24 +228,21 @@ def build_server(
                 participant_value = arguments.get("participant")
                 participant = None
                 if isinstance(participant_value, Mapping):
-                    participant = ParticipantDescriptor(
-                        str(participant_value.get("participantId", "unknown")),
-                        str(participant_value.get("implementation", "unknown")),
-                        participant_value.get("softwareVersion"),
-                        participant_value.get("modelProvider"),
-                        participant_value.get("instanceId"),
-                        tuple(str(item) for item in participant_value.get("capabilities", [])),
-                        participant_value.get("namespace"),
-                    )
+                    participant = ParticipantDescriptor.from_mapping(participant_value)
                 result = application.publish(
                     value, participant=participant, policy=policy, domain=domain
                 )
             elif params.name == "commons_get_record":
-                result = application.require_store().get(str(arguments.get("digest")))
+                result = application.get_record(str(arguments.get("digest")))
                 if result is None:
                     raise ExchangeError("UNKNOWN_RECORD", "record was not found")
             elif params.name == "commons_query":
-                result = {"records": query(arguments), "truncated": False}
+                records = query(arguments)
+                result = {
+                    "records": records,
+                    "truncated": len(records)
+                    >= max(1, min(int(arguments.get("limit", 100)), 1000)),
+                }
             elif params.name == "commons_sync":
                 cursor = arguments.get("cursor")
                 if cursor is not None and not isinstance(cursor, Mapping):
@@ -267,9 +294,13 @@ def build_server(
     async def read_resource(_context: Any, params: Any) -> Any:
         values = {
             "mncs-commons://protocol": {"recordVersion": "commons.mncs.dev/v0alpha1"},
-            "mncs-commons://schema/exchange": descriptor(domain=domain, policy=policy),
+            "mncs-commons://schema/exchange": application.describe(
+                domain=domain, policy=policy, binding="stdio-mcp"
+            ),
             "mncs-commons://vocabulary": vocabulary(),
-            "mncs-commons://capabilities": descriptor(domain=domain, policy=policy),
+            "mncs-commons://capabilities": application.describe(
+                domain=domain, policy=policy, binding="stdio-mcp"
+            ),
         }
         if params.uri not in values:
             raise ValueError("unknown Commons resource")
@@ -283,7 +314,7 @@ def build_server(
 
     return Server(
         "mncs-commons",
-        version="0.4.0.dev0",
+        version=__version__,
         instructions="Commons communicates information; publication grants no authority.",
         on_list_tools=list_tools,
         on_call_tool=call_tool,

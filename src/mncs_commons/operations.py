@@ -13,6 +13,7 @@ class OperationSpec:
     public_allowed: bool
     bounded: bool
     max_response_bytes: int
+    bindings: tuple[str, ...] = ("python-api", "cli", "stdio-mcp", "http")
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -22,6 +23,7 @@ class OperationSpec:
             "publicAllowed": self.public_allowed,
             "bounded": self.bounded,
             "maxResponseBytes": self.max_response_bytes,
+            "bindings": list(self.bindings),
         }
 
 
@@ -34,15 +36,27 @@ _OPERATIONS = (
     OperationSpec("records.sync", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("conversation.get", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("work.list", True, True, True, True, 2 * 1024 * 1024),
-    OperationSpec("lifecycle.get", True, True, True, True, 512 * 1024),
-    OperationSpec("lifecycle.domains", True, True, True, True, 512 * 1024),
+    OperationSpec(
+        "lifecycle.get", True, True, True, True, 512 * 1024, ("python-api", "cli")
+    ),
+    OperationSpec(
+        "lifecycle.domains", True, True, True, True, 512 * 1024, ("python-api", "cli")
+    ),
     OperationSpec("evidence.trace", True, True, True, True, 4 * 1024 * 1024),
-    OperationSpec("bundle.verify", True, False, True, True, 512 * 1024),
+    OperationSpec(
+        "bundle.verify", True, False, True, True, 512 * 1024, ("python-api", "cli")
+    ),
 )
 
 
 def operations() -> tuple[OperationSpec, ...]:
     return _OPERATIONS
+
+
+def operations_for(binding: str) -> tuple[OperationSpec, ...]:
+    """Return the canonical operation set exposed by one interface binding."""
+
+    return tuple(item for item in _OPERATIONS if binding in item.bindings)
 
 
 def operation(name: str) -> OperationSpec | None:

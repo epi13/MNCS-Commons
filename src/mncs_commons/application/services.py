@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
+from ..adapters.contracts import AdapterResult
 from ..bundle import create_bundle, import_bundle, verify_bundle
 from ..canonical import canonical_digest, canonical_json
 from ..compatibility import (
@@ -73,6 +74,72 @@ class CommonsApplication:
     def recover_store(self) -> dict[str, object]:
         return self.require_store().recover().as_dict()
 
+    def local_status(self, *, domain: str = "local") -> dict[str, object]:
+        """Return operator-facing facts without treating them as authentication."""
+
+        store = self.require_store()
+        root = store.root.resolve()
+        initialized = (
+            store.records_path.is_dir()
+            and store.events_path.is_dir()
+            and store.transactions_path.is_dir()
+            and store.ledger_path.exists()
+        )
+        result: dict[str, object] = {
+            "nodeProfile": "commons.mncs.dev/node/local-agent/v0alpha1",
+            "storePath": str(root),
+            "storeExists": root.exists(),
+            "initialized": initialized,
+            "protocolVersion": "commons.mncs.dev/v0alpha1",
+            "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
+            "trustDomain": domain,
+            "executionAuthority": "none",
+            "networkExposure": "none-by-default",
+            "interfaces": descriptor(domain=domain)["interfaces"],
+        }
+        if not initialized:
+            result.update(
+                {
+                    "verification": {"valid": False, "diagnostics": []},
+                    "recoveryRequired": False,
+                    "writable": False,
+                }
+            )
+            return result
+        verification = store.verify().as_dict()
+        result["verification"] = verification
+        diagnostics = verification.get("diagnostics", [])
+        result["recoveryRequired"] = isinstance(diagnostics, list) and any(
+            isinstance(item, Mapping) and item.get("code") == "PENDING_TRANSACTION"
+            for item in diagnostics
+        )
+        result["writable"] = root.is_dir() and root.stat().st_mode & 0o222 != 0
+        try:
+            result["usage"] = store.storage_usage()
+        except (OSError, StoreError) as error:
+            result["usageDiagnostics"] = [{"code": "USAGE_FAILED", "message": str(error)}]
+        return result
+
+    def local_doctor(self, *, domain: str = "local") -> dict[str, object]:
+        status = self.local_status(domain=domain)
+        verification = status.get("verification", {})
+        checks = {
+            "storeExists": status.get("storeExists") is True,
+            "initialized": status.get("initialized") is True,
+            "verifies": isinstance(verification, Mapping) and verification.get("valid") is True,
+            "writable": status.get("writable") is True,
+            "recoveryRequired": status.get("recoveryRequired") is False,
+            "protocolVersion": status.get("protocolVersion") == "commons.mncs.dev/v0alpha1",
+            "exchangeVersion": status.get("exchangeVersion")
+            == "commons.mncs.dev/exchange/v0alpha1",
+        }
+        return {
+            **status,
+            "checks": checks,
+            "valid": all(checks.values()),
+            "authority": "diagnostic facts only; no authentication or execution authority",
+        }
+
     def query(self, filters: QueryFilter) -> list[Mapping[str, Any]]:
         return self.require_store().query(filters)
 
@@ -103,11 +170,18 @@ class CommonsApplication:
             self.require_store().records(), [root], max_depth=depth, max_nodes=max_nodes
         ).as_dict()
 
+    def get_record(self, digest: str) -> Mapping[str, Any] | None:
+        return self.require_store().get(digest)
+
     @staticmethod
     def describe(
-        *, domain: str = "local", policy: ExchangePolicy | None = None
+        *,
+        domain: str = "local",
+        policy: ExchangePolicy | None = None,
+        binding: str = "python-api",
+        profile: str = "commons.mncs.dev/node/local-agent/v0alpha1",
     ) -> dict[str, object]:
-        return descriptor(domain=domain, policy=policy)
+        return descriptor(domain=domain, policy=policy, binding=binding, profile=profile)
 
     def publish(
         self,
@@ -149,6 +223,45 @@ class CommonsApplication:
             message = str(error)
             code = "STALE_CURSOR" if message.startswith("STALE_CURSOR") else "INVALID_CURSOR"
             raise ExchangeError(code, message) from error
+
+    def ingest_adapter_result(
+        self,
+        result: AdapterResult,
+        *,
+        publish: bool = False,
+        participant: ParticipantDescriptor | None = None,
+        policy: ExchangePolicy | None = None,
+        domain: str = "local",
+    ) -> dict[str, object]:
+        """Validate an explicit adapter result and optionally publish its inert record."""
+
+        record = result.record
+        if not result.recognized or not result.valid:
+            return {
+                "translated": result.as_dict(),
+                "published": False,
+                "authorityBoundary": "external outcome is not Commons verification",
+            }
+        if not isinstance(record, Mapping):
+            raise ExchangeError(
+                "INVALID_EXTERNAL_RECORD", "adapter result did not contain a record"
+            )
+        validation = self.validate(record)
+        response: dict[str, object] = {
+            "translated": result.as_dict(),
+            "commonsValidation": validation,
+            "published": False,
+            "authorityBoundary": "external outcome is not Commons verification",
+        }
+        if publish:
+            response["receipt"] = self.publish(
+                record,
+                participant=participant,
+                policy=policy,
+                domain=domain,
+            )
+            response["published"] = True
+        return response
 
     def conversation(
         self, root: str, *, depth: int = 2, max_nodes: int = 1000
