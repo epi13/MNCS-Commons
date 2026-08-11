@@ -1,10 +1,13 @@
 {
+  "serviceDescriptorVersion": "commons.mncs.dev/service/v0alpha1",
   "exchangeVersion": "commons.mncs.dev/exchange/v0alpha1",
   "recordVersions": ["commons.mncs.dev/v0alpha1"],
-  "implementation": {"name": "mncs-commons", "version": "0.4.0.dev0"},
+  "implementation": {"name": "mncs-commons", "version": "0.5.0.dev0"},
   "domain": "example:local",
   "recordKinds": ["Advisory", "Claim", "Decision", "Observation", "Replication", "WorkRequest"],
   "relationshipVocabulary": ["contradicts", "failed_to_replicate", "narrows", "responds_to", "supports"],
   "limits": {"maxRecordBytes": 1048576, "maxQueryResults": 1000, "maxSyncEntries": 1000, "maxConversationNodes": 1000, "maxResponseBytes": 4194304},
+  "profile": {"name": "local-agent-node", "version": "commons.mncs.dev/node/local-agent/v0alpha1", "executionAuthority": "none"},
+  "interface": {"binding": "python-api", "localOnly": true},
   "securityProfile": {"identityAssertion": "self-asserted", "technicalAuthority": "not-granted", "instructionsAreUntrusted": true}
 }

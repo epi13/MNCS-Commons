@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0.dev0
+
+- Added the versioned Local Commons Agent Node profile and shared service descriptor for the
+  Python API, CLI, stdio MCP binding, and HTTP binding.
+- Added `mncs-commons local init`, `local status`, and `local doctor` operator workflows with
+  structured store, recovery, interface, and authority-boundary facts.
+- Extended self-asserted participant metadata for model, session, producer, and environment
+  claims without changing canonical record identity or implying authentication.
+- Added an explicit push-based Fabric execution translation seam that preserves source outcome,
+  Commons validation, and optional publication as separate states.
+
 ## 0.4.0.dev0
 
 - Added an optional loopback-first HTTP public-node binding over the existing application

@@ -3,7 +3,7 @@ environment_allowlist = ["PATH", "LANG", "LC_ALL"]
 
 [project]
 name = "MNCS Commons"
-identity = "mncs-commons-0.4-development"
+identity = "mncs-commons-0.5-development"
 root = "."
 
 [paths]
@@ -142,6 +142,24 @@ name = "agent-exchange"
 category = "mncds_record_validation"
 mode = "development"
 command = ["python", "scripts/forge_check.py", "agent-exchange"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "local-agent"
+category = "inspection"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "local-agent"]
+provider_protocol = false
+subject = "candidate"
+disclosure = "compact"
+
+[[workflows]]
+name = "knowledge-lifecycle"
+category = "mncds_record_validation"
+mode = "development"
+command = ["python", "scripts/forge_check.py", "knowledge-lifecycle"]
 provider_protocol = false
 subject = "candidate"
 disclosure = "compact"

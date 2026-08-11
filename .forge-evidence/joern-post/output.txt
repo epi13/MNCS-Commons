@@ -1,0 +1,76 @@
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by scala.runtime.LazyVals$ (file:/home/epi13/.local/share/joern/v4.0.583/joern-cli/lib/org.scala-lang.scala3-library_3-3.7.4.jar)
+WARNING: Please consider reporting this to the maintainers of class scala.runtime.LazyVals$
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by scala.runtime.LazyVals$ (file:/home/epi13/.local/share/joern/v4.0.583/joern-cli/lib/org.scala-lang.scala3-library_3-3.7.4.jar)
+WARNING: Please consider reporting this to the maintainers of class scala.runtime.LazyVals$
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+executing scripts/joern/commons_queries.sc with params=Map(cpgFile -> /tmp/mncs-commons-post-cpg.bin)
+Creating project `mncs-commons-post-cpg.bin` for CPG at `/tmp/mncs-commons-post-cpg.bin`
+Creating working copy of CPG to be safe
+Loading base CPG from: /home/epi13/Documents/Projects/MNCS-Commons/workspace/mncs-commons-post-cpg.bin/cpg.bin.tmp
+[INFO ] initialising from existing storage (/home/epi13/Documents/Projects/MNCS-Commons/workspace/mncs-commons-post-cpg.bin/cpg.bin.tmp)
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.github.luben.zstd.util.Native$2 in an unnamed module (file:/home/epi13/.local/share/joern/v4.0.583/joern-cli/lib/com.github.luben.zstd-jni-1.5.7-2.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+Overlay dataflowOss already exists - skipping
+The graph has been modified. You may want to use the `save` command to persist changes to disk.  All changes will also be saved collectively on exit
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.ImportsPass
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.ImportsPass completed in 81 ms (30% on mutations). 1149 + 0 changes committed from 383 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonImportResolverPass
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonImportResolverPass completed in 82 ms (9% on mutations). 2320 + 0 changes committed from 766 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.DynamicTypeHintFullNamePass
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.DynamicTypeHintFullNamePass completed in 267 ms (1% on mutations). 77 + 0 changes committed from 702 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonInheritanceNamePass
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonInheritanceNamePass completed in 19 ms (12% on mutations). 14 + 0 changes committed from 10 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeRecovery
+[WARN ] Unhandled field structure (BLOCK,tmp0 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L201
+[WARN ] Unable to assign identifier 'size' to field load '<unknown>' @ mncs_commons/store.py#L201
+[WARN ] Unhandled field structure (BLOCK,tmp3 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L313
+[WARN ] Unhandled field structure (BLOCK,tmp3 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L313
+[WARN ] Unhandled field structure (BLOCK,tmp5 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L468
+[WARN ] Unhandled field structure (BLOCK,tmp5 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L640
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeRecovery completed in 511 ms (7% on mutations). 20943 + 0 changes committed from 35 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeRecovery
+[WARN ] Unhandled field structure (BLOCK,tmp0 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L201
+[WARN ] Unable to assign identifier 'size' to field load '<unknown>' @ mncs_commons/store.py#L201
+[WARN ] Unhandled field structure (BLOCK,tmp3 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L313
+[WARN ] Unhandled field structure (BLOCK,tmp3 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L313
+[WARN ] Unhandled field structure (BLOCK,tmp5 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L468
+[WARN ] Unhandled field structure (BLOCK,tmp5 = self.ledger_path
+self.ledger_path.stat()),(FIELD_IDENTIFIER,st_size) @ mncs_commons/store.py#L640
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeRecovery completed in 295 ms (9% on mutations). 23328 + 0 changes committed from 35 parts.
+[INFO ] Start of pass: io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeHintCallLinker
+[INFO ] Pass io.joern.x2cpg.frontendspecific.pysrc2cpg.PythonTypeHintCallLinker completed in 33 ms (5% on mutations). 1 + 0 changes committed from 1 parts.
+[INFO ] Start of pass: io.joern.x2cpg.passes.callgraph.NaiveCallLinker
+[INFO ] Pass io.joern.x2cpg.passes.callgraph.NaiveCallLinker completed in 12 ms (10% on mutations). 0 + 0 changes committed from 1 parts.
+[INFO ] Start of pass: io.joern.x2cpg.passes.base.AstLinkerPass
+[INFO ] Pass io.joern.x2cpg.passes.base.AstLinkerPass completed in 5 ms (27% on mutations). 7 + 0 changes committed from 1 parts.
+METHOD_COUNT=46
+METHOD|validate_record|count=2|callers=add_record,validate,validate_for_exchange,verify,verify_bundle|controls=(IF,13),(WHILE,5)
+METHOD|validate_event|count=2|callers=add_event,validate,verify,verify_bundle|controls=(IF,13),(WHILE,3)
+METHOD|validate_transition|count=1|callers=_derive_for_domain,add_event|controls=(IF,5)
+METHOD|derive_lifecycle|count=1|callers=add_event,lifecycle|controls=(CONTINUE,1),(IF,2),(WHILE,7)
+METHOD|add_record|count=2|callers=add,add_record<metaClassAdapter>,import_bundle|controls=(FINALLY,1),(IF,4),(TRY,1),(WHILE,3)
+METHOD|add_event|count=2|callers=add,add_event<metaClassAdapter>,import_bundle|controls=(CONTINUE,1),(FINALLY,1),(IF,5),(TRY,1),(WHILE,4)
+METHOD|verify|count=8|callers=_dispatch,diagnose,local_status,main,recover,verify<metaClassAdapter>,verify_store|controls=(CATCH,1),(CONTINUE,2),(IF,14),(TRY,1),(WHILE,6)
+METHOD|query|count=25|callers=_query,call_tool,main,query,query<metaClassAdapter>,work_queue|controls=(CONTINUE,1),(IF,2),(WHILE,1)
+METHOD|main|count=2|callers=<module>|controls=(CATCH,2),(IF,48),(TRY,2),(WHILE,2)
+METHOD|load_document|count=1|callers=_read|controls=(CATCH,2),(IF,3),(TRY,2)
+DANGEROUS_CALL_NAMES=run
+CONTROL_STRUCTURES=909
+[INFO ] writing to storage at `/home/epi13/Documents/Projects/MNCS-Commons/workspace/mncs-commons-post-cpg.bin/cpg.bin.tmp`
+[INFO ] closed graph at /home/epi13/Documents/Projects/MNCS-Commons/workspace/mncs-commons-post-cpg.bin/cpg.bin.tmp
+closing/saving project `mncs-commons-post-cpg.bin`

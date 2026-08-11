@@ -2,16 +2,20 @@
 
 from __future__ import annotations
 
+import importlib.util
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
 from .canonical import canonical_json
 from .models import API_VERSION, Diagnostic, RecordKind
-from .operations import operations
+from .operations import operations_for
 from .validation import validate_record
 from .vocabulary import vocabulary
 
 EXCHANGE_VERSION = "commons.mncs.dev/exchange/v0alpha1"
+SERVICE_DESCRIPTOR_VERSION = "commons.mncs.dev/service/v0alpha1"
+LOCAL_NODE_PROFILE = "commons.mncs.dev/node/local-agent/v0alpha1"
+PUBLIC_NODE_PROFILE = "commons.mncs.dev/node/public-experimental/v0alpha1"
 MAX_RECORD_BYTES = 1 * 1024 * 1024
 MAX_RESPONSE_BYTES = 4 * 1024 * 1024
 MAX_QUERY_RESULTS = 1_000
@@ -48,6 +52,10 @@ class ParticipantDescriptor:
     instance_id: str | None = None
     capabilities: tuple[str, ...] = ()
     namespace: str | None = None
+    model_identity: str | None = None
+    session_id: str | None = None
+    producer_identity: str | None = None
+    environment_identity: str | None = None
 
     def as_dict(self) -> dict[str, object]:
         value: dict[str, object] = {
@@ -61,10 +69,35 @@ class ParticipantDescriptor:
             ("modelProvider", self.model_provider),
             ("instanceId", self.instance_id),
             ("namespace", self.namespace),
+            ("modelIdentity", self.model_identity),
+            ("sessionId", self.session_id),
+            ("producerIdentity", self.producer_identity),
+            ("environmentIdentity", self.environment_identity),
         ):
             if item is not None:
                 value[key] = item
         return value
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "ParticipantDescriptor":
+        capabilities = value.get("capabilities", [])
+        if not isinstance(capabilities, (list, tuple)):
+            raise ExchangeError("INVALID_PARTICIPANT", "capabilities must be a list")
+        participant = cls(
+            str(value.get("participantId", "")),
+            str(value.get("implementation", "")),
+            value.get("softwareVersion"),
+            value.get("modelProvider"),
+            value.get("instanceId"),
+            tuple(str(item) for item in capabilities),
+            value.get("namespace"),
+            value.get("modelIdentity"),
+            value.get("sessionId"),
+            value.get("producerIdentity"),
+            value.get("environmentIdentity"),
+        )
+        validate_participant(participant)
+        return participant
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,9 +134,12 @@ class ExchangeDescriptor:
     implementation_name: str
     implementation_version: str
     policy: ExchangePolicy = field(default_factory=ExchangePolicy)
+    binding: str = "python-api"
+    profile: str = LOCAL_NODE_PROFILE
 
     def as_dict(self) -> dict[str, object]:
         return {
+            "serviceDescriptorVersion": SERVICE_DESCRIPTOR_VERSION,
             "exchangeVersion": EXCHANGE_VERSION,
             "recordVersions": [API_VERSION],
             "implementation": {
@@ -111,7 +147,7 @@ class ExchangeDescriptor:
                 "version": self.implementation_version,
             },
             "domain": self.domain,
-            "operations": [item.as_dict() for item in operations()],
+            "operations": [item.as_dict() for item in operations_for(self.binding)],
             "recordKinds": sorted(item.value for item in RecordKind),
             "relationshipVocabulary": vocabulary()["relationships"],
             "limits": {
@@ -128,6 +164,35 @@ class ExchangeDescriptor:
                 "pushSubscriptions": False,
                 "remoteTransport": False,
             },
+            "profile": {
+                "name": "local-agent-node"
+                if self.profile == LOCAL_NODE_PROFILE
+                else "experimental-public-node",
+                "version": self.profile,
+                "networkExposure": "none-by-default"
+                if self.profile == LOCAL_NODE_PROFILE
+                else "operator-configured",
+                "executionAuthority": "none",
+                "trustDomain": self.domain,
+            },
+            "interface": {
+                "binding": self.binding,
+                "localOnly": self.profile == LOCAL_NODE_PROFILE,
+                "network": self.binding == "http",
+                "operations": [item.name for item in operations_for(self.binding)],
+            },
+            "interfaces": {
+                "python-api": {"available": True},
+                "cli": {"available": True},
+                "stdio-mcp": {
+                    "available": importlib.util.find_spec("mcp") is not None,
+                    "optionalDependency": "mcp",
+                },
+                "http": {
+                    "available": importlib.util.find_spec("starlette") is not None,
+                    "optionalDependency": "server",
+                },
+            },
             "securityProfile": {
                 "identityAssertion": "self-asserted",
                 "authenticatedTransport": "not-provided",
@@ -135,7 +200,11 @@ class ExchangeDescriptor:
                 "instructionsAreUntrusted": True,
                 "publicPolicy": self.policy.as_dict(),
             },
-            "transport": {"binding": "local-application", "network": False},
+            "transport": {
+                "binding": self.binding,
+                "network": self.binding == "http",
+                "localOnly": self.profile == LOCAL_NODE_PROFILE,
+            },
             "vocabularyVersion": vocabulary()["vocabularyVersion"],
         }
 
@@ -173,9 +242,24 @@ def validate_participant(participant: ParticipantDescriptor | None) -> None:
     for name, value in (
         ("participantId", participant.participant_id),
         ("implementation", participant.implementation),
+        ("softwareVersion", participant.software_version),
+        ("modelProvider", participant.model_provider),
+        ("instanceId", participant.instance_id),
+        ("namespace", participant.namespace),
+        ("modelIdentity", participant.model_identity),
+        ("sessionId", participant.session_id),
+        ("producerIdentity", participant.producer_identity),
+        ("environmentIdentity", participant.environment_identity),
     ):
-        if not isinstance(value, str) or not value.strip() or len(value) > 512:
+        if value is not None and (
+            not isinstance(value, str) or not value.strip() or len(value) > 512
+        ):
             raise ExchangeError("INVALID_PARTICIPANT", f"{name} must be a bounded non-empty string")
+    if len(participant.capabilities) > 128 or any(
+        not isinstance(item, str) or not item.strip() or len(item) > 256
+        for item in participant.capabilities
+    ):
+        raise ExchangeError("INVALID_PARTICIPANT", "capabilities must be bounded strings")
 
 
 def validate_for_exchange(
@@ -225,10 +309,19 @@ def validate_for_exchange(
 
 
 def descriptor(
-    *, domain: str = "local", policy: ExchangePolicy | None = None
+    *,
+    domain: str = "local",
+    policy: ExchangePolicy | None = None,
+    binding: str = "python-api",
+    profile: str = LOCAL_NODE_PROFILE,
 ) -> dict[str, object]:
     from . import __version__
 
     return ExchangeDescriptor(
-        domain, "mncs-commons", __version__, policy or ExchangePolicy()
+        domain,
+        "mncs-commons",
+        __version__,
+        policy or ExchangePolicy(),
+        binding,
+        profile,
     ).as_dict()

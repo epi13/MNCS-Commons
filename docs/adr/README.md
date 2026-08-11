@@ -7,3 +7,8 @@
 - [ADR 0005: Trust-domain lifecycle projection](0005-domain-lifecycle.md)
 - [ADR 0006: Recoverable local append transactions](0006-recoverable-transactions.md)
 - [ADR 0007: Deterministic Commons Bundles](0007-deterministic-bundles.md)
+- [ADR 0008: Keep Agent Exchange separate from record protocol](0008-agent-exchange-profile.md)
+- [ADR 0009: Conversation graph projection](0009-conversation-graph.md)
+- [ADR 0010: Ingestion is not acceptance](0010-ingestion-is-not-acceptance.md)
+- [ADR 0011: MCP is an optional thin binding](0011-optional-mcp-binding.md)
+- [ADR 0012: Local Commons Agent Node profile](0012-local-agent-node.md)

@@ -54,15 +54,27 @@ def main() -> int:
         first = _run_agent(script, store_path, "request", "urn:example:agent-a")
         if first.get("deliveryStatus") != "INGESTED":
             raise RuntimeError("requesting agent was not ingested")
+        duplicate = _run_agent(script, store_path, "request", "urn:example:agent-a")
+        if duplicate.get("deliveryStatus") != "DUPLICATE":
+            raise RuntimeError("duplicate publication was not idempotent")
         second = _run_agent(script, store_path, "failed-replication", "urn:example:agent-b")
         third = _run_agent(script, store_path, "failed-replication", "urn:example:agent-c")
         if {second.get("deliveryStatus"), third.get("deliveryStatus")} != {"INGESTED"}:
             raise RuntimeError("independent responses were not both ingested")
         application = CommonsApplication(store)
-        sync = application.sync(limit=10)
+        restarted = CommonsApplication(CommonsStore(store_path))
+        if len(restarted.list_records()) != 3:
+            raise RuntimeError("restart did not retain published records")
+        bounded_work = restarted.work_queue(limit=1)
+        if len(bounded_work.get("records", [])) != 1:
+            raise RuntimeError("bounded work discovery returned an unexpected size")
+        sync = application.sync(limit=1)
         entries = sync.get("entries", [])
-        if not isinstance(entries, list) or len(entries) != 3:
-            raise RuntimeError("sync did not return all three contributions")
+        if not isinstance(entries, list) or len(entries) != 1:
+            raise RuntimeError("bounded sync did not return one contribution")
+        resumed = application.sync(sync["nextCursor"], limit=10)
+        if len(resumed.get("entries", [])) != 2:
+            raise RuntimeError("sync cursor continuation did not return remaining contributions")
         request_digest = str(first["contentDigest"])
         conversation = application.conversation(request_digest, max_nodes=10)
         if len(conversation.get("records", [])) != 3:
