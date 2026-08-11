@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased documentation
+
+- Documented direct Local Harness CLI/TUI operator access to the same
+  controller-local Agent Node used by mediated remote models. No Commons package,
+  record protocol, exchange profile, or node profile version changed.
+
 ## 0.5.0.dev1
 
 - Made the documented `python -m mncs_commons.mcp_server` stdio entry point
