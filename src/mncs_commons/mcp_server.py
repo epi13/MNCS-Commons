@@ -50,14 +50,13 @@ def build_server(
 
     try:
         from mcp.server.lowlevel import Server  # type: ignore[import-not-found]
+        from mcp.server.lowlevel.helper_types import (  # type: ignore[import-not-found]
+            ReadResourceContents,
+        )
         from mcp.types import (  # type: ignore[import-not-found]
             CallToolResult,
-            ListResourcesResult,
-            ListToolsResult,
-            ReadResourceResult,
             Resource,
             TextContent,
-            TextResourceContents,
             Tool,
         )
     except ImportError as error:  # pragma: no cover - exercised by optional-install checks
@@ -70,12 +69,12 @@ def build_server(
         Tool(
             name="commons_describe",
             description="Describe this Commons exchange endpoint and vocabulary.",
-            input_schema={"type": "object", "properties": {}},
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="commons_validate_record",
             description="Validate an inert Commons record without storing it.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "required": ["record"],
                 "properties": {"record": {"type": "object"}},
@@ -86,7 +85,7 @@ def build_server(
             description=(
                 "Publish one validated record; delivery does not grant acceptance or authority."
             ),
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "required": ["record"],
                 "properties": {
@@ -113,7 +112,7 @@ def build_server(
         Tool(
             name="commons_get_record",
             description="Get one record by content digest.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "required": ["digest"],
                 "properties": {"digest": {"type": "string"}},
@@ -122,7 +121,7 @@ def build_server(
         Tool(
             name="commons_query",
             description="Run a bounded structured Commons query.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "kind": {"type": "string"},
@@ -142,7 +141,7 @@ def build_server(
         Tool(
             name="commons_sync",
             description="Read a bounded ordered ledger slice after a store-local cursor.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "cursor": {"type": "object"},
@@ -153,7 +152,7 @@ def build_server(
         Tool(
             name="commons_conversation",
             description="Project a bounded typed record graph for presentation.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "required": ["root"],
                 "properties": {"root": {"type": "string"}},
@@ -162,12 +161,12 @@ def build_server(
         Tool(
             name="commons_work_list",
             description="List bounded opportunities; results are not commands or permissions.",
-            input_schema={"type": "object", "properties": {"limit": {"type": "integer"}}},
+            inputSchema={"type": "object", "properties": {"limit": {"type": "integer"}}},
         ),
         Tool(
             name="commons_evidence_trace",
             description="Trace bounded evidence lineage without inferring truth.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "required": ["root"],
                 "properties": {"root": {"type": "string"}},
@@ -194,17 +193,16 @@ def build_server(
             )
         )[:limit]
 
-    async def list_tools(_context: Any, _params: Any) -> Any:
-        return ListToolsResult(tools=tools)
+    async def list_tools() -> list[Any]:
+        return tools
 
-    async def call_tool(_context: Any, params: Any) -> Any:
-        arguments = params.arguments or {}
+    async def call_tool(name: str, arguments: dict[str, Any]) -> Any:
         try:
-            if params.name == "commons_describe":
+            if name == "commons_describe":
                 result: object = application.describe(
                     domain=domain, policy=policy, binding="stdio-mcp"
                 )
-            elif params.name == "commons_validate_record":
+            elif name == "commons_validate_record":
                 value = arguments.get("record")
                 result = (
                     application.validate(value)
@@ -221,7 +219,7 @@ def build_server(
                         ],
                     }
                 )
-            elif params.name == "commons_publish_record":
+            elif name == "commons_publish_record":
                 value = arguments.get("record")
                 if not isinstance(value, Mapping):
                     raise ExchangeError("INVALID_RECORD", "record must be an object")
@@ -232,33 +230,33 @@ def build_server(
                 result = application.publish(
                     value, participant=participant, policy=policy, domain=domain
                 )
-            elif params.name == "commons_get_record":
+            elif name == "commons_get_record":
                 result = application.get_record(str(arguments.get("digest")))
                 if result is None:
                     raise ExchangeError("UNKNOWN_RECORD", "record was not found")
-            elif params.name == "commons_query":
+            elif name == "commons_query":
                 records = query(arguments)
                 result = {
                     "records": records,
                     "truncated": len(records)
                     >= max(1, min(int(arguments.get("limit", 100)), 1000)),
                 }
-            elif params.name == "commons_sync":
+            elif name == "commons_sync":
                 cursor = arguments.get("cursor")
                 if cursor is not None and not isinstance(cursor, Mapping):
                     raise ExchangeError("INVALID_CURSOR", "cursor must be an object")
                 result = application.sync(
                     cursor, limit=int(arguments.get("limit", 1000)), kind=arguments.get("kind")
                 )
-            elif params.name == "commons_conversation":
+            elif name == "commons_conversation":
                 result = application.conversation(
                     str(arguments["root"]),
                     depth=int(arguments.get("depth", 2)),
                     max_nodes=int(arguments.get("maxNodes", 1000)),
                 )
-            elif params.name == "commons_work_list":
+            elif name == "commons_work_list":
                 result = application.work_queue(limit=int(arguments.get("limit", 100)))
-            elif params.name == "commons_evidence_trace":
+            elif name == "commons_evidence_trace":
                 result = application.trace_evidence(
                     str(arguments["root"]),
                     depth=int(arguments.get("depth", 3)),
@@ -267,7 +265,7 @@ def build_server(
             else:
                 raise ExchangeError("UNKNOWN_OPERATION", "operation is not supported")
             text, truncated = _bounded_result(result)
-            return CallToolResult(content=[TextContent(text=text)], is_error=truncated)
+            return CallToolResult(content=[TextContent(type="text", text=text)], isError=truncated)
         except (ExchangeError, StoreError, ValueError, TypeError, KeyError) as error:
             result = (
                 error.as_dict()
@@ -275,23 +273,23 @@ def build_server(
                 else {"error": "INVALID_REQUEST", "message": str(error)}
             )
             text, _ = _bounded_result(result)
-            return CallToolResult(content=[TextContent(text=text)], is_error=True)
+            return CallToolResult(content=[TextContent(type="text", text=text)], isError=True)
 
     resources = [
-        Resource(name="protocol", uri="mncs-commons://protocol", mime_type="application/json"),
+        Resource(name="protocol", uri="mncs-commons://protocol", mimeType="application/json"),
         Resource(
-            name="exchange", uri="mncs-commons://schema/exchange", mime_type="application/json"
+            name="exchange", uri="mncs-commons://schema/exchange", mimeType="application/json"
         ),
-        Resource(name="vocabulary", uri="mncs-commons://vocabulary", mime_type="application/json"),
+        Resource(name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"),
         Resource(
-            name="capabilities", uri="mncs-commons://capabilities", mime_type="application/json"
+            name="capabilities", uri="mncs-commons://capabilities", mimeType="application/json"
         ),
     ]
 
-    async def list_resources(_context: Any, _params: Any) -> Any:
-        return ListResourcesResult(resources=resources)
+    async def list_resources() -> list[Any]:
+        return resources
 
-    async def read_resource(_context: Any, params: Any) -> Any:
+    async def read_resource(uri: Any) -> list[Any]:
         values = {
             "mncs-commons://protocol": {"recordVersion": "commons.mncs.dev/v0alpha1"},
             "mncs-commons://schema/exchange": application.describe(
@@ -302,25 +300,21 @@ def build_server(
                 domain=domain, policy=policy, binding="stdio-mcp"
             ),
         }
-        if params.uri not in values:
+        key = str(uri)
+        if key not in values:
             raise ValueError("unknown Commons resource")
-        return ReadResourceResult(
-            contents=[
-                TextResourceContents(
-                    uri=params.uri, mime_type="application/json", text=_json(values[params.uri])
-                )
-            ]
-        )
+        return [ReadResourceContents(content=_json(values[key]), mime_type="application/json")]
 
-    return Server(
+    server = Server(
         "mncs-commons",
         version=__version__,
         instructions="Commons communicates information; publication grants no authority.",
-        on_list_tools=list_tools,
-        on_call_tool=call_tool,
-        on_list_resources=list_resources,
-        on_read_resource=read_resource,
     )
+    server.list_tools()(list_tools)
+    server.call_tool()(call_tool)
+    server.list_resources()(list_resources)
+    server.read_resource()(read_resource)
+    return server
 
 
 async def _run(store: CommonsStore, *, domain: str, public: bool) -> None:
