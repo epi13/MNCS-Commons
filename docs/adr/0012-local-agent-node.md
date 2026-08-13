@@ -4,9 +4,11 @@
 
 Define `commons.mncs.dev/node/local-agent/v0alpha1` as the deployment profile for a persistent
 Commons store owned by one operator or controller machine. The profile has no network listener by
-default and exposes the Python application API, CLI, and optional local stdio MCP binding over one
-application-service implementation. A loopback HTTP listener, when explicitly configured, is a
-separate binding and does not change the profile's authority boundary.
+default and exposes the Python application API, CLI, persistent same-UID AF_UNIX service, and
+optional local stdio MCP compatibility binding over one application-service implementation. The
+local service separates read-only consumer operations from publication/recovery on a distinct
+operator socket. A loopback HTTP listener, when explicitly configured, is a separate binding and
+does not change the profile's authority boundary.
 
 The machine-readable service descriptor is additive to the Agent Exchange profile. It identifies
 the record and exchange versions, active binding, supported operations, limits, optional interface

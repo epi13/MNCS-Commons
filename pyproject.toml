@@ -15,13 +15,14 @@ dependencies = []
 [project.optional-dependencies]
 yaml = ["PyYAML>=6.0"]
 dev = ["mypy>=1.10", "pytest>=8.0", "ruff>=0.6"]
-mcp = ["mcp>=1.29,<2"]
+mcp = ["mcp>=1.29,<3"]
 server = ["starlette>=0.37", "uvicorn>=0.30"]
 
 [project.scripts]
 mncs-commons = "mncs_commons.cli:main"
 mncs-commons-mcp = "mncs_commons.mcp_server:main"
 mncs-commons-server = "mncs_commons.http_server:server_main"
+mncs-commons-service = "mncs_commons.service_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -231,7 +231,10 @@ Fabric may eventually supply transport, routing, discovery, addressing, identity
 
 The initial foundation intentionally deferred implementation while surrounding MNCS projects were still establishing interfaces. That condition has changed enough to support a bounded local reference protocol. The current implementation uses canonical JSON, SHA-256 content-derived identities, immutable records, append-only lifecycle events, and a filesystem store. It keeps the conceptual distinctions above intact: integrity is not authenticity, reproducibility is not truth, and local acceptance is not global authority.
 
-The implementation is a reference for record semantics and local evidence handling. It is not a service, transport, custody system, or execution policy engine. See [`PROTOCOL.md`](PROTOCOL.md) and the ADRs for durable decisions.
+The core implementation remains a reference for record semantics and local evidence handling. A
+separate controller-local AF_UNIX binding now serves those same application operations, but it does
+not provide protected custody, multi-user authorization, authenticated network transport, or an
+execution policy engine. See [`PROTOCOL.md`](PROTOCOL.md) and the ADRs for durable decisions.
 
 ## 11. Deferred implementation questions
 

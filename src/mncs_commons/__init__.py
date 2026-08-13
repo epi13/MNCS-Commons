@@ -7,6 +7,7 @@ from .canonical import canonical_digest, canonical_json, identity_projection
 from .compatibility import CompatibilityStatus, ProducerContract, contracts
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .lifecycle import derive_lifecycle, validate_transition
+from .local_service import CommonsAdminClient, CommonsClient
 from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
 from .remote import RemoteClient
@@ -16,6 +17,8 @@ from .validation import ValidationReport, validate_event, validate_record
 __all__ = [
     "CommonsStore",
     "CommonsApplication",
+    "CommonsAdminClient",
+    "CommonsClient",
     "CompatibilityApplication",
     "CompatibilityStatus",
     "LifecycleState",
