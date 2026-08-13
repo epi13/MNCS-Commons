@@ -122,6 +122,8 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
   receipts, pull synchronization, and typed conversation projections; and
 - a vendor-neutral two-process interoperability scenario, an optional local stdio MCP binding,
   and a persistent same-UID AF_UNIX service with separate consumer/operator endpoints.
+- append-only durable work records with operator-only submission/state updates, optimistic
+  digest lineage, and read-only status/history/list projections; Commons still never executes work.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:

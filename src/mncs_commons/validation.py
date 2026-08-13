@@ -19,6 +19,7 @@ from .models import (
     WorkRequestState,
 )
 from .protocol import protocol_spec
+from .work import validate_work_record
 
 _RECORD_KEYS = {
     "apiVersion",
@@ -339,6 +340,8 @@ def validate_record(value: Any) -> ValidationReport:
                         "unsupported WorkRequest coordination state",
                     )
                 )
+        if kind == RecordKind.WORK_REQUEST.value:
+            diagnostics.extend(validate_work_record(value))
     if not diagnostics:
         expected = canonical_digest(value)
         if digest is not None and digest != expected:
