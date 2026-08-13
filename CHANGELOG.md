@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased documentation
+## Unreleased
+
+- Added a durable, append-only work-memory protocol with operator-only submission and
+  state transitions; optimistic digest lineage; submitted, accepted, assigned, queued,
+  running, checkpointed, blocked, retrying, completed, failed, and cancelled states;
+  and read-only status/history/list projections. Work records remain untrusted and inert.
+- Added private-socket readiness checks to service doctor output, structured offline
+  diagnostics when the service is unreachable, and restrictive-umask-safe security tests.
 
 - Added a persistent, versioned local AF_UNIX service with same-UID peer checks,
   bounded/replay-safe framing, separate consumer and operator endpoints, a read-only

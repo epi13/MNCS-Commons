@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Iterable, Mapping
 
 from .models import Diagnostic, RelationType
+from .work import work_semantic_diagnostics
 
 
 def _identity(record: Mapping[str, Any]) -> str:
@@ -93,6 +94,7 @@ def record_semantic_diagnostics(
                     "a changed logical record requires the next revision and previousDigest",
                 )
             )
+    diagnostics.extend(work_semantic_diagnostics(candidate, existing_same_id))
 
     known = {_identity(item) for item in records} | {_logical_id(item) for item in records}
     known.add(candidate_identity)

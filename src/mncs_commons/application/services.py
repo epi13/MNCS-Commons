@@ -30,6 +30,13 @@ from ..models import EVENT_KIND
 from ..query import QueryFilter, bounded_graph, replication_correlation
 from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
+from ..work import (
+    WorkProtocolError,
+    list_work,
+    new_work_record,
+    project_work_history,
+    revised_work_record,
+)
 
 
 class CommonsApplication:
@@ -296,6 +303,123 @@ class CommonsApplication:
             "records": values,
             "truncated": len(values) >= max(1, min(limit, 1000)),
             "authority": "opportunity list, not commands or permissions",
+        }
+
+    def submit_work(self, request: Mapping[str, Any]) -> dict[str, object]:
+        """Persist an inert work request; this never dispatches or accepts execution."""
+
+        record = new_work_record(request)
+        store = self.require_store()
+        work_id = str(record["details"]["workId"])
+
+        def prior_submission() -> Mapping[str, Any] | None:
+            return next(
+                (
+                    item
+                    for item in store.records()
+                    if item.get("metadata", {}).get("revision") == 1
+                    and item.get("details", {}).get("workId") == work_id
+                ),
+                None,
+            )
+
+        def duplicate_ack(prior: Mapping[str, Any]) -> dict[str, object]:
+            prior_details = prior.get("details", {})
+            requested_details = record["details"]
+            immutable = (
+                "workId",
+                "objective",
+                "submittingConsumer",
+                "project",
+                "repository",
+                "constraints",
+                "parentWorkId",
+                "attempt",
+                "routing",
+            )
+            if not isinstance(prior_details, Mapping) or any(
+                prior_details.get(field) != requested_details.get(field) for field in immutable
+            ):
+                raise WorkProtocolError(
+                    "WORK_CONFLICT", "workId is already bound to a different submission"
+                )
+            status = self.work_status(work_id)
+            history = status.get("history", [])
+            return {
+                "persisted": True,
+                "duplicate": True,
+                "workId": work_id,
+                "state": status["state"],
+                "currentDigest": status["currentDigest"],
+                "executionAccepted": any(
+                    isinstance(item, Mapping) and item.get("state") == "accepted"
+                    for item in history
+                ),
+                "contentTrust": "UNTRUSTED",
+                "executionAuthority": "none",
+            }
+
+        prior = prior_submission()
+        if prior is not None:
+            return duplicate_ack(prior)
+        try:
+            added = store.add_record(record)
+        except StoreError:
+            # A competing first writer may have committed after the read. Only
+            # treat it as an idempotent retry when the immutable submission matches.
+            prior = prior_submission()
+            if prior is not None:
+                return duplicate_ack(prior)
+            raise
+        details = added.data["details"]
+        return {
+            "persisted": True,
+            "duplicate": False,
+            "workId": details["workId"],
+            "state": details["state"],
+            "currentDigest": added.content_digest,
+            "executionAccepted": False,
+            "contentTrust": "UNTRUSTED",
+            "executionAuthority": "none",
+        }
+
+    def transition_work(
+        self, work_id: str, transition: Mapping[str, Any]
+    ) -> dict[str, object]:
+        """Append one state revision with optimistic lineage protection."""
+
+        current = self.work_status(work_id)["current"]
+        if not isinstance(current, Mapping):
+            raise WorkProtocolError("WORK_HISTORY_INVALID", "current work record is malformed")
+        revised = revised_work_record(current, transition)
+        try:
+            added = self.require_store().add_record(revised)
+        except StoreError as error:
+            if "next revision and previousDigest" in str(error):
+                raise WorkProtocolError(
+                    "WORK_CONFLICT", "work changed before the transition was persisted"
+                ) from error
+            raise
+        details = added.data["details"]
+        return {
+            "persisted": True,
+            "workId": work_id,
+            "state": details["state"],
+            "currentDigest": added.content_digest,
+            "executionAuthority": "none",
+        }
+
+    def work_status(self, work_id: str) -> dict[str, Any]:
+        return project_work_history(self.require_store().records(), work_id)
+
+    def work_list(self, *, states: set[str] | None = None, limit: int = 100) -> dict[str, object]:
+        values = list_work(self.require_store().records(), states)
+        bounded = max(1, min(limit, 1000))
+        return {
+            "work": values[:bounded],
+            "truncated": len(values) > bounded,
+            "contentTrust": "UNTRUSTED",
+            "executionAuthority": "none",
         }
 
     def create_bundle(

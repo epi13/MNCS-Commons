@@ -35,6 +35,7 @@ from .canonical import canonical_json
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .query import QueryFilter
 from .store import CommonsStore, StoreError
+from .work import WORK_STATES, WorkProtocolError
 
 SERVICE_PROTOCOL = "commons.mncs.dev/local-service/v0alpha1"
 SERVICE_REQUEST = "commons.mncs.dev/local-service-request/v0alpha1"
@@ -61,9 +62,13 @@ CONSUMER_OPERATIONS = frozenset(
         "commons.conversation",
         "commons.work",
         "commons.evidence",
+        "work.status",
+        "work.list",
     }
 )
-OPERATOR_OPERATIONS = frozenset({"commons.publish", "store.recover"})
+OPERATOR_OPERATIONS = frozenset(
+    {"commons.publish", "store.recover", "work.submit", "work.transition"}
+)
 ALL_OPERATIONS = CONSUMER_OPERATIONS | OPERATOR_OPERATIONS
 _REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -260,6 +265,18 @@ def _safe_socket_path(path: Path) -> None:
             raise CommonsServiceError("SOCKET_PATH_UNSAFE", "socket path is not an owned socket")
 
 
+def _socket_ready(path: Path) -> bool:
+    try:
+        entry = os.lstat(path)
+    except OSError:
+        return False
+    return (
+        stat.S_ISSOCK(entry.st_mode)
+        and entry.st_uid == _current_uid()
+        and stat.S_IMODE(entry.st_mode) == 0o600
+    )
+
+
 def _bounded_text(value: object, field: str, *, allow_none: bool = True) -> str | None:
     if value is None and allow_none:
         return None
@@ -378,13 +395,36 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 "maxNodes": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
             },
         ),
+        _tool_schema(
+            "commons_work_status",
+            "Read durable, untrusted work state and append-only revision history.",
+            {"workId": {"type": "string"}},
+        ),
+        _tool_schema(
+            "commons_durable_work_list",
+            "List durable work records as inert state assertions.",
+            {
+                "states": {"type": "array", "items": {"type": "string"}},
+                "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
+            },
+        ),
     ]
     operator = [
         _tool_schema(
             "commons_publish_record",
             "Publish one record; delivery grants no acceptance or authority.",
             {"record": {"type": "object"}, "participant": {"type": "object"}},
-        )
+        ),
+        _tool_schema(
+            "commons_submit_work_record",
+            "Persist an inert work request without accepting or dispatching execution.",
+            {"request": {"type": "object"}},
+        ),
+        _tool_schema(
+            "commons_transition_work_record",
+            "Append an untrusted work-state revision with optimistic lineage checks.",
+            {"workId": {"type": "string"}, "transition": {"type": "object"}},
+        ),
     ]
     return consumer, operator
 
@@ -422,6 +462,8 @@ class CommonsService:
                 record_count = len(self.store.records())
             except (OSError, StoreError):
                 valid = False
+        consumer_socket_ready = _socket_ready(self.config.consumer_socket)
+        operator_socket_ready = _socket_ready(self.config.operator_socket)
         return {
             "serviceProtocol": SERVICE_PROTOCOL,
             "packageVersion": __version__,
@@ -430,8 +472,10 @@ class CommonsService:
             "storeHealthy": valid,
             "recoveryRequired": recovery_required,
             "recordCount": record_count,
-            "consumerReadCapable": valid,
-            "operatorPublicationCapable": valid,
+            "consumerReadCapable": valid and consumer_socket_ready,
+            "operatorPublicationCapable": valid and operator_socket_ready,
+            "consumerSocketReady": consumer_socket_ready,
+            "operatorSocketReady": operator_socket_ready,
             "contentTrust": "UNTRUSTED",
             "executionAuthority": "none",
         }
@@ -448,6 +492,8 @@ class CommonsService:
                 "recoveryNotRequired": status["recoveryRequired"] is False,
                 "separateAuthoritySockets": self.config.consumer_socket
                 != self.config.operator_socket,
+                "consumerSocketOwnedAndPrivate": status["consumerSocketReady"],
+                "operatorSocketOwnedAndPrivate": status["operatorSocketReady"],
             },
         }
 
@@ -505,6 +551,11 @@ class CommonsService:
             return _response(request_id, result=result)
         except CommonsServiceError as error:
             return _response(request_id, error=error)
+        except WorkProtocolError as error:
+            return _response(
+                request_id,
+                error=CommonsServiceError(error.code, error.message[:MAX_TEXT]),
+            )
         except (ExchangeError, StoreError, OSError, ValueError, TypeError, KeyError) as error:
             return _response(
                 request_id,
@@ -611,6 +662,26 @@ class CommonsService:
                 limit=_limit(arguments.get("limit"), 100),
                 domain=_bounded_text(arguments.get("domain"), "domain") or self.config.domain,
             )
+        if operation == "work.status":
+            _only(arguments, {"workId"})
+            work_id = _bounded_text(arguments.get("workId"), "workId", allow_none=False)
+            return self.application.work_status(work_id or "")
+        if operation == "work.list":
+            _only(arguments, {"states", "limit"})
+            states_value = arguments.get("states")
+            states: set[str] | None = None
+            if states_value is not None:
+                if not isinstance(states_value, list) or len(states_value) > len(WORK_STATES):
+                    raise CommonsServiceError("INVALID_ARGUMENTS", "states must be a bounded list")
+                states = set()
+                for item in states_value:
+                    state = _bounded_text(item, "states[]", allow_none=False)
+                    if state not in WORK_STATES:
+                        raise CommonsServiceError("INVALID_ARGUMENTS", "work state is unsupported")
+                    states.add(state)
+            return self.application.work_list(
+                states=states, limit=_limit(arguments.get("limit"), 100)
+            )
         if operation == "commons.publish":
             _only(arguments, {"record", "participant"})
             record = arguments.get("record")
@@ -628,6 +699,19 @@ class CommonsService:
                 policy=ExchangePolicy(),
                 domain=self.config.domain,
             )
+        if operation == "work.submit":
+            _only(arguments, {"request"})
+            request = arguments.get("request")
+            if not isinstance(request, Mapping):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "request must be an object")
+            return self.application.submit_work(request)
+        if operation == "work.transition":
+            _only(arguments, {"workId", "transition"})
+            work_id = _bounded_text(arguments.get("workId"), "workId", allow_none=False)
+            transition = arguments.get("transition")
+            if not isinstance(transition, Mapping):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "transition must be an object")
+            return self.application.transition_work(work_id or "", transition)
         raise CommonsServiceError("OPERATION_UNSUPPORTED", "operation is unsupported")
 
 
@@ -945,6 +1029,17 @@ class CommonsClient:
             arguments["domain"] = domain
         return self._call("commons.work", arguments)
 
+    def work_status(self, work_id: str) -> dict[str, Any]:
+        return self._call("work.status", {"workId": work_id})
+
+    def work_list(
+        self, *, states: list[str] | None = None, limit: int = 100
+    ) -> dict[str, Any]:
+        arguments: dict[str, Any] = {"limit": limit}
+        if states is not None:
+            arguments["states"] = list(states)
+        return self._call("work.list", arguments)
+
     def evidence(
         self, root: str, *, depth: int = 3, max_nodes: int = 1000
     ) -> dict[str, Any]:
@@ -976,6 +1071,16 @@ class CommonsAdminClient(CommonsClient):
 
     def recover(self) -> dict[str, Any]:
         return self._operator_call("store.recover")
+
+    def submit_work(self, request: Mapping[str, Any]) -> dict[str, Any]:
+        return self._operator_call("work.submit", {"request": dict(request)})
+
+    def transition_work(
+        self, work_id: str, transition: Mapping[str, Any]
+    ) -> dict[str, Any]:
+        return self._operator_call(
+            "work.transition", {"workId": work_id, "transition": dict(transition)}
+        )
 
 
 __all__ = [

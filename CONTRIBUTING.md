@@ -1,10 +1,12 @@
 # Contributing
 
-Install the local package and development tools, then run:
+Create an isolated development environment, install the explicit development
+extra, then run the suite through that same interpreter:
 
 ```bash
-python3 -m pip install -e '.[dev]'
-pytest -q
+python3 -m venv .venv
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -m pytest -q
 ruff check src tests scripts
 python3 scripts/validate_examples.py
 ```

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import signal
+import stat
 import sys
 import threading
 from pathlib import Path
@@ -81,8 +82,66 @@ def _run(config: CommonsServiceConfig) -> int:
     return 0
 
 
+def _path_status(path: Path) -> dict[str, object]:
+    try:
+        entry = path.lstat()
+    except OSError as error:
+        return {"path": str(path), "exists": False, "diagnostic": str(error)}
+    return {
+        "path": str(path),
+        "exists": True,
+        "kind": "socket" if stat.S_ISSOCK(entry.st_mode) else "other",
+        "mode": f"{stat.S_IMODE(entry.st_mode):04o}",
+        "ownerUid": entry.st_uid,
+    }
+
+
+def _offline_report(
+    config: CommonsServiceConfig, error: CommonsServiceError
+) -> dict[str, object]:
+    store = CommonsStore(config.store_path)
+    initialized = (
+        store.records_path.is_dir()
+        and store.events_path.is_dir()
+        and store.transactions_path.is_dir()
+        and store.ledger_path.exists()
+    )
+    verification: dict[str, object] = {"valid": False, "diagnostics": []}
+    if initialized:
+        try:
+            verification = store.verify().as_dict()
+        except (OSError, StoreError) as verify_error:
+            verification = {
+                "valid": False,
+                "diagnostics": [{"code": "STORE_UNREADABLE", "message": str(verify_error)}],
+            }
+    checks = {
+        "serviceReachable": False,
+        "storeInitialized": initialized,
+        "storeHealthy": verification.get("valid") is True,
+        "consumerSocketPresent": config.consumer_socket.exists(),
+        "operatorSocketPresent": config.operator_socket.exists(),
+    }
+    return {
+        "serviceReachable": False,
+        "error": {"code": error.code, "message": error.message},
+        "storePath": str(config.store_path),
+        "storeInitialized": initialized,
+        "verification": verification,
+        "consumerSocket": _path_status(config.consumer_socket),
+        "operatorSocket": _path_status(config.operator_socket),
+        "checks": checks,
+        "valid": False,
+        "remediation": (
+            "install/start mncs-commons.service, then rerun doctor; "
+            "do not embed a temporary service"
+        ),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    config: CommonsServiceConfig | None = None
     try:
         config = _config(args)
         if args.command == "run":
@@ -107,6 +166,9 @@ def main(argv: list[str] | None = None) -> int:
             _print(consumer_client.descriptor())
         return 0
     except CommonsServiceError as error:
+        if config is not None and args.command in {"status", "doctor", "descriptor"}:
+            _print(_offline_report(config, error))
+            return 2
         print(json.dumps({"error": error.code, "message": error.message}), file=sys.stderr)
         return 2
 
