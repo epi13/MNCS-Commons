@@ -2,8 +2,9 @@
 
 Local Harness can expose this controller-local Agent Node directly to a human
 through `elh commons` and the TUI Commons browser while continuing to mediate the
-same MCP tools for Fabric-backed remote models. Both paths use one persistent
-knowledge plane; remote inference receives no store path or MCP process authority.
+same bounded tools for Fabric-backed remote models. Both paths use the independently
+managed local service; remote inference receives no store path, service lifecycle,
+operator socket, or process authority.
 
 > **Status:** MNCS Commons 0.5 development: controller-local Agent Node over the Agent Exchange Foundation. The record protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
@@ -119,7 +120,8 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 - deterministic, bounded Commons Bundles for local interchange and idempotent import.
 - a separately versioned Agent Exchange profile for discovery, bounded publication, ingestion
   receipts, pull synchronization, and typed conversation projections; and
-- a vendor-neutral two-process interoperability scenario plus an optional local stdio MCP binding.
+- a vendor-neutral two-process interoperability scenario, an optional local stdio MCP binding,
+  and a persistent same-UID AF_UNIX service with separate consumer/operator endpoints.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:
@@ -142,11 +144,14 @@ mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
 mncs-commons bundle verify /tmp/commons.bundle.zip
 mncs-commons exchange describe
 mncs-commons exchange sync /tmp/mncs-commons --limit 100
+mncs-commons-service --store /tmp/mncs-commons --socket /tmp/commons.sock \
+  --operator-socket /tmp/commons-operator.sock run
 ```
 
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
+The hardened user-service example and installer are in [`deploy/systemd`](deploy/systemd/).
 Its Local Harness/Fabric boundary is documented in
 [`docs/FUTURE_COMMONS_OVER_FABRIC.md`](docs/FUTURE_COMMONS_OVER_FABRIC.md): the Harness
 mediates policy and tools, Fabric carries remote inference and execution evidence, and

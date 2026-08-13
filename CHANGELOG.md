@@ -2,6 +2,15 @@
 
 ## Unreleased documentation
 
+- Added a persistent, versioned local AF_UNIX service with same-UID peer checks,
+  bounded/replay-safe framing, separate consumer and operator endpoints, a read-only
+  public client, an explicit administrative client, and hardened systemd user-service
+  deployment assets.
+- Kept the service lifecycle independent from consumer clients and made corrupt-store
+  recovery an explicit operator action; ordinary status/read paths fail closed without
+  rewriting evidence.
+- Added MCP 1.x/2.x server-registration compatibility while preserving the fixed stdio
+  compatibility binding.
 - Documented direct Local Harness CLI/TUI operator access to the same
   controller-local Agent Node used by mediated remote models. No Commons package,
   record protocol, exchange profile, or node profile version changed.

@@ -1,0 +1,23 @@
+[Unit]
+Description=MNCS Commons persistent controller-local knowledge service
+Documentation=https://github.com/epi13/MNCS-Commons
+After=default.target
+
+[Service]
+Type=simple
+EnvironmentFile=-%h/.config/mncs-commons/service.env
+ExecStart=%h/.local/share/mncs-commons/venv/bin/mncs-commons-service --store %h/.local/state/mncs-commons/store --socket %h/.local/state/mncs-commons/commons.sock --operator-socket %h/.local/state/mncs-commons/commons-operator.sock --domain ${MNCS_COMMONS_DOMAIN} run
+Restart=on-failure
+RestartSec=2
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/mncs-commons
+RestrictAddressFamilies=AF_UNIX
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=default.target
