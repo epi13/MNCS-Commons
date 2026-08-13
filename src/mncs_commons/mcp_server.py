@@ -66,12 +66,12 @@ def build_server(
     policy = ExchangePolicy.public_profile() if public else ExchangePolicy()
 
     tools = [
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_describe",
             description="Describe this Commons exchange endpoint and vocabulary.",
             inputSchema={"type": "object", "properties": {}},
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_validate_record",
             description="Validate an inert Commons record without storing it.",
             inputSchema={
@@ -80,7 +80,7 @@ def build_server(
                 "properties": {"record": {"type": "object"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_publish_record",
             description=(
                 "Publish one validated record; delivery does not grant acceptance or authority."
@@ -109,7 +109,7 @@ def build_server(
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_get_record",
             description="Get one record by content digest.",
             inputSchema={
@@ -118,7 +118,7 @@ def build_server(
                 "properties": {"digest": {"type": "string"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_query",
             description="Run a bounded structured Commons query.",
             inputSchema={
@@ -138,7 +138,7 @@ def build_server(
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_sync",
             description="Read a bounded ordered ledger slice after a store-local cursor.",
             inputSchema={
@@ -149,7 +149,7 @@ def build_server(
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_conversation",
             description="Project a bounded typed record graph for presentation.",
             inputSchema={
@@ -158,12 +158,12 @@ def build_server(
                 "properties": {"root": {"type": "string"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_work_list",
             description="List bounded opportunities; results are not commands or permissions.",
             inputSchema={"type": "object", "properties": {"limit": {"type": "integer"}}},
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_evidence_trace",
             description="Trace bounded evidence lineage without inferring truth.",
             inputSchema={
@@ -265,7 +265,9 @@ def build_server(
             else:
                 raise ExchangeError("UNKNOWN_OPERATION", "operation is not supported")
             text, truncated = _bounded_result(result)
-            return CallToolResult(content=[TextContent(type="text", text=text)], isError=truncated)
+            return CallToolResult(  # type: ignore[call-arg]
+                content=[TextContent(type="text", text=text)], isError=truncated
+            )
         except (ExchangeError, StoreError, ValueError, TypeError, KeyError) as error:
             result = (
                 error.as_dict()
@@ -273,15 +275,21 @@ def build_server(
                 else {"error": "INVALID_REQUEST", "message": str(error)}
             )
             text, _ = _bounded_result(result)
-            return CallToolResult(content=[TextContent(type="text", text=text)], isError=True)
+            return CallToolResult(  # type: ignore[call-arg]
+                content=[TextContent(type="text", text=text)], isError=True
+            )
 
     resources = [
-        Resource(name="protocol", uri="mncs-commons://protocol", mimeType="application/json"),
-        Resource(
+        Resource(  # type: ignore[call-arg]
+            name="protocol", uri="mncs-commons://protocol", mimeType="application/json"
+        ),
+        Resource(  # type: ignore[call-arg]
             name="exchange", uri="mncs-commons://schema/exchange", mimeType="application/json"
         ),
-        Resource(name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"),
-        Resource(
+        Resource(  # type: ignore[call-arg]
+            name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"
+        ),
+        Resource(  # type: ignore[call-arg]
             name="capabilities", uri="mncs-commons://capabilities", mimeType="application/json"
         ),
     ]
@@ -309,10 +317,10 @@ def build_server(
     if hasattr(Server, "list_tools"):
         # MCP 1.x low-level servers use decorator registration.
         server = Server("mncs-commons", version=__version__, instructions=instructions)
-        server.list_tools()(list_tools)
-        server.call_tool()(call_tool)
-        server.list_resources()(list_resources)
-        server.read_resource()(read_resource)
+        server.list_tools()(list_tools)  # type: ignore[attr-defined]
+        server.call_tool()(call_tool)  # type: ignore[attr-defined]
+        server.list_resources()(list_resources)  # type: ignore[attr-defined]
+        server.read_resource()(read_resource)  # type: ignore[attr-defined]
         return server
 
     # MCP 2.x makes low-level handlers explicit constructor arguments. Keep
@@ -338,7 +346,9 @@ def build_server(
         contents = await read_resource(uri)
         return ReadResourceResult(
             contents=[
-                TextResourceContents(uri=uri, mimeType=item.mime_type, text=item.content)
+                TextResourceContents(  # type: ignore[call-arg]
+                    uri=uri, mimeType=item.mime_type, text=item.content
+                )
                 for item in contents
             ]
         )

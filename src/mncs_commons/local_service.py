@@ -8,6 +8,7 @@ WorkRequests remain inert data; no operation in this module executes content.
 from __future__ import annotations
 
 import errno
+import importlib
 import json
 import os
 import re
@@ -21,12 +22,12 @@ from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Self
 
 try:
-    import fcntl
+    fcntl: Any = importlib.import_module("fcntl")
 except ImportError:  # pragma: no cover - the service itself requires POSIX.
-    fcntl = None  # type: ignore[assignment]
+    fcntl = None
 
 from . import __version__
 from .application import CommonsApplication
@@ -84,6 +85,24 @@ def default_service_root() -> Path:
         if root
         else Path.home() / ".local" / "state" / "mncs-commons"
     )
+
+
+def _current_uid() -> int:
+    getuid = getattr(os, "getuid", None)
+    if not callable(getuid):
+        raise CommonsServiceError(
+            "TRANSPORT_UNSUPPORTED", "local service requires POSIX user identities"
+        )
+    return int(getuid())
+
+
+def _af_unix() -> int:
+    value = getattr(socket, "AF_UNIX", None)
+    if not isinstance(value, int):
+        raise CommonsServiceError(
+            "TRANSPORT_UNSUPPORTED", "local service requires POSIX AF_UNIX"
+        )
+    return value
 
 
 @dataclass(frozen=True, slots=True)
@@ -229,7 +248,7 @@ def _safe_socket_path(path: Path) -> None:
     parent = os.lstat(path.parent)
     if stat.S_ISLNK(parent.st_mode) or not stat.S_ISDIR(parent.st_mode):
         raise CommonsServiceError("SOCKET_PATH_UNSAFE", "socket parent is not a real directory")
-    if parent.st_uid != os.getuid():
+    if parent.st_uid != _current_uid():
         raise CommonsServiceError("SOCKET_PATH_UNSAFE", "socket parent owner is unsafe")
     os.chmod(path.parent, 0o700)
     parent = os.lstat(path.parent)
@@ -237,7 +256,7 @@ def _safe_socket_path(path: Path) -> None:
         raise CommonsServiceError("SOCKET_PATH_UNSAFE", "socket parent permissions are unsafe")
     if path.exists() or path.is_symlink():
         entry = os.lstat(path)
-        if not stat.S_ISSOCK(entry.st_mode) or entry.st_uid != os.getuid():
+        if not stat.S_ISSOCK(entry.st_mode) or entry.st_uid != _current_uid():
             raise CommonsServiceError("SOCKET_PATH_UNSAFE", "socket path is not an owned socket")
 
 
@@ -662,7 +681,7 @@ class CommonsServiceServer:
         if not path.exists():
             return
         original = os.lstat(path)
-        probe = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        probe = socket.socket(_af_unix(), socket.SOCK_STREAM)
         try:
             probe.settimeout(0.1)
             probe.connect(str(path))
@@ -684,7 +703,7 @@ class CommonsServiceServer:
                 "TRANSPORT_UNSUPPORTED", "local service requires POSIX AF_UNIX"
             )
         self._prepare(path)
-        listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        listener = socket.socket(_af_unix(), socket.SOCK_STREAM)
         try:
             listener.bind(str(path))
             os.chmod(path, 0o600)
@@ -723,7 +742,7 @@ class CommonsServiceServer:
             return False
         raw = stream.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize("3i"))
         _pid, uid, _gid = struct.unpack("3i", raw)
-        return uid == os.getuid()
+        return uid == _current_uid()
 
     def _accept_loop(self, listener: socket.socket, role: str) -> None:
         while not self._stop.is_set():
@@ -829,7 +848,7 @@ class CommonsClient:
         self.timeout = timeout
 
     @classmethod
-    def connect(cls, socket_path: Path | str, *, timeout: float = 5.0) -> CommonsClient:
+    def connect(cls, socket_path: Path | str, *, timeout: float = 5.0) -> Self:
         return cls(socket_path, timeout=timeout)
 
     def close(self) -> None:
@@ -846,17 +865,17 @@ class CommonsClient:
         request = _request(operation, arguments or {}, self.timeout)
         deadline = time.monotonic() + self.timeout
         try:
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as stream:
+            with socket.socket(_af_unix(), socket.SOCK_STREAM) as stream:
                 stream.settimeout(self.timeout)
                 stream.connect(str(self.socket_path))
                 _send_frame(stream, request, maximum=MAX_REQUEST_BYTES)
                 response = _receive_frame(
                     stream, maximum=MAX_RESPONSE_BYTES, deadline=deadline
                 )
-        except socket.timeout as error:
-            raise CommonsServiceError("TRANSPORT_TIMEOUT", "service request timed out") from error
-        except OSError as error:
-            raise CommonsServiceError("SERVICE_UNREACHABLE", str(error)) from error
+        except socket.timeout as exc:
+            raise CommonsServiceError("TRANSPORT_TIMEOUT", "service request timed out") from exc
+        except OSError as exc:
+            raise CommonsServiceError("SERVICE_UNREACHABLE", str(exc)) from exc
         if (
             set(response)
             != {"schemaVersion", "requestId", "ok", "result", "error", "servedAt"}
@@ -867,12 +886,12 @@ class CommonsClient:
             raise CommonsServiceError("PROTOCOL_INVALID", "service response is invalid")
         _timestamp(response.get("servedAt"), "servedAt")
         if response.get("ok") is not True:
-            error = response.get("error")
-            if not isinstance(error, Mapping):
+            response_error = response.get("error")
+            if not isinstance(response_error, Mapping):
                 raise CommonsServiceError("PROTOCOL_INVALID", "service error is invalid")
             raise CommonsServiceError(
-                str(error.get("code", "REQUEST_REJECTED")),
-                str(error.get("message", "service request was rejected")),
+                str(response_error.get("code", "REQUEST_REJECTED")),
+                str(response_error.get("message", "service request was rejected")),
             )
         return dict(response["result"])
 

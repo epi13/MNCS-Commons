@@ -88,23 +88,23 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "run":
             return _run(config)
         if args.command == "recover":
-            client = CommonsAdminClient.connect(
+            admin_client = CommonsAdminClient.connect(
                 config.operator_socket, timeout=config.request_timeout_seconds
             )
-            _print(client.recover())
+            _print(admin_client.recover())
             return 0
-        client = CommonsClient.connect(
+        consumer_client = CommonsClient.connect(
             config.consumer_socket, timeout=config.request_timeout_seconds
         )
         if args.command == "status":
-            _print(client.status())
+            _print(consumer_client.status())
         elif args.command == "doctor":
-            result = client.doctor()
+            result = consumer_client.doctor()
             _print(result)
             checks = result.get("checks", {})
             return 0 if isinstance(checks, dict) and all(checks.values()) else 2
         else:
-            _print(client.descriptor())
+            _print(consumer_client.descriptor())
         return 0
     except CommonsServiceError as error:
         print(json.dumps({"error": error.code, "message": error.message}), file=sys.stderr)
