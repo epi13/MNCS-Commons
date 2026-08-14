@@ -57,6 +57,18 @@ def make_record(kind: str = "Observation") -> dict:
             "rationale": "bounded evidence",
             "authorityScope": "local",
         },
+        "Epoch": {"windowStart": "2026-08-13T00:00:00Z", "workAttempted": []},
+        "EpochSummary": {
+            "epochId": "sha256:" + "a" * 64,
+            "sourceIdentities": ["sha256:" + "a" * 64],
+        },
+        "ReplicationSeries": {
+            "target": "sha256:" + "a" * 64,
+            "passes": 3,
+            "failures": 1,
+            "sourceIdentities": ["sha256:" + "a" * 64],
+        },
+        "ObservationSeries": {"sourceIdentities": ["sha256:" + "a" * 64]},
     }[kind]
     return {
         "apiVersion": "commons.mncs.dev/v0alpha1",
@@ -527,6 +539,10 @@ def test_schema_snapshot_has_all_protocol_kinds() -> None:
         "Replication",
         "Advisory",
         "Decision",
+        "Epoch",
+        "EpochSummary",
+        "ReplicationSeries",
+        "ObservationSeries",
     }
 
 

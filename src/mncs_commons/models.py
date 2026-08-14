@@ -17,6 +17,10 @@ class RecordKind(StrEnum):
     REPLICATION = "Replication"
     ADVISORY = "Advisory"
     DECISION = "Decision"
+    EPOCH = "Epoch"
+    EPOCH_SUMMARY = "EpochSummary"
+    REPLICATION_SERIES = "ReplicationSeries"
+    OBSERVATION_SERIES = "ObservationSeries"
 
 
 class LifecycleState(StrEnum):

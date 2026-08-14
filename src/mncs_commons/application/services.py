@@ -180,6 +180,48 @@ class CommonsApplication:
     def get_record(self, digest: str) -> Mapping[str, Any] | None:
         return self.require_store().get(digest)
 
+    def retention_status(self) -> dict[str, object]:
+        from ..retention import RetentionController
+
+        return RetentionController(self.require_store()).status()
+
+    def retention_plan(self, *, now: str | None = None) -> dict[str, object]:
+        from ..retention import RetentionController
+
+        return RetentionController(self.require_store()).plan(now=now)
+
+    def compact_store(self, *, confirm: bool = False, dry_run: bool = True, now: str | None = None) -> dict[str, object]:
+        from ..retention import RetentionController
+
+        return RetentionController(self.require_store()).compact(
+            confirm=confirm, dry_run=dry_run, now=now
+        )
+
+    def pin_record(self, digest: str, *, reason: str) -> dict[str, object]:
+        from ..retention import RetentionController
+
+        return RetentionController(self.require_store()).pin(digest, reason=reason)
+
+    def unpin_record(self, digest: str) -> dict[str, object]:
+        from ..retention import RetentionController
+
+        return RetentionController(self.require_store()).unpin(digest)
+
+    def list_archives(self) -> list[dict[str, object]]:
+        from ..archive import list_archives
+
+        return list_archives(self.require_store())
+
+    def verify_archive(self, archive_id: str) -> dict[str, object]:
+        from ..archive import verify_archive
+
+        return verify_archive(self.require_store(), archive_id)
+
+    def inspect_archive(self, archive_id: str) -> dict[str, object]:
+        from ..archive import inspect_archive
+
+        return inspect_archive(self.require_store(), archive_id)
+
     @staticmethod
     def describe(
         *,

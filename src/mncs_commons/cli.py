@@ -52,6 +52,27 @@ def build_parser() -> argparse.ArgumentParser:
     store_commands.add_parser("recover").add_argument("path")
     store_commands.add_parser("list").add_argument("path")
     store_commands.add_parser("stats").add_argument("path")
+    store_commands.add_parser("retention-status").add_argument("path")
+    store_commands.add_parser("retention-plan").add_argument("path")
+    compact = store_commands.add_parser("compact")
+    compact.add_argument("path")
+    compact.add_argument("--dry-run", action="store_true")
+    compact.add_argument("--confirm", action="store_true")
+    compact.add_argument("--now")
+    store_commands.add_parser("archives").add_argument("path")
+    archive_verify = store_commands.add_parser("archive-verify")
+    archive_verify.add_argument("path")
+    archive_verify.add_argument("archive_id")
+    archive_inspect = store_commands.add_parser("archive-inspect")
+    archive_inspect.add_argument("path")
+    archive_inspect.add_argument("archive_id")
+    pin = store_commands.add_parser("pin")
+    pin.add_argument("path")
+    pin.add_argument("digest")
+    pin.add_argument("--reason", required=True)
+    unpin = store_commands.add_parser("unpin")
+    unpin.add_argument("path")
+    unpin.add_argument("digest")
     seed = store_commands.add_parser("seed-public")
     seed.add_argument("path")
     seed.add_argument("--domain", default="public")
@@ -310,6 +331,35 @@ def main(argv: list[str] | None = None) -> int:
                         else 0,
                     }
                 )
+                return 0
+            if args.store_command == "retention-status":
+                _print(application.retention_status())
+                return 0
+            if args.store_command == "retention-plan":
+                _print(application.retention_plan())
+                return 0
+            if args.store_command == "compact":
+                result = application.compact_store(
+                    confirm=args.confirm,
+                    dry_run=args.dry_run or not args.confirm,
+                    now=args.now,
+                )
+                _print(result)
+                return 0
+            if args.store_command == "archives":
+                _print(application.list_archives())
+                return 0
+            if args.store_command == "archive-verify":
+                _print(application.verify_archive(args.archive_id))
+                return 0
+            if args.store_command == "archive-inspect":
+                _print(application.inspect_archive(args.archive_id))
+                return 0
+            if args.store_command == "pin":
+                _print(application.pin_record(args.digest, reason=args.reason))
+                return 0
+            if args.store_command == "unpin":
+                _print(application.unpin_record(args.digest))
                 return 0
             if args.store_command == "diagnose":
                 diagnostic = application.diagnose_store()

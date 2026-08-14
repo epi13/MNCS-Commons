@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added an information-lifecycle layer: retention classes, operator pins,
+  Epoch/EpochSummary/ReplicationSeries records, verified tar.zst archives, and
+  explicit `--confirm` hot-store compaction that keeps canonical knowledge
+  resolvable.
 - Added a durable, append-only work-memory protocol with operator-only submission and
   state transitions; optimistic digest lineage; submitted, accepted, assigned, queued,
   running, checkpointed, blocked, retrying, completed, failed, and cancelled states;

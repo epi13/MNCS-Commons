@@ -61,6 +61,10 @@ _REQUIRED_DETAILS = {
     RecordKind.REPLICATION.value: {"targetRecord", "outcome", "independence"},
     RecordKind.ADVISORY.value: {"severity", "concern"},
     RecordKind.DECISION.value: {"domain", "rationale", "authorityScope"},
+    RecordKind.EPOCH.value: {"windowStart", "workAttempted"},
+    RecordKind.EPOCH_SUMMARY.value: {"epochId", "sourceIdentities"},
+    RecordKind.REPLICATION_SERIES.value: {"target", "passes", "failures", "sourceIdentities"},
+    RecordKind.OBSERVATION_SERIES.value: {"sourceIdentities"},
 }
 
 
