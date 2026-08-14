@@ -57,6 +57,13 @@ _CONFIDENCE = {"low", "medium", "high", "unreported"}
 _REQUIRED_DETAILS = {
     RecordKind.OBSERVATION.value: {"outcome"},
     RecordKind.CLAIM.value: {"outcome", "falsifier"},
+    RecordKind.FINDING.value: {"basis", "significance"},
+    RecordKind.QUESTION.value: {"question", "answerCriteria"},
+    RecordKind.HYPOTHESIS.value: {"hypothesis", "falsifier"},
+    RecordKind.FAILED_APPROACH.value: {"approach", "failureMode", "lesson"},
+    RecordKind.HANDOFF.value: {"objective", "continuation", "authorityBoundary"},
+    RecordKind.ARTIFACT_REFERENCE.value: {"artifactIdentity", "artifactType"},
+    RecordKind.THREAD.value: {"topic", "status"},
     RecordKind.WORK_REQUEST.value: {"objective", "requestedKind", "authorityBoundary"},
     RecordKind.REPLICATION.value: {"targetRecord", "outcome", "independence"},
     RecordKind.ADVISORY.value: {"severity", "concern"},
@@ -334,6 +341,43 @@ def validate_record(value: Any) -> ValidationReport:
         ):
             diagnostics.append(
                 _error("TYPE_OBJECT", "details.independence", "must preserve correlation metadata")
+            )
+        if kind == RecordKind.FINDING.value and not isinstance(details.get("basis"), list):
+            diagnostics.append(
+                _error(
+                    "TYPE_ARRAY",
+                    "details.basis",
+                    "must be a list of source record or evidence identities",
+                )
+            )
+        if kind == RecordKind.QUESTION.value and not isinstance(
+            details.get("answerCriteria"), list
+        ):
+            diagnostics.append(
+                _error(
+                    "TYPE_ARRAY",
+                    "details.answerCriteria",
+                    "must be a list of bounded answer criteria",
+                )
+            )
+        if kind == RecordKind.HANDOFF.value and not isinstance(
+            details.get("continuation"), Mapping
+        ):
+            diagnostics.append(
+                _error(
+                    "TYPE_OBJECT",
+                    "details.continuation",
+                    "must describe bounded continuation state",
+                )
+            )
+        if kind == RecordKind.THREAD.value and details.get("status") not in {
+            "open",
+            "resolved",
+            "superseded",
+            "archived",
+        }:
+            diagnostics.append(
+                _error("INVALID_THREAD_STATUS", "details.status", "unsupported thread status")
             )
         if kind == RecordKind.WORK_REQUEST.value and "requestState" in details:
             if details["requestState"] not in {item.value for item in WorkRequestState}:

@@ -89,6 +89,15 @@ def test_service_persists_independently_and_separates_authority(tmp_path: Path) 
         returned = consumer.get(digest)
         assert returned["reproduction"]["procedure"][0]["command"] == "echo MUST_NOT_RUN"
         assert consumer.query(limit=10)["records"]
+
+        finding = json.loads(
+            (Path(__file__).parents[1] / "examples/institutional-memory-finding.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        operator.publish(finding)
+        memory = consumer.query(institutionalMemory=True, limit=10)["records"]
+        assert [item["kind"] for item in memory] == ["Finding"]
     finally:
         server.close()
 

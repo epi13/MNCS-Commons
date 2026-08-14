@@ -364,6 +364,7 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 "related": {"type": "string"},
                 "domain": {"type": "string"},
                 "openWorkRequests": {"type": "boolean"},
+                "institutionalMemory": {"type": "boolean"},
                 "needsReview": {"type": "boolean"},
                 "now": {"type": "string"},
                 "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
@@ -652,6 +653,7 @@ class CommonsService:
                 "related",
                 "domain",
                 "openWorkRequests",
+                "institutionalMemory",
                 "needsReview",
                 "now",
                 "limit",
@@ -670,6 +672,9 @@ class CommonsService:
                     domain=_bounded_text(arguments.get("domain"), "domain"),
                     open_work_requests=_boolean(
                         arguments.get("openWorkRequests"), "openWorkRequests"
+                    ),
+                    institutional_memory=_boolean(
+                        arguments.get("institutionalMemory"), "institutionalMemory"
                     ),
                     needs_review=_boolean(arguments.get("needsReview"), "needsReview"),
                     now=now,

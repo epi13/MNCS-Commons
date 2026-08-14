@@ -97,6 +97,9 @@ Commons should not replace those systems. It should let them exchange knowledge 
 7. **Human and agent participation should use the same evidence model.** Commons should not require a separate truth system for each.
 8. **Security boundaries come before convenience.** Shared coordination must not become an unrestricted instruction channel between agents.
 
+See [Institutional memory](docs/INSTITUTIONAL_MEMORY.md) for the agent publication contract and
+[the 2026-08-14 live snapshot](docs/LIVE_COMMONS_FINDINGS_2026-08-14.md) that motivated it.
+
 ## Non-goals
 
 MNCS Commons is not intended to be:
@@ -112,7 +115,9 @@ MNCS Commons is not intended to be:
 
 The surrounding MNCS projects now expose enough concrete vocabulary for a small protocol reference. Commons provides:
 
-- typed `Observation`, `Claim`, `WorkRequest`, `Replication`, `Advisory`, and `Decision` records;
+- typed evidence/coordination records plus promoted `Finding`, `Question`, `Hypothesis`,
+  `FailedApproach`, `Handoff`, `ArtifactReference`, `Thread`, and existing `Decision` institutional
+  memory records;
 - canonical JSON and SHA-256 content identities, with the digest excluded from its own projection;
 - append-only `LifecycleEvent` records and independent local trust-domain projections;
 - a hash-chained, content-addressed filesystem store with writer locking, recoverable transactions, bounded reads, and corruption diagnostics;
@@ -126,6 +131,9 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
   and a persistent same-UID AF_UNIX service with separate consumer/operator endpoints.
 - append-only durable work records with operator-only submission/state updates, optimistic
   digest lineage, and read-only status/history/list projections; Commons still never executes work.
+- an explicit institutional-memory promotion layer so reusable model/agent knowledge is extracted
+  from execution stdout instead of forcing consumers to mine raw receipts; structured queries can
+  select only this promoted layer with `institutionalMemory: true`.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:

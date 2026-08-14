@@ -132,6 +132,7 @@ def build_server(
                     "related": {"type": "string"},
                     "domain": {"type": "string"},
                     "openWorkRequests": {"type": "boolean"},
+                    "institutionalMemory": {"type": "boolean"},
                     "needsReview": {"type": "boolean"},
                     "now": {"type": "string"},
                     "limit": {"type": "integer", "minimum": 1, "maximum": 1000},
@@ -188,6 +189,7 @@ def build_server(
                 related=arguments.get("related"),
                 domain=arguments.get("domain", domain),
                 open_work_requests=bool(arguments.get("openWorkRequests", False)),
+                institutional_memory=bool(arguments.get("institutionalMemory", False)),
                 needs_review=bool(arguments.get("needsReview", False)),
                 now=parsed_now,
             )

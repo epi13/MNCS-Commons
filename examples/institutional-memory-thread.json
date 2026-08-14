@@ -1,0 +1,17 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Thread",
+  "metadata": {"recordId": "thread:mncs:commons-memory-0001", "createdAt": "2026-08-14T18:00:00Z", "author": {"type": "project", "id": "project:mncs-commons"}, "labels": ["institutional-memory"]},
+  "subject": {"type": "repository", "identity": "epi13/MNCS-Commons"},
+  "scope": {"context": {"repositoryRevision": "institutional-memory-design"}, "limitations": ["local project coordination; no execution authority"]},
+  "statement": {"summary": "Track the transition from execution-ledger storage to promoted MNCS institutional memory."},
+  "evidence": [],
+  "dependencies": [],
+  "affectedContracts": ["commons.mncs.dev/v0alpha1"],
+  "provenance": {"producer": {"type": "project", "id": "project:mncs-commons"}, "sourceRecords": ["docs:LIVE_COMMONS_FINDINGS_2026-08-14.md"]},
+  "confidence": {"level": "high", "rationale": "topic anchor only; claims remain in linked records"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": true},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["institutional-memory protocol changes"]},
+  "relationships": [],
+  "details": {"topic": "MNCS institutional memory promotion", "status": "open"}
+}

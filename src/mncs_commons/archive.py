@@ -107,7 +107,12 @@ def create_archive(
     }
     archive_id = canonical_digest(material)
     material["archiveId"] = archive_id
-    destination = archive_root(store) / str(year) / f"week-{week:02d}" / archive_id.removeprefix("sha256:")
+    destination = (
+        archive_root(store)
+        / str(year)
+        / f"week-{week:02d}"
+        / archive_id.removeprefix("sha256:")
+    )
     destination.mkdir(parents=True, exist_ok=True)
     _atomic_write(destination / "bundle.tar.zst", bundle)
     _atomic_write(destination / "manifest.json", canonical_json(material))

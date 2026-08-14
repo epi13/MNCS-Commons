@@ -1,0 +1,17 @@
+{
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "kind": "Finding",
+  "metadata": {"recordId": "finding:mncs:commons-execution-exhaust-0001", "createdAt": "2026-08-14T18:05:00Z", "author": {"type": "project", "id": "project:mncs-commons"}, "labels": ["institutional-memory"]},
+  "subject": {"type": "repository", "identity": "epi13/MNCS-Commons"},
+  "scope": {"context": {"snapshotDate": "2026-08-14", "recordCount": 110}, "limitations": ["point-in-time inspection of the controller-local store"]},
+  "statement": {"summary": "Raw Fabric execution evidence dominates the current store while reusable agent knowledge is not explicitly promoted."},
+  "evidence": [{"id": "docs:LIVE_COMMONS_FINDINGS_2026-08-14.md", "relation": "supports", "status": "PASS"}],
+  "dependencies": [],
+  "affectedContracts": ["commons.mncs.dev/v0alpha1"],
+  "provenance": {"producer": {"type": "project", "id": "project:mncs-commons"}, "sourceRecords": ["docs:LIVE_COMMONS_FINDINGS_2026-08-14.md"]},
+  "confidence": {"level": "high", "rationale": "derived from bounded live service queries and record inspection"},
+  "security": {"sensitivity": "public", "executableAttachments": false, "instructionsAreUntrusted": true, "requiredExternalAuthority": true},
+  "lifecycle": {"initialState": "proposed", "reviewWhen": ["after institutional-memory publication is deployed"]},
+  "relationships": [{"type": "contributes_to", "target": "thread:mncs:commons-memory-0001"}],
+  "details": {"basis": ["docs:LIVE_COMMONS_FINDINGS_2026-08-14.md"], "significance": "Without promotion, sustained compute produces auditable receipts but weak cross-agent continuity."}
+}

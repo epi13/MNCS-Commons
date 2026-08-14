@@ -22,6 +22,7 @@ from mncs_commons.query import (
     ScopeAssessment,
     assess_scope,
     bounded_graph,
+    records_for,
     replication_correlation,
     unresolved_relationships,
 )
@@ -33,6 +34,33 @@ def make_record(kind: str = "Observation") -> dict:
     details = {
         "Observation": {"outcome": "UNKNOWN", "measurements": {"vrAM": 12.4}},
         "Claim": {"outcome": "UNKNOWN", "falsifier": "a bounded counterexample"},
+        "Finding": {
+            "basis": ["sha256:" + "a" * 64],
+            "significance": "preserves a reusable conclusion rather than raw execution exhaust",
+        },
+        "Question": {
+            "question": "Does this behavior persist on an independent worker?",
+            "answerCriteria": ["repeat on a second worker", "attach execution evidence"],
+        },
+        "Hypothesis": {
+            "hypothesis": "the behavior is provider-specific",
+            "falsifier": "the same behavior reproduces with a different provider",
+        },
+        "FailedApproach": {
+            "approach": "reuse an expired execution assumption",
+            "failureMode": "the assumption no longer matched the worker state",
+            "lesson": "bind future attempts to explicit worker capability evidence",
+        },
+        "Handoff": {
+            "objective": "continue the bounded investigation",
+            "continuation": {"next": "test the second provider", "blockers": []},
+            "authorityBoundary": "record-only; execution requires external authority",
+        },
+        "ArtifactReference": {
+            "artifactIdentity": "sha256:" + "d" * 64,
+            "artifactType": "test-report",
+        },
+        "Thread": {"topic": "Synthetic institutional-memory thread", "status": "open"},
         "WorkRequest": {
             "objective": "replicate the observation",
             "requestedKind": "Replication",
@@ -505,6 +533,37 @@ def test_review_query_requires_explicit_core_clock(tmp_path: Path) -> None:
     ) == 1
 
 
+def test_institutional_memory_query_excludes_raw_execution_observations(tmp_path: Path) -> None:
+    store = CommonsStore(tmp_path / "memory-store")
+    store.init()
+    store.add_record(make_record("Observation"))
+    store.add_record(make_record("Finding"))
+    store.add_record(make_record("Thread"))
+
+    records = store.query(QueryFilter(institutional_memory=True))
+
+    assert [item["kind"] for item in records] == ["Finding", "Thread"]
+
+
+def test_open_work_query_uses_latest_revision_only() -> None:
+    first = make_record("WorkRequest")
+    first["metadata"]["recordId"] = "work:stale-opportunity"
+    first["metadata"]["revision"] = 1
+    first["details"]["requestState"] = "open"
+    first["contentDigest"] = "sha256:" + "1" * 64
+
+    completed = copy.deepcopy(first)
+    completed["metadata"]["revision"] = 2
+    completed["metadata"]["previousDigest"] = first["contentDigest"]
+    completed["details"]["requestState"] = "completed"
+    completed["contentDigest"] = "sha256:" + "2" * 64
+    states = {first["contentDigest"]: "proposed", completed["contentDigest"]: "proposed"}
+
+    assert records_for(
+        [first, completed], QueryFilter(open_work_requests=True), states
+    ) == []
+
+
 def test_replication_preserves_correlation_and_reproduction_is_inert() -> None:
     replication = make_record("Replication")
     assert validate_record(replication).valid
@@ -535,6 +594,13 @@ def test_schema_snapshot_has_all_protocol_kinds() -> None:
     assert set(schema["$defs"]["record"]["properties"]["kind"]["enum"]) == {
         "Observation",
         "Claim",
+        "Finding",
+        "Question",
+        "Hypothesis",
+        "FailedApproach",
+        "Handoff",
+        "ArtifactReference",
+        "Thread",
         "WorkRequest",
         "Replication",
         "Advisory",

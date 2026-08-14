@@ -7,6 +7,8 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any, Iterable, Mapping
 
+from .models import INSTITUTIONAL_MEMORY_KINDS
+
 
 class ScopeAssessment(StrEnum):
     COMPATIBLE = "compatible"
@@ -25,6 +27,7 @@ class QueryFilter:
     related: str | None = None
     domain: str | None = None
     open_work_requests: bool = False
+    institutional_memory: bool = False
     needs_review: bool = False
     now: datetime | None = None
 
@@ -114,6 +117,8 @@ def review_required(record: Mapping[str, Any], *, now: datetime | None) -> bool:
 
 
 def record_matches(record: Mapping[str, Any], query: QueryFilter, state: str | None = None) -> bool:
+    if query.institutional_memory and record.get("kind") not in INSTITUTIONAL_MEMORY_KINDS:
+        return False
     if query.kind and record.get("kind") != query.kind:
         return False
     if query.state and state != query.state:
@@ -158,9 +163,30 @@ def record_matches(record: Mapping[str, Any], query: QueryFilter, state: str | N
 def records_for(
     records: Iterable[Mapping[str, Any]], query: QueryFilter, states: Mapping[str, str]
 ) -> list[Mapping[str, Any]]:
+    values = list(records)
+    if query.open_work_requests:
+        latest: dict[str, Mapping[str, Any]] = {}
+        unrevisioned: list[Mapping[str, Any]] = []
+        for record in values:
+            if record.get("kind") != "WorkRequest":
+                continue
+            metadata = record.get("metadata")
+            record_id = metadata.get("recordId") if isinstance(metadata, Mapping) else None
+            revision = metadata.get("revision") if isinstance(metadata, Mapping) else None
+            if not isinstance(record_id, str) or not isinstance(revision, int):
+                unrevisioned.append(record)
+                continue
+            current = latest.get(record_id)
+            current_metadata = current.get("metadata") if isinstance(current, Mapping) else None
+            current_revision = (
+                current_metadata.get("revision") if isinstance(current_metadata, Mapping) else None
+            )
+            if not isinstance(current_revision, int) or revision > current_revision:
+                latest[record_id] = record
+        values = [*unrevisioned, *latest.values()]
     result = [
         record
-        for record in records
+        for record in values
         if record_matches(record, query, states.get(str(record.get("contentDigest"))))
     ]
     return sorted(
