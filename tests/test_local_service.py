@@ -67,7 +67,10 @@ def test_service_persists_independently_and_separates_authority(tmp_path: Path) 
         assert consumer.status()["storeHealthy"] is True
         assert consumer.descriptor()["operatorOperations"] == [
             "commons.publish",
+            "store.compact",
+            "store.pin",
             "store.recover",
+            "store.unpin",
             "work.submit",
             "work.transition",
         ]

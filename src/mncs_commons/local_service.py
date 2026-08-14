@@ -64,10 +64,19 @@ CONSUMER_OPERATIONS = frozenset(
         "commons.evidence",
         "work.status",
         "work.list",
+        "store.retention",
     }
 )
 OPERATOR_OPERATIONS = frozenset(
-    {"commons.publish", "store.recover", "work.submit", "work.transition"}
+    {
+        "commons.publish",
+        "store.recover",
+        "store.compact",
+        "store.pin",
+        "store.unpin",
+        "work.submit",
+        "work.transition",
+    }
 )
 ALL_OPERATIONS = CONSUMER_OPERATIONS | OPERATOR_OPERATIONS
 _REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
@@ -425,6 +434,20 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "Append an untrusted work-state revision with optimistic lineage checks.",
             {"workId": {"type": "string"}, "transition": {"type": "object"}},
         ),
+        _tool_schema(
+            "commons_retention_status",
+            "Inspect Commons hot-store retention pressure. Grants no deletion authority.",
+            {},
+        ),
+        _tool_schema(
+            "commons_compact_store",
+            "Operator compaction. Destructive replacement requires confirm=true.",
+            {
+                "confirm": {"type": "boolean"},
+                "dryRun": {"type": "boolean"},
+                "now": {"type": "string"},
+            },
+        ),
     ]
     return consumer, operator
 
@@ -586,6 +609,29 @@ class CommonsService:
         if operation == "store.recover":
             _only(arguments, set())
             return self.application.recover_store()
+        if operation == "store.retention":
+            _only(arguments, set())
+            return self.application.retention_status()
+        if operation == "store.compact":
+            _only(arguments, {"confirm", "dryRun", "now"})
+            return self.application.compact_store(
+                confirm=arguments.get("confirm") is True,
+                dry_run=arguments.get("dryRun") is not False,
+                now=arguments.get("now") if isinstance(arguments.get("now"), str) else None,
+            )
+        if operation == "store.pin":
+            _only(arguments, {"digest", "reason"})
+            digest = _bounded_text(arguments.get("digest"), "digest", allow_none=False)
+            reason = _bounded_text(arguments.get("reason"), "reason", allow_none=False)
+            if digest is None or reason is None:
+                raise CommonsServiceError("INVALID_ARGUMENTS", "pin requires digest and reason")
+            return self.application.pin_record(digest, reason=reason)
+        if operation == "store.unpin":
+            _only(arguments, {"digest"})
+            digest = _bounded_text(arguments.get("digest"), "digest", allow_none=False)
+            if digest is None:
+                raise CommonsServiceError("INVALID_ARGUMENTS", "unpin requires digest")
+            return self.application.unpin_record(digest)
         self._require_healthy()
         if operation == "commons.get":
             _only(arguments, {"digest"})

@@ -525,7 +525,69 @@ class CommonsStore:
         for item in (*self.records(), *self.events()):
             if item.get("contentDigest") == digest:
                 return item
-        return None
+        from .archive import load_archived_record
+
+        return load_archived_record(self, digest)
+
+    def add_snapshot(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        """Append an operator snapshot row. Snapshots have no content file."""
+
+        self._require_initialized()
+        with _file_lock(self.lock_path):
+            self._require_no_pending()
+            tail = self._load_tail_locked()
+            row = self._make_ledger_row("snapshot", dict(payload), tail)
+            self._append_row(row)
+            _atomic_write(
+                self.tail_path,
+                canonical_json(
+                    {
+                        "sequence": row["sequence"],
+                        "entryDigest": row["entryDigest"],
+                        "ledgerBytes": self.ledger_path.stat().st_size,
+                    }
+                ),
+            )
+            return dict(row)
+
+    def rebuild_tail(self) -> None:
+        rows = self._rows()
+        tail = self._tail_from_rows(rows)
+        _atomic_write(
+            self.tail_path,
+            canonical_json(
+                {
+                    "sequence": tail.sequence,
+                    "entryDigest": tail.entry_digest,
+                    "ledgerBytes": tail.ledger_bytes,
+                }
+            ),
+        )
+
+    def install_generation(self, staging: Path) -> None:
+        """Replace the hot ledger/content with a verified staging generation."""
+
+        import shutil
+
+        staging = Path(staging)
+        replacement = CommonsStore(staging)
+        verification = replacement.verify()
+        if not verification.valid:
+            raise StoreError("refusing to install an invalid compaction generation")
+        for name in ("ledger.jsonl", ".ledger-tail.json"):
+            source = staging / name
+            if source.exists():
+                os.replace(source, self.root / name)
+        for directory in ("records", "events"):
+            destination = self.root / directory
+            incoming = staging / directory
+            if destination.exists():
+                shutil.rmtree(destination)
+            if incoming.exists():
+                os.replace(incoming, destination)
+            else:
+                destination.mkdir(parents=True, exist_ok=True)
+        shutil.rmtree(staging, ignore_errors=True)
 
     def lifecycle(self, digest: str, domain: str | None = None) -> LifecycleView:
         record = next(
@@ -710,6 +772,12 @@ class CommonsStore:
                     Diagnostic("PAYLOAD_INVALID", path, "ledger payload must be an object")
                 )
                 continue
+            if entry_type == "snapshot":
+                if payload.get("schema_version") != "commons.mncs.dev/store-snapshot/v0alpha1":
+                    diagnostics.append(
+                        Diagnostic("SNAPSHOT_INVALID", path, "snapshot schema is unsupported")
+                    )
+                continue
             if entry_type == "record":
                 report = validate_record(payload)
                 digest = payload.get("contentDigest")
@@ -720,7 +788,7 @@ class CommonsStore:
                 referenced_events.add(str(digest))
             else:
                 diagnostics.append(
-                    Diagnostic("UNKNOWN_ENTRY_TYPE", path, "entry type must be record or event")
+                    Diagnostic("UNKNOWN_ENTRY_TYPE", path, "entry type must be record, event, or snapshot")
                 )
                 continue
             file_path = self._content_path(str(entry_type), str(digest))
