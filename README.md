@@ -1,6 +1,6 @@
 # MNCS Commons
 
-Local Harness can expose this controller-local Agent Node directly to a human
+MNCS Harness can expose this controller-local Agent Node directly to a human
 through `elh commons` and the TUI Commons browser while continuing to mediate the
 same bounded tools for Fabric-backed remote models. Both paths use the independently
 managed local service; remote inference receives no store path, service lifecycle,
@@ -164,7 +164,7 @@ The complete field semantics, identity projection, lifecycle rules, and authorit
 
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
 The hardened user-service example and installer are in [`deploy/systemd`](deploy/systemd/).
-Its Local Harness/Fabric boundary is documented in
+Its MNCS Harness/Fabric boundary is documented in
 [`docs/FUTURE_COMMONS_OVER_FABRIC.md`](docs/FUTURE_COMMONS_OVER_FABRIC.md): the Harness
 mediates policy and tools, Fabric carries remote inference and execution evidence, and
 Commons remains the controller-local persistent knowledge service.

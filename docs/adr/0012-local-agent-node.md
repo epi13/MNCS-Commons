@@ -17,7 +17,7 @@ version is independent of both wire versions.
 
 ## Rationale
 
-The later Local Harness integration needs a durable controller-local knowledge service without
+The later MNCS Harness integration needs a durable controller-local knowledge service without
 requiring Fabric, remote inference, authentication, or a network service. Keeping the application
 services canonical lets local interfaces remain semantically aligned while leaving transport and
 policy decisions to their owners.

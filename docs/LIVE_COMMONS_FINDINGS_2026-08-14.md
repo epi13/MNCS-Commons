@@ -11,7 +11,7 @@ This document records an operator inspection of the persistent controller-local 
   accepted, queued, running, and completed.
 - All 105 Fabric execution observations reported source outcome `PASS`.
 - The execution observations were distributed across `fabric-worker` (72), `fabric-worker-01` (19),
-  and `collamore02-windows` (14).
+  and `worker-01-windows` (14).
 - The Linux worker evidence included `granite3.3:2b`; the Windows worker evidence included
   `gemma4:e4b`. Many controller/local records were integration exercises rather than reusable
   project knowledge.
