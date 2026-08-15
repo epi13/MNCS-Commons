@@ -416,3 +416,29 @@ def test_offline_doctor_reports_store_and_socket_diagnostics(
     assert report["verification"]["valid"] is True
     assert report["checks"]["consumerSocketPresent"] is False
     assert "do not embed a temporary service" in report["remediation"]
+
+
+def test_service_advertises_capability_classes_and_keeps_admin_operator_only(
+    tmp_path: Path,
+) -> None:
+    server, consumer, operator = _start(tmp_path)
+    try:
+        descriptor = consumer.descriptor()
+        consumer_names = {item["function"]["name"] for item in descriptor["consumerTools"]}
+        operator_names = {item["function"]["name"] for item in descriptor["operatorTools"]}
+        assert "commons_work_list" in consumer_names
+        assert "commons_publish_record" in operator_names
+        assert "commons_compact_store" in operator_names
+        assert "commons_compact_store" not in consumer_names
+        capabilities = {
+            item["function"]["name"]: item["mncs_commons"]["capability"]
+            for item in [*descriptor["consumerTools"], *descriptor["operatorTools"]]
+        }
+        assert capabilities["commons_work_list"] == "consumer-read"
+        assert capabilities["commons_publish_record"] == "model-publication"
+        assert capabilities["commons_compact_store"] == "operator-admin"
+        assert descriptor["toolCapabilities"]["operator-admin"].startswith("operator")
+        assert descriptor["executionAuthority"] == "none"
+        del operator
+    finally:
+        server.close()
