@@ -190,7 +190,9 @@ class CommonsApplication:
 
         return RetentionController(self.require_store()).plan(now=now)
 
-    def compact_store(self, *, confirm: bool = False, dry_run: bool = True, now: str | None = None) -> dict[str, object]:
+    def compact_store(
+        self, *, confirm: bool = False, dry_run: bool = True, now: str | None = None
+    ) -> dict[str, object]:
         from ..retention import RetentionController
 
         return RetentionController(self.require_store()).compact(

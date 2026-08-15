@@ -788,7 +788,11 @@ class CommonsStore:
                 referenced_events.add(str(digest))
             else:
                 diagnostics.append(
-                    Diagnostic("UNKNOWN_ENTRY_TYPE", path, "entry type must be record, event, or snapshot")
+                    Diagnostic(
+                        "UNKNOWN_ENTRY_TYPE",
+                        path,
+                        "entry type must be record, event, or snapshot",
+                    )
                 )
                 continue
             file_path = self._content_path(str(entry_type), str(digest))

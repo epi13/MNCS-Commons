@@ -110,6 +110,7 @@ def build_parser() -> argparse.ArgumentParser:
     query.add_argument("--contract")
     query.add_argument("--artifact")
     query.add_argument("--related")
+    query.add_argument("--institutional-memory", action="store_true")
     query.add_argument("--domain")
     query.add_argument("--open-work-requests", action="store_true")
     query.add_argument("--needs-review", action="store_true")
@@ -510,6 +511,7 @@ def main(argv: list[str] | None = None) -> int:
                     related=args.related,
                     domain=args.domain,
                     open_work_requests=args.open_work_requests,
+                    institutional_memory=args.institutional_memory,
                     needs_review=args.needs_review,
                     now=query_now,
                 )

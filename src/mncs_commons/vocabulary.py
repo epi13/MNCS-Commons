@@ -4,7 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
+from .models import (
+    INSTITUTIONAL_MEMORY_KINDS,
+    LifecycleState,
+    RecordKind,
+    RelationType,
+    ResultStatus,
+    WorkRequestState,
+)
 from .validation import _CONFIDENCE, _SENSITIVITIES
 
 VOCABULARY_VERSION = "commons.mncs.dev/vocabulary/v0alpha1"
@@ -60,6 +67,12 @@ def vocabulary() -> dict[str, Any]:
         "confidenceLevels": sorted(_CONFIDENCE),
         "recommendedSubjectTypes": list(SUBJECT_TYPES),
         "recommendedScopeDimensions": list(SCOPE_DIMENSIONS),
+        "institutionalMemory": {
+            "recordKinds": sorted(INSTITUTIONAL_MEMORY_KINDS),
+            "threadAnchorKind": RecordKind.THREAD.value,
+            "promotionRule": "promote reusable knowledge; do not mirror raw execution exhaust",
+            "queryFlag": "institutionalMemory",
+        },
         "extensionRule": {
             "required": True,
             "form": "namespaced-term",

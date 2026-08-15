@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -12,7 +10,6 @@ from mncs_commons.epochs import make_epoch_record, make_epoch_summary, make_repl
 from mncs_commons.retention import RetentionController, classify_record
 from mncs_commons.store import CommonsStore, StoreError
 from mncs_commons.validation import validate_record
-
 from tests.test_commons import make_record
 
 
@@ -87,7 +84,9 @@ def test_dry_run_does_not_mutate(tmp_path: Path) -> None:
     store.init()
     store.add_record(_dated(make_record("Observation"), "2026-01-01T00:00:00Z"))
     before = store.storage_usage()["ledgerEntries"]
-    result = RetentionController(store).compact(dry_run=True, confirm=False, now="2026-08-01T00:00:00Z")
+    result = RetentionController(store).compact(
+        dry_run=True, confirm=False, now="2026-08-01T00:00:00Z"
+    )
     assert result["applied"] is False
     assert store.storage_usage()["ledgerEntries"] == before
 
@@ -98,7 +97,9 @@ def test_compaction_requires_confirm_and_preserves_canonical(tmp_path: Path) -> 
     old = store.add_record(_dated(make_record("Observation"), "2026-01-01T00:00:00Z"))
     claim = make_record("Claim")
     stored_claim = store.add_record(claim)
-    result = RetentionController(store).compact(dry_run=False, confirm=True, now="2026-08-01T00:00:00Z")
+    result = RetentionController(store).compact(
+        dry_run=False, confirm=True, now="2026-08-01T00:00:00Z"
+    )
     assert result["applied"] is True
     assert store.get(stored_claim.content_digest) is not None
     assert store.get(old.content_digest) is not None  # archived but resolvable
@@ -161,7 +162,9 @@ def test_synthetic_workload_reduces_hot_set_and_deduplicates(tmp_path: Path) -> 
         notable_failures=[],
     ))
     before = store.storage_usage()
-    result = RetentionController(store).compact(dry_run=False, confirm=True, now="2026-08-01T00:00:00Z")
+    result = RetentionController(store).compact(
+        dry_run=False, confirm=True, now="2026-08-01T00:00:00Z"
+    )
     after = store.storage_usage()
     assert after["ledgerEntries"] < before["ledgerEntries"]
     assert after["contentFiles"] < before["contentFiles"]

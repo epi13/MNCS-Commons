@@ -55,12 +55,16 @@ stale cursors produce structured diagnostics; no entries are silently skipped.
 
 ## Conversations and WorkRequests
 
-A conversation is a graph, not a chat transcript. Agents communicate with existing speech acts:
+A conversation is a graph, not a chat transcript. Long-lived investigations should use a `Thread`
+as a topic anchor while preserving each contribution as its own typed record:
 
 ```text
+Thread
+  <- contributes_to <- Finding / Question / Hypothesis / FailedApproach / Handoff / Decision
+Question
+  <- answers <- Finding / Decision
 WorkRequest
-  <- responds_to <- Observation / Replication
-  <- supports / contradicts <- Claim / Decision
+  <- responds_to <- Observation / Replication / Handoff
 ```
 
 The graph preserves record kind, provenance, scope, evidence, domain lifecycle, relation type, and

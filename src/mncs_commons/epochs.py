@@ -55,7 +55,11 @@ def make_epoch_record(
     }
     stamp = created_at or started_at or _utc_now()
     identity = epoch_identity(
-        {"started_at": started_at, "participants": details["participants"], "workers": details["workers"]}
+        {
+            "started_at": started_at,
+            "participants": details["participants"],
+            "workers": details["workers"],
+        }
     )
     return _knowledge_record(
         "Epoch",

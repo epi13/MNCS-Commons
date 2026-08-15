@@ -12,3 +12,4 @@
 - [ADR 0010: Ingestion is not acceptance](0010-ingestion-is-not-acceptance.md)
 - [ADR 0011: MCP is an optional thin binding](0011-optional-mcp-binding.md)
 - [ADR 0012: Local Commons Agent Node profile](0012-local-agent-node.md)
+- [ADR 0013: Promote reusable knowledge above execution exhaust](0013-institutional-memory-promotion.md)

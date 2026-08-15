@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added an explicit institutional-memory promotion layer with `Finding`, `Question`,
+  `Hypothesis`, `FailedApproach`, `Handoff`, `ArtifactReference`, and `Thread` records; typed
+  continuity relationships; an `institutionalMemory` query filter; agent publication guidance; and
+  canonical retention for promoted knowledge while raw execution observations remain evidence.
+- Fixed open-work opportunity queries so revisioned WorkRequests are evaluated only at their latest
+  revision instead of resurfacing historical nonterminal states after completion.
 - Added an information-lifecycle layer: retention classes, operator pins,
   Epoch/EpochSummary/ReplicationSeries records, verified tar.zst archives, and
   explicit `--confirm` hot-store compaction that keeps canonical knowledge

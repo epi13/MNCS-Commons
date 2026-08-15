@@ -335,6 +335,7 @@ class PublicNodeApplication:
                 related=value.get("related"),
                 domain=value.get("domain"),
                 open_work_requests=bool(value.get("openWorkRequests", False)),
+                institutional_memory=bool(value.get("institutionalMemory", False)),
                 needs_review=bool(value.get("needsReview", False)),
                 now=parsed_now,
             )
@@ -695,7 +696,7 @@ def server_main(argv: Sequence[str] | None = None) -> int:
     )
     config.validate()
     try:
-        import uvicorn
+        import uvicorn  # type: ignore[import-not-found]
     except ImportError as error:
         raise SystemExit("server support requires the optional 'server' extra") from error
     uvicorn.run(

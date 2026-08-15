@@ -7,7 +7,7 @@ execution authority and never deletes because a consumer asked.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
 
 from .canonical import canonical_json
@@ -20,12 +20,18 @@ RETENTION_CLASSES = ("canonical", "evidence", "diagnostic", "ephemeral")
 PROTECTED_KINDS = {
     RecordKind.CLAIM.value,
     RecordKind.DECISION.value,
+    RecordKind.FINDING.value,
+    RecordKind.QUESTION.value,
+    RecordKind.HYPOTHESIS.value,
+    RecordKind.FAILED_APPROACH.value,
+    RecordKind.HANDOFF.value,
+    RecordKind.THREAD.value,
     "Epoch",
     "EpochSummary",
     "ReplicationSeries",
     "ObservationSeries",
 }
-DEFAULT_POLICY = {
+DEFAULT_POLICY: dict[str, Any] = {
     "schema_version": RETENTION_POLICY_SCHEMA,
     "soft_ledger_bytes": 32 * 1024 * 1024,
     "archive_pressure_bytes": 40 * 1024 * 1024,
@@ -66,7 +72,8 @@ def classify_record(record: Mapping[str, Any]) -> str:
     kind = str(record.get("kind") or "")
     if kind in PROTECTED_KINDS:
         return "canonical"
-    details = record.get("details") if isinstance(record.get("details"), Mapping) else {}
+    details_value = record.get("details")
+    details: Mapping[str, Any] = details_value if isinstance(details_value, Mapping) else {}
     if kind == RecordKind.WORK_REQUEST.value:
         state = str(details.get("requestState") or "open")
         if state in {"open", "claimed", "responded"}:
@@ -74,6 +81,8 @@ def classify_record(record: Mapping[str, Any]) -> str:
         return "diagnostic"
     if kind == RecordKind.ADVISORY.value:
         return "diagnostic"
+    if kind == RecordKind.ARTIFACT_REFERENCE.value:
+        return "evidence"
     if kind == RecordKind.REPLICATION.value:
         outcome = str(details.get("outcome") or "")
         if outcome == "FAIL":
@@ -83,7 +92,11 @@ def classify_record(record: Mapping[str, Any]) -> str:
         outcome = str(details.get("outcome") or "")
         if outcome in {"FAIL", "UNKNOWN"}:
             return "diagnostic"
-        labels = (record.get("metadata") or {}).get("labels") if isinstance(record.get("metadata"), Mapping) else []
+        labels = (
+            (record.get("metadata") or {}).get("labels")
+            if isinstance(record.get("metadata"), Mapping)
+            else []
+        )
         if isinstance(labels, list) and "canonical" in labels:
             return "canonical"
         if isinstance(labels, list) and "evidence" in labels:
@@ -98,7 +111,10 @@ def referenced_digests(record: Mapping[str, Any]) -> set[str]:
         value = record.get(key)
         if isinstance(value, str) and value.startswith("sha256:"):
             found.add(value)
-    provenance = record.get("provenance") if isinstance(record.get("provenance"), Mapping) else {}
+    provenance_value = record.get("provenance")
+    provenance: Mapping[str, Any] = (
+        provenance_value if isinstance(provenance_value, Mapping) else {}
+    )
     for item in provenance.get("sourceRecords") or []:
         if isinstance(item, str) and item.startswith("sha256:"):
             found.add(item)
@@ -110,8 +126,15 @@ def referenced_digests(record: Mapping[str, Any]) -> set[str]:
             digest = relation.get("contentDigest")
             if isinstance(digest, str) and digest.startswith("sha256:"):
                 found.add(digest)
-    details = record.get("details") if isinstance(record.get("details"), Mapping) else {}
-    for key in ("targetRecord", "epochId", "sourceIdentities", "representativeEvidence", "notableFailures"):
+    details_value = record.get("details")
+    details: Mapping[str, Any] = details_value if isinstance(details_value, Mapping) else {}
+    for key in (
+        "targetRecord",
+        "epochId",
+        "sourceIdentities",
+        "representativeEvidence",
+        "notableFailures",
+    ):
         value = details.get(key)
         if isinstance(value, str) and value.startswith("sha256:"):
             found.add(value)
@@ -119,7 +142,8 @@ def referenced_digests(record: Mapping[str, Any]) -> set[str]:
             for item in value:
                 if isinstance(item, str) and item.startswith("sha256:"):
                     found.add(item)
-    evidence = record.get("evidence") if isinstance(record.get("evidence"), list) else []
+    evidence_value = record.get("evidence")
+    evidence: list[Any] = evidence_value if isinstance(evidence_value, list) else []
     for item in evidence:
         if isinstance(item, Mapping):
             for key in ("id", "contentDigest"):
@@ -223,7 +247,10 @@ class RetentionController:
         if not digest.startswith("sha256:"):
             raise StoreError("pin target must be a content digest")
         pins = self.pins()
-        pins[digest] = {"pinnedAt": (now or _now().isoformat().replace("+00:00", "Z")), "reason": reason}
+        pins[digest] = {
+            "pinnedAt": (now or _now().isoformat().replace("+00:00", "Z")),
+            "reason": reason,
+        }
         _atomic_write(
             self.pins_path,
             canonical_json({"schema_version": RETENTION_PINS_SCHEMA, "pins": pins}),
@@ -322,7 +349,9 @@ class RetentionController:
             "executionAuthority": "none",
         }
 
-    def compact(self, *, confirm: bool = False, dry_run: bool = True, now: str | None = None) -> dict[str, Any]:
+    def compact(
+        self, *, confirm: bool = False, dry_run: bool = True, now: str | None = None
+    ) -> dict[str, Any]:
         plan = self.plan(now=now)
         if dry_run or not confirm:
             return {**plan, "action": "dry-run", "applied": False}
