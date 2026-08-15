@@ -10,7 +10,9 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
 authors = [{ name = "MNCS Commons contributors" }]
-dependencies = []
+dependencies = [
+  "zstandard>=0.22; python_version < '3.14'",
+]
 
 [project.optional-dependencies]
 yaml = ["PyYAML>=6.0"]

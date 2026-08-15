@@ -13,7 +13,21 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
-from compression import zstd  # type: ignore[import-not-found]
+try:
+    from compression import zstd  # type: ignore[import-not-found]
+except ModuleNotFoundError:  # Python < 3.14
+    import zstandard as _zstandard
+
+    class _ZstdModule:
+        @staticmethod
+        def compress(data: bytes) -> bytes:
+            return _zstandard.ZstdCompressor().compress(data)
+
+        @staticmethod
+        def decompress(data: bytes) -> bytes:
+            return _zstandard.ZstdDecompressor().decompress(data)
+
+    zstd = _ZstdModule()
 
 from .canonical import canonical_digest, canonical_json
 from .store import CommonsStore, StoreError, _atomic_write
