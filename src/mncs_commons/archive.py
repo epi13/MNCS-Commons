@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
-from compression import zstd
+from compression import zstd  # type: ignore[import-not-found]
 
 from .canonical import canonical_digest, canonical_json
 from .store import CommonsStore, StoreError, _atomic_write
