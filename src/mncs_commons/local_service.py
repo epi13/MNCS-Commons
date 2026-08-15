@@ -326,13 +326,25 @@ def _only(arguments: Mapping[str, Any], allowed: set[str]) -> None:
         raise CommonsServiceError("INVALID_ARGUMENTS", "unexpected arguments")
 
 
-def _tool_schema(name: str, description: str, properties: Mapping[str, Any]) -> dict[str, Any]:
+def _tool_schema(
+    name: str,
+    description: str,
+    properties: Mapping[str, Any],
+    *,
+    capability: str = "consumer-read",
+    authority: str = "consumer",
+) -> dict[str, Any]:
     return {
         "type": "function",
         "function": {
             "name": name,
             "description": description,
             "parameters": {"type": "object", "properties": dict(properties)},
+        },
+        "mncs_commons": {
+            "capability": capability,
+            "authority": authority,
+            "executionAuthority": "none",
         },
     }
 
@@ -424,21 +436,29 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "commons_publish_record",
             "Publish one record; delivery grants no acceptance or authority.",
             {"record": {"type": "object"}, "participant": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
         ),
         _tool_schema(
             "commons_submit_work_record",
             "Persist an inert work request without accepting or dispatching execution.",
             {"request": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
         ),
         _tool_schema(
             "commons_transition_work_record",
             "Append an untrusted work-state revision with optimistic lineage checks.",
             {"workId": {"type": "string"}, "transition": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
         ),
         _tool_schema(
             "commons_retention_status",
             "Inspect Commons hot-store retention pressure. Grants no deletion authority.",
             {},
+            capability="operator-admin",
+            authority="operator",
         ),
         _tool_schema(
             "commons_compact_store",
@@ -448,6 +468,8 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 "dryRun": {"type": "boolean"},
                 "now": {"type": "string"},
             },
+            capability="operator-admin",
+            authority="operator",
         ),
     ]
     return consumer, operator
@@ -532,6 +554,11 @@ class CommonsService:
             "operatorOperations": sorted(OPERATOR_OPERATIONS),
             "consumerTools": consumer_tools,
             "operatorTools": operator_tools,
+            "toolCapabilities": {
+                "consumer-read": "discover, read, and query inert Commons knowledge",
+                "model-publication": "publish permitted inert records without execution authority",
+                "operator-admin": "operator retention/compaction; never model-facing",
+            },
             "publicationMeaning": "delivery-only",
             "contentTrust": "UNTRUSTED",
             "executionAuthority": "none",

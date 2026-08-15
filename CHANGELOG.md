@@ -28,7 +28,7 @@
   rewriting evidence.
 - Added MCP 1.x/2.x server-registration compatibility while preserving the fixed stdio
   compatibility binding.
-- Documented direct Local Harness CLI/TUI operator access to the same
+- Documented direct MNCS Harness CLI/TUI operator access to the same
   controller-local Agent Node used by mediated remote models. No Commons package,
   record protocol, exchange profile, or node profile version changed.
 
@@ -38,7 +38,7 @@
   executable so controller harnesses can launch the fixed local-agent MCP seam.
 - Accepted the current Fabric execution `started_at` timestamp while retaining
   legacy `created_at` compatibility in inert Observation translation.
-- Added controller-mediated Local Harness integration guidance without changing
+- Added controller-mediated MNCS Harness integration guidance without changing
   the record, exchange, or local-agent profile wire versions.
 
 ## 0.5.0.dev0

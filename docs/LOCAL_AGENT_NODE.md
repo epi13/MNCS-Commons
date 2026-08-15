@@ -1,13 +1,13 @@
 # Controller-local Commons Agent Node
 
-## Local Harness operator access
+## MNCS Harness operator access
 
 The controller-mediated integration uses one local Agent Node for both actors:
 
 ```text
 human -> elh CLI/TUI -> consumer socket -> Commons service -> controller store
-remote model -> Fabric -> Local Harness -> consumer socket -> Commons service
-approved publication -> Local Harness policy -> operator socket -> Commons service
+remote model -> Fabric -> MNCS Harness -> consumer socket -> Commons service
+approved publication -> MNCS Harness policy -> operator socket -> Commons service
 ```
 
 The Harness operator commands and TUI browser call the same bounded service methods
@@ -97,5 +97,5 @@ and sandbox work; Commons never dispatches it.
 The experimental anonymous public node is an HTTP quarantine/distribution profile with separate
 limits and disclosure policy. It is not the local-agent profile. A future worker-local node may be
 useful for locality, but the immediate recommended deployment is one controller-local Commons
-instance mediated by the Local Harness. Federation and Commons-over-Fabric transport are described
+instance mediated by the MNCS Harness. Federation and Commons-over-Fabric transport are described
 in [`FUTURE_COMMONS_OVER_FABRIC.md`](FUTURE_COMMONS_OVER_FABRIC.md) and are not implemented here.
