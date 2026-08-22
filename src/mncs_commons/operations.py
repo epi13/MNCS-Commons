@@ -35,6 +35,7 @@ _OPERATIONS = (
     OperationSpec("records.query", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("records.sync", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("conversation.get", True, True, True, True, 4 * 1024 * 1024),
+    OperationSpec("experiment.get", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("work.list", True, True, True, True, 2 * 1024 * 1024),
     OperationSpec(
         "lifecycle.get", True, True, True, True, 512 * 1024, ("python-api", "cli")

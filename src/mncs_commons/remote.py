@@ -127,5 +127,14 @@ class RemoteClient:
             {"root": root, "depth": depth, "maxNodes": max_nodes},
         )
 
+    def experiment(
+        self, experiment_id: str, depth: int = 3, max_nodes: int = 100
+    ) -> dict[str, Any]:
+        return self._request(
+            "POST",
+            "/exchange/v0alpha1/experiment",
+            {"experimentId": experiment_id, "depth": depth, "maxNodes": max_nodes},
+        )
+
 
 __all__ = ["RemoteClient", "EXCHANGE_VERSION"]

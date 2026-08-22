@@ -1,6 +1,6 @@
 # MNCS Family Record Spine
 
-Status: architecture proposal / non-normative
+Status: bootstrap spine implemented / non-normative semantics
 
 ## Purpose
 
@@ -40,9 +40,14 @@ Commons is the semantic index and graph, not a universal blob store.
 
 ## Producer-neutral Concept Experiment envelope
 
-The first cross-family record to exercise the spine should be a producer-neutral **Concept Experiment** envelope. It identifies a bounded study without assigning scientific authority to a future system that may not yet be running.
+The bootstrap implementation provides a producer-neutral `ConceptExperiment` record through
+`mncs_commons.family.make_concept_experiment_record`. It uses the existing canonical identity,
+append-only store, lifecycle, bundle, query, MCP, CLI, local-service, and HTTP surfaces; there is
+no shadow experiment database. Exact external records use
+`commons.mncs.dev/producer-reference/v0alpha1` with producer, record kind, native schema version,
+stable ID, optional content digest/artifact location, and bounded scope.
 
-Illustrative shape:
+Implemented shape (inside the normal Commons record envelope):
 
 ```text
 ConceptExperiment {
@@ -171,6 +176,12 @@ Each upper layer references exact lower-layer identities. A consumer can therefo
 7. MNCDS: define how eligible Concept Experiments and their evidence may be bound into governed development records.
 8. MNCS: define how downstream assurance cases reference MNCDS and evidence identities without absorbing producer semantics.
 9. Atlas: document the family-level flow and ownership map.
+
+The bootstrap obligations for Commons, Control, Harness, Fabric, Forge, and MNCS Language are now
+implemented. MNEL, RAVEL, MNCDS, MNCS assurance projection, federation, and Atlas-wide presentation
+remain future architecture. `scripts/exercise_family_record_spine.py` exercises the implemented
+Control → Harness → Language → Fabric → Forge → Commons path and verifies that `UNKNOWN` remains
+exact in the producer records and the reconstructed graph.
 
 ## First end-to-end study
 

@@ -19,7 +19,7 @@ from typing import Any, BinaryIO, Iterator, Mapping, Sequence
 from .canonical import canonical_digest, canonical_json
 from .lifecycle import LifecycleView, derive_lifecycle, domain_views, validate_transition
 from .models import Diagnostic, LifecycleEvent, Record
-from .query import QueryFilter, record_matches, review_required, state_matches
+from .query import QueryFilter, records_for, review_required, state_matches
 from .semantic import record_semantic_diagnostics
 from .validation import validate_event, validate_record
 
@@ -606,29 +606,30 @@ class CommonsStore:
         return domain_views(record, self.events())
 
     def query(self, query: QueryFilter) -> list[Mapping[str, Any]]:
-        result: list[Mapping[str, Any]] = []
-        for record in self.records():
+        records = self.records()
+        states: dict[str, str] = {}
+        domain_states: dict[str, Mapping[str, str]] = {}
+        for record in records:
             digest = str(record.get("contentDigest"))
             view = self.lifecycle(digest, domain=query.domain)
             domain_state_map = dict(view.domain_states)
-            match_state = (
+            states[digest] = (
                 query.state
                 if query.state and not query.domain and query.state in domain_state_map.values()
                 else view.current_state
             )
-            if record_matches(record, query, match_state) and state_matches(
-                view.current_state, query, domain_state_map
-            ):
-                if query.needs_review and not review_required(record, now=query.now):
-                    continue
-                result.append(record)
-        return sorted(
-            result,
-            key=lambda item: (
-                str(item.get("metadata", {}).get("createdAt", "")),
-                str(item.get("contentDigest", "")),
-            ),
-        )
+            domain_states[digest] = domain_state_map
+        result = records_for(records, query, states)
+        return [
+            record
+            for record in result
+            if state_matches(
+                self.lifecycle(str(record.get("contentDigest")), domain=query.domain).current_state,
+                query,
+                domain_states[str(record.get("contentDigest"))],
+            )
+            and (not query.needs_review or review_required(record, now=query.now))
+        ]
 
     def _verify_journal(self, transaction: Path) -> dict[str, Any]:
         journal_path = transaction / "journal.json"

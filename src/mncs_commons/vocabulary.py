@@ -24,6 +24,7 @@ SUBJECT_TYPES = (
     "execution-bundle",
     "execution-receipt",
     "experiment",
+    "failure",
     "HIR",
     "obligation",
     "provider",
@@ -50,6 +51,7 @@ SCOPE_DIMENSIONS = (
     "repositoryRevision",
     "semanticGraph",
     "target",
+    "backend",
 )
 
 

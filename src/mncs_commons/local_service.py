@@ -60,6 +60,7 @@ CONSUMER_OPERATIONS = frozenset(
         "commons.query",
         "commons.sync",
         "commons.conversation",
+        "commons.experiment",
         "commons.work",
         "commons.evidence",
         "work.status",
@@ -378,6 +379,12 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 "openWorkRequests": {"type": "boolean"},
                 "institutionalMemory": {"type": "boolean"},
                 "needsReview": {"type": "boolean"},
+                "concept": {"type": "string"},
+                "languageProfile": {"type": "string"},
+                "backend": {"type": "string"},
+                "participant": {"type": "string"},
+                "failureClassification": {"type": "string"},
+                "experimentStatus": {"type": "string"},
                 "now": {"type": "string"},
                 "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
             },
@@ -413,6 +420,15 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "Trace bounded evidence lineage without inferring truth.",
             {
                 "root": {"type": "string"},
+                "depth": {"type": "integer", "minimum": 0, "maximum": 8},
+                "maxNodes": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
+            },
+        ),
+        _tool_schema(
+            "commons_experiment",
+            "Project a bounded Concept Experiment graph without changing producer semantics.",
+            {
+                "experimentId": {"type": "string"},
                 "depth": {"type": "integer", "minimum": 0, "maximum": 8},
                 "maxNodes": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
             },
@@ -684,6 +700,12 @@ class CommonsService:
                 "needsReview",
                 "now",
                 "limit",
+                "concept",
+                "languageProfile",
+                "backend",
+                "participant",
+                "failureClassification",
+                "experimentStatus",
             }
             _only(arguments, allowed)
             now_value = _bounded_text(arguments.get("now"), "now")
@@ -705,6 +727,18 @@ class CommonsService:
                     ),
                     needs_review=_boolean(arguments.get("needsReview"), "needsReview"),
                     now=now,
+                    concept=_bounded_text(arguments.get("concept"), "concept"),
+                    language_profile=_bounded_text(
+                        arguments.get("languageProfile"), "languageProfile"
+                    ),
+                    backend=_bounded_text(arguments.get("backend"), "backend"),
+                    participant=_bounded_text(arguments.get("participant"), "participant"),
+                    failure_classification=_bounded_text(
+                        arguments.get("failureClassification"), "failureClassification"
+                    ),
+                    experiment_status=_bounded_text(
+                        arguments.get("experimentStatus"), "experimentStatus"
+                    ),
                 )
             )
             limit = _limit(arguments.get("limit"), 100)
@@ -734,6 +768,16 @@ class CommonsService:
             if operation == "commons.conversation":
                 return self.application.conversation(root or "", depth=depth, max_nodes=max_nodes)
             return self.application.trace_evidence(root or "", depth=depth, max_nodes=max_nodes)
+        if operation == "commons.experiment":
+            _only(arguments, {"experimentId", "depth", "maxNodes"})
+            experiment_id = _bounded_text(
+                arguments.get("experimentId"), "experimentId", allow_none=False
+            )
+            return self.application.experiment(
+                experiment_id or "",
+                depth=_bounded_integer(arguments.get("depth"), "depth", 3, 8),
+                max_nodes=_limit(arguments.get("maxNodes"), 1000),
+            )
         if operation == "commons.work":
             _only(arguments, {"limit", "domain"})
             return self.application.work_queue(
@@ -1099,6 +1143,14 @@ class CommonsClient:
     ) -> dict[str, Any]:
         return self._call(
             "commons.conversation", {"root": root, "depth": depth, "maxNodes": max_nodes}
+        )
+
+    def experiment(
+        self, experiment_id: str, *, depth: int = 3, max_nodes: int = 1000
+    ) -> dict[str, Any]:
+        return self._call(
+            "commons.experiment",
+            {"experimentId": experiment_id, "depth": depth, "maxNodes": max_nodes},
         )
 
     def work(self, *, limit: int = 100, domain: str | None = None) -> dict[str, Any]:
