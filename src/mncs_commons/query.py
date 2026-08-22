@@ -429,11 +429,17 @@ def concept_experiment_graph(
                 direct.setdefault(str(entry.get("relation")), []).append(entry["reference"])
         for values_for_relation in direct.values():
             values_for_relation.sort(key=lambda item: str(item.get("stableId", "")))
-    related_records = [
-        record
-        for record in graph["records"]
-        if record.get("contentDigest") != experiment.get("contentDigest")
-    ]
+    graph_records = graph.get("records")
+    related_records = (
+        [
+            record
+            for record in graph_records
+            if isinstance(record, Mapping)
+            and record.get("contentDigest") != experiment.get("contentDigest")
+        ]
+        if isinstance(graph_records, list)
+        else []
+    )
     revisions = sorted(
         candidates,
         key=lambda item: int(item.get("metadata", {}).get("revision", 1)),

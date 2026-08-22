@@ -8,7 +8,7 @@
       "schemaVersion": "mncs-control.concept-experiment-manifest.v0.1",
       "sourceRepository": "mncs-control-mcp",
       "sourcePath": "src/mncs_control_mcp/experiments.py",
-      "sourceFingerprint": "sha256:f8b3a2fee580ef6a44995e9f8fba070f1a9b4c41be309683dcbf7eac83303a5c",
+      "sourceFingerprint": "sha256:102bd8b3187bb41a6c5caa736e0dc7d49ed1066593203f72afca677c9447921a",
       "authority": "durable coordination intent and lifecycle only"
     },
     {
@@ -17,7 +17,7 @@
       "schemaVersion": "mncs-harness.actor-provenance.v0.1",
       "sourceRepository": "mncs-harness",
       "sourcePath": "src/epi13_local_harness/actor_provenance.py",
-      "sourceFingerprint": "sha256:b4ab9b956bbd0e2991b891065a51ab6b8ec656c10ca18d684b82616321062198",
+      "sourceFingerprint": "sha256:1ebdeeb910f861aeae5cbc9da3ced58445c6d13796326cf592d07fd7e4d44f11",
       "authority": "actor resolution, route, model, provider, worker, policy, prompt, and tool provenance"
     },
     {
@@ -44,7 +44,7 @@
       "schemaVersion": "mncs-forge.concept-evaluation.v0.1",
       "sourceRepository": "mncs-forge-mcp",
       "sourcePath": "src/mncs_forge/concept_experiments.py",
-      "sourceFingerprint": "sha256:9de17e6e2d6272d98bb00ad97b7dc6161136068fe9dea155270897ccabf80d14",
+      "sourceFingerprint": "sha256:bc6eb173d69a6dda0354496ba3503b707fa17fa2104ff4322e0924e0af5199d7",
       "authority": "bounded evaluator verdict for named obligation/evidence/verifier scope"
     }
   ]

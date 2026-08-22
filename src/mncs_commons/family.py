@@ -276,7 +276,7 @@ def make_concept_experiment_record(
             relationships.append(
                 {"type": relation, "target": _text(target, relation, maximum=256)}
             )
-    relationships = sorted(
+    relationship_pairs = sorted(
         {(
             item["type"],
             item["target"],
@@ -351,7 +351,7 @@ def make_concept_experiment_record(
         },
         "lifecycle": {"initialState": "proposed", "reviewWhen": []},
         "relationships": [
-            {"type": relation, "target": target} for relation, target in relationships
+            {"type": relation, "target": target} for relation, target in relationship_pairs
         ],
         "details": details,
     }
