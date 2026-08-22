@@ -32,6 +32,44 @@ from mncs_commons.validation import validate_event, validate_record
 
 def make_record(kind: str = "Observation") -> dict:
     details = {
+        "ConceptExperiment": {
+            "schema": "commons.mncs.dev/concept-experiment/v0alpha1",
+            "conceptId": "mncs:concept:tri-state",
+            "languageProfile": "mncs-language:0.2",
+            "targetProfile": {"backend": "portable"},
+            "hypothesis": "UNKNOWN is preserved",
+            "task": "exercise the tri-state lattice",
+            "falsifiers": ["UNKNOWN becomes PASS"],
+            "protectedProperties": ["FAIL dominates UNKNOWN"],
+            "frozenInputs": [],
+            "hiddenInputs": [],
+            "resourceBudget": {"seconds": 30},
+            "actors": [],
+            "references": [],
+            "experimentStatus": "FROZEN",
+            "authorityBoundary": "coordination only",
+        },
+        "FailureClassification": {
+            "schema": "commons.mncs.dev/failure-classification/v0alpha1",
+            "failureReference": {
+                "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+                "producer": "mncs-control-mcp",
+                "recordKind": "turn-failure",
+                "schemaVersion": "0.1",
+                "stableId": "control:failure:test",
+            },
+            "classification": "unresolved_insufficient_evidence",
+            "disposition": "UNRESOLVED",
+            "classifier": {
+                "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+                "producer": "mncs-harness",
+                "recordKind": "actor-route",
+                "schemaVersion": "0.1",
+                "stableId": "harness:actor:test",
+            },
+            "evidenceReferences": [],
+            "authorityBoundary": "classification is not automatic truth",
+        },
         "Observation": {"outcome": "UNKNOWN", "measurements": {"vrAM": 12.4}},
         "Claim": {"outcome": "UNKNOWN", "falsifier": "a bounded counterexample"},
         "Finding": {
@@ -609,6 +647,8 @@ def test_schema_snapshot_has_all_protocol_kinds() -> None:
         "EpochSummary",
         "ReplicationSeries",
         "ObservationSeries",
+        "ConceptExperiment",
+        "FailureClassification",
     }
 
 

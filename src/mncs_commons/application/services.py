@@ -27,7 +27,12 @@ from ..exchange import (
     validate_participant,
 )
 from ..models import EVENT_KIND
-from ..query import QueryFilter, bounded_graph, replication_correlation
+from ..query import (
+    QueryFilter,
+    bounded_graph,
+    concept_experiment_graph,
+    replication_correlation,
+)
 from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
 from ..work import (
@@ -165,6 +170,16 @@ class CommonsApplication:
             bounded_graph(
                 self.require_store().records(), [digest], max_depth=depth, max_nodes=max_nodes
             ).as_dict()
+        )
+
+    def experiment(
+        self, experiment_id: str, *, depth: int = 3, max_nodes: int = 1_000
+    ) -> dict[str, object]:
+        return concept_experiment_graph(
+            self.require_store().records(),
+            experiment_id,
+            max_depth=depth,
+            max_nodes=max_nodes,
         )
 
     def replications(self, target: str) -> dict[str, object]:

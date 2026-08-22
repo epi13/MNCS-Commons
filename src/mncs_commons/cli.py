@@ -115,6 +115,17 @@ def build_parser() -> argparse.ArgumentParser:
     query.add_argument("--open-work-requests", action="store_true")
     query.add_argument("--needs-review", action="store_true")
     query.add_argument("--now")
+    query.add_argument("--concept")
+    query.add_argument("--language-profile")
+    query.add_argument("--backend")
+    query.add_argument("--participant")
+    query.add_argument("--failure-classification")
+    query.add_argument("--experiment-status")
+    experiment = commands.add_parser("experiment")
+    experiment.add_argument("path")
+    experiment.add_argument("experiment_id")
+    experiment.add_argument("--depth", type=int, default=3)
+    experiment.add_argument("--max-nodes", type=int, default=1000)
     related = commands.add_parser("related")
     related.add_argument("path")
     related.add_argument("digest")
@@ -429,6 +440,7 @@ def main(argv: list[str] | None = None) -> int:
             "replications",
             "query",
             "evidence",
+            "experiment",
         }:
             application = CommonsApplication(CommonsStore(args.path))
         if args.command == "exchange":
@@ -514,9 +526,21 @@ def main(argv: list[str] | None = None) -> int:
                     institutional_memory=args.institutional_memory,
                     needs_review=args.needs_review,
                     now=query_now,
+                    concept=args.concept,
+                    language_profile=args.language_profile,
+                    backend=args.backend,
+                    participant=args.participant,
+                    failure_classification=args.failure_classification,
+                    experiment_status=args.experiment_status,
                 )
             )
             _print(query_records)
+        elif args.command == "experiment":
+            _print(
+                application.experiment(
+                    args.experiment_id, depth=args.depth, max_nodes=args.max_nodes
+                )
+            )
         elif args.command == "bundle":
             if args.bundle_command == "create":
                 manifest = CommonsApplication(CommonsStore(args.path)).create_bundle(

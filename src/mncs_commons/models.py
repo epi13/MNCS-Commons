@@ -11,6 +11,8 @@ EVENT_KIND = "LifecycleEvent"
 
 
 class RecordKind(StrEnum):
+    CONCEPT_EXPERIMENT = "ConceptExperiment"
+    FAILURE_CLASSIFICATION = "FailureClassification"
     OBSERVATION = "Observation"
     CLAIM = "Claim"
     FINDING = "Finding"
@@ -93,6 +95,12 @@ class RelationType(StrEnum):
     DISPUTES = "disputes"
     AFFECTS_CONTRACT = "affects_contract"
     REFERENCES_ARTIFACT = "references_artifact"
+    RERUN_OF = "rerun_of"
+    PREDECESSOR = "predecessor"
+    EVALUATES = "evaluates"
+    EXECUTES = "executes"
+    COMPILED_FROM = "compiled_from"
+    PRODUCED = "produced"
 
 
 @dataclass(frozen=True, slots=True)

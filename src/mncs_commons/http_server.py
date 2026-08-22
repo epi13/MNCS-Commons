@@ -203,6 +203,7 @@ class PublicNodeApplication:
             "query": "/exchange/v0alpha1/query",
             "sync": "/exchange/v0alpha1/sync",
             "conversation": "/exchange/v0alpha1/conversation",
+            "experiment": "/exchange/v0alpha1/experiment",
             "work": "/exchange/v0alpha1/work",
             "evidenceTrace": "/exchange/v0alpha1/evidence-trace",
         }
@@ -338,6 +339,12 @@ class PublicNodeApplication:
                 institutional_memory=bool(value.get("institutionalMemory", False)),
                 needs_review=bool(value.get("needsReview", False)),
                 now=parsed_now,
+                concept=value.get("concept"),
+                language_profile=value.get("languageProfile"),
+                backend=value.get("backend"),
+                participant=value.get("participant"),
+                failure_classification=value.get("failureClassification"),
+                experiment_status=value.get("experimentStatus"),
             )
         )
         visible = [item for item in records if self._visible(str(item.get("contentDigest")))]
@@ -430,6 +437,7 @@ private data, or unrestricted exploit material.</p>
             "/exchange/v0alpha1/query",
             "/exchange/v0alpha1/sync",
             "/exchange/v0alpha1/conversation",
+            "/exchange/v0alpha1/experiment",
             "/exchange/v0alpha1/evidence-trace",
         }:
             return (
@@ -528,6 +536,24 @@ private data, or unrestricted exploit material.</p>
             result = self.application.conversation(
                 str(parsed.get("root", "")), depth=depth, max_nodes=max_nodes
             )
+        if path == "/exchange/v0alpha1/experiment":
+            depth = int(parsed.get("depth", 3))
+            max_nodes = int(parsed.get("maxNodes", self.config.limits.max_conversation_nodes))
+            if max_nodes < 1 or max_nodes > self.config.limits.max_conversation_nodes:
+                raise ExchangeError("QUERY_LIMIT_EXCEEDED", "experiment node bound exceeded")
+            result = self.application.experiment(
+                str(parsed.get("experimentId", "")), depth=depth, max_nodes=max_nodes
+            )
+            raw_records = result.get("relatedRecords", [])
+            records = raw_records if isinstance(raw_records, list) else []
+            visible_records = [
+                item for item in records if self._visible(str(item.get("contentDigest")))
+            ]
+            return 200, {
+                **result,
+                "relatedRecords": visible_records,
+                "filteredCount": len(records) - len(visible_records),
+            }, {}
             raw_records = result.get("records", [])
             records = raw_records if isinstance(raw_records, list) else []
             visible_records = [

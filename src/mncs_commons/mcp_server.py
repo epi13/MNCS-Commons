@@ -136,6 +136,25 @@ def build_server(
                     "needsReview": {"type": "boolean"},
                     "now": {"type": "string"},
                     "limit": {"type": "integer", "minimum": 1, "maximum": 1000},
+                    "concept": {"type": "string"},
+                    "languageProfile": {"type": "string"},
+                    "backend": {"type": "string"},
+                    "participant": {"type": "string"},
+                    "failureClassification": {"type": "string"},
+                    "experimentStatus": {"type": "string"},
+                },
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_experiment",
+            description="Project one bounded Concept Experiment graph without inferring truth.",
+            inputSchema={
+                "type": "object",
+                "required": ["experimentId"],
+                "properties": {
+                    "experimentId": {"type": "string"},
+                    "depth": {"type": "integer", "minimum": 0, "maximum": 8},
+                    "maxNodes": {"type": "integer", "minimum": 1, "maximum": 1000},
                 },
             },
         ),
@@ -192,6 +211,12 @@ def build_server(
                 institutional_memory=bool(arguments.get("institutionalMemory", False)),
                 needs_review=bool(arguments.get("needsReview", False)),
                 now=parsed_now,
+                concept=arguments.get("concept"),
+                language_profile=arguments.get("languageProfile"),
+                backend=arguments.get("backend"),
+                participant=arguments.get("participant"),
+                failure_classification=arguments.get("failureClassification"),
+                experiment_status=arguments.get("experimentStatus"),
             )
         )[:limit]
 
@@ -254,6 +279,12 @@ def build_server(
                 result = application.conversation(
                     str(arguments["root"]),
                     depth=int(arguments.get("depth", 2)),
+                    max_nodes=int(arguments.get("maxNodes", 1000)),
+                )
+            elif name == "commons_experiment":
+                result = application.experiment(
+                    str(arguments["experimentId"]),
+                    depth=int(arguments.get("depth", 3)),
                     max_nodes=int(arguments.get("maxNodes", 1000)),
                 )
             elif name == "commons_work_list":

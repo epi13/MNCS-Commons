@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable, Mapping
 
+from .family import producer_references
 from .models import Diagnostic, RelationType
 from .work import work_semantic_diagnostics
 
@@ -95,6 +96,45 @@ def record_semantic_diagnostics(
                 )
             )
     diagnostics.extend(work_semantic_diagnostics(candidate, existing_same_id))
+
+    reference_bindings: dict[str, tuple[str, str, str, str | None]] = {}
+    for record in records:
+        for reference in producer_references(record):
+            reference_bindings.setdefault(
+                reference["stableId"],
+                (
+                    reference["producer"],
+                    reference["recordKind"],
+                    reference["schemaVersion"],
+                    reference.get("contentDigest"),
+                ),
+            )
+    for index, reference in enumerate(producer_references(candidate)):
+        prior = reference_bindings.get(reference["stableId"])
+        current = (
+            reference["producer"],
+            reference["recordKind"],
+            reference["schemaVersion"],
+            reference.get("contentDigest"),
+        )
+        if prior is not None and prior[:3] != current[:3]:
+            diagnostics.append(
+                Diagnostic(
+                    "PRODUCER_REFERENCE_CONFLICT",
+                    f"details.producerReferences[{index}]",
+                    "stable producer identity is already bound to different producer metadata",
+                )
+            )
+        elif prior is not None and prior[3] and current[3] and prior[3] != current[3]:
+            diagnostics.append(
+                Diagnostic(
+                    "PRODUCER_DIGEST_CONFLICT",
+                    f"details.producerReferences[{index}]",
+                    "stable producer identity is already bound to a different content digest",
+                )
+            )
+        else:
+            reference_bindings.setdefault(reference["stableId"], current)
 
     known = {_identity(item) for item in records} | {_logical_id(item) for item in records}
     known.add(candidate_identity)

@@ -18,6 +18,8 @@ RETENTION_POLICY_SCHEMA = "commons.mncs.dev/retention-policy/v0alpha1"
 RETENTION_PINS_SCHEMA = "commons.mncs.dev/retention-pins/v0alpha1"
 RETENTION_CLASSES = ("canonical", "evidence", "diagnostic", "ephemeral")
 PROTECTED_KINDS = {
+    RecordKind.CONCEPT_EXPERIMENT.value,
+    RecordKind.FAILURE_CLASSIFICATION.value,
     RecordKind.CLAIM.value,
     RecordKind.DECISION.value,
     RecordKind.FINDING.value,

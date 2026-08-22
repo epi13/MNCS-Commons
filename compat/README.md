@@ -4,6 +4,10 @@ These small fixtures freeze the producer boundary that Commons understands. The 
 registry is [`producer-contracts.json`](producer-contracts.json). They are
 not vendored producer implementations and they do not grant producer authority.
 
+[`family-record-producers.json`](family-record-producers.json) is the identity-only registry for
+Concept Experiment references. It fingerprints the current native Control, Harness, Fabric,
+Language, and Forge bootstrap contracts without importing their semantics.
+
 | fixture | source | source commit | Commons behavior |
 | --- | --- | --- | --- |
 | `forge/forge-cell-execution-0.1.json` | `mncs-forge-mcp/examples/forge-cell/execution-record.json` | `5a56917` | recognized Forge `schema_version=0.1`; execution `PASS` remains evidence |

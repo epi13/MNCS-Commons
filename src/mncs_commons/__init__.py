@@ -6,6 +6,14 @@ from .application import CommonsApplication, CompatibilityApplication
 from .canonical import canonical_digest, canonical_json, identity_projection
 from .compatibility import CompatibilityStatus, ProducerContract, contracts
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
+from .family import (
+    FamilyRecordError,
+    make_concept_experiment_record,
+    make_failure_classification_record,
+    normalize_producer_reference,
+    producer_reference,
+    reference_identity,
+)
 from .lifecycle import derive_lifecycle, validate_transition
 from .local_service import CommonsAdminClient, CommonsClient
 from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
@@ -43,4 +51,10 @@ __all__ = [
     "ExchangePolicy",
     "ParticipantDescriptor",
     "RemoteClient",
+    "FamilyRecordError",
+    "producer_reference",
+    "normalize_producer_reference",
+    "reference_identity",
+    "make_concept_experiment_record",
+    "make_failure_classification_record",
 ]

@@ -1,0 +1,51 @@
+{
+  "registryVersion": "commons.mncs.dev/family-record-producers/v0alpha1",
+  "referenceSchema": "commons.mncs.dev/producer-reference/v0alpha1",
+  "contracts": [
+    {
+      "producer": "mncs-control-mcp",
+      "recordKind": "ConceptExperimentManifest",
+      "schemaVersion": "mncs-control.concept-experiment-manifest.v0.1",
+      "sourceRepository": "mncs-control-mcp",
+      "sourcePath": "src/mncs_control_mcp/experiments.py",
+      "sourceFingerprint": "sha256:102bd8b3187bb41a6c5caa736e0dc7d49ed1066593203f72afca677c9447921a",
+      "authority": "durable coordination intent and lifecycle only"
+    },
+    {
+      "producer": "mncs-harness",
+      "recordKind": "ActorProvenance",
+      "schemaVersion": "mncs-harness.actor-provenance.v0.1",
+      "sourceRepository": "mncs-harness",
+      "sourcePath": "src/epi13_local_harness/actor_provenance.py",
+      "sourceFingerprint": "sha256:1ebdeeb910f861aeae5cbc9da3ced58445c6d13796326cf592d07fd7e4d44f11",
+      "authority": "actor resolution, route, model, provider, worker, policy, prompt, and tool provenance"
+    },
+    {
+      "producer": "mncs-fabric",
+      "recordKind": "FamilyExecutionReference",
+      "schemaVersion": "mncs-fabric.family-execution-reference.v0.1",
+      "sourceRepository": "mncs-fabric",
+      "sourcePath": "src/mncs_fabric/receipts.py",
+      "sourceFingerprint": "sha256:1ea01134ed1a20440be874684f36c6e85d36cf9793db4bf750e271cf4f1d8c1e",
+      "authority": "execution attempts, retry/recovery lineage, placement, environment, and receipts"
+    },
+    {
+      "producer": "mncs-language",
+      "recordKind": "CompilationStudyResult",
+      "schemaVersion": "mncs-language.family-compiler-reference.v0.1",
+      "sourceRepository": "mncs-language",
+      "sourcePath": "crates/mncs-model/src/compiler.rs",
+      "sourceFingerprint": "sha256:cea8c8cb60969a16d4c3333ed049ce9cbadc9c8357d4754cf27c1fb10cc0e5b3",
+      "authority": "language/compiler stage, pipeline, lowering, target, backend, and artifact observations"
+    },
+    {
+      "producer": "mncs-forge",
+      "recordKind": "ConceptEvaluation",
+      "schemaVersion": "mncs-forge.concept-evaluation.v0.1",
+      "sourceRepository": "mncs-forge-mcp",
+      "sourcePath": "src/mncs_forge/concept_experiments.py",
+      "sourceFingerprint": "sha256:bc6eb173d69a6dda0354496ba3503b707fa17fa2104ff4322e0924e0af5199d7",
+      "authority": "bounded evaluator verdict for named obligation/evidence/verifier scope"
+    }
+  ]
+}
