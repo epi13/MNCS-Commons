@@ -122,6 +122,27 @@ Failures are first-class evidence. Recommended machine-readable failure classes 
 
 A failed study SHOULD remain addressable so that the same frozen experiment can become a regression experiment after a repair.
 
+## Replication records
+
+`make_replication_record(...)` builds one `Replication` record
+(`commons.mncs.dev/replication/v0alpha1`) that closes the rerun arrow above: it describes a single
+replication attempt of a frozen experiment realization and binds the exact producer-owned evidence
+by typed references:
+
+- `details.targetRecord` — the logical experiment/definition identity being replicated;
+- `details.outcome` — tri-state `PASS | FAIL | UNKNOWN`; `PASS` yields a `replicates`
+  relationship, any other outcome yields `failed_to_replicate`;
+- `details.independence` — correlation metadata (worker, transport, artifact ancestry); never
+  scored or interpreted by Commons;
+- `details.references[]` — producer references such as the language result (`compiler_record`),
+  the Fabric `FamilyExecutionReference` (`execution`), and the Forge `ConceptEvaluation`
+  (`evaluation`).
+
+The record describes coordination and evidence only. Publication is not verification, and no
+subsystem gains authority over language semantics, Fabric execution facts, Forge evaluation
+verdicts, or MNCS conformance. Validation of `details.schema` and `details.references` is additive:
+earlier generic `Replication` records without them remain valid.
+
 ## Bootstrap roles before RAVEL/MNEL
 
 The first studies may use ordinary models routed through Harness/Fabric under explicit roles:

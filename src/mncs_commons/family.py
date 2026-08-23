@@ -15,6 +15,7 @@ from .canonical import canonical_digest
 FAMILY_REFERENCE_SCHEMA = "commons.mncs.dev/producer-reference/v0alpha1"
 CONCEPT_EXPERIMENT_SCHEMA = "commons.mncs.dev/concept-experiment/v0alpha1"
 FAILURE_CLASSIFICATION_SCHEMA = "commons.mncs.dev/failure-classification/v0alpha1"
+REPLICATION_SCHEMA = "commons.mncs.dev/replication/v0alpha1"
 
 EXPERIMENT_STATUSES = frozenset(
     {
@@ -140,9 +141,7 @@ def normalize_producer_reference(value: Mapping[str, Any]) -> dict[str, Any]:
             "kind": _text(artifact.get("kind"), "artifact.kind", maximum=256),
         }
         if artifact.get("digest") is not None:
-            artifact_value["digest"] = _text(
-                artifact.get("digest"), "artifact.digest", maximum=256
-            )
+            artifact_value["digest"] = _text(artifact.get("digest"), "artifact.digest", maximum=256)
         if artifact.get("location") is not None:
             artifact_value["location"] = _text(
                 artifact.get("location"), "artifact.location", maximum=4096
@@ -268,19 +267,18 @@ def make_concept_experiment_record(
     normalized_actors.sort(key=lambda item: (item["role"], item["reference"]["stableId"]))
     reference_entries, relationships = _reference_entries(references)
     for actor in normalized_actors:
-        relationships.append(
-            {"type": "depends_on", "target": actor["reference"]["stableId"]}
-        )
+        relationships.append({"type": "depends_on", "target": actor["reference"]["stableId"]})
     for relation, target in (("rerun_of", rerun_of), ("predecessor", predecessor)):
         if target is not None:
-            relationships.append(
-                {"type": relation, "target": _text(target, relation, maximum=256)}
-            )
+            relationships.append({"type": relation, "target": _text(target, relation, maximum=256)})
     relationship_pairs = sorted(
-        {(
-            item["type"],
-            item["target"],
-        ) for item in relationships}
+        {
+            (
+                item["type"],
+                item["target"],
+            )
+            for item in relationships
+        }
     )
     metadata: dict[str, Any] = {
         "recordId": experiment_id,
@@ -302,9 +300,7 @@ def make_concept_experiment_record(
         "hypothesis": _text(hypothesis, "hypothesis", maximum=20_000),
         "task": _text(task, "task", maximum=20_000),
         "falsifiers": _text_list(list(falsifiers), "falsifiers"),
-        "protectedProperties": _text_list(
-            list(protected_properties), "protected_properties"
-        ),
+        "protectedProperties": _text_list(list(protected_properties), "protected_properties"),
         "frozenInputs": [dict(item) for item in frozen_inputs],
         "hiddenInputs": [dict(item) for item in hidden_inputs],
         "resourceBudget": dict(resource_budget),
@@ -335,9 +331,7 @@ def make_concept_experiment_record(
         "affectedContracts": [],
         "provenance": {
             "producer": {"type": "producer", "id": producer_id},
-            "sourceRecords": [
-                item["reference"]["stableId"] for item in reference_entries
-            ],
+            "sourceRecords": [item["reference"]["stableId"] for item in reference_entries],
         },
         "confidence": {
             "level": "unreported",
@@ -431,6 +425,94 @@ def make_failure_classification_record(
             "classifier": actor,
             "evidenceReferences": evidence,
             "authorityBoundary": "classification support is local to the named evidence and actor",
+        },
+    }
+
+
+def make_replication_record(
+    *,
+    replication_id: str,
+    created_at: str,
+    target_record: str,
+    outcome: str,
+    independence: Mapping[str, Any],
+    references: Iterable[Mapping[str, Any]],
+    summary: str,
+    producer_id: str = "mncs-control-mcp",
+) -> dict[str, Any]:
+    """Build one Replication record bound to producer-owned evidence references.
+
+    The record describes what a replication attempt did and which exact
+    producer records prove it.  It never reinterprets producer-native
+    outcomes: ``outcome`` is a coordination-level tri-state, and acceptance
+    remains a separate domain-scoped lifecycle decision.
+    """
+
+    replication_id = _text(replication_id, "replication_id", maximum=256)
+    target = _text(target_record, "target_record", maximum=256)
+    created_at = _timestamp(_text(created_at, "created_at", maximum=128))
+    if outcome not in {"PASS", "FAIL", "UNKNOWN"}:
+        raise FamilyRecordError("replication outcome must be PASS, FAIL, or UNKNOWN")
+    if not isinstance(independence, Mapping):
+        raise FamilyRecordError("independence must be an object")
+    reference_entries, reference_relationships = _reference_entries(references)
+    relationship_type = "replicates" if outcome == "PASS" else "failed_to_replicate"
+    relationships = [
+        {"type": relationship_type, "target": target},
+        *reference_relationships,
+    ]
+    relationships.sort(key=lambda item: (item["type"], item["target"]))
+    return {
+        "apiVersion": "commons.mncs.dev/v0alpha1",
+        "kind": "Replication",
+        "metadata": {
+            "recordId": replication_id,
+            "createdAt": created_at,
+            "author": {"type": "producer", "id": producer_id},
+            "labels": ["replication", "family-record-spine"],
+        },
+        "subject": {"type": "experiment", "identity": target},
+        "scope": {
+            "context": {"targetRecord": target},
+            "limitations": [
+                (
+                    "coordination status only; producer references retain native semantics "
+                    "and no assurance or conformance verdict is inferred"
+                )
+            ],
+        },
+        "statement": {"summary": _text(summary, "summary", maximum=20_000)},
+        "evidence": [],
+        "dependencies": [],
+        "affectedContracts": [],
+        "provenance": {
+            "producer": {"type": "producer", "id": producer_id},
+            "sourceRecords": [item["reference"]["stableId"] for item in reference_entries],
+        },
+        "confidence": {
+            "level": "unreported",
+            "rationale": "replication envelope does not infer confidence",
+        },
+        "security": {
+            "sensitivity": "public",
+            "executableAttachments": False,
+            "instructionsAreUntrusted": True,
+            "requiredExternalAuthority": False,
+        },
+        "lifecycle": {"initialState": "proposed", "reviewWhen": []},
+        "relationships": relationships,
+        "details": {
+            "schema": REPLICATION_SCHEMA,
+            "targetRecord": target,
+            "outcome": outcome,
+            "independence": dict(independence),
+            "references": reference_entries,
+            "authorityBoundary": (
+                "describes the replication attempt and its exact evidence references; "
+                "publication is not verification and no subsystem becomes an authority "
+                "over language semantics, Fabric execution, Forge evaluation, or MNCS "
+                "conformance"
+            ),
         },
     }
 

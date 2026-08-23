@@ -155,9 +155,7 @@ def test_tri_state_rerun_graph_query_and_duplicate_publication(tmp_path) -> None
         ),
         classification="compiler_lowering_gap",
         disposition="CLAIMED",
-        classifier=ref(
-            "mncs-harness", "actor-route", "harness://actor/critic-a", "9"
-        ),
+        classifier=ref("mncs-harness", "actor-route", "harness://actor/critic-a", "9"),
         evidence_references=[],
         rationale="The critic claims a lowering gap; independent support remains unavailable.",
         created_at="2026-08-21T20:01:00Z",
@@ -178,9 +176,7 @@ def test_tri_state_rerun_graph_query_and_duplicate_publication(tmp_path) -> None
     )
     assert execution_reference["contentDigest"] == "sha256:" + "e" * 64
     stored_second = store.get(added_second.digest)
-    assert {"type": "rerun_of", "target": "cre-tristate-a"} in stored_second[
-        "relationships"
-    ]
+    assert {"type": "rerun_of", "target": "cre-tristate-a"} in stored_second["relationships"]
 
     assert sorted(
         item["metadata"]["recordId"]
@@ -205,3 +201,139 @@ def test_same_stable_producer_identity_cannot_change_digest(tmp_path) -> None:
     execution_reference["stableId"] = "mncs-fabric://execution/cre-tristate-a/attempt/1"
     with pytest.raises(StoreError, match="different content digest"):
         store.add_record(conflicting)
+
+
+def replication(
+    replication_id: str,
+    *,
+    outcome: str = "PASS",
+    target: str = "cre-tristate-a",
+) -> dict[str, object]:
+    from mncs_commons.family import make_replication_record
+
+    return make_replication_record(
+        replication_id=replication_id,
+        created_at="2026-08-23T12:00:00Z",
+        target_record=target,
+        outcome=outcome,
+        independence={
+            "harness": "mncs-control-mcp:replication-orchestrator",
+            "machine": "fabric-worker-01",
+            "provider": "mncs-fabric",
+            "artifactAncestry": [
+                "mncs:compiler:backend-artifact:" + "9" * 64,
+            ],
+        },
+        references=[
+            {
+                "relation": "compiler_record",
+                "reference": ref(
+                    "mncs-language",
+                    "LanguageExperimentResult",
+                    f"mncs:language:experiment:result:{replication_id}",
+                    "d",
+                    scope={"backend": "mncs-portable-wasm-mvp"},
+                ),
+            },
+            {
+                "relation": "execution",
+                "reference": ref(
+                    "mncs-fabric",
+                    "FamilyExecutionReference",
+                    f"mncs-fabric://execution/{replication_id}/attempt/1",
+                    "f",
+                ),
+            },
+            {
+                "relation": "evaluation",
+                "reference": ref(
+                    "mncs-forge",
+                    "ConceptEvaluation",
+                    f"mncs-forge://evaluation/{replication_id}",
+                    "b",
+                ),
+            },
+        ],
+        summary=(
+            f"Replication of {target}: the exact frozen realization executed once on an "
+            "explicitly requested Fabric worker with independent execution evidence."
+        ),
+    )
+
+
+def test_replication_record_binds_typed_evidence_and_validates(tmp_path: Path) -> None:
+    record = replication("replication-happy")
+    report = validate_record(record)
+    assert report.valid, report.diagnostics
+    assert record["kind"] == "Replication"
+    assert record["details"]["outcome"] == "PASS"
+    relationship_types = {item["type"] for item in record["relationships"]}
+    assert {"replicates", "executes", "evaluates", "compiled_from"} <= relationship_types
+    assert set(record["provenance"]["sourceRecords"]) == {
+        "mncs:language:experiment:result:replication-happy",
+        "mncs-fabric://execution/replication-happy/attempt/1",
+        "mncs-forge://evaluation/replication-happy",
+    }
+
+    store = CommonsStore(tmp_path / "store")
+    store.init()
+    application = CommonsApplication(store)
+    application.add(experiment("cre-tristate-a"))
+    identity = application.add(record)
+    assert identity.kind == "Replication"
+
+    # The durable graph links the replication back to its experiment.
+    correlated = application.replications("cre-tristate-a")
+    replications = correlated.get("replications", [])
+    assert any(item["metadata"]["recordId"] == "replication-happy" for item in replications)
+    assert correlated["outcomes"].get("PASS") == 1
+
+    extracted = __import__(
+        "mncs_commons.family", fromlist=["producer_references"]
+    ).producer_references(record)
+    assert {item["producer"] for item in extracted} >= {
+        "mncs-language",
+        "mncs-fabric",
+        "mncs-forge",
+    }
+
+
+def test_failed_replication_uses_failed_to_replicate_relationship(tmp_path: Path) -> None:
+    failed = replication("replication-broken", outcome="FAIL")
+    assert validate_record(failed).valid
+    types = {item["type"] for item in failed["relationships"]}
+    assert "failed_to_replicate" in types
+    assert "replicates" not in types
+
+
+def test_unknown_outcome_is_preserved_exactly(tmp_path: Path) -> None:
+    unknown = replication("replication-unknown", outcome="UNKNOWN")
+    assert validate_record(unknown).valid
+    assert unknown["details"]["outcome"] == "UNKNOWN"
+    # UNKNOWN never claims success.
+    assert "replicates" not in {item["type"] for item in unknown["relationships"]}
+
+
+def test_replication_rejects_non_tri_state_outcomes() -> None:
+    import pytest as _pytest
+
+    from mncs_commons.family import FamilyRecordError, make_replication_record
+
+    with _pytest.raises(FamilyRecordError, match="PASS, FAIL, or UNKNOWN"):
+        make_replication_record(
+            replication_id="r",
+            created_at="2026-08-23T12:00:00Z",
+            target_record="cre-tristate-a",
+            outcome="CONFORMANT",
+            independence={},
+            references=[],
+            summary="must fail closed on invented statuses",
+        )
+
+
+def test_replication_rejects_malformed_producer_references() -> None:
+    bad = replication("replication-badref")
+    bad["details"]["references"][0]["reference"]["contentDigest"] = "sha256:NOThex"
+    report = validate_record(bad)
+    codes = {item.code for item in report.diagnostics}
+    assert "INVALID_PRODUCER_REFERENCE" in codes
