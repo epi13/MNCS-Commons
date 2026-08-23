@@ -10,6 +10,7 @@ from .family import (
     FamilyRecordError,
     make_concept_experiment_record,
     make_failure_classification_record,
+    make_replication_record,
     normalize_producer_reference,
     producer_reference,
     reference_identity,
@@ -57,4 +58,5 @@ __all__ = [
     "reference_identity",
     "make_concept_experiment_record",
     "make_failure_classification_record",
+    "make_replication_record",
 ]

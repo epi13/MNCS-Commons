@@ -14,6 +14,7 @@ from .family import (
     EXPERIMENT_STATUSES,
     FAILURE_CLASSES,
     FAILURE_CLASSIFICATION_SCHEMA,
+    REPLICATION_SCHEMA,
     FamilyRecordError,
     normalize_producer_reference,
 )
@@ -188,12 +189,29 @@ def _check_failure_classification(
     _check_family_reference(details.get("classifier"), "details.classifier", diagnostics)
     evidence = details.get("evidenceReferences")
     if not isinstance(evidence, list):
-        diagnostics.append(
-            _error("TYPE_ARRAY", "details.evidenceReferences", "must be a list")
-        )
+        diagnostics.append(_error("TYPE_ARRAY", "details.evidenceReferences", "must be a list"))
     else:
         for index, item in enumerate(evidence):
             _check_family_reference(item, f"details.evidenceReferences[{index}]", diagnostics)
+
+
+def _check_replication(details: Mapping[str, Any], diagnostics: list[Diagnostic]) -> None:
+    # ``schema`` and ``references`` are optional for v0alpha1 compatibility with
+    # earlier generic Replication records; when present each must be well-formed.
+    if "schema" in details and details["schema"] != REPLICATION_SCHEMA:
+        diagnostics.append(
+            _error("REPLICATION_SCHEMA_UNSUPPORTED", "details.schema", "unsupported schema")
+        )
+    if "references" in details and not isinstance(details["references"], list):
+        diagnostics.append(_error("TYPE_ARRAY", "details.references", "must be a list"))
+        return
+    for index, entry in enumerate(details.get("references") or []):
+        path = f"details.references[{index}]"
+        if not isinstance(entry, Mapping):
+            diagnostics.append(_error("TYPE_OBJECT", path, "must be an object"))
+            continue
+        _require_string(entry.get("relation"), f"{path}.relation", diagnostics)
+        _check_family_reference(entry.get("reference"), f"{path}.reference", diagnostics)
 
 
 def _error(code: str, path: str, message: str) -> Diagnostic:
@@ -511,6 +529,8 @@ def validate_record(value: Any) -> ValidationReport:
                 )
         if kind == RecordKind.CONCEPT_EXPERIMENT.value:
             _check_concept_experiment(details, diagnostics)
+        if kind == RecordKind.REPLICATION.value:
+            _check_replication(details, diagnostics)
         if kind == RecordKind.FAILURE_CLASSIFICATION.value:
             _check_failure_classification(details, diagnostics)
         if kind == RecordKind.WORK_REQUEST.value:
