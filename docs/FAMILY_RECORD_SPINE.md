@@ -130,8 +130,10 @@ replication attempt of a frozen experiment realization and binds the exact produ
 by typed references:
 
 - `details.targetRecord` — the logical experiment/definition identity being replicated;
-- `details.outcome` — tri-state `PASS | FAIL | UNKNOWN`; `PASS` yields a `replicates`
-  relationship, any other outcome yields `failed_to_replicate`;
+- `details.outcome` — tri-state `PASS | FAIL | UNKNOWN`. Every replication carries a
+  neutral `attempts` relationship to its target. Only `PASS` additionally asserts
+  `replicates`; only `FAIL` asserts `failed_to_replicate`. `UNKNOWN` asserts the attempt
+  and nothing more, so an undetermined outcome never collapses into demonstrated failure;
 - `details.independence` — correlation metadata (worker, transport, artifact ancestry); never
   scored or interpreted by Commons;
 - `details.references[]` — producer references such as the language result (`compiler_record`),

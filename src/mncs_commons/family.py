@@ -456,9 +456,18 @@ def make_replication_record(
     if not isinstance(independence, Mapping):
         raise FamilyRecordError("independence must be an object")
     reference_entries, reference_relationships = _reference_entries(references)
-    relationship_type = "replicates" if outcome == "PASS" else "failed_to_replicate"
-    relationships = [
-        {"type": relationship_type, "target": target},
+    # ``attempts`` is the neutral link every replication carries.  Only PASS
+    # additionally asserts ``replicates``; only FAIL asserts
+    # ``failed_to_replicate``.  UNKNOWN asserts nothing beyond the attempt so
+    # an undetermined outcome never collapses into demonstrated failure.
+    relationships: list[dict[str, str]] = [
+        {"type": "attempts", "target": target},
+        *({"type": "replicates", "target": target} for _ in ("",) if outcome == "PASS"),
+        *(
+            {"type": "failed_to_replicate", "target": target}
+            for _ in ("",)
+            if outcome == "FAIL"
+        ),
         *reference_relationships,
     ]
     relationships.sort(key=lambda item: (item["type"], item["target"]))

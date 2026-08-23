@@ -4,8 +4,9 @@
 
 - Added `make_replication_record` on the Family Record Spine: a `Replication` builder binding a
   tri-state coordination outcome, correlation metadata, and typed producer references (language
-  result, Fabric execution attempt, Forge evaluation) with `replicates` /
-  `failed_to_replicate` relationships. Validation of the new optional `schema` and `references`
+  result, Fabric execution attempt, Forge evaluation). Every replication carries a neutral
+  `attempts` relationship; only PASS adds `replicates`, only FAIL adds `failed_to_replicate`,
+  so an UNKNOWN outcome never collapses into demonstrated failure. Validation of the new optional `schema` and `references`
   detail fields is additive; earlier generic Replication records remain valid.
 
 - Added an explicit institutional-memory promotion layer with `Finding`, `Question`,
