@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 try:
-    from compression import zstd  # type: ignore[import-not-found]
+    from compression import zstd  # type: ignore[import-not-found,no-redef]
 except ModuleNotFoundError:  # Python < 3.14
     import zstandard as _zstandard
 
@@ -27,7 +27,7 @@ except ModuleNotFoundError:  # Python < 3.14
         def decompress(data: bytes) -> bytes:
             return _zstandard.ZstdDecompressor().decompress(data)
 
-    zstd = _ZstdModule()
+    zstd = _ZstdModule()  # type: ignore[assignment,misc]
 
 from .canonical import canonical_digest, canonical_json
 from .store import CommonsStore, StoreError, _atomic_write

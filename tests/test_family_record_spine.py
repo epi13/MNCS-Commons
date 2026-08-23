@@ -268,7 +268,13 @@ def test_replication_record_binds_typed_evidence_and_validates(tmp_path: Path) -
     assert record["kind"] == "Replication"
     assert record["details"]["outcome"] == "PASS"
     relationship_types = {item["type"] for item in record["relationships"]}
-    assert {"replicates", "attempts", "executes", "evaluates", "compiled_from"} <= relationship_types
+    assert {
+        "replicates",
+        "attempts",
+        "executes",
+        "evaluates",
+        "compiled_from",
+    } <= relationship_types
     assert set(record["provenance"]["sourceRecords"]) == {
         "mncs:language:experiment:result:replication-happy",
         "mncs-fabric://execution/replication-happy/attempt/1",
