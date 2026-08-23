@@ -268,7 +268,7 @@ def test_replication_record_binds_typed_evidence_and_validates(tmp_path: Path) -
     assert record["kind"] == "Replication"
     assert record["details"]["outcome"] == "PASS"
     relationship_types = {item["type"] for item in record["relationships"]}
-    assert {"replicates", "executes", "evaluates", "compiled_from"} <= relationship_types
+    assert {"replicates", "attempts", "executes", "evaluates", "compiled_from"} <= relationship_types
     assert set(record["provenance"]["sourceRecords"]) == {
         "mncs:language:experiment:result:replication-happy",
         "mncs-fabric://execution/replication-happy/attempt/1",
@@ -302,16 +302,33 @@ def test_failed_replication_uses_failed_to_replicate_relationship(tmp_path: Path
     failed = replication("replication-broken", outcome="FAIL")
     assert validate_record(failed).valid
     types = {item["type"] for item in failed["relationships"]}
-    assert "failed_to_replicate" in types
+    assert {"failed_to_replicate", "attempts"} <= types
     assert "replicates" not in types
 
 
-def test_unknown_outcome_is_preserved_exactly(tmp_path: Path) -> None:
+def test_unknown_outcome_asserts_attempt_without_success_or_failure(tmp_path: Path) -> None:
+    from mncs_commons.application import CommonsApplication
+    from mncs_commons.store import CommonsStore
+
     unknown = replication("replication-unknown", outcome="UNKNOWN")
     assert validate_record(unknown).valid
     assert unknown["details"]["outcome"] == "UNKNOWN"
-    # UNKNOWN never claims success.
-    assert "replicates" not in {item["type"] for item in unknown["relationships"]}
+    # UNKNOWN asserts the attempt but never collapses into demonstrated
+    # success or demonstrated failure.
+    types = {item["type"] for item in unknown["relationships"]}
+    assert "attempts" in types
+    assert "replicates" not in types
+    assert "failed_to_replicate" not in types
+
+    store = CommonsStore(tmp_path / "store")
+    store.init()
+    application = CommonsApplication(store)
+    application.add(experiment("cre-tristate-a"))
+    application.add(replication("replication-pass"))
+    application.add(unknown)
+    correlated = application.replications("cre-tristate-a")
+    assert correlated["outcomes"].get("PASS") == 1
+    assert correlated["outcomes"].get("UNKNOWN") == 1
 
 
 def test_replication_rejects_non_tri_state_outcomes() -> None:
