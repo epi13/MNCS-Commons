@@ -546,3 +546,89 @@ def state_matches(state: str, query: QueryFilter, domain_states: Mapping[str, st
     if query.domain:
         return state == query.state
     return query.state in domain_states.values() or state == query.state
+
+
+def development_lineage(
+    records: Iterable[Mapping[str, Any]],
+    root: str,
+    *,
+    max_depth: int = 3,
+    max_nodes: int = 1_000,
+) -> dict[str, object]:
+    """Project the development lineage around one DevelopmentRecord.
+
+    The projection reconstructs, from durable identities only: the projected
+    MNCDS record, its supersession chain across DevelopmentRecord records, the
+    ConceptExperiment records it derives from, and every stored record reachable
+    through typed relationships.  Producer-native outcomes, including tri-state
+    statuses, are preserved exactly and never reinterpreted.
+    """
+
+    values = tuple(records)
+    candidates = [
+        record
+        for record in values
+        if record.get("kind") == "DevelopmentRecord"
+        and (
+            record.get("contentDigest") == root
+            or record.get("metadata", {}).get("recordId") == root
+            or (record.get("details", {}) or {}).get("recordId") == root
+        )
+    ]
+    if not candidates:
+        raise ValueError("development record was not found")
+    graph = bounded_graph(
+        values,
+        [str(record.get("contentDigest")) for record in candidates],
+        max_depth=max_depth,
+        max_nodes=max_nodes,
+    ).as_dict()
+    primary = candidates[0]
+    details = primary.get("details") or {}
+    supersession: list[dict[str, str]] = []
+    development_records: list[Mapping[str, Any]] = []
+    experiments: list[Mapping[str, Any]] = []
+    for record in values:
+        if record.get("kind") == "DevelopmentRecord":
+            development_records.append(record)
+            for relation in record.get("relationships", []):
+                if (
+                    isinstance(relation, Mapping)
+                    and relation.get("type") == "supersedes"
+                ):
+                    supersession.append(
+                        {
+                            "successor": str((record.get("details", {}) or {}).get("recordId", "")),
+                            "predecessor": str(relation.get("target", "")),
+                        }
+                    )
+        elif record.get("kind") == "ConceptExperiment":
+            experiments.append(record)
+    supersession.sort(key=lambda item: (item["successor"], item["predecessor"]))
+    graph_records = graph.get("records")
+    primary_digest = primary.get("contentDigest")
+    related = [
+        record
+        for record in (graph_records if isinstance(graph_records, list) else [])
+        if isinstance(record, Mapping) and record.get("contentDigest") != primary_digest
+    ]
+    return {
+        "schema": "commons.mncs.dev/development-lineage/v0alpha1",
+        "developmentRecord": primary,
+        "computedStatus": details.get("computedStatus", "UNKNOWN")
+        if isinstance(details, Mapping)
+        else "UNKNOWN",
+        "supersession": supersession,
+        "experiments": sorted(
+            experiments,
+            key=lambda item: str(item.get("contentDigest", "")),
+        ),
+        "relatedRecords": related,
+        "edges": graph["edges"],
+        "unresolved": graph["unresolved"],
+        "truncated": graph["truncated"],
+        "authorityBoundary": (
+            "bounded projection only; MNCDS owns selection, release, and lifecycle "
+            "meaning and producer-native UNKNOWN is unchanged"
+        ),
+    }

@@ -46,6 +46,15 @@
       "sourcePath": "src/mncs_forge/concept_experiments.py",
       "sourceFingerprint": "sha256:bc6eb173d69a6dda0354496ba3503b707fa17fa2104ff4322e0924e0af5199d7",
       "authority": "bounded evaluator verdict for named obligation/evidence/verifier scope"
+    },
+    {
+      "producer": "mncds",
+      "recordKind": "DevelopmentRecord",
+      "schemaVersion": "mncds.development-record.v0.2-alpha.1",
+      "sourceRepository": "machine-native-complexity-development-specification",
+      "sourcePath": "schemas/mncds-development-record-0.2-alpha.schema.json",
+      "sourceFingerprint": "sha256:6dadab031fbf7d8663af819664ca79ae6dc9efdab351fdb720f32894fd2831c6",
+      "authority": "development-process lineage, authority, feedback eligibility, selection, release, monitoring, regeneration, replacement, and retirement"
     }
   ]
 }

@@ -174,17 +174,24 @@ Workers do not require Commons store paths, operator sockets or direct mutation 
 
 Federated Commons-over-Fabric transport may be added later if locality requires it. Federation is not required for the first experiments.
 
-## Progressive evidence projection
+## Development-record projection
 
-The family should prefer non-destructive projection over destructive summarization:
+A validated MNCDS development record participates in the spine through
+`mncs_commons.family.make_development_record_record`. The projection stores:
 
-```text
-raw execution/compiler/verifier evidence
-        -> Concept Experiment graph
-        -> scientific/adaptive interpretations
-        -> MNCDS development record
-        -> MNCS assurance case
-```
+- the exact MNCDS `record_id` and canonical content digest;
+- `mncdsVersion`, profile, epoch identity, and the record's computed
+  tri-state status preserved verbatim;
+- typed producer references (evaluation / candidate / compiler_record /
+  execution / artifact relations) to the exact lower-layer identities;
+- `derived_from` relationships to the Concept Experiment identities that
+  evaluated its candidates; and
+- a `supersedes` relationship so successor/replacement history is
+  reconstructable by query (`application.development_record(...)`).
+
+Commons never recomputes or reinterprets these statuses. A `FAIL` development
+record is stored as FAIL; an `UNKNOWN` stays UNKNOWN; neither strengthens nor
+weakens through storage, indexing, or graph projection.
 
 Each upper layer references exact lower-layer identities. A consumer can therefore drill from an MNCS claim through MNCDS lineage, experiment identity, verifier result, compiler record and exact Fabric receipt without forcing MNCS to ingest every stdout line or model turn.
 
@@ -197,21 +204,31 @@ Each upper layer references exact lower-layer identities. A consumer can therefo
 5. Forge: bind evaluation records to candidate, concept experiment, language profile and verifier identity; generator cannot self-certify.
 6. MNCS Language: expose stable semantic/compiler study identities suitable for CRE references.
 7. MNCDS: define how eligible Concept Experiments and their evidence may be bound into governed development records.
+   **Implemented** as the experimental RFC 0005 producer-binding surface
+   (`MNCDS 0.2-alpha.1`): the development-specification repository owns the
+   binding semantics and reference validator, and Commons projects validated
+   records as `DevelopmentRecord` entries (`commons.mncs.dev/development-record/v0alpha1`)
+   carrying the exact record identity/digest, tri-state computed status,
+   supersession chain, and typed references back to experiments, evaluations,
+   candidates, compiler records, and executions.
 8. MNCS: define how downstream assurance cases reference MNCDS and evidence identities without absorbing producer semantics.
 9. Atlas: document the family-level flow and ownership map.
 
-The bootstrap obligations for Commons, Control, Harness, Fabric, Forge, and MNCS Language are now
-implemented. MNEL, RAVEL, MNCDS, MNCS assurance projection, federation, and Atlas-wide presentation
+The bootstrap obligations for Commons, Control, Harness, Fabric, Forge, MNCS Language, and MNCDS are now
+implemented. MNEL, RAVEL, MNCS assurance projection, federation, and Atlas-wide presentation
 remain future architecture. `scripts/exercise_family_record_spine.py` exercises the implemented
-Control → Harness → Language → Fabric → Forge → Commons path and verifies that `UNKNOWN` remains
-exact in the producer records and the reconstructed graph.
+Control → Harness → Language → Fabric → Forge → Concept Experiment → MNCDS → Commons path: it
+validates an MNCDS `0.2-alpha.1` development record with the reference validator, projects it
+into a Commons `DevelopmentRecord`, reconstructs both graphs from durable identities, and
+verifies that `UNKNOWN` remains exact in every producer record and in the reconstructed graph.
 
 ## First end-to-end study
 
 Before relying on the spine for substantial language work, run one tiny synthetic study through the full path:
 
 ```text
-Control -> Harness -> Fabric -> Language -> Forge -> Commons -> MNCDS -> MNCS
+Control -> Harness -> Language -> Fabric -> Forge -> Concept Experiment ->
+MNCDS -> Commons -> (future) MNCS assurance projection
 ```
 
 The preferred first CRE is the MNCS tri-state result lattice (`PASS`, `UNKNOWN`, `FAIL`) because it has a tiny exhaustive state space and clear algebraic laws. A second strong target is retry authority under uncertain failure; a third is capability/effect authorization.
