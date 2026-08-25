@@ -24,6 +24,7 @@ class RecordKind(StrEnum):
     THREAD = "Thread"
     WORK_REQUEST = "WorkRequest"
     REPLICATION = "Replication"
+    DEVELOPMENT_RECORD = "DevelopmentRecord"
     ADVISORY = "Advisory"
     DECISION = "Decision"
     EPOCH = "Epoch"

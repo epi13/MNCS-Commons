@@ -104,6 +104,17 @@ def make_record(kind: str = "Observation") -> dict:
             "requestedKind": "Replication",
             "authorityBoundary": "verification-only; no repository mutation",
         },
+        "DevelopmentRecord": {
+            "schema": "commons.mncs.dev/development-record/v0alpha1",
+            "mncdsVersion": "0.2-alpha.1",
+            "recordId": "development.record-fixture",
+            "recordDigest": "sha256:" + "e" * 64,
+            "profile": "MNCDS-D1",
+            "epochId": "epoch.fixture-1",
+            "computedStatus": "UNKNOWN",
+            "references": [],
+            "authorityBoundary": "projection only; MNCDS owns process semantics",
+        },
         "Replication": {
             "targetRecord": "sha256:" + "a" * 64,
             "outcome": "FAIL",

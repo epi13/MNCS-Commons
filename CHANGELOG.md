@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- Added MNCDS participation in the Family Record Spine: a `DevelopmentRecord`
+  record kind, `make_development_record_record(...)` projection builder
+  (`commons.mncs.dev/development-record/v0alpha1`), a `development_lineage`
+  query projection with supersession chains and experiment links, and an
+  `mncds` entry in the family producer compatibility registry. The projection
+  preserves a validated MNCDS record's exact identity/digest and tri-state
+  computed status verbatim; Commons never reinterprets development-process
+  semantics.
+- Extended `scripts/exercise_family_record_spine.py` through the MNCDS
+  boundary: the exercise now validates an MNCDS `0.2-alpha.1` development
+  record with the reference validator (workspace checkout), projects it into
+  Commons, reconstructs both graphs from durable identities, and verifies
+  UNKNOWN remains exact across Control → Harness → Language → Fabric → Forge →
+  Concept Experiment → MNCDS → Commons.
+
 - Added `make_replication_record` on the Family Record Spine: a `Replication` builder binding a
   tri-state coordination outcome, correlation metadata, and typed producer references (language
   result, Fabric execution attempt, Forge evaluation). Every replication carries a neutral

@@ -16,6 +16,7 @@ FAMILY_REFERENCE_SCHEMA = "commons.mncs.dev/producer-reference/v0alpha1"
 CONCEPT_EXPERIMENT_SCHEMA = "commons.mncs.dev/concept-experiment/v0alpha1"
 FAILURE_CLASSIFICATION_SCHEMA = "commons.mncs.dev/failure-classification/v0alpha1"
 REPLICATION_SCHEMA = "commons.mncs.dev/replication/v0alpha1"
+DEVELOPMENT_RECORD_SCHEMA = "commons.mncs.dev/development-record/v0alpha1"
 
 EXPERIMENT_STATUSES = frozenset(
     {
@@ -523,6 +524,119 @@ def make_replication_record(
                 "conformance"
             ),
         },
+    }
+
+
+def make_development_record_record(
+    *,
+    development_record_id: str,
+    created_at: str,
+    mncds_version: str,
+    record_digest: str,
+    profile: str,
+    epoch_id: str,
+    computed_status: str,
+    summary: str,
+    references: Iterable[Mapping[str, Any]],
+    selected_candidate_id: str | None = None,
+    supersedes_record_id: str | None = None,
+    concept_experiment_ids: Iterable[str] = (),
+    producer_id: str = "mncds",
+) -> dict[str, Any]:
+    """Project one validated MNCDS development record into the family graph.
+
+    The projection carries the exact MNCDS record identity (id plus content
+    digest), its tri-state computed status, and typed producer references.  It
+    never reinterprets development-process semantics: Commons preserves the
+    record, relates it to the experiments and candidates it cites, and leaves
+    selection, release, and assurance authority with their owners.
+    """
+
+    development_record_id = _text(
+        development_record_id, "development_record_id", maximum=256
+    )
+    created_at = _timestamp(_text(created_at, "created_at", maximum=128))
+    mncds_version = _text(mncds_version, "mncds_version", maximum=64)
+    if not record_digest.startswith("sha256:") or len(record_digest) != 71:
+        raise FamilyRecordError("record_digest must be a sha256: identity")
+    if any(character not in "0123456789abcdef" for character in record_digest[7:]):
+        raise FamilyRecordError("record_digest must be lowercase hexadecimal")
+    profile = _text(profile, "profile", maximum=64)
+    epoch_id = _text(epoch_id, "epoch_id", maximum=256)
+    if computed_status not in {"PASS", "FAIL", "UNKNOWN"}:
+        raise FamilyRecordError("computed_status must be PASS, FAIL, or UNKNOWN")
+    reference_entries, reference_relationships = _reference_entries(references)
+    relationships: list[dict[str, str]] = list(reference_relationships)
+    for experiment_id in concept_experiment_ids:
+        target = _text(experiment_id, "concept_experiment_ids[]", maximum=256)
+        relationships.append({"type": "derived_from", "target": target})
+    if supersedes_record_id is not None:
+        predecessor = _text(supersedes_record_id, "supersedes_record_id", maximum=256)
+        relationships.append({"type": "supersedes", "target": predecessor})
+    relationships.sort(key=lambda item: (item["type"], item["target"]))
+    details: dict[str, Any] = {
+        "schema": DEVELOPMENT_RECORD_SCHEMA,
+        "mncdsVersion": mncds_version,
+        "recordId": development_record_id,
+        "recordDigest": record_digest,
+        "profile": profile,
+        "epochId": epoch_id,
+        "computedStatus": computed_status,
+        "references": reference_entries,
+        "authorityBoundary": (
+            "projection of a validated MNCDS development record; development-process "
+            "semantics stay in MNCDS and no assurance or conformance verdict is inferred"
+        ),
+    }
+    if selected_candidate_id is not None:
+        details["selectedCandidateId"] = _text(
+            selected_candidate_id, "selected_candidate_id", maximum=256
+        )
+    return {
+        "apiVersion": "commons.mncs.dev/v0alpha1",
+        "kind": "DevelopmentRecord",
+        "metadata": {
+            "recordId": f"development-record:{development_record_id}",
+            "createdAt": created_at,
+            "author": {"type": "producer", "id": producer_id},
+            "labels": ["development-record", "family-record-spine"],
+        },
+        "subject": {"type": "experiment", "identity": development_record_id},
+        "scope": {
+            "context": {
+                "mncdsVersion": mncds_version,
+                "profile": profile,
+                "epochId": epoch_id,
+                "computedStatus": computed_status,
+            },
+            "limitations": [
+                (
+                    "coordination status only; the referenced MNCDS record retains "
+                    "native development-process semantics"
+                )
+            ],
+        },
+        "statement": {"summary": _text(summary, "summary", maximum=20_000)},
+        "evidence": [],
+        "dependencies": [],
+        "affectedContracts": [],
+        "provenance": {
+            "producer": {"type": "producer", "id": producer_id},
+            "sourceRecords": [item["reference"]["stableId"] for item in reference_entries],
+        },
+        "confidence": {
+            "level": "unreported",
+            "rationale": "the projected MNCDS record carries its own computed status",
+        },
+        "security": {
+            "sensitivity": "public",
+            "executableAttachments": False,
+            "instructionsAreUntrusted": True,
+            "requiredExternalAuthority": False,
+        },
+        "lifecycle": {"initialState": "proposed", "reviewWhen": []},
+        "relationships": relationships,
+        "details": details,
     }
 
 

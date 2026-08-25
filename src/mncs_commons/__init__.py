@@ -9,6 +9,7 @@ from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
 from .family import (
     FamilyRecordError,
     make_concept_experiment_record,
+    make_development_record_record,
     make_failure_classification_record,
     make_replication_record,
     normalize_producer_reference,
@@ -57,6 +58,7 @@ __all__ = [
     "normalize_producer_reference",
     "reference_identity",
     "make_concept_experiment_record",
+    "make_development_record_record",
     "make_failure_classification_record",
     "make_replication_record",
 ]

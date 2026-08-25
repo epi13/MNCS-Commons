@@ -31,6 +31,7 @@ from ..query import (
     QueryFilter,
     bounded_graph,
     concept_experiment_graph,
+    development_lineage,
     replication_correlation,
 )
 from ..store import CommonsStore, StoreError
@@ -184,6 +185,16 @@ class CommonsApplication:
 
     def replications(self, target: str) -> dict[str, object]:
         return dict(replication_correlation(self.require_store().records(), target).as_dict())
+
+    def development_record(
+        self, record_ref: str, *, depth: int = 3, max_nodes: int = 1_000
+    ) -> dict[str, object]:
+        return development_lineage(
+            self.require_store().records(),
+            record_ref,
+            max_depth=depth,
+            max_nodes=max_nodes,
+        )
 
     def trace_evidence(
         self, root: str, *, depth: int = 3, max_nodes: int = 1_000

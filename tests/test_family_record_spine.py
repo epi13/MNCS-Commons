@@ -132,10 +132,11 @@ def test_family_producer_compatibility_registry_covers_bootstrap_path() -> None:
         "mncs-fabric",
         "mncs-language",
         "mncs-forge",
+        "mncds",
     }
     for item in registry["contracts"]:
         assert item["sourceFingerprint"].startswith("sha256:")
-        assert item["schemaVersion"].endswith("v0.1")
+        assert item["schemaVersion"].endswith(("v0.1", "v0.2-alpha.1"))
 
 
 def test_tri_state_rerun_graph_query_and_duplicate_publication(tmp_path) -> None:
@@ -360,3 +361,115 @@ def test_replication_rejects_malformed_producer_references() -> None:
     report = validate_record(bad)
     codes = {item.code for item in report.diagnostics}
     assert "INVALID_PRODUCER_REFERENCE" in codes
+
+
+def _development_record_projection(
+    record_id: str,
+    *,
+    computed_status: str,
+    supersedes: str | None = None,
+) -> dict[str, object]:
+    from mncs_commons import (
+        make_development_record_record,
+        producer_reference,
+    )
+
+    references = [
+        {
+            "relation": "evaluation",
+            "reference": producer_reference(
+                "mncs-forge",
+                "concept-evaluation",
+                "mncs-forge.concept-evaluation.v0.1",
+                f"mncs-forge://evaluation/{record_id}",
+                content_digest="sha256:" + "d" * 64,
+            ),
+        },
+        {
+            "relation": "candidate",
+            "reference": producer_reference(
+                "github.com/epi13/mncs-language",
+                "Commit",
+                "git",
+                "67fc26f49ef7c12130f9828231253464a6ce0388",
+                artifact={
+                    "identity": (
+                        "mncs-language@67fc26f49ef7c12130f9828231253464a6ce0388"
+                    ),
+                    "kind": "source-revision",
+                },
+            ),
+        },
+    ]
+    return make_development_record_record(
+        development_record_id=record_id,
+        created_at="2026-08-25T00:00:00Z",
+        mncds_version="0.2-alpha.1",
+        record_digest="sha256:" + "e" * 64,
+        profile="MNCDS-D1",
+        epoch_id="epoch.span-fix-1",
+        computed_status=computed_status,
+        summary="Projection of a validated MNCDS development record.",
+        references=references,
+        selected_candidate_id="candidate.mncs-language-cdee978",
+        supersedes_record_id=supersedes,
+        concept_experiment_ids=["cre-family-spine-fixture-a"],
+    )
+
+
+def test_development_record_projection_preserves_tri_state(tmp_path) -> None:
+    store = CommonsStore(tmp_path / "store")
+    store.init()
+    application = CommonsApplication(store)
+    added = application.add(_development_record_projection("dev.rec.a", computed_status="UNKNOWN"))
+    assert added.kind == "DevelopmentRecord"
+
+    lineage = application.development_record("development-record:dev.rec.a")
+    assert lineage["computedStatus"] == "UNKNOWN"
+    assert lineage["authorityBoundary"]
+    targets = {edge["target"] for edge in lineage["edges"]}
+    assert "cre-family-spine-fixture-a" in targets
+    details = lineage["developmentRecord"]["details"]
+    assert details["schema"] == "commons.mncs.dev/development-record/v0alpha1"
+    assert details["recordDigest"].startswith("sha256:")
+
+
+def test_development_supersession_chain_is_reconstructable(tmp_path) -> None:
+    store = CommonsStore(tmp_path / "store")
+    store.init()
+    application = CommonsApplication(store)
+    application.add(_development_record_projection("dev.rec.a", computed_status="PASS"))
+    successor = application.add(
+        _development_record_projection(
+            "dev.rec.b", computed_status="FAIL", supersedes="dev.rec.a"
+        )
+    )
+    lineage = application.development_record(successor.digest)
+    assert {"successor": "dev.rec.b", "predecessor": "dev.rec.a"} in lineage[
+        "supersession"
+    ]
+    # FAIL is preserved exactly in the projection.
+    assert lineage["computedStatus"] == "FAIL"
+
+
+def test_development_record_rejects_non_tri_state_and_bad_digest() -> None:
+    import pytest as _pytest
+
+    from mncs_commons.family import FamilyRecordError
+
+    with _pytest.raises(FamilyRecordError, match="PASS, FAIL, or UNKNOWN"):
+        _development_record_projection("dev.bad", computed_status="CONFORMANT")
+    from mncs_commons.family import make_development_record_record
+
+    with _pytest.raises(FamilyRecordError, match="sha256"):
+        make_development_record_record(
+            development_record_id="dev.bad2",
+            created_at="2026-08-25T00:00:00Z",
+            mncds_version="0.2-alpha.1",
+            record_digest="md5:" + "e" * 32,
+            profile="MNCDS-D1",
+            epoch_id="epoch.span-fix-1",
+            computed_status="PASS",
+            summary="bad digest must fail closed",
+            references=[],
+        )
