@@ -42,6 +42,9 @@ _OPERATIONS = (
     OperationSpec("work.scope-check", True, False, True, True, 512 * 1024),
     OperationSpec("family.registry", True, False, True, True, 512 * 1024),
     OperationSpec("family.coverage", True, True, True, True, 2 * 1024 * 1024),
+    OperationSpec("family.consistency", True, False, True, True, 2 * 1024 * 1024),
+    OperationSpec("work.propose", False, True, False, True, 512 * 1024),
+    OperationSpec("family.health-sweep", False, True, False, True, 4 * 1024 * 1024),
     OperationSpec(
         "work.claim",
         False,

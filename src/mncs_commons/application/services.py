@@ -27,7 +27,13 @@ from ..exchange import (
     validate_for_exchange,
     validate_participant,
 )
-from ..family_registry import family_coverage, family_registry
+from ..family_registry import (
+    SOURCE_ID_ALIASES,
+    family_coverage,
+    family_registry,
+    validate_family_sources,
+)
+from ..health import health_observation_record
 from ..lane_policy import LANES, lane_policy, scope_decision
 from ..models import EVENT_KIND
 from ..query import (
@@ -41,10 +47,12 @@ from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
 from ..work import (
     WorkProtocolError,
+    capability_overlap,
     coordination_state,
     list_work,
     new_work_record,
     next_work,
+    normalize_capability,
     project_work_history,
     revised_work_record,
 )
@@ -526,7 +534,11 @@ class CommonsApplication:
             "work": values,
             "truncated": len(values) >= max(1, min(limit, 1000)),
             "authority": "opportunity list, not commands or permissions",
-            "selection": "priority ascending, then creation time, then workId",
+            "selection": (
+                "priority ascending, dependency-unblocking value descending, quiet-project "
+                "coverage boost, creation time, then workId; explicit high-priority blockers "
+                "remain first"
+            ),
         }
 
     @staticmethod
@@ -539,9 +551,18 @@ class CommonsApplication:
 
     @staticmethod
     def work_scope_check(
-        lane: str, path: str, *, repository: str | None = None
+        lane: str,
+        path: str,
+        *,
+        repository: str | None = None,
+        allowed_write_scope: list[str] | None = None,
     ) -> dict[str, object]:
-        return scope_decision(lane, path, assigned_repository=repository)
+        return scope_decision(
+            lane,
+            path,
+            assigned_repository=repository,
+            allowed_write_scope=allowed_write_scope,
+        )
 
     @staticmethod
     def family_registry() -> dict[str, object]:
@@ -549,6 +570,236 @@ class CommonsApplication:
 
     def family_coverage(self) -> dict[str, object]:
         return family_coverage(self.require_store().records())
+
+    @staticmethod
+    def family_consistency(
+        standard: Mapping[str, Any], atlas: Mapping[str, Any]
+    ) -> dict[str, object]:
+        return validate_family_sources(standard, atlas)
+
+    def propose_work(self, proposal: Mapping[str, Any]) -> dict[str, object]:
+        """Classify a bounded worker discovery before exposing it as AVAILABLE work."""
+
+        candidate = dict(proposal)
+        source = candidate.pop("source", None) or candidate.get("proposalSource")
+        source_resolved = isinstance(source, str) and bool(source.strip())
+        if not isinstance(source, str) or not source.strip():
+            source = "worker-discovery"
+        candidate["proposalSource"] = source
+        candidate.setdefault("proposalStatus", "NEEDS_RECONCILIATION")
+        candidate.setdefault("coordinationState", "NEEDS_RECONCILIATION")
+        lane = candidate.get("lane")
+        repository = candidate.get("repository")
+        all_work = list_work(self.require_store().records())
+        current = [
+            item
+            for item in all_work
+            if item.get("coordinationState")
+            in {
+                "AVAILABLE",
+                "CLAIMED",
+                "IN_PROGRESS",
+                "BLOCKED",
+                "VERIFYING",
+                "NEEDS_RECONCILIATION",
+            }
+        ]
+        reasons: list[str] = []
+        if lane not in LANES:
+            reasons.append("lane is unresolved")
+        if not isinstance(repository, str) or not repository.strip():
+            reasons.append("repository is unresolved")
+        else:
+            registry_repositories = {
+                alias
+                for item in family_registry()["projects"]
+                for alias in {
+                    item["id"],
+                    item["repository"],
+                    str(item["repository"]).rsplit("/", 1)[-1],
+                }
+            }
+            registry_repositories.update(SOURCE_ID_ALIASES)
+            if repository not in registry_repositories:
+                reasons.append("repository is outside the canonical family")
+        if not source_resolved:
+            reasons.append("proposal source is unresolved")
+        if not candidate.get("evidenceLinks"):
+            reasons.append("proposal requires an evidence/source link")
+        dependencies = candidate.get("dependencies", [])
+        known_work_ids = {item["workId"] for item in all_work}
+        if isinstance(dependencies, list) and any(
+            str(item).startswith("work:") and str(item) not in known_work_ids
+            for item in dependencies
+        ):
+            reasons.append("one or more work dependencies are unresolved")
+        if lane == "SHARED_CORE" and not candidate.get("capability"):
+            reasons.append("shared-core proposals require a capability identity")
+        capability = candidate.get("capability")
+        duplicate = None
+        ambiguous: list[str] = []
+        finding_identity = candidate.get("findingIdentity")
+        for item in current:
+            details = item["current"].get("details", {})
+            if not isinstance(details, Mapping):
+                continue
+            same_repo = repository and repository in details.get("affectedRepositories", [])
+            same_finding = finding_identity and details.get("findingIdentity") == finding_identity
+            existing_capability = details.get("capability")
+            same_core = lane == "SHARED_CORE" and details.get("lane") == "SHARED_CORE"
+            if same_finding and same_repo and details.get("lane") == lane:
+                duplicate = item
+                break
+            if capability and existing_capability and (same_core or same_repo):
+                comparison = capability_overlap(capability, existing_capability)
+                if comparison == "exact":
+                    duplicate = item
+                    break
+                if comparison == "ambiguous":
+                    ambiguous.append(item["workId"])
+        if duplicate is not None:
+            existing_details = duplicate["current"].get("details", {})
+            attachments = list(existing_details.get("attachments", []))
+            attachments.append(
+                {
+                    "type": "proposal-attachment",
+                    "consumer": candidate.get("submittingConsumer"),
+                    "evidenceLinks": candidate.get("evidenceLinks", []),
+                    "dependencies": candidate.get("dependencies", []),
+                    "capability": normalize_capability(capability) if capability else None,
+                    "source": source,
+                }
+            )
+            attached = self.transition_work(
+                duplicate["workId"],
+                {
+                    "actor": candidate.get("submittingConsumer"),
+                    "expectedPreviousDigest": duplicate["currentDigest"],
+                    "attachments": attachments,
+                    "reason": "proposal attached to an existing bounded opportunity",
+                },
+            )
+            return {
+                "persisted": True,
+                "proposal": "ATTACHED",
+                "workId": duplicate["workId"],
+                "currentDigest": attached["currentDigest"],
+                "deduplication": "exact capability or finding identity",
+                "executionAuthority": "none",
+            }
+        if ambiguous:
+            reasons.append("capability overlap is plausible but not proven")
+        if reasons:
+            candidate["proposalReason"] = "; ".join(reasons)
+            candidate["deduplication"] = {
+                "status": "NEEDS_RECONCILIATION",
+                "candidateWorkIds": ambiguous,
+            }
+            result = self.submit_work(candidate)
+            return {
+                **result,
+                "proposal": "NEEDS_RECONCILIATION",
+                "deduplication": candidate["deduplication"],
+                "executionAuthority": "none",
+            }
+        candidate["proposalStatus"] = "ACCEPTED"
+        candidate["coordinationState"] = "AVAILABLE"
+        result = self.submit_work(candidate)
+        return {**result, "proposal": "ACCEPTED", "executionAuthority": "none"}
+
+    def family_health_sweep(
+        self, observations: list[Mapping[str, Any]], *, actor: Mapping[str, Any] | None = None
+    ) -> dict[str, object]:
+        """Ingest scanner observations and reconcile only their hygiene opportunities."""
+
+        if not isinstance(observations, list) or len(observations) > 17:
+            raise WorkProtocolError(
+                "HEALTH_SWEEP_INVALID", "observations must contain at most 17 entries"
+            )
+        registry = family_registry()
+        repositories = {item["repository"] for item in registry["projects"]}
+        writer = actor or {"type": "operator", "id": "urn:mncs:commons:family-health"}
+        observed: list[dict[str, object]] = []
+        proposals: list[dict[str, object]] = []
+        superseded: list[dict[str, object]] = []
+        seen_repositories: set[str] = set()
+        for raw in observations:
+            record, normalized = health_observation_record(raw)
+            if normalized["repository"] not in repositories and normalized["repository"] not in {
+                str(item).rsplit("/", 1)[-1] for item in repositories
+            }:
+                raise WorkProtocolError(
+                    "HEALTH_SWEEP_INVALID",
+                    "observation repository is outside the canonical family",
+                )
+            if normalized["repository"] in seen_repositories:
+                raise WorkProtocolError(
+                    "HEALTH_SWEEP_INVALID",
+                    "health sweep accepts at most one observation per repository",
+                )
+            seen_repositories.add(normalized["repository"])
+            receipt = self.publish(record, domain="local")
+            observation_id = str(receipt["logicalRecordId"])
+            observed.append({"recordId": observation_id, **normalized})
+            if normalized["outcome"] == "FAIL":
+                proposal = self.propose_work(
+                    {
+                        "submittingConsumer": writer,
+                        "project": {"id": "mncs-family", "revision": "2026-08"},
+                        "repository": normalized["repository"],
+                        "affectedRepositories": [normalized["repository"]],
+                        "task": normalized["finding"]
+                        or f"Repair the observed health failure in {normalized['repository']}",
+                        "lane": "REPO_HYGIENE",
+                        "priority": 20,
+                        "evidenceLinks": [observation_id, normalized["sourceIdentity"]],
+                        "proposalSource": normalized["source"],
+                        "observationTimestamp": normalized["observedAt"],
+                        "findingIdentity": normalized["findingIdentity"],
+                        "healthStatus": normalized["outcome"],
+                    }
+                )
+                proposals.append(proposal)
+            elif normalized["outcome"] == "PASS":
+                for item in list_work(
+                    self.require_store().records(),
+                    coordination_states={"AVAILABLE"},
+                ):
+                    details = item["current"].get("details", {})
+                    if (
+                        details.get("lane") == "REPO_HYGIENE"
+                        and details.get("findingIdentity") == normalized["findingIdentity"]
+                    ):
+                        superseded.append(
+                            self.transition_work(
+                                item["workId"],
+                                {
+                                    "state": "cancelled",
+                                    "coordinationState": "SUPERSEDED",
+                                    "actor": writer,
+                                    "expectedPreviousDigest": item["currentDigest"],
+                                    "reason": (
+                                        "fresh PASS health observation superseded the hygiene "
+                                        "opportunity"
+                                    ),
+                                    "result": {
+                                        "terminalOutcome": "SUPERSEDED",
+                                        "evidence": [{"id": observation_id, "status": "PASS"}],
+                                    },
+                                },
+                            )
+                        )
+        return {
+            "observations": observed,
+            "proposals": proposals,
+            "superseded": superseded,
+            "repositoryCount": len({item["repository"] for item in observed}),
+            "authority": (
+                "scanner observations are inert; Commons records and reconciles opportunities "
+                "only"
+            ),
+            "executionAuthority": "none",
+        }
 
     def claim_work(
         self,
@@ -571,7 +822,7 @@ class CommonsApplication:
         current_lane = details.get("lane")
         if lane is not None and current_lane != lane:
             raise WorkProtocolError("WORK_LANE_MISMATCH", "task is outside the requested lane")
-        if coordination_state(details) not in {"AVAILABLE", "BLOCKED", "NEEDS_RECONCILIATION"}:
+        if coordination_state(details) not in {"AVAILABLE", "BLOCKED"}:
             raise WorkProtocolError("WORK_NOT_AVAILABLE", "task is not claimable")
         actor_type = actor.get("type") if isinstance(actor, Mapping) else None
         actor_id = actor.get("id") if isinstance(actor, Mapping) else None

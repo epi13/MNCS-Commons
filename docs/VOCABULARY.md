@@ -6,7 +6,7 @@ MCP `mncs-commons://vocabulary` resource. The exchange exposes record kinds, lif
 recommended subject types, and recommended scope dimensions.
 
 Lane-aware durable work additionally uses `DOCUMENTATION`, `CONVERSION_PREP`, `VERIFICATION`,
-`REPO_LOCAL`, and `SHARED_CORE`, plus coordination states `AVAILABLE`, `CLAIMED`, `IN_PROGRESS`,
+`REPO_LOCAL`, `REPO_HYGIENE`, and `SHARED_CORE`, plus coordination states `AVAILABLE`, `CLAIMED`, `IN_PROGRESS`,
 `BLOCKED`, `VERIFYING`, `COMPLETE`, `ABANDONED`, `SUPERSEDED`, and `NEEDS_RECONCILIATION`.
 These coordinate repository work only; they do not grant execution or repository authority.
 

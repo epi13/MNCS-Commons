@@ -172,10 +172,14 @@ def build_parser() -> argparse.ArgumentParser:
     work_next.add_argument("--repository")
     work_next.add_argument("--capability", action="append", default=[])
     work_next.add_argument("--limit", type=int, default=1)
+    work_propose = work_commands.add_parser("propose")
+    work_propose.add_argument("path")
+    work_propose.add_argument("proposal", help="JSON object or path containing a proposal")
     scope_check = work_commands.add_parser("scope-check")
     scope_check.add_argument("lane", choices=sorted(LANES))
     scope_check.add_argument("path")
     scope_check.add_argument("--repository")
+    scope_check.add_argument("--allowed-write-scope", action="append", default=[])
     for name in ("claim", "block", "complete"):
         command = work_commands.add_parser(name)
         command.add_argument("path")
@@ -197,6 +201,12 @@ def build_parser() -> argparse.ArgumentParser:
     family_commands.add_parser("registry")
     family_coverage = family_commands.add_parser("coverage")
     family_coverage.add_argument("path")
+    family_consistency = family_commands.add_parser("consistency")
+    family_consistency.add_argument("standard")
+    family_consistency.add_argument("atlas")
+    family_health = family_commands.add_parser("health-sweep")
+    family_health.add_argument("path")
+    family_health.add_argument("observations", help="JSON array or path containing observations")
 
     compat = commands.add_parser("compat")
     compat_commands = compat.add_subparsers(dest="compat_command", required=True)
@@ -469,11 +479,20 @@ def main(argv: list[str] | None = None) -> int:
             if args.work_command == "scope-check":
                 _print(
                     CommonsApplication.work_scope_check(
-                        args.lane, args.path, repository=args.repository
+                        args.lane,
+                        args.path,
+                        repository=args.repository,
+                        allowed_write_scope=args.allowed_write_scope or None,
                     )
                 )
                 return 0
             application = CommonsApplication(CommonsStore(args.path))
+            if args.work_command == "propose":
+                proposal = _json_argument(args.proposal)
+                if not isinstance(proposal, Mapping):
+                    raise ValueError("proposal must contain a JSON object")
+                _print(application.propose_work(proposal))
+                return 0
             if args.work_command == "next":
                 _print(
                     application.work_next(
@@ -534,7 +553,19 @@ def main(argv: list[str] | None = None) -> int:
             if args.family_command == "registry":
                 _print(CommonsApplication.family_registry())
                 return 0
+            if args.family_command == "consistency":
+                standard = _read(args.standard)
+                atlas = _read(args.atlas)
+                result = CommonsApplication.family_consistency(standard, atlas)
+                _print(result)
+                return 0 if result["valid"] else 2
             application = CommonsApplication(CommonsStore(args.path))
+            if args.family_command == "health-sweep":
+                observations = _json_argument(args.observations)
+                if not isinstance(observations, list):
+                    raise ValueError("observations must contain a JSON array")
+                _print(application.family_health_sweep(observations))
+                return 0
             _print(application.family_coverage())
             return 0
         if args.command == "visibility":

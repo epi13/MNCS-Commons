@@ -125,7 +125,11 @@ def validate_lane_request(details: Mapping[str, Any]) -> list[tuple[str, str]]:
 
 
 def scope_decision(
-    lane: str, path: str, *, assigned_repository: str | None = None
+    lane: str,
+    path: str,
+    *,
+    assigned_repository: str | None = None,
+    allowed_write_scope: tuple[str, ...] | list[str] | None = None,
 ) -> dict[str, Any]:
     """Deterministically assess whether a path is writable under a lane."""
 
@@ -134,15 +138,27 @@ def scope_decision(
     if not normalized or "\x00" in normalized:
         return {"allowed": False, "code": "SCOPE_INVALID", "lane": lane, "path": path}
     if policy.exclusive:
-        allowed = normalized.startswith("explicitly-authorized-shared-core/")
+        patterns = tuple(allowed_write_scope) if allowed_write_scope is not None else policy.write
+        allowed = any(fnmatchcase(normalized, pattern) for pattern in patterns)
     else:
-        prefix = f"{assigned_repository.strip('/')}/" if assigned_repository else "assigned_repo/"
-        allowed = normalized.startswith(prefix)
-        if policy.lane == WorkLane.DOCUMENTATION.value:
-            allowed = allowed and any(
-                fnmatchcase(normalized, pattern.replace("assigned_repo/", prefix))
-                for pattern in policy.write
-            )
+        if not assigned_repository or not assigned_repository.strip("/"):
+            return {
+                "allowed": False,
+                "code": "SCOPE_REPOSITORY_REQUIRED",
+                "lane": lane,
+                "path": normalized,
+                "policy": policy.as_dict(),
+                "authority": "policy hint; repository/Harness authorization remains external",
+            }
+        prefix = f"{assigned_repository.strip('/')}/"
+        patterns = tuple(allowed_write_scope) if allowed_write_scope is not None else policy.write
+        allowed = any(
+            fnmatchcase(normalized, pattern.replace("assigned_repo/", prefix))
+            for pattern in patterns
+        ) and any(
+            fnmatchcase(normalized, pattern.replace("assigned_repo/", prefix))
+            for pattern in policy.write
+        )
     return {
         "allowed": allowed,
         "code": "SCOPE_ALLOWED" if allowed else "SCOPE_DENIED",

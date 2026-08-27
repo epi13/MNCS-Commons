@@ -194,6 +194,37 @@ def build_server(
             inputSchema={"type": "object", "properties": {}},
         ),
         Tool(  # type: ignore[call-arg]
+            name="commons_family_consistency",
+            description="Check exact family identities across Standard and Atlas snapshots.",
+            inputSchema={
+                "type": "object",
+                "required": ["standard", "atlas"],
+                "properties": {"standard": {"type": "object"}, "atlas": {"type": "object"}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_work_propose",
+            description=(
+                "Classify and deduplicate a worker discovery before it becomes claimable work."
+            ),
+            inputSchema={
+                "type": "object",
+                "required": ["proposal"],
+                "properties": {"proposal": {"type": "object"}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_health_sweep",
+            description=(
+                "Ingest bounded external health observations and reconcile hygiene opportunities."
+            ),
+            inputSchema={
+                "type": "object",
+                "required": ["observations"],
+                "properties": {"observations": {"type": "array", "items": {"type": "object"}}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
             name="commons_evidence_trace",
             description="Trace bounded evidence lineage without inferring truth.",
             inputSchema={
@@ -303,6 +334,30 @@ def build_server(
                 result = application.family_registry()
             elif name == "commons_family_coverage":
                 result = application.family_coverage()
+            elif name == "commons_family_consistency":
+                result = application.family_consistency(
+                    arguments.get("standard", {}), arguments.get("atlas", {})
+                )
+            elif name == "commons_work_propose":
+                if not policy.allow_write:
+                    raise ExchangeError(
+                        "PUBLIC_POLICY_REJECTED",
+                        "proposal intake is not available on a read-only profile",
+                    )
+                proposal = arguments.get("proposal")
+                if not isinstance(proposal, Mapping):
+                    raise ExchangeError("INVALID_PROPOSAL", "proposal must be an object")
+                result = application.propose_work(proposal)
+            elif name == "commons_family_health_sweep":
+                if not policy.allow_write:
+                    raise ExchangeError(
+                        "PUBLIC_POLICY_REJECTED",
+                        "health sweep is not available on a read-only profile",
+                    )
+                observations = arguments.get("observations")
+                if not isinstance(observations, list):
+                    raise ExchangeError("INVALID_OBSERVATIONS", "observations must be a list")
+                result = application.family_health_sweep(observations)
             elif name == "commons_evidence_trace":
                 result = application.trace_evidence(
                     str(arguments["root"]),

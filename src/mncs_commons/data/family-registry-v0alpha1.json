@@ -28,7 +28,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": [],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncds",
@@ -42,7 +42,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-rights-provenance",
@@ -70,7 +70,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-language-service",
@@ -84,7 +84,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs-language", "mncs-lineage"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-validator-rs",
@@ -98,7 +98,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE"],
       "consumes": ["mncs"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-forge-mcp",
@@ -112,7 +112,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-fabric", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-fabric",
@@ -126,7 +126,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs-language", "mncs-forge"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-commons",
@@ -140,7 +140,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs-language", "mncs-fabric", "mncs-forge", "mncs-harness"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-harness",
@@ -154,7 +154,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE", "SHARED_CORE"],
       "consumes": ["mncs-fabric", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-control-mcp",
@@ -168,7 +168,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE"],
       "consumes": ["mncs-fabric", "mncs-harness", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-atlas",
@@ -182,7 +182,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_HYGIENE"],
       "consumes": [],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-reference-studies",
@@ -196,7 +196,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs", "mncs-forge"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "HEALTHY_NO_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "ravel",
@@ -210,7 +210,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-forge", "mncs-commons", "mnel"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mnel",
@@ -224,7 +224,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-forge", "mncs-fabric", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-lineage",
@@ -238,7 +238,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-forge", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     },
     {
       "id": "mncs-tui",
@@ -252,7 +252,7 @@
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-language-service", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-      "coveragePosture": "ACTIVE_WORK"
+      "coveragePosture": "NEEDS_REVIEW"
     }
   ]
 }

@@ -72,6 +72,7 @@ CONSUMER_OPERATIONS = frozenset(
         "work.scope-check",
         "family.registry",
         "family.coverage",
+        "family.consistency",
         "store.retention",
     }
 )
@@ -83,8 +84,10 @@ OPERATOR_OPERATIONS = frozenset(
         "store.pin",
         "store.unpin",
         "work.submit",
+        "work.propose",
         "work.transition",
         "work.claim",
+        "family.health-sweep",
     }
 )
 ALL_OPERATIONS = CONSUMER_OPERATIONS | OPERATOR_OPERATIONS
@@ -477,6 +480,7 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 "lane": {"type": "string", "enum": sorted(LANES)},
                 "path": {"type": "string"},
                 "repository": {"type": "string"},
+                "allowedWriteScope": {"type": "array", "items": {"type": "string"}},
             },
         ),
         _tool_schema(
@@ -488,6 +492,11 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "commons_family_coverage",
             "Project bounded work coverage for every registered family project.",
             {},
+        ),
+        _tool_schema(
+            "commons_family_consistency",
+            "Check exact family identities across Standard and Atlas snapshots.",
+            {"standard": {"type": "object"}, "atlas": {"type": "object"}},
         ),
     ]
     operator = [
@@ -502,6 +511,20 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "commons_submit_work_record",
             "Persist an inert work request without accepting or dispatching execution.",
             {"request": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
+        ),
+        _tool_schema(
+            "commons_propose_work_record",
+            "Classify and deduplicate a worker discovery before it becomes claimable work.",
+            {"proposal": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
+        ),
+        _tool_schema(
+            "commons_family_health_sweep",
+            "Ingest bounded external health observations and reconcile hygiene opportunities.",
+            {"observations": {"type": "array", "items": {"type": "object"}}},
             capability="model-publication",
             authority="operator",
         ),
@@ -905,17 +928,38 @@ class CommonsService:
             _only(arguments, {"lane"})
             return self.application.work_policy(lane=_bounded_text(arguments.get("lane"), "lane"))
         if operation == "work.scope-check":
-            _only(arguments, {"lane", "path", "repository"})
+            _only(arguments, {"lane", "path", "repository", "allowedWriteScope"})
             lane = _bounded_text(arguments.get("lane"), "lane", allow_none=False)
             path = _bounded_text(arguments.get("path"), "path", allow_none=False)
+            declared_scope = arguments.get("allowedWriteScope")
+            if declared_scope is not None and (
+                not isinstance(declared_scope, list)
+                or len(declared_scope) > 128
+                or not all(isinstance(item, str) for item in declared_scope)
+            ):
+                raise CommonsServiceError(
+                    "INVALID_ARGUMENTS", "allowedWriteScope must be a bounded string list"
+                )
             return self.application.work_scope_check(
                 lane or "",
                 path or "",
                 repository=_bounded_text(arguments.get("repository"), "repository"),
+                allowed_write_scope=(
+                    declared_scope if isinstance(declared_scope, list) else None
+                ),
             )
         if operation == "family.coverage":
             _only(arguments, set())
             return self.application.family_coverage()
+        if operation == "family.consistency":
+            _only(arguments, {"standard", "atlas"})
+            standard = arguments.get("standard")
+            atlas = arguments.get("atlas")
+            if not isinstance(standard, Mapping) or not isinstance(atlas, Mapping):
+                raise CommonsServiceError(
+                    "INVALID_ARGUMENTS", "standard and atlas snapshots must be objects"
+                )
+            return self.application.family_consistency(standard, atlas)
         if operation == "commons.publish":
             _only(arguments, {"record", "participant"})
             record = arguments.get("record")
@@ -939,6 +983,21 @@ class CommonsService:
             if not isinstance(request, Mapping):
                 raise CommonsServiceError("INVALID_ARGUMENTS", "request must be an object")
             return self.application.submit_work(request)
+        if operation == "work.propose":
+            _only(arguments, {"proposal"})
+            proposal = arguments.get("proposal")
+            if not isinstance(proposal, Mapping):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "proposal must be an object")
+            return self.application.propose_work(proposal)
+        if operation == "family.health-sweep":
+            _only(arguments, {"observations", "actor"})
+            observations = arguments.get("observations")
+            actor = arguments.get("actor")
+            if not isinstance(observations, list):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "observations must be a list")
+            if actor is not None and not isinstance(actor, Mapping):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "actor must be an object")
+            return self.application.family_health_sweep(observations, actor=actor)
         if operation == "work.transition":
             _only(arguments, {"workId", "transition"})
             work_id = _bounded_text(arguments.get("workId"), "workId", allow_none=False)
@@ -1326,11 +1385,18 @@ class CommonsClient:
         return self._call("work.policy", arguments)
 
     def work_scope_check(
-        self, lane: str, path: str, *, repository: str | None = None
+        self,
+        lane: str,
+        path: str,
+        *,
+        repository: str | None = None,
+        allowed_write_scope: list[str] | None = None,
     ) -> dict[str, Any]:
         arguments: dict[str, Any] = {"lane": lane, "path": path}
         if repository is not None:
             arguments["repository"] = repository
+        if allowed_write_scope is not None:
+            arguments["allowedWriteScope"] = list(allowed_write_scope)
         return self._call("work.scope-check", arguments)
 
     def family_registry(self) -> dict[str, Any]:
@@ -1338,6 +1404,11 @@ class CommonsClient:
 
     def family_coverage(self) -> dict[str, Any]:
         return self._call("family.coverage")
+
+    def family_consistency(
+        self, standard: Mapping[str, Any], atlas: Mapping[str, Any]
+    ) -> dict[str, Any]:
+        return self._call("family.consistency", {"standard": dict(standard), "atlas": dict(atlas)})
 
     def evidence(self, root: str, *, depth: int = 3, max_nodes: int = 1000) -> dict[str, Any]:
         return self._call("commons.evidence", {"root": root, "depth": depth, "maxNodes": max_nodes})
@@ -1363,6 +1434,17 @@ class CommonsAdminClient(CommonsClient):
         if participant is not None:
             arguments["participant"] = dict(participant)
         return self._operator_call("commons.publish", arguments)
+
+    def propose_work(self, proposal: Mapping[str, Any]) -> dict[str, Any]:
+        return self._operator_call("work.propose", {"proposal": dict(proposal)})
+
+    def family_health_sweep(
+        self, observations: list[Mapping[str, Any]], *, actor: Mapping[str, Any] | None = None
+    ) -> dict[str, Any]:
+        arguments: dict[str, Any] = {"observations": [dict(item) for item in observations]}
+        if actor is not None:
+            arguments["actor"] = dict(actor)
+        return self._operator_call("family.health-sweep", arguments)
 
     def recover(self) -> dict[str, Any]:
         return self._operator_call("store.recover")
