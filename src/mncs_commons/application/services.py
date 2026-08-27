@@ -49,6 +49,7 @@ from ..query import (
 from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
 from ..work import (
+    WORK_HYGIENE_SCOPE_CODE,
     WorkProtocolError,
     capability_overlap,
     coordination_state,
@@ -654,6 +655,51 @@ class CommonsApplication:
             reasons.append("one or more work dependencies are unresolved")
         if lane == "SHARED_CORE" and not candidate.get("capability"):
             reasons.append("shared-core proposals require a capability identity")
+        # REPO_HYGIENE must be repo-local: exactly one canonical affected repo equal to primary.
+        if lane == "REPO_HYGIENE":
+            try:
+                from ..work import _hygiene_scope_invalid as _hygiene_invalid
+
+                probe: dict[str, Any] = {
+                    "lane": lane,
+                    "repository": repository,
+                    "affectedRepositories": candidate.get("affectedRepositories", []),
+                    "coordinationState": "AVAILABLE",
+                }
+                if "canonicalRepository" in candidate:
+                    probe["canonicalRepository"] = candidate["canonicalRepository"]
+                if "canonicalAffectedRepositories" in candidate:
+                    probe["canonicalAffectedRepositories"] = candidate[
+                        "canonicalAffectedRepositories"
+                    ]
+                if _hygiene_invalid(probe):
+                    reasons.append(
+                        "REPO_HYGIENE work must be scoped to exactly one "
+                        f"canonical repository equal to the primary "
+                        f"repository ({WORK_HYGIENE_SCOPE_CODE})"
+                    )
+            except Exception:
+                # Fallback inline check without helper
+                if isinstance(candidate.get("canonicalAffectedRepositories"), list):
+                    canon_affected = candidate["canonicalAffectedRepositories"]
+                    canon_primary = candidate.get("canonicalRepository")
+                    if (
+                        not isinstance(canon_primary, str)
+                        or not isinstance(canon_affected, list)
+                        or len({v for v in canon_affected if isinstance(v, str)}) != 1
+                        or canon_primary not in canon_affected
+                    ):
+                        reasons.append(
+                            "REPO_HYGIENE work must be scoped to exactly one "
+                            f"canonical repository equal to the primary "
+                            f"repository ({WORK_HYGIENE_SCOPE_CODE})"
+                        )
+                else:
+                    reasons.append(
+                        "REPO_HYGIENE work must be scoped to exactly one "
+                        f"canonical repository equal to the primary "
+                        f"repository ({WORK_HYGIENE_SCOPE_CODE})"
+                    )
         capability = candidate.get("capability")
         duplicate = None
         ambiguous: list[str] = []
