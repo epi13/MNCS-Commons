@@ -446,6 +446,8 @@ def work_semantic_diagnostics(
         "healthStatus",
         "proposalReason",
         "deduplication",
+        "canonicalRepository",
+        "canonicalAffectedRepositories",
     ):
         if details.get(field) != latest_details.get(field):
             diagnostics.append(
@@ -543,6 +545,8 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         "proposalReason",
         "deduplication",
         "attachments",
+        "canonicalRepository",
+        "canonicalAffectedRepositories",
     }
     if set(request) - allowed:
         raise WorkProtocolError("WORK_INVALID", "work submission contains unexpected fields")
@@ -593,14 +597,40 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         )
     proposal_status = _optional_text(request.get("proposalStatus"), "proposalStatus")
     proposal_source = _optional_text(request.get("proposalSource"), "proposalSource")
-    observation_timestamp = _optional_text(
+    observation_timestamp_raw = _optional_text(
         request.get("observationTimestamp"), "observationTimestamp"
     )
+    # Normalize observationTimestamp to UTC instant if present (reject naive)
+    observation_timestamp = None
+    if observation_timestamp_raw is not None:
+        try:
+            from datetime import datetime, timezone
+
+            instant = datetime.fromisoformat(
+                observation_timestamp_raw.strip().replace("Z", "+00:00")
+            )
+            if instant.tzinfo is None:
+                raise WorkProtocolError(
+                    "WORK_INVALID", "observationTimestamp must include timezone info"
+                )
+            observation_timestamp = instant.astimezone(timezone.utc).isoformat().replace(
+                "+00:00", "Z"
+            )
+        except ValueError as error:
+            raise WorkProtocolError(
+                "WORK_INVALID", "observationTimestamp must be an ISO-8601 timestamp"
+            ) from error
     finding_identity = _optional_text(request.get("findingIdentity"), "findingIdentity")
     health_status = _optional_text(request.get("healthStatus"), "healthStatus")
     proposal_reason = _optional_text(request.get("proposalReason"), "proposalReason")
     deduplication = _mapping(request.get("deduplication"), "deduplication")
     attachments = _bounded_mapping_list(request.get("attachments"), "attachments")
+    canonical_repository = _optional_text(
+        request.get("canonicalRepository"), "canonicalRepository"
+    )
+    canonical_affected = _bounded_string_list(
+        request.get("canonicalAffectedRepositories"), "canonicalAffectedRepositories"
+    )
     if lane == WorkLane.SHARED_CORE.value and not shared_core_impact:
         raise WorkProtocolError(
             "WORK_SHARED_CORE_IMPACT_REQUIRED", "SHARED_CORE work must declare impact"
@@ -677,6 +707,10 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
     ):
         if value is not None:
             lane_details[key] = value
+    if canonical_repository is not None:
+        lane_details["canonicalRepository"] = canonical_repository
+    if canonical_affected:
+        lane_details["canonicalAffectedRepositories"] = canonical_affected
     if deduplication:
         lane_details["deduplication"] = deduplication
     return {
@@ -1009,26 +1043,81 @@ def next_work(
     completed = {
         item["workId"] for item in list_work(all_records, coordination_states={"COMPLETE"})
     }
-    active_repositories = {
-        repository_name
-        for active_item in list_work(
-            all_records,
-            coordination_states={"CLAIMED", "IN_PROGRESS", "VERIFYING"},
-        )
-        for repository_name in active_item["current"].get("details", {}).get(
-            "affectedRepositories", []
-        )
-    }
+    # Active repositories include canonical identities for fair tie-breaking
+    active_repositories: set[str] = set()
+    for active_item in list_work(
+        all_records,
+        coordination_states={"CLAIMED", "IN_PROGRESS", "VERIFYING"},
+    ):
+        details = active_item["current"].get("details", {})
+        for repo in details.get("affectedRepositories", []):
+            if isinstance(repo, str):
+                active_repositories.add(repo)
+        for repo in details.get("canonicalAffectedRepositories", []):
+            if isinstance(repo, str):
+                active_repositories.add(repo)
+        canon = details.get("canonicalRepository")
+        if isinstance(canon, str):
+            active_repositories.add(canon)
+        # Also add aliases via canonical resolution for robustness
+        try:
+            from .family_registry import canonical_project_identity as _canon
+
+            for repo in list(details.get("affectedRepositories", [])):
+                if isinstance(repo, str):
+                    ident = _canon(repo)
+                    if ident:
+                        active_repositories.add(ident["repository"])
+                        active_repositories.add(ident["projectId"])
+        except Exception:
+            pass
     dependent_counts: dict[str, int] = {}
     for candidate in list_work(all_records):
         for dependency in candidate["current"].get("details", {}).get("dependencies", []):
             dependent_counts[str(dependency)] = dependent_counts.get(str(dependency), 0) + 1
     eligible: list[dict[str, Any]] = []
     requested_capabilities = capabilities or set()
+    # Resolve repository filter via canonical identity if possible
+    canonical_filter: str | None = None
+    if repository:
+        try:
+            from .family_registry import canonical_project_identity as _canon
+
+            ident = _canon(repository)
+            canonical_filter = ident["repository"] if ident else None
+        except Exception:
+            canonical_filter = None
     for item in projected:
         details = item["current"].get("details", {})
-        if repository and repository not in details.get("affectedRepositories", []):
-            continue
+        if repository:
+            affected = details.get("affectedRepositories", [])
+            canon_affected = details.get("canonicalAffectedRepositories", [])
+            canon_repo = details.get("canonicalRepository")
+            # Check direct match, canonical match, or via canonical resolution
+            in_affected = repository in affected if isinstance(affected, list) else False
+            in_canon_affected = False
+            in_canon_repo = False
+            if canonical_filter and isinstance(canon_affected, list):
+                in_canon_affected = canonical_filter in canon_affected
+            if canonical_filter and isinstance(canon_repo, str):
+                in_canon_repo = canonical_filter == canon_repo
+            # Also check if the filter's canonical matches any affected string via resolution
+            if not (in_affected or in_canon_affected or in_canon_repo):
+                # Fallback: try resolving affected strings to canonical
+                if canonical_filter and isinstance(affected, list):
+                    for val in affected:
+                        if isinstance(val, str):
+                            try:
+                                from .family_registry import canonical_project_identity as _c2
+
+                                ident2 = _c2(val)
+                                if ident2 and ident2["repository"] == canonical_filter:
+                                    in_affected = True
+                                    break
+                            except Exception:
+                                continue
+                if not in_affected:
+                    continue
         required = set(details.get("capabilityRequirements", []))
         if not required.issubset(requested_capabilities):
             continue
@@ -1041,13 +1130,26 @@ def next_work(
         ):
             continue
         eligible.append(item)
+    def _item_repos(details: dict[str, Any]) -> set[str]:
+        repos: set[str] = set()
+        for repo in details.get("affectedRepositories", []):
+            if isinstance(repo, str):
+                repos.add(repo)
+        for repo in details.get("canonicalAffectedRepositories", []):
+            if isinstance(repo, str):
+                repos.add(repo)
+        canon = details.get("canonicalRepository")
+        if isinstance(canon, str):
+            repos.add(canon)
+        return repos
+
     eligible.sort(
         key=lambda item: (
             int(item["current"].get("details", {}).get("priority", 100)),
             -dependent_counts.get(item["workId"], 0),
             0
             if active_repositories.intersection(
-                item["current"].get("details", {}).get("affectedRepositories", [])
+                _item_repos(item["current"].get("details", {}))  # type: ignore[arg-type]
             )
             else -1,
             str(item["current"].get("metadata", {}).get("createdAt", "")),

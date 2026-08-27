@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Mapping
 
 from .canonical import canonical_digest
@@ -17,6 +17,31 @@ def _text(value: object, field: str, *, maximum: int = _MAX_TEXT) -> str:
     if not isinstance(value, str) or not value.strip() or len(value) > maximum or "\x00" in value:
         raise ValueError(f"{field} must be bounded non-empty text")
     return value.strip()
+
+
+def parse_health_instant(value: str) -> datetime:
+    """Parse an ISO-8601 timestamp to a timezone-aware UTC instant.
+
+    Rejects naive timestamps (no timezone offset) unless there is an
+    intentionally documented policy. Commons requires explicit timezone
+    info and normalizes to UTC for chronological comparison.
+    """
+
+    text = value.strip()
+    try:
+        instant = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("observedAt must be an ISO-8601 timestamp") from error
+    if instant.tzinfo is None:
+        raise ValueError("observedAt must include timezone info (e.g. Z or +00:00)")
+    return instant.astimezone(timezone.utc)
+
+
+def normalize_health_instant(value: str) -> str:
+    """Return a normalized UTC ISO-8601 string with Z suffix."""
+
+    instant = parse_health_instant(value)
+    return instant.isoformat().replace("+00:00", "Z")
 
 
 def normalize_health_observation(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -40,11 +65,8 @@ def normalize_health_observation(value: Mapping[str, Any]) -> dict[str, Any]:
     outcome = _text(value.get("outcome"), "outcome", maximum=16).upper()
     if outcome not in HEALTH_OUTCOMES:
         raise ValueError("outcome must be PASS, FAIL, or UNKNOWN")
-    observed_at = _text(value.get("observedAt"), "observedAt", maximum=64)
-    try:
-        datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
-    except ValueError as error:
-        raise ValueError("observedAt must be an ISO-8601 timestamp") from error
+    observed_at_raw = _text(value.get("observedAt"), "observedAt", maximum=64)
+    observed_at = normalize_health_instant(observed_at_raw)
     source = _text(value.get("source"), "source", maximum=512)
     source_identity = _text(value.get("sourceIdentity", source), "sourceIdentity", maximum=1024)
     categories = value.get("categories", [])
@@ -177,4 +199,6 @@ __all__ = [
     "HEALTH_OUTCOMES",
     "health_observation_record",
     "normalize_health_observation",
+    "normalize_health_instant",
+    "parse_health_instant",
 ]

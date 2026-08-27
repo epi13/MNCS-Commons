@@ -17,6 +17,22 @@ from urllib.parse import urlparse
 from .lane_policy import LANES, SAFE_LANES
 from .work import list_work
 
+
+# Timestamp helpers - must be kept in sync with health.py parsing
+def _parse_instant(value: object) -> Any:
+    """Parse observedAt to a UTC instant for chronological comparison."""
+    from datetime import datetime, timezone
+
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        instant = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if instant.tzinfo is None:
+        return None
+    return instant.astimezone(timezone.utc)
+
 REGISTRY_VERSION = "commons.mncs.dev/family-registry/v0alpha1"
 
 CANONICAL_FAMILY = {
@@ -150,6 +166,32 @@ def _repository_from_url(value: object) -> str | None:
     return f"{parts[0]}/{parts[1].removesuffix('.git')}"
 
 
+def canonical_project_identity(value: object) -> dict[str, str] | None:
+    """Resolve repository spellings and source aliases to one family identity."""
+
+    if not isinstance(value, str) or not value.strip():
+        return None
+    submitted = value.strip()
+    repository = _repository_from_url(submitted)
+    if repository is None and submitted.count("/") == 1:
+        repository = submitted.removesuffix(".git")
+    candidate = (repository or submitted).lower()
+    for project_id, expected_repository in CANONICAL_FAMILY.items():
+        aliases = {
+            project_id,
+            expected_repository,
+            expected_repository.rsplit("/", 1)[-1],
+            *(alias for alias, target in SOURCE_ID_ALIASES.items() if target == project_id),
+        }
+        if candidate in {alias.lower() for alias in aliases}:
+            return {
+                "projectId": project_id,
+                "repository": expected_repository,
+                "submitted": submitted,
+            }
+    return None
+
+
 def validate_family_sources(
     standard: Mapping[str, Any], atlas: Mapping[str, Any]
 ) -> dict[str, Any]:
@@ -230,6 +272,16 @@ def _matching_work(item: Mapping[str, Any], project: Mapping[str, Any]) -> bool:
     if not isinstance(details, Mapping):
         return False
     aliases = _aliases(project)
+    # Use canonical identity if present, otherwise fall back to aliases
+    canonical_repo = details.get("canonicalRepository")
+    if isinstance(canonical_repo, str) and canonical_repo in {project["repository"], project["id"]}:
+        return True
+    # Also check canonical mapping for affectedRepositories
+    canonical_affected = details.get("canonicalAffectedRepositories", [])
+    if isinstance(canonical_affected, list) and project["repository"] in canonical_affected:
+        return True
+    if project["id"] in canonical_affected:
+        return True
     if details.get("repository") in aliases:
         return True
     affected = details.get("affectedRepositories", [])
@@ -272,11 +324,21 @@ def _project_state(
         record
         for record in health
         if record.get("details", {}).get("healthRepository") in _aliases(project)
+        or record.get("details", {}).get("canonicalHealthRepository") == project["repository"]
+        or record.get("details", {}).get("canonicalHealthRepository") == project["id"]
     ]
     if latest_health:
-        latest_health.sort(
-            key=lambda item: str(item.get("details", {}).get("observedAt", ""))
-        )
+        # Sort chronologically by parsed UTC instant, not lexical string
+        def _health_instant(item: Mapping[str, Any]) -> Any:
+            value = item.get("details", {}).get("observedAt", "")
+            parsed = _parse_instant(value)
+            # Use epoch 0 for missing/invalid to keep them at start
+            if parsed is None:
+                from datetime import datetime, timezone
+                return datetime(1970, 1, 1, tzinfo=timezone.utc)
+            return parsed
+
+        latest_health.sort(key=_health_instant)
         outcome = latest_health[-1].get("details", {}).get("outcome")
         if outcome == "PASS":
             return CoverageState.HEALTHY_NO_WORK.value
@@ -376,8 +438,11 @@ def family_coverage(records: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
 
 
 __all__ = [
+    "CANONICAL_FAMILY",
+    "SOURCE_ID_ALIASES",
     "CoverageState",
     "REGISTRY_VERSION",
+    "canonical_project_identity",
     "family_coverage",
     "family_registry",
     "validate_family_registry",

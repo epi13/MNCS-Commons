@@ -28,12 +28,15 @@ from ..exchange import (
     validate_participant,
 )
 from ..family_registry import (
-    SOURCE_ID_ALIASES,
+    canonical_project_identity,
     family_coverage,
     family_registry,
     validate_family_sources,
 )
-from ..health import health_observation_record
+from ..health import (
+    health_observation_record,
+    parse_health_instant,
+)
 from ..lane_policy import LANES, lane_policy, scope_decision
 from ..models import EVENT_KIND
 from ..query import (
@@ -581,13 +584,18 @@ class CommonsApplication:
         """Classify a bounded worker discovery before exposing it as AVAILABLE work."""
 
         candidate = dict(proposal)
+        # Classification owns these fields; strip any caller-supplied injection
+        candidate.pop("proposalStatus", None)
+        candidate.pop("coordinationState", None)
+        candidate.pop("proposalReason", None)
+        candidate.pop("canonicalRepository", None)
+        candidate.pop("canonicalAffectedRepositories", None)
+        candidate.pop("deduplication", None)
         source = candidate.pop("source", None) or candidate.get("proposalSource")
         source_resolved = isinstance(source, str) and bool(source.strip())
         if not isinstance(source, str) or not source.strip():
             source = "worker-discovery"
         candidate["proposalSource"] = source
-        candidate.setdefault("proposalStatus", "NEEDS_RECONCILIATION")
-        candidate.setdefault("coordinationState", "NEEDS_RECONCILIATION")
         lane = candidate.get("lane")
         repository = candidate.get("repository")
         all_work = list_work(self.require_store().records())
@@ -607,21 +615,32 @@ class CommonsApplication:
         reasons: list[str] = []
         if lane not in LANES:
             reasons.append("lane is unresolved")
+        canonical_repo = None
         if not isinstance(repository, str) or not repository.strip():
             reasons.append("repository is unresolved")
         else:
-            registry_repositories = {
-                alias
-                for item in family_registry()["projects"]
-                for alias in {
-                    item["id"],
-                    item["repository"],
-                    str(item["repository"]).rsplit("/", 1)[-1],
-                }
-            }
-            registry_repositories.update(SOURCE_ID_ALIASES)
-            if repository not in registry_repositories:
+            canonical_repo = canonical_project_identity(repository)
+            if canonical_repo is None:
                 reasons.append("repository is outside the canonical family")
+            else:
+                # Preserve submitted spelling as provenance, store canonical for matching
+                candidate["canonicalRepository"] = canonical_repo["repository"]
+                # Normalize affectedRepositories to canonical if it contains the repo
+                affected = candidate.get("affectedRepositories", [])
+                if isinstance(affected, list):
+                    normalized_affected: list[str] = []
+                    for item in affected:
+                        ident = canonical_project_identity(item)
+                        if ident is not None:
+                            normalized_affected.append(ident["repository"])
+                        elif isinstance(item, str) and item.strip():
+                            normalized_affected.append(item.strip())
+                    # Ensure canonical repo is included
+                    if canonical_repo["repository"] not in normalized_affected:
+                        normalized_affected.append(canonical_repo["repository"])
+                    candidate["canonicalAffectedRepositories"] = normalized_affected
+                else:
+                    candidate["canonicalAffectedRepositories"] = [canonical_repo["repository"]]
         if not source_resolved:
             reasons.append("proposal source is unresolved")
         if not candidate.get("evidenceLinks"):
@@ -639,11 +658,31 @@ class CommonsApplication:
         duplicate = None
         ambiguous: list[str] = []
         finding_identity = candidate.get("findingIdentity")
+        # For deduplication, use canonical repository identity
+        candidate_canonical = candidate.get("canonicalRepository")
         for item in current:
             details = item["current"].get("details", {})
             if not isinstance(details, Mapping):
                 continue
-            same_repo = repository and repository in details.get("affectedRepositories", [])
+            # Check same repository via canonical identity (with fallback to legacy aliases)
+            item_canonical = details.get("canonicalRepository")
+            item_canonical_affected = details.get("canonicalAffectedRepositories", [])
+            if candidate_canonical and item_canonical:
+                same_repo = candidate_canonical == item_canonical
+            elif candidate_canonical and isinstance(item_canonical_affected, list):
+                same_repo = candidate_canonical in item_canonical_affected
+            elif isinstance(item_canonical_affected, list) and candidate_canonical:
+                same_repo = candidate_canonical in item_canonical_affected
+            else:
+                # Fallback for legacy records without canonical fields
+                same_repo = bool(
+                    repository and repository in details.get("affectedRepositories", [])
+                )
+                # Also check canonical against affected list strings
+                if not same_repo and candidate_canonical:
+                    same_repo = candidate_canonical in [
+                        str(v) for v in details.get("affectedRepositories", [])
+                    ]
             same_finding = finding_identity and details.get("findingIdentity") == finding_identity
             existing_capability = details.get("capability")
             same_core = lane == "SHARED_CORE" and details.get("lane") == "SHARED_CORE"
@@ -656,8 +695,13 @@ class CommonsApplication:
                     duplicate = item
                     break
                 if comparison == "ambiguous":
-                    ambiguous.append(item["workId"])
-        if duplicate is not None:
+                    # Only consider AVAILABLE work for ambiguous pressure; NEEDS_RECONCILIATION
+                    # work is not claimable and should not block distinct proposals
+                    if item.get("coordinationState") == "AVAILABLE":
+                        ambiguous.append(item["workId"])
+        # Exact duplicates only attach if the proposal is otherwise valid;
+        # invalid proposals must fail closed to NEEDS_RECONCILIATION
+        if duplicate is not None and not reasons and not ambiguous:
             existing_details = duplicate["current"].get("details", {})
             attachments = list(existing_details.get("attachments", []))
             attachments.append(
@@ -690,6 +734,9 @@ class CommonsApplication:
         if ambiguous:
             reasons.append("capability overlap is plausible but not proven")
         if reasons:
+            # Classification owns these fields; force reconciliation regardless of caller
+            candidate["proposalStatus"] = "NEEDS_RECONCILIATION"
+            candidate["coordinationState"] = "NEEDS_RECONCILIATION"
             candidate["proposalReason"] = "; ".join(reasons)
             candidate["deduplication"] = {
                 "status": "NEEDS_RECONCILIATION",
@@ -702,6 +749,7 @@ class CommonsApplication:
                 "deduplication": candidate["deduplication"],
                 "executionAuthority": "none",
             }
+        # Fully resolved: classification grants AVAILABLE
         candidate["proposalStatus"] = "ACCEPTED"
         candidate["coordinationState"] = "AVAILABLE"
         result = self.submit_work(candidate)
@@ -712,32 +760,48 @@ class CommonsApplication:
     ) -> dict[str, object]:
         """Ingest scanner observations and reconcile only their hygiene opportunities."""
 
-        if not isinstance(observations, list) or len(observations) > 17:
+        # Bound total observation count, but allow multiple distinct findings per
+        # canonical repository (keyed by canonical repository + findingIdentity)
+        if not isinstance(observations, list) or len(observations) > 64:
             raise WorkProtocolError(
-                "HEALTH_SWEEP_INVALID", "observations must contain at most 17 entries"
+                "HEALTH_SWEEP_INVALID", "observations must contain at most 64 entries"
             )
-        registry = family_registry()
-        repositories = {item["repository"] for item in registry["projects"]}
         writer = actor or {"type": "operator", "id": "urn:mncs:commons:family-health"}
         observed: list[dict[str, object]] = []
         proposals: list[dict[str, object]] = []
         superseded: list[dict[str, object]] = []
-        seen_repositories: set[str] = set()
+        seen_keys: set[tuple[str, str]] = set()
+        # Pre-resolve canonical repositories for supersession matching
+        for raw in observations:
+            # Validate shape early for precise error, but canonical check happens below
+            if not isinstance(raw, Mapping):
+                raise WorkProtocolError(
+                    "HEALTH_SWEEP_INVALID", "each observation must be an object"
+                )
         for raw in observations:
             record, normalized = health_observation_record(raw)
-            if normalized["repository"] not in repositories and normalized["repository"] not in {
-                str(item).rsplit("/", 1)[-1] for item in repositories
-            }:
+            # Health observations are normalized to UTC instants at intake;
+            # repository identity must be canonical
+            canonical = canonical_project_identity(normalized["repository"])
+            if canonical is None:
                 raise WorkProtocolError(
                     "HEALTH_SWEEP_INVALID",
                     "observation repository is outside the canonical family",
                 )
-            if normalized["repository"] in seen_repositories:
+            # Enrich normalized with canonical for supersession and proposal
+            normalized["canonicalRepository"] = canonical["repository"]
+            # Also enrich record for coverage health matching
+            record["details"]["canonicalHealthRepository"] = canonical["repository"]
+            record["subject"]["identity"] = canonical["repository"]
+            record["scope"]["context"]["repository"] = canonical["repository"]
+            key = (canonical["repository"], normalized["findingIdentity"])
+            if key in seen_keys:
                 raise WorkProtocolError(
                     "HEALTH_SWEEP_INVALID",
-                    "health sweep accepts at most one observation per repository",
+                    "health sweep accepts at most one observation per "
+                    "(repository, findingIdentity)",
                 )
-            seen_repositories.add(normalized["repository"])
+            seen_keys.add(key)
             receipt = self.publish(record, domain="local")
             observation_id = str(receipt["logicalRecordId"])
             observed.append({"recordId": observation_id, **normalized})
@@ -746,6 +810,7 @@ class CommonsApplication:
                     {
                         "submittingConsumer": writer,
                         "project": {"id": "mncs-family", "revision": "2026-08"},
+                        # Keep original repository spelling; propose_work will canonicalize
                         "repository": normalized["repository"],
                         "affectedRepositories": [normalized["repository"]],
                         "task": normalized["finding"]
@@ -761,34 +826,82 @@ class CommonsApplication:
                 )
                 proposals.append(proposal)
             elif normalized["outcome"] == "PASS":
+                # PASS supersession must be repository-scoped and strictly newer
+                try:
+                    pass_instant = parse_health_instant(normalized["observedAt"])
+                except ValueError:
+                    continue
                 for item in list_work(
                     self.require_store().records(),
                     coordination_states={"AVAILABLE"},
                 ):
                     details = item["current"].get("details", {})
-                    if (
-                        details.get("lane") == "REPO_HYGIENE"
-                        and details.get("findingIdentity") == normalized["findingIdentity"]
-                    ):
-                        superseded.append(
-                            self.transition_work(
-                                item["workId"],
-                                {
-                                    "state": "cancelled",
-                                    "coordinationState": "SUPERSEDED",
-                                    "actor": writer,
-                                    "expectedPreviousDigest": item["currentDigest"],
-                                    "reason": (
-                                        "fresh PASS health observation superseded the hygiene "
-                                        "opportunity"
-                                    ),
-                                    "result": {
-                                        "terminalOutcome": "SUPERSEDED",
-                                        "evidence": [{"id": observation_id, "status": "PASS"}],
-                                    },
-                                },
-                            )
+                    if details.get("lane") != "REPO_HYGIENE":
+                        continue
+                    if details.get("findingIdentity") != normalized["findingIdentity"]:
+                        continue
+                    # Health reconciliation identity must include canonical repository
+                    work_canonical = details.get("canonicalRepository")
+                    work_affected = details.get("canonicalAffectedRepositories", [])
+                    # Fallback for legacy work without canonical fields
+                    if work_canonical:
+                        same_repo = work_canonical == normalized["canonicalRepository"]
+                    elif isinstance(work_affected, list) and work_affected:
+                        same_repo = normalized["canonicalRepository"] in work_affected
+                    else:
+                        # Legacy: compare via aliases (repository string)
+                        work_repo = details.get("repository") or ""
+                        work_affected_old = details.get("affectedRepositories", [])
+                        # Try canonical resolution of work repo
+                        work_ident = canonical_project_identity(work_repo)
+                        work_canonical_old = (
+                            work_ident["repository"] if work_ident else work_repo
                         )
+                        same_repo = work_canonical_old == normalized["canonicalRepository"]
+                        if not same_repo and isinstance(work_affected_old, list):
+                            same_repo = (
+                                normalized["canonicalRepository"]
+                                in work_affected_old
+                                or any(
+                                    (ident := canonical_project_identity(v)) is not None
+                                    and ident["repository"]
+                                    == normalized["canonicalRepository"]
+                                    for v in work_affected_old
+                                    if isinstance(v, str)
+                                )
+                            )
+                    if not same_repo:
+                        continue
+                    # Stale PASS must never erase newer FAIL: PASS must be strictly newer
+                    work_timestamp = details.get("observationTimestamp")
+                    if not isinstance(work_timestamp, str):
+                        continue
+                    try:
+                        work_instant = parse_health_instant(work_timestamp)
+                    except ValueError:
+                        continue
+                    # Equal-time PASS does not silently override without explicit policy
+                    if pass_instant <= work_instant:
+                        continue
+                    superseded.append(
+                        self.transition_work(
+                            item["workId"],
+                            {
+                                "state": "cancelled",
+                                "coordinationState": "SUPERSEDED",
+                                "actor": writer,
+                                "expectedPreviousDigest": item["currentDigest"],
+                                "reason": (
+                                    "fresh PASS health observation superseded the hygiene "
+                                    "opportunity"
+                                ),
+                                "result": {
+                                    "terminalOutcome": "SUPERSEDED",
+                                    "evidence": [{"id": observation_id, "status": "PASS"}],
+                                },
+                            },
+                        )
+                    )
         return {
             "observations": observed,
             "proposals": proposals,
