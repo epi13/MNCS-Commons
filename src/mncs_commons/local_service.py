@@ -19,6 +19,7 @@ import threading
 import time
 import uuid
 from collections import deque
+from collections.abc import Collection
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -33,9 +34,10 @@ from . import __version__
 from .application import CommonsApplication
 from .canonical import canonical_json
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
+from .lane_policy import LANES
 from .query import QueryFilter
 from .store import CommonsStore, StoreError
-from .work import WORK_STATES, WorkProtocolError
+from .work import WORK_COORDINATION_STATES, WORK_STATES, WorkProtocolError
 
 SERVICE_PROTOCOL = "commons.mncs.dev/local-service/v0alpha1"
 SERVICE_REQUEST = "commons.mncs.dev/local-service-request/v0alpha1"
@@ -65,6 +67,11 @@ CONSUMER_OPERATIONS = frozenset(
         "commons.evidence",
         "work.status",
         "work.list",
+        "work.next",
+        "work.policy",
+        "work.scope-check",
+        "family.registry",
+        "family.coverage",
         "store.retention",
     }
 )
@@ -77,6 +84,7 @@ OPERATOR_OPERATIONS = frozenset(
         "store.unpin",
         "work.submit",
         "work.transition",
+        "work.claim",
     }
 )
 ALL_OPERATIONS = CONSUMER_OPERATIONS | OPERATOR_OPERATIONS
@@ -96,9 +104,7 @@ class CommonsServiceError(RuntimeError):
 def default_service_root() -> Path:
     root = os.environ.get("XDG_STATE_HOME")
     return (
-        Path(root) / "mncs-commons"
-        if root
-        else Path.home() / ".local" / "state" / "mncs-commons"
+        Path(root) / "mncs-commons" if root else Path.home() / ".local" / "state" / "mncs-commons"
     )
 
 
@@ -114,9 +120,7 @@ def _current_uid() -> int:
 def _af_unix() -> int:
     value = getattr(socket, "AF_UNIX", None)
     if not isinstance(value, int):
-        raise CommonsServiceError(
-            "TRANSPORT_UNSUPPORTED", "local service requires POSIX AF_UNIX"
-        )
+        raise CommonsServiceError("TRANSPORT_UNSUPPORTED", "local service requires POSIX AF_UNIX")
     return value
 
 
@@ -443,8 +447,47 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "List durable work records as inert state assertions.",
             {
                 "states": {"type": "array", "items": {"type": "string"}},
+                "lanes": {"type": "array", "items": {"type": "string", "enum": sorted(LANES)}},
+                "coordinationStates": {
+                    "type": "array",
+                    "items": {"type": "string", "enum": sorted(WORK_COORDINATION_STATES)},
+                },
                 "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
             },
+        ),
+        _tool_schema(
+            "commons_work_next",
+            "Select deterministic, dependency-aware lane opportunities; this grants no authority.",
+            {
+                "lane": {"type": "string", "enum": sorted(LANES)},
+                "repository": {"type": "string"},
+                "capabilities": {"type": "array", "items": {"type": "string"}},
+                "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
+            },
+        ),
+        _tool_schema(
+            "commons_work_policy",
+            "Read the bounded authority policy for Commons work lanes.",
+            {"lane": {"type": "string", "enum": sorted(LANES)}},
+        ),
+        _tool_schema(
+            "commons_work_scope_check",
+            "Check a path against a lane policy; this is a deterministic policy hint.",
+            {
+                "lane": {"type": "string", "enum": sorted(LANES)},
+                "path": {"type": "string"},
+                "repository": {"type": "string"},
+            },
+        ),
+        _tool_schema(
+            "commons_family_registry",
+            "Read the Commons-owned active-family registry; Atlas remains orientation-only.",
+            {},
+        ),
+        _tool_schema(
+            "commons_family_coverage",
+            "Project bounded work coverage for every registered family project.",
+            {},
         ),
     ]
     operator = [
@@ -466,6 +509,19 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "commons_transition_work_record",
             "Append an untrusted work-state revision with optimistic lineage checks.",
             {"workId": {"type": "string"}, "transition": {"type": "object"}},
+            capability="model-publication",
+            authority="operator",
+        ),
+        _tool_schema(
+            "commons_claim_work_record",
+            "Claim one AVAILABLE lane task with optimistic digest arbitration.",
+            {
+                "workId": {"type": "string"},
+                "actor": {"type": "object"},
+                "expectedPreviousDigest": {"type": "string"},
+                "sessionId": {"type": "string"},
+                "lane": {"type": "string", "enum": sorted(LANES)},
+            },
             capability="model-publication",
             authority="operator",
         ),
@@ -567,7 +623,10 @@ class CommonsService:
             "exchangeProtocol": "commons.mncs.dev/exchange/v0alpha1",
             "transport": "LOCAL_UNIX_SOCKET",
             "consumerOperations": sorted(CONSUMER_OPERATIONS),
-            "operatorOperations": sorted(OPERATOR_OPERATIONS),
+            # Keep the original descriptor list stable for older clients; the
+            # lane-coordination operation is advertised in its dedicated view.
+            "operatorOperations": sorted(OPERATOR_OPERATIONS - {"work.claim"}),
+            "coordinationOperations": ["work.claim"],
             "consumerTools": consumer_tools,
             "operatorTools": operator_tools,
             "toolCapabilities": {
@@ -641,9 +700,10 @@ class CommonsService:
             return self.descriptor()
         if operation == "commons.describe":
             _only(arguments, set())
-            return self.application.describe(
-                domain=self.config.domain, binding="local-service"
-            )
+            return self.application.describe(domain=self.config.domain, binding="local-service")
+        if operation == "family.registry":
+            _only(arguments, set())
+            return self.application.family_registry()
         if operation == "commons.validate":
             _only(arguments, {"record"})
             record = arguments.get("record")
@@ -789,7 +849,7 @@ class CommonsService:
             work_id = _bounded_text(arguments.get("workId"), "workId", allow_none=False)
             return self.application.work_status(work_id or "")
         if operation == "work.list":
-            _only(arguments, {"states", "limit"})
+            _only(arguments, {"states", "lanes", "coordinationStates", "limit"})
             states_value = arguments.get("states")
             states: set[str] | None = None
             if states_value is not None:
@@ -801,9 +861,61 @@ class CommonsService:
                     if state not in WORK_STATES:
                         raise CommonsServiceError("INVALID_ARGUMENTS", "work state is unsupported")
                     states.add(state)
+
+            def bounded_values(name: str, allowed: Collection[str]) -> set[str] | None:
+                value = arguments.get(name)
+                if value is None:
+                    return None
+                if not isinstance(value, list) or len(value) > len(allowed):
+                    raise CommonsServiceError("INVALID_ARGUMENTS", f"{name} must be a bounded list")
+                result: set[str] = set()
+                for item in value:
+                    selected = _bounded_text(item, f"{name}[]", allow_none=False)
+                    if selected is None or selected not in allowed:
+                        raise CommonsServiceError(
+                            "INVALID_ARGUMENTS", f"{name} value is unsupported"
+                        )
+                    result.add(selected)
+                return result
+
             return self.application.work_list(
-                states=states, limit=_limit(arguments.get("limit"), 100)
+                states=states,
+                lanes=bounded_values("lanes", LANES),
+                coordination_states=bounded_values("coordinationStates", WORK_COORDINATION_STATES),
+                limit=_limit(arguments.get("limit"), 100),
             )
+        if operation == "work.next":
+            _only(arguments, {"lane", "repository", "capabilities", "limit"})
+            capabilities_value = arguments.get("capabilities")
+            if capabilities_value is not None and (
+                not isinstance(capabilities_value, list)
+                or len(capabilities_value) > 128
+                or not all(isinstance(item, str) for item in capabilities_value)
+            ):
+                raise CommonsServiceError(
+                    "INVALID_ARGUMENTS", "capabilities must be a bounded string list"
+                )
+            return self.application.work_next(
+                lane=_bounded_text(arguments.get("lane"), "lane"),
+                repository=_bounded_text(arguments.get("repository"), "repository"),
+                capabilities=set(capabilities_value or ()),
+                limit=_limit(arguments.get("limit"), 1),
+            )
+        if operation == "work.policy":
+            _only(arguments, {"lane"})
+            return self.application.work_policy(lane=_bounded_text(arguments.get("lane"), "lane"))
+        if operation == "work.scope-check":
+            _only(arguments, {"lane", "path", "repository"})
+            lane = _bounded_text(arguments.get("lane"), "lane", allow_none=False)
+            path = _bounded_text(arguments.get("path"), "path", allow_none=False)
+            return self.application.work_scope_check(
+                lane or "",
+                path or "",
+                repository=_bounded_text(arguments.get("repository"), "repository"),
+            )
+        if operation == "family.coverage":
+            _only(arguments, set())
+            return self.application.family_coverage()
         if operation == "commons.publish":
             _only(arguments, {"record", "participant"})
             record = arguments.get("record")
@@ -834,6 +946,24 @@ class CommonsService:
             if not isinstance(transition, Mapping):
                 raise CommonsServiceError("INVALID_ARGUMENTS", "transition must be an object")
             return self.application.transition_work(work_id or "", transition)
+        if operation == "work.claim":
+            _only(arguments, {"workId", "actor", "expectedPreviousDigest", "sessionId", "lane"})
+            work_id = _bounded_text(arguments.get("workId"), "workId", allow_none=False)
+            actor = arguments.get("actor")
+            if not isinstance(actor, Mapping):
+                raise CommonsServiceError("INVALID_ARGUMENTS", "actor must be an object")
+            expected = _bounded_text(
+                arguments.get("expectedPreviousDigest"),
+                "expectedPreviousDigest",
+                allow_none=False,
+            )
+            return self.application.claim_work(
+                work_id or "",
+                actor=actor,
+                expected_previous_digest=expected or "",
+                session_id=_bounded_text(arguments.get("sessionId"), "sessionId"),
+                lane=_bounded_text(arguments.get("lane"), "lane"),
+            )
         raise CommonsServiceError("OPERATION_UNSUPPORTED", "operation is unsupported")
 
 
@@ -1075,16 +1205,13 @@ class CommonsClient:
                 stream.settimeout(self.timeout)
                 stream.connect(str(self.socket_path))
                 _send_frame(stream, request, maximum=MAX_REQUEST_BYTES)
-                response = _receive_frame(
-                    stream, maximum=MAX_RESPONSE_BYTES, deadline=deadline
-                )
+                response = _receive_frame(stream, maximum=MAX_RESPONSE_BYTES, deadline=deadline)
         except socket.timeout as exc:
             raise CommonsServiceError("TRANSPORT_TIMEOUT", "service request timed out") from exc
         except OSError as exc:
             raise CommonsServiceError("SERVICE_UNREACHABLE", str(exc)) from exc
         if (
-            set(response)
-            != {"schemaVersion", "requestId", "ok", "result", "error", "servedAt"}
+            set(response) != {"schemaVersion", "requestId", "ok", "result", "error", "servedAt"}
             or response.get("schemaVersion") != SERVICE_RESPONSE
             or response.get("requestId") != request["requestId"]
             or not isinstance(response.get("result"), dict)
@@ -1138,9 +1265,7 @@ class CommonsClient:
             arguments["kind"] = kind
         return self._call("commons.sync", arguments)
 
-    def conversation(
-        self, root: str, *, depth: int = 2, max_nodes: int = 1000
-    ) -> dict[str, Any]:
+    def conversation(self, root: str, *, depth: int = 2, max_nodes: int = 1000) -> dict[str, Any]:
         return self._call(
             "commons.conversation", {"root": root, "depth": depth, "maxNodes": max_nodes}
         )
@@ -1163,19 +1288,59 @@ class CommonsClient:
         return self._call("work.status", {"workId": work_id})
 
     def work_list(
-        self, *, states: list[str] | None = None, limit: int = 100
+        self,
+        *,
+        states: list[str] | None = None,
+        lanes: list[str] | None = None,
+        coordination_states: list[str] | None = None,
+        limit: int = 100,
     ) -> dict[str, Any]:
         arguments: dict[str, Any] = {"limit": limit}
         if states is not None:
             arguments["states"] = list(states)
+        if lanes is not None:
+            arguments["lanes"] = list(lanes)
+        if coordination_states is not None:
+            arguments["coordinationStates"] = list(coordination_states)
         return self._call("work.list", arguments)
 
-    def evidence(
-        self, root: str, *, depth: int = 3, max_nodes: int = 1000
+    def work_next(
+        self,
+        *,
+        lane: str | None = None,
+        repository: str | None = None,
+        capabilities: list[str] | None = None,
+        limit: int = 1,
     ) -> dict[str, Any]:
-        return self._call(
-            "commons.evidence", {"root": root, "depth": depth, "maxNodes": max_nodes}
-        )
+        arguments: dict[str, Any] = {"limit": limit}
+        if lane is not None:
+            arguments["lane"] = lane
+        if repository is not None:
+            arguments["repository"] = repository
+        if capabilities is not None:
+            arguments["capabilities"] = list(capabilities)
+        return self._call("work.next", arguments)
+
+    def work_policy(self, lane: str | None = None) -> dict[str, Any]:
+        arguments = {} if lane is None else {"lane": lane}
+        return self._call("work.policy", arguments)
+
+    def work_scope_check(
+        self, lane: str, path: str, *, repository: str | None = None
+    ) -> dict[str, Any]:
+        arguments: dict[str, Any] = {"lane": lane, "path": path}
+        if repository is not None:
+            arguments["repository"] = repository
+        return self._call("work.scope-check", arguments)
+
+    def family_registry(self) -> dict[str, Any]:
+        return self._call("family.registry")
+
+    def family_coverage(self) -> dict[str, Any]:
+        return self._call("family.coverage")
+
+    def evidence(self, root: str, *, depth: int = 3, max_nodes: int = 1000) -> dict[str, Any]:
+        return self._call("commons.evidence", {"root": root, "depth": depth, "maxNodes": max_nodes})
 
 
 class CommonsAdminClient(CommonsClient):
@@ -1205,12 +1370,30 @@ class CommonsAdminClient(CommonsClient):
     def submit_work(self, request: Mapping[str, Any]) -> dict[str, Any]:
         return self._operator_call("work.submit", {"request": dict(request)})
 
-    def transition_work(
-        self, work_id: str, transition: Mapping[str, Any]
-    ) -> dict[str, Any]:
+    def transition_work(self, work_id: str, transition: Mapping[str, Any]) -> dict[str, Any]:
         return self._operator_call(
             "work.transition", {"workId": work_id, "transition": dict(transition)}
         )
+
+    def claim_work(
+        self,
+        work_id: str,
+        *,
+        actor: Mapping[str, Any],
+        expected_previous_digest: str,
+        session_id: str | None = None,
+        lane: str | None = None,
+    ) -> dict[str, Any]:
+        arguments: dict[str, Any] = {
+            "workId": work_id,
+            "actor": dict(actor),
+            "expectedPreviousDigest": expected_previous_digest,
+        }
+        if session_id is not None:
+            arguments["sessionId"] = session_id
+        if lane is not None:
+            arguments["lane"] = lane
+        return self._operator_call("work.claim", arguments)
 
 
 __all__ = [

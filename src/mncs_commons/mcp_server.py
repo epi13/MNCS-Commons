@@ -184,6 +184,16 @@ def build_server(
             inputSchema={"type": "object", "properties": {"limit": {"type": "integer"}}},
         ),
         Tool(  # type: ignore[call-arg]
+            name="commons_family_registry",
+            description="Read the active family registry; Atlas remains orientation-only.",
+            inputSchema={"type": "object", "properties": {}},
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_coverage",
+            description="Project bounded current coordination coverage for every family project.",
+            inputSchema={"type": "object", "properties": {}},
+        ),
+        Tool(  # type: ignore[call-arg]
             name="commons_evidence_trace",
             description="Trace bounded evidence lineage without inferring truth.",
             inputSchema={
@@ -289,6 +299,10 @@ def build_server(
                 )
             elif name == "commons_work_list":
                 result = application.work_queue(limit=int(arguments.get("limit", 100)))
+            elif name == "commons_family_registry":
+                result = application.family_registry()
+            elif name == "commons_family_coverage":
+                result = application.family_coverage()
             elif name == "commons_evidence_trace":
                 result = application.trace_evidence(
                     str(arguments["root"]),

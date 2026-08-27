@@ -75,6 +75,18 @@ class WorkRequestState(StrEnum):
     WITHDRAWN = "withdrawn"
 
 
+class WorkCoordinationState(StrEnum):
+    AVAILABLE = "AVAILABLE"
+    CLAIMED = "CLAIMED"
+    IN_PROGRESS = "IN_PROGRESS"
+    BLOCKED = "BLOCKED"
+    VERIFYING = "VERIFYING"
+    COMPLETE = "COMPLETE"
+    ABANDONED = "ABANDONED"
+    SUPERSEDED = "SUPERSEDED"
+    NEEDS_RECONCILIATION = "NEEDS_RECONCILIATION"
+
+
 class RelationType(StrEnum):
     SUPPORTS = "supports"
     CONTRADICTS = "contradicts"

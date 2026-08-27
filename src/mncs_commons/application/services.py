@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -26,6 +27,8 @@ from ..exchange import (
     validate_for_exchange,
     validate_participant,
 )
+from ..family_registry import family_coverage, family_registry
+from ..lane_policy import LANES, lane_policy, scope_decision
 from ..models import EVENT_KIND
 from ..query import (
     QueryFilter,
@@ -38,8 +41,10 @@ from ..store import CommonsStore, StoreError
 from ..validation import validate_event, validate_record
 from ..work import (
     WorkProtocolError,
+    coordination_state,
     list_work,
     new_work_record,
+    next_work,
     project_work_history,
     revised_work_record,
 )
@@ -366,9 +371,9 @@ class CommonsApplication:
     def work_queue(
         self, *, limit: int = 100, now=None, domain: str | None = None
     ) -> dict[str, object]:
-        values = self.query(
-            QueryFilter(open_work_requests=True, now=now, domain=domain)
-        )[: max(1, min(limit, 1000))]
+        values = self.query(QueryFilter(open_work_requests=True, now=now, domain=domain))[
+            : max(1, min(limit, 1000))
+        ]
         return {
             "records": values,
             "truncated": len(values) >= max(1, min(limit, 1000)),
@@ -453,9 +458,7 @@ class CommonsApplication:
             "executionAuthority": "none",
         }
 
-    def transition_work(
-        self, work_id: str, transition: Mapping[str, Any]
-    ) -> dict[str, object]:
+    def transition_work(self, work_id: str, transition: Mapping[str, Any]) -> dict[str, object]:
         """Append one state revision with optimistic lineage protection."""
 
         current = self.work_status(work_id)["current"]
@@ -482,8 +485,20 @@ class CommonsApplication:
     def work_status(self, work_id: str) -> dict[str, Any]:
         return project_work_history(self.require_store().records(), work_id)
 
-    def work_list(self, *, states: set[str] | None = None, limit: int = 100) -> dict[str, object]:
-        values = list_work(self.require_store().records(), states)
+    def work_list(
+        self,
+        *,
+        states: set[str] | None = None,
+        lanes: set[str] | None = None,
+        coordination_states: set[str] | None = None,
+        limit: int = 100,
+    ) -> dict[str, object]:
+        values = list_work(
+            self.require_store().records(),
+            states,
+            lanes=lanes,
+            coordination_states=coordination_states,
+        )
         bounded = max(1, min(limit, 1000))
         return {
             "work": values[:bounded],
@@ -491,6 +506,126 @@ class CommonsApplication:
             "contentTrust": "UNTRUSTED",
             "executionAuthority": "none",
         }
+
+    def work_next(
+        self,
+        *,
+        lane: str | None = None,
+        repository: str | None = None,
+        capabilities: set[str] | None = None,
+        limit: int = 1,
+    ) -> dict[str, object]:
+        values = next_work(
+            self.require_store().records(),
+            lane=lane,
+            repository=repository,
+            capabilities=capabilities,
+            limit=limit,
+        )
+        return {
+            "work": values,
+            "truncated": len(values) >= max(1, min(limit, 1000)),
+            "authority": "opportunity list, not commands or permissions",
+            "selection": "priority ascending, then creation time, then workId",
+        }
+
+    @staticmethod
+    def work_policy(lane: str | None = None) -> dict[str, object]:
+        selected = sorted(LANES) if lane is None else [lane]
+        return {
+            "lanes": [lane_policy(item).as_dict() for item in selected],
+            "authority": "policy hint; Harness and repository authorization remain external",
+        }
+
+    @staticmethod
+    def work_scope_check(
+        lane: str, path: str, *, repository: str | None = None
+    ) -> dict[str, object]:
+        return scope_decision(lane, path, assigned_repository=repository)
+
+    @staticmethod
+    def family_registry() -> dict[str, object]:
+        return family_registry()
+
+    def family_coverage(self) -> dict[str, object]:
+        return family_coverage(self.require_store().records())
+
+    def claim_work(
+        self,
+        work_id: str,
+        *,
+        actor: Mapping[str, Any],
+        expected_previous_digest: str,
+        session_id: str | None = None,
+        lane: str | None = None,
+    ) -> dict[str, object]:
+        """Claim one AVAILABLE task using the same optimistic revision path as transitions."""
+
+        status = self.work_status(work_id)
+        current = status.get("current")
+        if not isinstance(current, Mapping):
+            raise WorkProtocolError("WORK_HISTORY_INVALID", "current work record is malformed")
+        details = current.get("details")
+        if not isinstance(details, Mapping):
+            raise WorkProtocolError("WORK_HISTORY_INVALID", "current work details are malformed")
+        current_lane = details.get("lane")
+        if lane is not None and current_lane != lane:
+            raise WorkProtocolError("WORK_LANE_MISMATCH", "task is outside the requested lane")
+        if coordination_state(details) not in {"AVAILABLE", "BLOCKED", "NEEDS_RECONCILIATION"}:
+            raise WorkProtocolError("WORK_NOT_AVAILABLE", "task is not claimable")
+        actor_type = actor.get("type") if isinstance(actor, Mapping) else None
+        actor_id = actor.get("id") if isinstance(actor, Mapping) else None
+        if (
+            not isinstance(actor_type, str)
+            or not actor_type.strip()
+            or not isinstance(actor_id, str)
+            or not actor_id.strip()
+        ):
+            raise WorkProtocolError("WORK_ACTOR_REQUIRED", "claim actor type and id are required")
+        actor_value = {"type": actor_type.strip(), "id": actor_id.strip()}
+        active = list_work(
+            self.require_store().records(),
+            coordination_states={"CLAIMED", "IN_PROGRESS", "VERIFYING"},
+        )
+        if current_lane == "SHARED_CORE" and any(
+            item["current"].get("details", {}).get("lane") == "SHARED_CORE" for item in active
+        ):
+            raise WorkProtocolError(
+                "WORK_SHARED_CORE_BUSY",
+                "SHARED_CORE is single-writer while another core task is active",
+            )
+
+        def owned_by_actor(item: Mapping[str, Any]) -> bool:
+            item_details = item["current"].get("details", {})
+            claim_value = item_details.get("claim") if isinstance(item_details, Mapping) else None
+            return (
+                item["workId"] != work_id
+                and isinstance(claim_value, Mapping)
+                and claim_value.get("actor") == actor_value
+            )
+
+        if any(owned_by_actor(item) for item in active):
+            raise WorkProtocolError(
+                "WORK_ACTIVE_CLAIM_LIMIT",
+                "worker already holds an active substantive claim",
+            )
+        claim: dict[str, Any] = {
+            "actor": actor_value,
+            "claimedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+        if session_id is not None:
+            claim["sessionId"] = session_id
+        return self.transition_work(
+            work_id,
+            {
+                "state": "assigned",
+                "coordinationState": "CLAIMED",
+                "claim": claim,
+                "actor": actor_value,
+                "expectedPreviousDigest": expected_previous_digest,
+                "reason": "worker claimed a lane-scoped Commons opportunity",
+            },
+        )
 
     def create_bundle(
         self, output: str | Path, *, roots: list[str] | None = None, max_depth: int = 2

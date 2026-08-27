@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from .family_registry import CoverageState
+from .lane_policy import LANES
 from .models import (
     INSTITUTIONAL_MEMORY_KINDS,
     LifecycleState,
@@ -13,6 +15,7 @@ from .models import (
     WorkRequestState,
 )
 from .validation import _CONFIDENCE, _SENSITIVITIES
+from .work import WORK_COORDINATION_STATES
 
 VOCABULARY_VERSION = "commons.mncs.dev/vocabulary/v0alpha1"
 
@@ -64,6 +67,9 @@ def vocabulary() -> dict[str, Any]:
         "lifecycleStates": sorted(item.value for item in LifecycleState),
         "resultStatuses": sorted(item.value for item in ResultStatus),
         "workRequestStates": sorted(item.value for item in WorkRequestState),
+        "workLanes": sorted(LANES),
+        "workCoordinationStates": sorted(WORK_COORDINATION_STATES),
+        "familyCoverageStates": sorted(item.value for item in CoverageState),
         "relationships": sorted(item.value for item in RelationType),
         "securitySensitivities": sorted(_SENSITIVITIES),
         "confidenceLevels": sorted(_CONFIDENCE),

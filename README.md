@@ -127,6 +127,9 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 - deterministic, bounded Commons Bundles for local interchange and idempotent import.
 - a separately versioned Agent Exchange profile for discovery, bounded publication, ingestion
   receipts, pull synchronization, and typed conversation projections; and
+- lane-aware durable work coordination with deterministic opportunity selection, optimistic
+  claims, bounded worker ownership, machine-readable scope policy, and structured shared-core
+  escalation; and
 - a vendor-neutral two-process interoperability scenario, an optional local stdio MCP binding,
   and a persistent same-UID AF_UNIX service with separate consumer/operator endpoints.
 - append-only durable work records with operator-only submission/state updates, optimistic
@@ -156,6 +159,8 @@ mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
 mncs-commons bundle verify /tmp/commons.bundle.zip
 mncs-commons exchange describe
 mncs-commons exchange sync /tmp/mncs-commons --limit 100
+mncs-commons store seed-work /tmp/mncs-commons
+mncs-commons work next /tmp/mncs-commons --lane CONVERSION_PREP
 mncs-commons-service --store /tmp/mncs-commons --socket /tmp/commons.sock \
   --operator-socket /tmp/commons-operator.sock run
 ```
@@ -163,6 +168,11 @@ mncs-commons-service --store /tmp/mncs-commons --socket /tmp/commons.sock \
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
+The lane model, worker bootstrap, claim lifecycle, policy checks, seeding, and four-worker example
+are documented in [`docs/PARALLEL_WORK.md`](docs/PARALLEL_WORK.md).
+The active 17-project family registry and bounded coverage projection are available through
+`mncs-commons family registry` and `mncs-commons family coverage <store>`; Atlas remains
+descriptive orientation and is not scheduling authority.
 The hardened user-service example and installer are in [`deploy/systemd`](deploy/systemd/).
 Its MNCS Harness/Fabric boundary is documented in
 [`docs/FUTURE_COMMONS_OVER_FABRIC.md`](docs/FUTURE_COMMONS_OVER_FABRIC.md): the Harness

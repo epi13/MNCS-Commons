@@ -1,0 +1,141 @@
+# Low-conflict parallel work
+
+Commons is the coordination and work-request plane for the MNCS family. It records durable,
+inert work state and evidence; it does not execute records, authenticate workers, route models,
+or grant repository permissions.
+
+## Concurrent lanes and shared core
+
+| Lane | Safe scope | Purpose |
+| --- | --- | --- |
+| `DOCUMENTATION` | Assigned repository documentation and examples | README, architecture, ADR/RFC, roadmap, Atlas/descriptive synchronization |
+| `CONVERSION_PREP` | Assigned repository | Conversion maps, `.mncs` scaffolds, corpora, fixtures, and repo-local conversions already supported by the language |
+| `VERIFICATION` | Assigned repository tests, fixtures, CI, and evidence | Regression, compatibility, diagnostics, reproducibility, and maintenance |
+| `REPO_LOCAL` | Assigned repository | Substantive consumer implementation using existing MNCS capabilities |
+| `REPO_HYGIENE` | Assigned repository health and CI surfaces | Repair red CI, stale pins, generated-file drift, warnings, skipped tests, and environment assumptions without changing intended semantics |
+| `SHARED_CORE` | Explicitly authorized shared-core scope | Language/compiler/stdlib, Commons protocol, Fabric contracts, Harness policy, and family-wide semantic contracts; single writer by default |
+
+The machine-readable policy is available from `mncs-commons work policy` and can assess a path
+with `mncs-commons work scope-check`. A safe lane may inspect the family and publish observations,
+findings, work requests, blockers, and handoffs, but must not modify shared semantic
+infrastructure. A policy result is a deterministic coordination check, not a replacement for
+repository or Harness authorization.
+
+## Work lifecycle
+
+Lane-aware durable work records retain the existing execution `state` and add a coordination
+projection:
+
+```text
+AVAILABLE -> CLAIMED -> IN_PROGRESS -> VERIFYING -> COMPLETE
+                 |          |             |
+                 +---------> BLOCKED <-----+
+
+AVAILABLE/CLAIMED/IN_PROGRESS/BLOCKED/VERIFYING -> NEEDS_RECONCILIATION
+AVAILABLE/CLAIMED/IN_PROGRESS/BLOCKED/NEEDS_RECONCILIATION -> ABANDONED
+AVAILABLE/CLAIMED -> SUPERSEDED
+```
+
+Every revision carries the current digest as `expectedPreviousDigest`. A claim therefore loses
+deterministically when another writer has already claimed the task. By default, a worker may own
+one active substantive claim (`CLAIMED`, `IN_PROGRESS`, or `VERIFYING`). Blocked work names its
+blockers. Complete work carries `result.terminalOutcome`, non-empty `result.evidence`, and should
+include artifact, commit, or PR references where applicable.
+
+## Worker bootstrap
+
+An operator starts the service and seeds a small real backlog:
+
+```bash
+mncs-commons store init /var/lib/mncs-commons
+mncs-commons store seed-work /var/lib/mncs-commons
+mncs-commons-service --store /var/lib/mncs-commons \
+  --socket /run/user/$UID/mncs-commons.sock \
+  --operator-socket /run/user/$UID/mncs-commons-operator.sock run
+```
+
+The equivalent worker loop is:
+
+```text
+read policy and family context
+work next --lane <lane> (include required capabilities)
+claim the returned workId with its currentDigest and worker/session identity
+inspect related work, decisions, findings, and capability requests
+work only inside the recorded allowed scope
+if a shared capability is missing: publish a SHARED_CORE WorkRequest, mark this work BLOCKED,
+and attach the fixture/corpus/source evidence
+verify and publish completion evidence, blockers, discoveries, and follow-on work
+select another task only after COMPLETE, BLOCKED, ABANDONED, or explicit relinquishment
+```
+
+The standalone CLI makes the common actions explicit:
+
+```bash
+mncs-commons work next /var/lib/mncs-commons --lane CONVERSION_PREP \
+  --repository mncs-tui --capability mncs-language:source-fixtures
+mncs-commons work claim /var/lib/mncs-commons work:... \
+  --actor-id worker:tui-1 --session-id session:2026-08-27
+mncs-commons work block /var/lib/mncs-commons work:... \
+  --actor-id worker:tui-1 --reason 'missing capability: bounded.text.traversal'
+mncs-commons work complete /var/lib/mncs-commons work:... \
+  --actor-id worker:tui-1 --result completion.json
+```
+
+Service clients use the read-only `work.next`, `work.policy`, and `work.scope-check` operations;
+`work.claim` and state revisions remain on the operator write surface. Commons records the claim
+and provenance; Fabric continues to own enrolled worker identity/presence, transport, bounded
+execution, and execution evidence. Harness continues to own model/tool routing, permissions,
+governance, and acceptance/escalation. Forge evaluates workflows and evidence. Git remains source
+control.
+
+## Four concurrent workers
+
+An operator can give four workers the same bootstrap prompt while assigning distinct lanes:
+
+| Worker | Lane | Example first task |
+| --- | --- | --- |
+| A | `DOCUMENTATION` | Update Commons lane and authority-boundary documentation |
+| B | `CONVERSION_PREP` | Prepare the `mncs-tui` geometry conversion map and fixtures |
+| C | `VERIFICATION` | Run the `mncs-lineage` sealed corpus and publish reproducibility evidence |
+| D | `REPO_LOCAL` | Improve the MNEL differential-run reporting inside MNEL only |
+
+Each worker claims before substantive edits, so two workers do not silently interpret the same
+MNCS concept in incompatible ways. If B discovers that the language lacks a required traversal or
+reduction, B searches Commons for an existing request, adds its evidence if present, or submits a
+structured `SHARED_CORE` request containing `capability`, `consumer`, expected semantics,
+blocker/work identity, and fixture or corpus references. B then marks its task `BLOCKED` and can
+continue another eligible safe-lane task. Only the explicitly assigned shared-core worker changes
+the language or shared semantic contract.
+
+## Seeding and escalation
+
+`mncs-commons store seed-work` is idempotent by stable `workId` and seeds a deliberately small
+backlog across the five concurrent lanes from current MNCS repositories. Operators may submit additional
+records with `work.submit` or `CommonsApplication.submit_work`, including `affectedRepositories`,
+`dependencies`, `capabilityRequirements`, `sharedCoreImpact`, `allowedWriteScope`,
+`forbiddenWriteScope`, `createdFrom`, and priority. A safe-lane worker should not implement a
+missing shared capability merely because its consumer task is blocked: the structured request is
+the handoff that turns application pressure into exclusive shared-core input.
+
+## Family registry and coverage
+
+Commons owns the active coordination registry at `commons.mncs.dev/family-registry/v0alpha1`.
+It covers the canonical 17 repositories, records their groups, authority classes, eligible lanes,
+and known consumers, and keeps explicit coverage posture for projects with no current task. Atlas
+remains the descriptive orientation source and is never a scheduling authority.
+
+```bash
+mncs-commons family registry
+mncs-commons family coverage /var/lib/mncs-commons
+```
+
+Coverage is a bounded projection over the registry and latest WorkRequest revisions. It reports
+`ACTIVE_WORK`, `HEALTHY_NO_WORK`, `BLOCKED`, `WAITING_SHARED_CORE`, `INTENTIONALLY_INACTIVE`, or
+`NEEDS_REVIEW`; it does not manufacture work to make counts look complete.
+
+## REPO_HYGIENE rules
+
+The janitor may repair CI and environment debt, but must preserve intended behavior. It must not
+delete meaningful tests, weaken assertions, turn `FAIL` into `PASS`, add broad skips, hide warnings,
+remove platform coverage without evidence, or redesign shared semantics. When a red check requires
+a semantic decision, it publishes a structured shared-core blocker and moves on.

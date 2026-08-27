@@ -16,9 +16,18 @@ from .family import (
     producer_reference,
     reference_identity,
 )
+from .family_registry import CoverageState, family_coverage, family_registry
+from .lane_policy import LANES, SAFE_LANES, LanePolicy, WorkLane, lane_policy, scope_decision
 from .lifecycle import derive_lifecycle, validate_transition
 from .local_service import CommonsAdminClient, CommonsClient
-from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
+from .models import (
+    LifecycleState,
+    RecordKind,
+    RelationType,
+    ResultStatus,
+    WorkCoordinationState,
+    WorkRequestState,
+)
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
 from .remote import RemoteClient
 from .store import CommonsStore
@@ -36,6 +45,16 @@ __all__ = [
     "RelationType",
     "ResultStatus",
     "WorkRequestState",
+    "WorkCoordinationState",
+    "CoverageState",
+    "family_registry",
+    "family_coverage",
+    "LANES",
+    "SAFE_LANES",
+    "LanePolicy",
+    "WorkLane",
+    "lane_policy",
+    "scope_decision",
     "ScopeAssessment",
     "ValidationReport",
     "ProducerContract",

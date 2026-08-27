@@ -37,16 +37,24 @@ _OPERATIONS = (
     OperationSpec("conversation.get", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("experiment.get", True, True, True, True, 4 * 1024 * 1024),
     OperationSpec("work.list", True, True, True, True, 2 * 1024 * 1024),
+    OperationSpec("work.next", True, True, True, True, 2 * 1024 * 1024),
+    OperationSpec("work.policy", True, False, True, True, 512 * 1024),
+    OperationSpec("work.scope-check", True, False, True, True, 512 * 1024),
+    OperationSpec("family.registry", True, False, True, True, 512 * 1024),
+    OperationSpec("family.coverage", True, True, True, True, 2 * 1024 * 1024),
     OperationSpec(
-        "lifecycle.get", True, True, True, True, 512 * 1024, ("python-api", "cli")
+        "work.claim",
+        False,
+        True,
+        False,
+        True,
+        512 * 1024,
+        ("python-api", "cli", "stdio-mcp", "http"),
     ),
-    OperationSpec(
-        "lifecycle.domains", True, True, True, True, 512 * 1024, ("python-api", "cli")
-    ),
+    OperationSpec("lifecycle.get", True, True, True, True, 512 * 1024, ("python-api", "cli")),
+    OperationSpec("lifecycle.domains", True, True, True, True, 512 * 1024, ("python-api", "cli")),
     OperationSpec("evidence.trace", True, True, True, True, 4 * 1024 * 1024),
-    OperationSpec(
-        "bundle.verify", True, False, True, True, 512 * 1024, ("python-api", "cli")
-    ),
+    OperationSpec("bundle.verify", True, False, True, True, 512 * 1024, ("python-api", "cli")),
 )
 
 
