@@ -8,6 +8,71 @@ from typing import Any
 from .application import CommonsApplication
 from .exchange import ExchangePolicy
 from .store import CommonsStore
+from .work import WorkProtocolError
+
+_STALE_SEED_REASONS = {
+    "work:seed-shared-vector-reduce": (
+        "MNEL already implemented the native numeric kernel slice; this historical request "
+        "is no longer an open capability gap."
+    ),
+    "work:seed-family-registry-reconcile": (
+        "The canonical 17-project family roster was reconciled in the Standard and Commons "
+        "registries."
+    ),
+    "work:seed-atlas-registry-alignment": (
+        "Atlas was aligned with the canonical family roster and remains orientation-only."
+    ),
+    "work:seed-rights-ci-hygiene": (
+        "The recorded CI run is historical evidence, not current health; a fresh family "
+        "sweep must revalidate it."
+    ),
+    "work:seed-forge-ci-hygiene": (
+        "The recorded CI run is historical evidence, not current health; a fresh family "
+        "sweep must revalidate it."
+    ),
+    "work:seed-mnel-ci-hygiene": (
+        "The recorded CI run is historical evidence, not current health; a fresh family "
+        "sweep must revalidate it."
+    ),
+}
+
+
+def reconcile_stale_seed_work(application: CommonsApplication) -> list[dict[str, object]]:
+    """Terminally supersede claimable historical seed work in persistent stores."""
+
+    reconciled: list[dict[str, object]] = []
+    actor = {"type": "operator", "id": "urn:mncs:commons:bootstrap-reconciler"}
+    for work_id, reason in _STALE_SEED_REASONS.items():
+        try:
+            status = application.work_status(work_id)
+        except WorkProtocolError as error:
+            if error.code != "WORK_NOT_FOUND":
+                raise
+            continue
+        if status.get("coordinationState") != "AVAILABLE":
+            continue
+        result = application.transition_work(
+            work_id,
+            {
+                "state": "cancelled",
+                "coordinationState": "SUPERSEDED",
+                "actor": actor,
+                "expectedPreviousDigest": status["currentDigest"],
+                "reason": reason,
+                "result": {
+                    "terminalOutcome": "SUPERSEDED",
+                    "evidence": [
+                        {
+                            "id": "commons:bootstrap-reconciliation",
+                            "status": "UNKNOWN",
+                            "reason": reason,
+                        }
+                    ],
+                },
+            },
+        )
+        reconciled.append(result)
+    return reconciled
 
 
 def _request(record_id: str, summary: str, domain: str) -> dict[str, Any]:
@@ -106,6 +171,7 @@ def seed_work(path: Path, domain: str = "local") -> dict[str, object]:
     store = CommonsStore(path)
     store.init()
     application = CommonsApplication(store)
+    reconciled = reconcile_stale_seed_work(application)
     submitter = {"type": "operator", "id": "urn:mncs:commons:work-seed"}
     project = {"id": "mncs-family", "revision": "2026-08"}
     requests = [
@@ -211,86 +277,6 @@ def seed_work(path: Path, domain: str = "local") -> dict[str, object]:
             ),
             "priority": 60,
         },
-        {
-            "workId": "work:seed-shared-vector-reduce",
-            "lane": "SHARED_CORE",
-            "repository": "mncs-language",
-            "task": (
-                "Evaluate and, if accepted by the shared-core owner, specify numeric.vector.reduce "
-                "for MNEL conversion pressure."
-            ),
-            "sharedCoreImpact": True,
-            "capability": "numeric.vector.reduce",
-            "reason": "native MNEL training-loss calculation needs a bounded reduction primitive.",
-            "expectedSemantics": (
-                "Deterministic reduction over a numeric vector with explicit empty-input behavior."
-            ),
-            "blockingWorkIds": ["work:seed-mnel-corpus-map"],
-            "evidenceLinks": [
-                "mncs://Machine-Native-Experimental-Learning/tools/run_mncs_differential.py"
-            ],
-            "priority": 70,
-            "createdFrom": ["work:seed-mnel-corpus-map"],
-        },
-        {
-            "workId": "work:seed-family-registry-reconcile",
-            "lane": "REPO_HYGIENE",
-            "repository": "machine-native-complexity-standard",
-            "task": (
-                "Reconcile the central family registry and repository manifests with the "
-                "canonical 17-project roster, preserving component authority."
-            ),
-            "evidenceLinks": [
-                "family/mncs-family.v0.1.json",
-                "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
-            ],
-            "priority": 15,
-        },
-        {
-            "workId": "work:seed-rights-ci-hygiene",
-            "lane": "REPO_HYGIENE",
-            "repository": "mncs-rights-provenance",
-            "task": (
-                "Repair the current default-branch CI failure while preserving rights and "
-                "provenance semantics; classify any remaining toolchain gap explicitly."
-            ),
-            "evidenceLinks": ["GitHub Actions default-branch run 32841046979"],
-            "priority": 20,
-        },
-        {
-            "workId": "work:seed-forge-ci-hygiene",
-            "lane": "REPO_HYGIENE",
-            "repository": "mncs-forge-mcp",
-            "task": (
-                "Reconcile current cross-platform CI failures and stale compatibility evidence "
-                "without weakening platform assertions or Forge authority boundaries."
-            ),
-            "evidenceLinks": ["GitHub Actions default-branch run 32843005064"],
-            "priority": 25,
-        },
-        {
-            "workId": "work:seed-mnel-ci-hygiene",
-            "lane": "REPO_HYGIENE",
-            "repository": "Machine-Native-Experimental-Learning",
-            "task": (
-                "Repair the current MNEL CI environment and fixture failures, including the "
-                "Rust provider fixture and unavailable integration expectation, without "
-                "weakening tests or changing intended behavior."
-            ),
-            "evidenceLinks": ["GitHub Actions default-branch run 33026287027"],
-            "priority": 20,
-        },
-        {
-            "workId": "work:seed-atlas-registry-alignment",
-            "lane": "DOCUMENTATION",
-            "repository": "mncs-atlas",
-            "task": (
-                "Align Atlas descriptive project orientation with the Commons active-family "
-                "registry, retaining Atlas as non-normative and non-scheduling."
-            ),
-            "evidenceLinks": ["atlas.json", "commons.mncs.dev/family-registry/v0alpha1"],
-            "priority": 30,
-        },
     ]
     seeded = []
     for item in requests:
@@ -310,6 +296,8 @@ def seed_work(path: Path, domain: str = "local") -> dict[str, object]:
     return {
         "seeded": seeded,
         "count": len(seeded),
+        "reconciled": reconciled,
+        "reconciledCount": len(reconciled),
         "lanes": sorted({str(item["lane"]) for item in requests}),
         "authority": "seeded records are opportunities, not commands",
     }

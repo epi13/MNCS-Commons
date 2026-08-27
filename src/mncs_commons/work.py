@@ -7,6 +7,7 @@ permission to execute the task, and no code in this module dispatches work.
 from __future__ import annotations
 
 import copy
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
@@ -78,6 +79,12 @@ _TRANSITIONS: dict[str, frozenset[str]] = {
 }
 _MAX_TEXT = 16_384
 _MAX_ITEMS = 128
+_CAPABILITY_SEPARATORS = re.compile(r"[\s_./:-]+")
+_CAPABILITY_ALIASES = {
+    "masked": "mask",
+    "reduction": "reduce",
+    "reductions": "reduce",
+}
 
 
 class WorkProtocolError(ValueError):
@@ -121,6 +128,39 @@ def _mapping(value: object, field: str, *, required: bool = False) -> dict[str, 
 
 def _bounded_string_list(value: object, field: str) -> list[str]:
     return _string_list(value, field)
+
+
+def _bounded_mapping_list(value: object, field: str) -> list[dict[str, Any]]:
+    if value is None:
+        return []
+    if not isinstance(value, list) or len(value) > _MAX_ITEMS:
+        raise WorkProtocolError("WORK_INVALID", f"{field} must be a bounded list")
+    result: list[dict[str, Any]] = []
+    for item in value:
+        if not isinstance(item, Mapping) or len(item) > _MAX_ITEMS:
+            raise WorkProtocolError("WORK_INVALID", f"{field}[] must be a bounded object")
+        result.append(copy.deepcopy(dict(item)))
+    return result
+
+
+def normalize_capability(value: object) -> str:
+    """Return a conservative stable capability identity for proposal matching."""
+
+    text = _text(value, "capability", maximum=256).lower()
+    parts = [part for part in _CAPABILITY_SEPARATORS.split(text) if part]
+    return ".".join(_CAPABILITY_ALIASES.get(part, part) for part in parts)
+
+
+def capability_overlap(left: object, right: object) -> str:
+    """Classify capability comparison without treating fuzzy text as identity."""
+
+    left_id = normalize_capability(left)
+    right_id = normalize_capability(right)
+    if left_id == right_id:
+        return "exact"
+    if len(set(left_id.split(".")).intersection(right_id.split("."))) >= 2:
+        return "ambiguous"
+    return "distinct"
 
 
 def _bounded_priority(value: object) -> int:
@@ -232,6 +272,27 @@ def validate_work_record(value: Mapping[str, Any]) -> tuple[Diagnostic, ...]:
             diagnostics.append(
                 Diagnostic("WORK_FIELD_REQUIRED", f"details.{field}", "work field is required")
             )
+    coordination = details.get("coordinationState")
+    if coordination not in WORK_COORDINATION_STATES:
+        diagnostics.append(
+            Diagnostic(
+                "WORK_COORDINATION_STATE_INVALID",
+                "details.coordinationState",
+                "unsupported coordination state",
+            )
+        )
+    if (
+        coordination == "AVAILABLE"
+        and details.get("proposalStatus") == "ACCEPTED"
+        and details.get("lane") not in LANES
+    ):
+        diagnostics.append(
+            Diagnostic(
+                "WORK_LANE_REQUIRED",
+                "details.lane",
+                "claimable work must declare a lane",
+            )
+        )
     if "lane" in details:
         lane = details.get("lane")
         if lane not in LANES:
@@ -240,15 +301,6 @@ def validate_work_record(value: Mapping[str, Any]) -> tuple[Diagnostic, ...]:
             )
         for code, field in validate_lane_request(details):
             diagnostics.append(Diagnostic(code, field, "lane policy combination is invalid"))
-        coordination = details.get("coordinationState")
-        if coordination not in WORK_COORDINATION_STATES:
-            diagnostics.append(
-                Diagnostic(
-                    "WORK_COORDINATION_STATE_INVALID",
-                    "details.coordinationState",
-                    "unsupported coordination state",
-                )
-            )
         for field in (
             "affectedRepositories",
             "dependencies",
@@ -387,6 +439,13 @@ def work_semantic_diagnostics(
         "createdFrom",
         "parentWorkId",
         "authorityBoundary",
+        "proposalStatus",
+        "proposalSource",
+        "observationTimestamp",
+        "findingIdentity",
+        "healthStatus",
+        "proposalReason",
+        "deduplication",
     ):
         if details.get(field) != latest_details.get(field):
             diagnostics.append(
@@ -399,7 +458,7 @@ def work_semantic_diagnostics(
     previous_state = str(latest_details.get("state"))
     state = str(details.get("state"))
     event = details.get("stateEvent")
-    if state not in allowed_work_transitions(previous_state):
+    if state != previous_state and state not in allowed_work_transitions(previous_state):
         diagnostics.append(
             Diagnostic(
                 "WORK_TRANSITION_REJECTED",
@@ -475,6 +534,15 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         "modelId",
         "attempt",
         "securitySensitivity",
+        "coordinationState",
+        "proposalStatus",
+        "proposalSource",
+        "observationTimestamp",
+        "findingIdentity",
+        "healthStatus",
+        "proposalReason",
+        "deduplication",
+        "attachments",
     }
     if set(request) - allowed:
         raise WorkProtocolError("WORK_INVALID", "work submission contains unexpected fields")
@@ -518,6 +586,21 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         "forbiddenWriteScope",
     )
     created_from = _bounded_string_list(request.get("createdFrom"), "createdFrom")
+    coordination = request.get("coordinationState", "AVAILABLE")
+    if coordination not in WORK_COORDINATION_STATES:
+        raise WorkProtocolError(
+            "WORK_COORDINATION_STATE_INVALID", "coordinationState is unsupported"
+        )
+    proposal_status = _optional_text(request.get("proposalStatus"), "proposalStatus")
+    proposal_source = _optional_text(request.get("proposalSource"), "proposalSource")
+    observation_timestamp = _optional_text(
+        request.get("observationTimestamp"), "observationTimestamp"
+    )
+    finding_identity = _optional_text(request.get("findingIdentity"), "findingIdentity")
+    health_status = _optional_text(request.get("healthStatus"), "healthStatus")
+    proposal_reason = _optional_text(request.get("proposalReason"), "proposalReason")
+    deduplication = _mapping(request.get("deduplication"), "deduplication")
+    attachments = _bounded_mapping_list(request.get("attachments"), "attachments")
     if lane == WorkLane.SHARED_CORE.value and not shared_core_impact:
         raise WorkProtocolError(
             "WORK_SHARED_CORE_IMPACT_REQUIRED", "SHARED_CORE work must declare impact"
@@ -563,10 +646,11 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
             "allowedWriteScope": allowed_write_scope,
             "forbiddenWriteScope": forbidden_write_scope,
             "createdFrom": created_from,
-            "coordinationState": "AVAILABLE",
+            "coordinationState": coordination,
             "claim": None,
             "blockers": [],
             "result": None,
+            "attachments": attachments,
         }
         for key, value in (
             ("capability", capability),
@@ -575,6 +659,26 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         ):
             if value is not None:
                 lane_details[key] = value
+    else:
+        lane_details = {
+            "coordinationState": coordination,
+            "claim": None,
+            "blockers": [],
+            "result": None,
+            "attachments": attachments,
+        }
+    for key, value in (
+        ("proposalStatus", proposal_status),
+        ("proposalSource", proposal_source),
+        ("observationTimestamp", observation_timestamp),
+        ("findingIdentity", finding_identity),
+        ("healthStatus", health_status),
+        ("proposalReason", proposal_reason),
+    ):
+        if value is not None:
+            lane_details[key] = value
+    if deduplication:
+        lane_details["deduplication"] = deduplication
     return {
         "apiVersion": "commons.mncs.dev/v0alpha1",
         "kind": "WorkRequest",
@@ -650,6 +754,7 @@ def revised_work_record(
         "coordinationState",
         "claim",
         "followOnRequests",
+        "attachments",
     }
     if set(transition) - allowed:
         raise WorkProtocolError("WORK_INVALID", "work transition contains unexpected fields")
@@ -661,8 +766,10 @@ def revised_work_record(
     if transition.get("expectedPreviousDigest") != previous_digest:
         raise WorkProtocolError("WORK_CONFLICT", "expectedPreviousDigest is stale or missing")
     previous_state = str(details.get("state"))
-    target_state = _text(transition.get("state"), "state", maximum=32)
-    if target_state not in allowed_work_transitions(previous_state):
+    target_state = _text(transition.get("state", previous_state), "state", maximum=32)
+    if target_state not in allowed_work_transitions(previous_state) and not (
+        target_state == previous_state and "attachments" in transition
+    ):
         raise WorkProtocolError(
             "WORK_TRANSITION_REJECTED", f"{previous_state} -> {target_state} is not allowed"
         )
@@ -723,8 +830,25 @@ def revised_work_record(
         claim = transition["claim"]
         next_details["claim"] = None if claim is None else _mapping(claim, "claim", required=True)
     if "followOnRequests" in transition:
-        next_details["followOnRequests"] = _bounded_string_list(
+        follow_on_requests = _bounded_string_list(
             transition["followOnRequests"], "followOnRequests"
+        )
+        next_details["followOnRequests"] = follow_on_requests
+        relationships = list(candidate.get("relationships", []))
+        existing_relationships = {
+            (item.get("type"), item.get("target"))
+            for item in relationships
+            if isinstance(item, Mapping)
+        }
+        relationships.extend(
+            {"type": "follows_up", "target": item}
+            for item in follow_on_requests
+            if ("follows_up", item) not in existing_relationships
+        )
+        candidate["relationships"] = relationships
+    if "attachments" in transition:
+        next_details["attachments"] = _bounded_mapping_list(
+            transition["attachments"], "attachments"
         )
     routing = _mapping(next_details.get("routing"), "routing")
     for field in ("fabricJobId", "workerId", "modelId"):
@@ -798,7 +922,9 @@ def project_work_history(records: Iterable[Mapping[str, Any]], work_id: str) -> 
         else:
             if metadata.get("previousDigest") != previous_digest:
                 raise WorkProtocolError("WORK_HISTORY_INVALID", "work revision lineage is broken")
-            if state not in allowed_work_transitions(previous_state or ""):
+            if state != previous_state and state not in allowed_work_transitions(
+                previous_state or ""
+            ):
                 raise WorkProtocolError("WORK_HISTORY_INVALID", "work state history is invalid")
             if not isinstance(event, Mapping) or event.get("from") != previous_state:
                 raise WorkProtocolError("WORK_HISTORY_INVALID", "work state event is stale")
@@ -883,6 +1009,20 @@ def next_work(
     completed = {
         item["workId"] for item in list_work(all_records, coordination_states={"COMPLETE"})
     }
+    active_repositories = {
+        repository_name
+        for active_item in list_work(
+            all_records,
+            coordination_states={"CLAIMED", "IN_PROGRESS", "VERIFYING"},
+        )
+        for repository_name in active_item["current"].get("details", {}).get(
+            "affectedRepositories", []
+        )
+    }
+    dependent_counts: dict[str, int] = {}
+    for candidate in list_work(all_records):
+        for dependency in candidate["current"].get("details", {}).get("dependencies", []):
+            dependent_counts[str(dependency)] = dependent_counts.get(str(dependency), 0) + 1
     eligible: list[dict[str, Any]] = []
     requested_capabilities = capabilities or set()
     for item in projected:
@@ -904,6 +1044,12 @@ def next_work(
     eligible.sort(
         key=lambda item: (
             int(item["current"].get("details", {}).get("priority", 100)),
+            -dependent_counts.get(item["workId"], 0),
+            0
+            if active_repositories.intersection(
+                item["current"].get("details", {}).get("affectedRepositories", [])
+            )
+            else -1,
             str(item["current"].get("metadata", {}).get("createdAt", "")),
             item["workId"],
         )

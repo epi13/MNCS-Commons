@@ -40,6 +40,14 @@ for compatibility. `work.next` selects only dependency-ready `AVAILABLE` tasks; 
 appends an optimistic claim revision and rejects stale or already-owned work. See
 [`PARALLEL_WORK.md`](PARALLEL_WORK.md) for the worker workflow and authority policy.
 
+Workers publish discoveries through `work.propose`, not `work.submit`. Commons classifies the
+proposal's lane, repository, evidence, and overlap dimensions before making it `AVAILABLE`.
+Incomplete proposals and plausible capability overlaps remain `NEEDS_RECONCILIATION`; exact
+capability or finding duplicates attach their consumer, evidence, and dependency pressure to the
+existing open request. `family.health-sweep` accepts bounded observations from an independently
+authorized scanner and records fresh `REPO_HYGIENE` opportunities. It does not crawl repositories,
+execute checks, or grant write authority.
+
 All work content remains `UNTRUSTED`, has `executionAuthority: none`, and keeps
 `security.instructionsAreUntrusted: true`. An independently authorized Fabric,
 Harness, or worker component must explicitly accept and execute work; Commons

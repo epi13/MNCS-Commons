@@ -16,7 +16,13 @@ from .family import (
     producer_reference,
     reference_identity,
 )
-from .family_registry import CoverageState, family_coverage, family_registry
+from .family_registry import (
+    CANONICAL_FAMILY,
+    CoverageState,
+    family_coverage,
+    family_registry,
+    validate_family_sources,
+)
 from .lane_policy import LANES, SAFE_LANES, LanePolicy, WorkLane, lane_policy, scope_decision
 from .lifecycle import derive_lifecycle, validate_transition
 from .local_service import CommonsAdminClient, CommonsClient
@@ -47,8 +53,10 @@ __all__ = [
     "WorkRequestState",
     "WorkCoordinationState",
     "CoverageState",
+    "CANONICAL_FAMILY",
     "family_registry",
     "family_coverage",
+    "validate_family_sources",
     "LANES",
     "SAFE_LANES",
     "LanePolicy",

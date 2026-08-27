@@ -88,6 +88,26 @@ execution, and execution evidence. Harness continues to own model/tool routing, 
 governance, and acceptance/escalation. Forge evaluates workflows and evidence. Git remains source
 control.
 
+## Proposal and health intake
+
+Worker discoveries, verification failures, conversion blockers, follow-on work, and health findings
+enter through `work.propose`. The proposal is classified against its lane, repository, scope,
+dependencies, evidence, and shared-core impact before it can become `AVAILABLE`. Missing
+classification or plausible-but-unproven capability overlap remains `NEEDS_RECONCILIATION` and is
+not claimable. Exact capability or finding duplicates attach consumer/evidence/dependency pressure
+to the existing open request.
+
+The bounded `family.health-sweep` operation accepts observations from an independently authorized
+janitor or scanner. It records `PASS`, `FAIL`, or `UNKNOWN` with an observation timestamp and
+source identity, creates fresh `REPO_HYGIENE` proposals for failures, and supersedes available
+hygiene work when a newer matching observation is `PASS`. It does not crawl repositories or execute
+checks inside Commons. Unavailable current health remains `UNKNOWN`/`NEEDS_REVIEW`; historical run
+IDs are evidence references only.
+
+`work.next` ranks by priority, dependency-unblocking value, a small quiet-project coverage boost,
+then creation time and `workId`. Explicit high-priority work still wins; the coverage signal only
+prevents long-neglected eligible projects from disappearing behind a continuously hot repository.
+
 ## Four concurrent workers
 
 An operator can give four workers the same bootstrap prompt while assigning distinct lanes:
@@ -110,7 +130,7 @@ the language or shared semantic contract.
 ## Seeding and escalation
 
 `mncs-commons store seed-work` is idempotent by stable `workId` and seeds a deliberately small
-backlog across the five concurrent lanes from current MNCS repositories. Operators may submit additional
+backlog across the six concurrent lanes from current MNCS repositories. Operators may submit additional
 records with `work.submit` or `CommonsApplication.submit_work`, including `affectedRepositories`,
 `dependencies`, `capabilityRequirements`, `sharedCoreImpact`, `allowedWriteScope`,
 `forbiddenWriteScope`, `createdFrom`, and priority. A safe-lane worker should not implement a
@@ -132,6 +152,12 @@ mncs-commons family coverage /var/lib/mncs-commons
 Coverage is a bounded projection over the registry and latest WorkRequest revisions. It reports
 `ACTIVE_WORK`, `HEALTHY_NO_WORK`, `BLOCKED`, `WAITING_SHARED_CORE`, `INTENTIONALLY_INACTIVE`, or
 `NEEDS_REVIEW`; it does not manufacture work to make counts look complete.
+
+The registry validates the exact canonical component identities and repository paths, not only a
+count. `family.consistency` can compare Standard and Atlas snapshots while resolving explicit
+source aliases such as `mncs-forge`/`mncs-forge-mcp`/`forge` and
+`mncs-control`/`mncs-control-mcp`/`control`. Standard remains discovery authority, Commons owns
+coordination, and Atlas remains orientation-only.
 
 ## REPO_HYGIENE rules
 

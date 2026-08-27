@@ -69,10 +69,12 @@ def test_service_persists_independently_and_separates_authority(tmp_path: Path) 
         assert consumer.family_coverage()["projectCount"] == 17
         assert consumer.descriptor()["operatorOperations"] == [
             "commons.publish",
+            "family.health-sweep",
             "store.compact",
             "store.pin",
             "store.recover",
             "store.unpin",
+            "work.propose",
             "work.submit",
             "work.transition",
         ]
