@@ -25,14 +25,10 @@ def _hygiene_scope_invalid(details: Mapping[str, Any]) -> bool:
 
     if details.get("lane") != WorkLane.REPO_HYGIENE.value:
         return False
-    # Only AVAILABLE hygiene must be repo-local; NEEDS_RECONCILIATION is the
-    # fail-closed audit trail for invalid attempts.
+    # NEEDS_RECONCILIATION may contain invalid/multi-repo scope only as inert
+    # audit/reconciliation state. Every other coordination state must be repo-local.
     if details.get("coordinationState") == "NEEDS_RECONCILIATION":
         return False
-    # For records without an explicit coordination state, treat missing as
-    # AVAILABLE-equivalent for validation (new_work_record defaults to AVAILABLE).
-    # However during construction, new_work_record will have explicit AVAILABLE.
-    # So we only skip when explicitly NEEDS_RECONCILIATION; otherwise enforce.
     # Lazy import to avoid circular dependency (family_registry -> work).
     try:
         from .family_registry import canonical_project_identity as _canon
@@ -434,19 +430,17 @@ def validate_work_record(value: Mapping[str, Any]) -> tuple[Diagnostic, ...]:
                         "complete work requires a result",
                     )
                 )
-        # REPO_HYGIENE must be repo-local when it is claimable (AVAILABLE).
-        # Invalid hygiene is persisted as NEEDS_RECONCILIATION for audit, so
-        # only AVAILABLE hygiene is diagnosed as a violation here.
-        if details.get("lane") == WorkLane.REPO_HYGIENE.value:
-            if coordination == "AVAILABLE" and _hygiene_scope_invalid(details):
-                diagnostics.append(
-                    Diagnostic(
-                        WORK_HYGIENE_SCOPE_CODE,
-                        "details.affectedRepositories",
-                        "REPO_HYGIENE work must be scoped to exactly one "
-                        "canonical repository equal to the primary repository",
-                    )
+        # REPO_HYGIENE must be repo-local for every coordination state
+        # except NEEDS_RECONCILIATION (which is the inert audit trail).
+        if _hygiene_scope_invalid(details):
+            diagnostics.append(
+                Diagnostic(
+                    WORK_HYGIENE_SCOPE_CODE,
+                    "details.affectedRepositories",
+                    "REPO_HYGIENE work must be scoped to exactly one "
+                    "canonical repository equal to the primary repository",
                 )
+            )
     security = value.get("security")
     if not isinstance(security, Mapping) or security.get("instructionsAreUntrusted") is not True:
         diagnostics.append(
@@ -721,25 +715,24 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         raise WorkProtocolError(
             "WORK_SAFE_LANE_SHARED_CORE", "safe-lane work cannot declare shared-core impact"
         )
-    # Enforce repo-local hygiene for AVAILABLE hygiene directly.
-    # NEEDS_RECONCILIATION is the fail-closed audit trail for invalid attempts.
-    if lane == WorkLane.REPO_HYGIENE.value and coordination == "AVAILABLE":
-        probe: dict[str, Any] = {
-            "lane": lane,
-            "repository": repository,
-            "affectedRepositories": affected_repositories,
-            "coordinationState": coordination,
-        }
-        if canonical_repository is not None:
-            probe["canonicalRepository"] = canonical_repository
-        if canonical_affected:
-            probe["canonicalAffectedRepositories"] = canonical_affected
-        if _hygiene_scope_invalid(probe):
-            raise WorkProtocolError(
-                WORK_HYGIENE_SCOPE_CODE,
-                "REPO_HYGIENE work must be scoped to exactly one "
-                "canonical repository equal to the primary repository",
-            )
+    # Enforce repo-local hygiene for every state except NEEDS_RECONCILIATION.
+    # NEEDS_RECONCILIATION is the inert audit trail for invalid hygiene.
+    probe_hygiene: dict[str, Any] = {
+        "lane": lane,
+        "repository": repository,
+        "affectedRepositories": affected_repositories,
+        "coordinationState": coordination,
+    }
+    if canonical_repository is not None:
+        probe_hygiene["canonicalRepository"] = canonical_repository
+    if canonical_affected:
+        probe_hygiene["canonicalAffectedRepositories"] = canonical_affected
+    if _hygiene_scope_invalid(probe_hygiene):
+        raise WorkProtocolError(
+            WORK_HYGIENE_SCOPE_CODE,
+            "REPO_HYGIENE work must be scoped to exactly one "
+            "canonical repository equal to the primary repository",
+        )
     attempt = request.get("attempt", 0)
     if isinstance(attempt, bool) or not isinstance(attempt, int) or not 0 <= attempt <= 10_000:
         raise WorkProtocolError("WORK_INVALID", "attempt must be an integer between 0 and 10000")
@@ -961,6 +954,13 @@ def revised_work_record(
             f"{previous_coordination} -> {next_coordination} is not allowed",
         )
     next_details["coordinationState"] = next_coordination
+    # Enforce repo-local hygiene for every state except NEEDS_RECONCILIATION
+    if _hygiene_scope_invalid(next_details):
+        raise WorkProtocolError(
+            WORK_HYGIENE_SCOPE_CODE,
+            "REPO_HYGIENE work must be scoped to exactly one "
+            "canonical repository equal to the primary repository",
+        )
     if "claim" in transition:
         claim = transition["claim"]
         next_details["claim"] = None if claim is None else _mapping(claim, "claim", required=True)
