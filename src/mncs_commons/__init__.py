@@ -18,7 +18,9 @@ from .family import (
 )
 from .family_registry import (
     CANONICAL_FAMILY,
+    SOURCE_ID_ALIASES,
     CoverageState,
+    canonical_project_identity,
     family_coverage,
     family_registry,
     validate_family_sources,
@@ -54,6 +56,8 @@ __all__ = [
     "WorkCoordinationState",
     "CoverageState",
     "CANONICAL_FAMILY",
+    "SOURCE_ID_ALIASES",
+    "canonical_project_identity",
     "family_registry",
     "family_coverage",
     "validate_family_sources",
