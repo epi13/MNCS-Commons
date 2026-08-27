@@ -12,9 +12,37 @@ from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
 
 from .canonical import canonical_digest
+from .lane_policy import LANES, WorkLane, lane_policy, validate_lane_request
 from .models import Diagnostic
 
 WORK_PROTOCOL = "commons.mncs.dev/work-record/v0alpha1"
+WORK_COORDINATION_STATES = frozenset(
+    {
+        "AVAILABLE",
+        "CLAIMED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "VERIFYING",
+        "COMPLETE",
+        "ABANDONED",
+        "SUPERSEDED",
+        "NEEDS_RECONCILIATION",
+    }
+)
+TERMINAL_COORDINATION_STATES = frozenset({"COMPLETE", "ABANDONED", "SUPERSEDED"})
+_COORDINATION_TRANSITIONS: dict[str, frozenset[str]] = {
+    "AVAILABLE": frozenset({"CLAIMED", "ABANDONED", "SUPERSEDED"}),
+    "CLAIMED": frozenset({"IN_PROGRESS", "BLOCKED", "ABANDONED", "SUPERSEDED"}),
+    "IN_PROGRESS": frozenset(
+        {"BLOCKED", "VERIFYING", "COMPLETE", "ABANDONED", "NEEDS_RECONCILIATION"}
+    ),
+    "BLOCKED": frozenset({"CLAIMED", "IN_PROGRESS", "ABANDONED", "NEEDS_RECONCILIATION"}),
+    "VERIFYING": frozenset({"COMPLETE", "BLOCKED", "NEEDS_RECONCILIATION"}),
+    "NEEDS_RECONCILIATION": frozenset({"CLAIMED", "IN_PROGRESS", "ABANDONED"}),
+    "COMPLETE": frozenset(),
+    "ABANDONED": frozenset(),
+    "SUPERSEDED": frozenset(),
+}
 WORK_STATES = frozenset(
     {
         "submitted",
@@ -32,7 +60,7 @@ WORK_STATES = frozenset(
 )
 TERMINAL_WORK_STATES = frozenset({"completed", "failed", "cancelled"})
 _TRANSITIONS: dict[str, frozenset[str]] = {
-    "submitted": frozenset({"accepted", "failed", "cancelled"}),
+    "submitted": frozenset({"accepted", "assigned", "failed", "cancelled"}),
     "accepted": frozenset({"assigned", "queued", "failed", "cancelled"}),
     "assigned": frozenset({"queued", "running", "blocked", "retrying", "failed", "cancelled"}),
     "queued": frozenset({"assigned", "running", "blocked", "retrying", "failed", "cancelled"}),
@@ -42,9 +70,7 @@ _TRANSITIONS: dict[str, frozenset[str]] = {
     "checkpointed": frozenset(
         {"running", "blocked", "retrying", "completed", "failed", "cancelled"}
     ),
-    "blocked": frozenset(
-        {"assigned", "queued", "running", "retrying", "failed", "cancelled"}
-    ),
+    "blocked": frozenset({"assigned", "queued", "running", "retrying", "failed", "cancelled"}),
     "retrying": frozenset({"assigned", "queued", "running", "blocked", "failed", "cancelled"}),
     "completed": frozenset(),
     "failed": frozenset(),
@@ -91,6 +117,39 @@ def _mapping(value: object, field: str, *, required: bool = False) -> dict[str, 
     if not isinstance(value, Mapping) or len(value) > _MAX_ITEMS:
         raise WorkProtocolError("WORK_INVALID", f"{field} must be a bounded object")
     return copy.deepcopy(dict(value))
+
+
+def _bounded_string_list(value: object, field: str) -> list[str]:
+    return _string_list(value, field)
+
+
+def _bounded_priority(value: object) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= 1000:
+        raise WorkProtocolError("WORK_INVALID", "priority must be an integer between 0 and 1000")
+    return value
+
+
+def allowed_coordination_transitions(state: str) -> frozenset[str]:
+    return _COORDINATION_TRANSITIONS.get(state, frozenset())
+
+
+def coordination_state(details: Mapping[str, Any]) -> str:
+    explicit = details.get("coordinationState")
+    if explicit in WORK_COORDINATION_STATES:
+        return str(explicit)
+    return {
+        "submitted": "AVAILABLE",
+        "accepted": "AVAILABLE",
+        "assigned": "CLAIMED",
+        "queued": "CLAIMED",
+        "running": "IN_PROGRESS",
+        "checkpointed": "VERIFYING",
+        "blocked": "BLOCKED",
+        "retrying": "NEEDS_RECONCILIATION",
+        "completed": "COMPLETE",
+        "failed": "ABANDONED",
+        "cancelled": "ABANDONED",
+    }.get(str(details.get("state")), "AVAILABLE")
 
 
 def _actor(value: object, field: str) -> dict[str, str]:
@@ -173,6 +232,87 @@ def validate_work_record(value: Mapping[str, Any]) -> tuple[Diagnostic, ...]:
             diagnostics.append(
                 Diagnostic("WORK_FIELD_REQUIRED", f"details.{field}", "work field is required")
             )
+    if "lane" in details:
+        lane = details.get("lane")
+        if lane not in LANES:
+            diagnostics.append(
+                Diagnostic("WORK_LANE_INVALID", "details.lane", "unsupported work lane")
+            )
+        for code, field in validate_lane_request(details):
+            diagnostics.append(Diagnostic(code, field, "lane policy combination is invalid"))
+        coordination = details.get("coordinationState")
+        if coordination not in WORK_COORDINATION_STATES:
+            diagnostics.append(
+                Diagnostic(
+                    "WORK_COORDINATION_STATE_INVALID",
+                    "details.coordinationState",
+                    "unsupported coordination state",
+                )
+            )
+        for field in (
+            "affectedRepositories",
+            "dependencies",
+            "capabilityRequirements",
+            "blockingWorkIds",
+            "evidenceLinks",
+            "allowedWriteScope",
+            "forbiddenWriteScope",
+        ):
+            if field in details and (
+                not isinstance(details[field], list)
+                or len(details[field]) > _MAX_ITEMS
+                or not all(isinstance(item, str) and item.strip() for item in details[field])
+            ):
+                diagnostics.append(
+                    Diagnostic(
+                        "WORK_FIELD_INVALID", f"details.{field}", "must be a bounded string list"
+                    )
+                )
+        for field in ("capability", "reason", "expectedSemantics"):
+            if field in details and (
+                not isinstance(details[field], str)
+                or not details[field].strip()
+                or len(details[field]) > _MAX_TEXT
+            ):
+                diagnostics.append(
+                    Diagnostic("WORK_FIELD_INVALID", f"details.{field}", "must be bounded text")
+                )
+        priority = details.get("priority")
+        if isinstance(priority, bool) or not isinstance(priority, int) or not 0 <= priority <= 1000:
+            diagnostics.append(
+                Diagnostic(
+                    "WORK_PRIORITY_INVALID",
+                    "details.priority",
+                    "priority must be between 0 and 1000",
+                )
+            )
+        claim = details.get("claim")
+        if claim is not None and not isinstance(claim, Mapping):
+            diagnostics.append(
+                Diagnostic("WORK_CLAIM_INVALID", "details.claim", "claim must be an object or null")
+            )
+        if coordination in {"CLAIMED", "IN_PROGRESS", "VERIFYING"} and not isinstance(
+            claim, Mapping
+        ):
+            diagnostics.append(
+                Diagnostic("WORK_CLAIM_REQUIRED", "details.claim", "active work requires a claim")
+            )
+        if coordination == "BLOCKED" and not details.get("blockers"):
+            diagnostics.append(
+                Diagnostic(
+                    "WORK_BLOCKERS_REQUIRED", "details.blockers", "blocked work requires blockers"
+                )
+            )
+        if coordination == "COMPLETE":
+            result = details.get("result")
+            if not isinstance(result, Mapping) or not result.get("terminalOutcome"):
+                diagnostics.append(
+                    Diagnostic(
+                        "WORK_COMPLETION_EVIDENCE_REQUIRED",
+                        "details.result",
+                        "complete work requires a result",
+                    )
+                )
     security = value.get("security")
     if not isinstance(security, Mapping) or security.get("instructionsAreUntrusted") is not True:
         diagnostics.append(
@@ -224,11 +364,27 @@ def work_semantic_diagnostics(
     for field in (
         "workId",
         "objective",
+        "title",
+        "summary",
         "requestedKind",
         "submittingConsumer",
         "project",
         "repository",
         "constraints",
+        "lane",
+        "affectedRepositories",
+        "priority",
+        "dependencies",
+        "capabilityRequirements",
+        "capability",
+        "reason",
+        "expectedSemantics",
+        "blockingWorkIds",
+        "evidenceLinks",
+        "sharedCoreImpact",
+        "allowedWriteScope",
+        "forbiddenWriteScope",
+        "createdFrom",
         "parentWorkId",
         "authorityBoundary",
     ):
@@ -259,6 +415,19 @@ def work_semantic_diagnostics(
                 "state event does not name the previous state",
             )
         )
+    previous_coordination = coordination_state(latest_details)
+    next_coordination = coordination_state(details)
+    if (
+        next_coordination != previous_coordination
+        and next_coordination not in allowed_coordination_transitions(previous_coordination)
+    ):
+        diagnostics.append(
+            Diagnostic(
+                "WORK_COORDINATION_TRANSITION_REJECTED",
+                "details.coordinationState",
+                f"{previous_coordination} -> {next_coordination} is not allowed",
+            )
+        )
     return tuple(diagnostics)
 
 
@@ -283,6 +452,22 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         "project",
         "repository",
         "task",
+        "title",
+        "summary",
+        "lane",
+        "affectedRepositories",
+        "priority",
+        "dependencies",
+        "capabilityRequirements",
+        "capability",
+        "reason",
+        "expectedSemantics",
+        "blockingWorkIds",
+        "evidenceLinks",
+        "sharedCoreImpact",
+        "allowedWriteScope",
+        "forbiddenWriteScope",
+        "createdFrom",
         "constraints",
         "parentWorkId",
         "fabricJobId",
@@ -302,6 +487,45 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
     repository = _optional_text(request.get("repository"), "repository")
     constraints = _string_list(request.get("constraints"), "constraints")
     parent_work_id = _optional_text(request.get("parentWorkId"), "parentWorkId")
+    title = _optional_text(request.get("title"), "title") or task
+    summary = _optional_text(request.get("summary"), "summary") or task
+    lane = request.get("lane")
+    if lane is not None and lane not in LANES:
+        raise WorkProtocolError("WORK_LANE_INVALID", "lane is unsupported")
+    policy = lane_policy(lane) if lane is not None else None
+    affected_repositories = _bounded_string_list(
+        request.get("affectedRepositories", [repository] if repository else []),
+        "affectedRepositories",
+    )
+    priority = _bounded_priority(request.get("priority", 100))
+    dependencies = _bounded_string_list(request.get("dependencies"), "dependencies")
+    capability_requirements = _bounded_string_list(
+        request.get("capabilityRequirements"), "capabilityRequirements"
+    )
+    capability = _optional_text(request.get("capability"), "capability")
+    reason = _optional_text(request.get("reason"), "reason")
+    expected_semantics = _optional_text(request.get("expectedSemantics"), "expectedSemantics")
+    blocking_work_ids = _bounded_string_list(request.get("blockingWorkIds"), "blockingWorkIds")
+    evidence_links = _bounded_string_list(request.get("evidenceLinks"), "evidenceLinks")
+    shared_core_impact = request.get("sharedCoreImpact", lane == WorkLane.SHARED_CORE.value)
+    if not isinstance(shared_core_impact, bool):
+        raise WorkProtocolError("WORK_INVALID", "sharedCoreImpact must be boolean")
+    allowed_write_scope = _bounded_string_list(
+        request.get("allowedWriteScope", list(policy.write) if policy else []), "allowedWriteScope"
+    )
+    forbidden_write_scope = _bounded_string_list(
+        request.get("forbiddenWriteScope", list(policy.must_not_modify) if policy else []),
+        "forbiddenWriteScope",
+    )
+    created_from = _bounded_string_list(request.get("createdFrom"), "createdFrom")
+    if lane == WorkLane.SHARED_CORE.value and not shared_core_impact:
+        raise WorkProtocolError(
+            "WORK_SHARED_CORE_IMPACT_REQUIRED", "SHARED_CORE work must declare impact"
+        )
+    if lane is not None and lane != WorkLane.SHARED_CORE.value and shared_core_impact:
+        raise WorkProtocolError(
+            "WORK_SAFE_LANE_SHARED_CORE", "safe-lane work cannot declare shared-core impact"
+        )
     attempt = request.get("attempt", 0)
     if isinstance(attempt, bool) or not isinstance(attempt, int) or not 0 <= attempt <= 10_000:
         raise WorkProtocolError("WORK_INVALID", "attempt must be an integer between 0 and 10000")
@@ -318,12 +542,39 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         )
         if (value := _optional_text(request.get(field), field)) is not None
     }
-    relationships = []
+    relationships = [{"type": "depends_on", "target": item} for item in dependencies]
+    relationships.extend({"type": "derived_from", "target": item} for item in created_from)
     if parent_work_id:
         relationships.append({"type": "depends_on", "target": parent_work_id})
     context: dict[str, Any] = {"project": project}
     if repository:
         context["repository"] = repository
+    lane_details: dict[str, Any] = {}
+    if lane is not None:
+        lane_details = {
+            "lane": lane,
+            "affectedRepositories": affected_repositories,
+            "priority": priority,
+            "dependencies": dependencies,
+            "capabilityRequirements": capability_requirements,
+            "blockingWorkIds": blocking_work_ids,
+            "evidenceLinks": evidence_links,
+            "sharedCoreImpact": shared_core_impact,
+            "allowedWriteScope": allowed_write_scope,
+            "forbiddenWriteScope": forbidden_write_scope,
+            "createdFrom": created_from,
+            "coordinationState": "AVAILABLE",
+            "claim": None,
+            "blockers": [],
+            "result": None,
+        }
+        for key, value in (
+            ("capability", capability),
+            ("reason", reason),
+            ("expectedSemantics", expected_semantics),
+        ):
+            if value is not None:
+                lane_details[key] = value
     return {
         "apiVersion": "commons.mncs.dev/v0alpha1",
         "kind": "WorkRequest",
@@ -339,9 +590,9 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
             "context": context,
             "limitations": ["record carries no execution authority", *constraints],
         },
-        "statement": {"summary": task},
+        "statement": {"summary": title, "details": summary},
         "evidence": [],
-        "dependencies": [],
+        "dependencies": dependencies,
         "affectedContracts": [],
         "provenance": {"producer": submitter, "sourceRecords": []},
         "confidence": {
@@ -358,6 +609,8 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
         "relationships": relationships,
         "details": {
             "objective": task,
+            "title": title,
+            "summary": summary,
             "requestedKind": "WorkExecution",
             "requestState": "open",
             "workProtocol": WORK_PROTOCOL,
@@ -367,6 +620,7 @@ def new_work_record(request: Mapping[str, Any]) -> dict[str, Any]:
             "project": project,
             "repository": repository,
             "constraints": constraints,
+            **lane_details,
             "parentWorkId": parent_work_id,
             "attempt": attempt,
             "routing": routing,
@@ -393,6 +647,9 @@ def revised_work_record(
         "progress",
         "blockers",
         "result",
+        "coordinationState",
+        "claim",
+        "followOnRequests",
     }
     if set(transition) - allowed:
         raise WorkProtocolError("WORK_INVALID", "work transition contains unexpected fields")
@@ -432,6 +689,43 @@ def revised_work_record(
             else {}
         ),
     }
+    if "coordinationState" in transition:
+        next_coordination = _text(transition["coordinationState"], "coordinationState", maximum=32)
+        if next_coordination not in WORK_COORDINATION_STATES:
+            raise WorkProtocolError(
+                "WORK_COORDINATION_STATE_INVALID", "coordinationState is unsupported"
+            )
+    else:
+        next_coordination = {
+            "submitted": "AVAILABLE",
+            "accepted": "AVAILABLE",
+            "assigned": "CLAIMED",
+            "queued": "CLAIMED",
+            "running": "IN_PROGRESS",
+            "checkpointed": "VERIFYING",
+            "blocked": "BLOCKED",
+            "retrying": "NEEDS_RECONCILIATION",
+            "completed": "COMPLETE",
+            "failed": "ABANDONED",
+            "cancelled": "ABANDONED",
+        }.get(target_state, coordination_state(details))
+    previous_coordination = coordination_state(details)
+    if (
+        next_coordination != previous_coordination
+        and next_coordination not in allowed_coordination_transitions(previous_coordination)
+    ):
+        raise WorkProtocolError(
+            "WORK_COORDINATION_TRANSITION_REJECTED",
+            f"{previous_coordination} -> {next_coordination} is not allowed",
+        )
+    next_details["coordinationState"] = next_coordination
+    if "claim" in transition:
+        claim = transition["claim"]
+        next_details["claim"] = None if claim is None else _mapping(claim, "claim", required=True)
+    if "followOnRequests" in transition:
+        next_details["followOnRequests"] = _bounded_string_list(
+            transition["followOnRequests"], "followOnRequests"
+        )
     routing = _mapping(next_details.get("routing"), "routing")
     for field in ("fabricJobId", "workerId", "modelId"):
         if field in transition:
@@ -439,11 +733,7 @@ def revised_work_record(
     next_details["routing"] = routing
     if "attempt" in transition:
         attempt = transition["attempt"]
-        if (
-            isinstance(attempt, bool)
-            or not isinstance(attempt, int)
-            or not 0 <= attempt <= 10_000
-        ):
+        if isinstance(attempt, bool) or not isinstance(attempt, int) or not 0 <= attempt <= 10_000:
             raise WorkProtocolError(
                 "WORK_INVALID", "attempt must be an integer between 0 and 10000"
             )
@@ -460,6 +750,20 @@ def revised_work_record(
         if not isinstance(result, Mapping) or not result.get("terminalOutcome"):
             raise WorkProtocolError(
                 "WORK_INVALID", f"{target_state} work requires result.terminalOutcome"
+            )
+    if details.get("lane") and next_coordination in {"CLAIMED", "IN_PROGRESS", "VERIFYING"}:
+        if not isinstance(next_details.get("claim"), Mapping):
+            raise WorkProtocolError("WORK_CLAIM_REQUIRED", "active work requires a claim")
+    if next_coordination == "BLOCKED" and not next_details.get("blockers"):
+        raise WorkProtocolError("WORK_INVALID", "blocked work requires blockers")
+    if next_coordination == "COMPLETE" and details.get("lane"):
+        result = next_details.get("result")
+        if not isinstance(result, Mapping) or not (
+            isinstance(result.get("evidence"), list) and result.get("evidence")
+        ):
+            raise WorkProtocolError(
+                "WORK_COMPLETION_EVIDENCE_REQUIRED",
+                "lane work completion requires non-empty result.evidence",
             )
     candidate["details"] = next_details
     return candidate
@@ -511,9 +815,14 @@ def project_work_history(records: Iterable[Mapping[str, Any]], work_id: str) -> 
         previous_digest = digest
         previous_state = state
     current = copy.deepcopy(selected[-1])
+    current_details = current.get("details", {})
     return {
         "workId": work_id,
         "state": previous_state,
+        "coordinationState": coordination_state(current_details)
+        if isinstance(current_details, Mapping)
+        else "AVAILABLE",
+        "lane": current_details.get("lane") if isinstance(current_details, Mapping) else None,
         "currentDigest": previous_digest,
         "current": current,
         "history": history,
@@ -523,7 +832,11 @@ def project_work_history(records: Iterable[Mapping[str, Any]], work_id: str) -> 
 
 
 def list_work(
-    records: Iterable[Mapping[str, Any]], states: set[str] | None = None
+    records: Iterable[Mapping[str, Any]],
+    states: set[str] | None = None,
+    *,
+    lanes: set[str] | None = None,
+    coordination_states: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     work_ids = sorted(
         {
@@ -535,4 +848,64 @@ def list_work(
         }
     )
     projected = [project_work_history(records, work_id) for work_id in work_ids]
-    return [item for item in projected if not states or item["state"] in states]
+    result = [item for item in projected if not states or item["state"] in states]
+    if lanes:
+        result = [
+            item for item in result if item["current"].get("details", {}).get("lane") in lanes
+        ]
+    if coordination_states:
+        result = [
+            item
+            for item in result
+            if coordination_state(item["current"].get("details", {})) in coordination_states
+        ]
+    return result
+
+
+def next_work(
+    records: Iterable[Mapping[str, Any]],
+    *,
+    lane: str | None = None,
+    repository: str | None = None,
+    capabilities: set[str] | None = None,
+    limit: int = 100,
+) -> list[dict[str, Any]]:
+    """Return deterministic, dependency-aware AVAILABLE work opportunities."""
+
+    if lane is not None and lane not in LANES:
+        raise WorkProtocolError("WORK_LANE_INVALID", "lane is unsupported")
+    all_records = list(records)
+    projected = list_work(
+        all_records,
+        lanes={lane} if lane else None,
+        coordination_states={"AVAILABLE"},
+    )
+    completed = {
+        item["workId"] for item in list_work(all_records, coordination_states={"COMPLETE"})
+    }
+    eligible: list[dict[str, Any]] = []
+    requested_capabilities = capabilities or set()
+    for item in projected:
+        details = item["current"].get("details", {})
+        if repository and repository not in details.get("affectedRepositories", []):
+            continue
+        required = set(details.get("capabilityRequirements", []))
+        if not required.issubset(requested_capabilities):
+            continue
+        dependencies = set(details.get("dependencies", []))
+        if details.get("parentWorkId"):
+            dependencies.add(str(details["parentWorkId"]))
+        if any(
+            dependency.startswith("work:") and dependency not in completed
+            for dependency in dependencies
+        ):
+            continue
+        eligible.append(item)
+    eligible.sort(
+        key=lambda item: (
+            int(item["current"].get("details", {}).get("priority", 100)),
+            str(item["current"].get("metadata", {}).get("createdAt", "")),
+            item["workId"],
+        )
+    )
+    return eligible[: max(1, min(limit, 1000))]

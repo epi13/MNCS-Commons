@@ -30,6 +30,16 @@ repository and parent work identity, task, constraints, optional Fabric job,
 worker/model routing, and attempt. Later revisions may add progress, blockers,
 routing observations, and result/artifact/evidence references.
 
+New submissions may also declare one of the six coordination lanes
+(`DOCUMENTATION`, `CONVERSION_PREP`, `VERIFICATION`, `REPO_LOCAL`, `REPO_HYGIENE`, or `SHARED_CORE`), affected
+repositories, priority, capability requirements, dependencies, shared-core impact, allowed and
+forbidden write scopes, and source work/evidence identities. Lane-aware records expose a
+coordination state (`AVAILABLE`, `CLAIMED`, `IN_PROGRESS`, `BLOCKED`, `VERIFYING`, `COMPLETE`,
+`ABANDONED`, `SUPERSEDED`, or `NEEDS_RECONCILIATION`) while retaining the existing execution state
+for compatibility. `work.next` selects only dependency-ready `AVAILABLE` tasks; `work.claim`
+appends an optimistic claim revision and rejects stale or already-owned work. See
+[`PARALLEL_WORK.md`](PARALLEL_WORK.md) for the worker workflow and authority policy.
+
 All work content remains `UNTRUSTED`, has `executionAuthority: none`, and keeps
 `security.instructionsAreUntrusted: true`. An independently authorized Fabric,
 Harness, or worker component must explicitly accept and execute work; Commons

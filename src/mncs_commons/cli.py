@@ -12,6 +12,7 @@ from typing import Any, Mapping
 from .application import CommonsApplication, CompatibilityApplication
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
+from .lane_policy import LANES
 from .models import RecordKind
 from .query import QueryFilter
 from .remote import RemoteClient
@@ -76,6 +77,9 @@ def build_parser() -> argparse.ArgumentParser:
     seed = store_commands.add_parser("seed-public")
     seed.add_argument("path")
     seed.add_argument("--domain", default="public")
+    seed_work = store_commands.add_parser("seed-work")
+    seed_work.add_argument("path")
+    seed_work.add_argument("--domain", default="local")
 
     local = commands.add_parser("local", help="operate a controller-local Commons node")
     local_commands = local.add_subparsers(dest="local_command", required=True)
@@ -157,6 +161,42 @@ def build_parser() -> argparse.ArgumentParser:
     bundle_import = bundle_commands.add_parser("import")
     bundle_import.add_argument("bundle")
     bundle_import.add_argument("path")
+
+    work = commands.add_parser("work", help="select and update lane-scoped durable work")
+    work_commands = work.add_subparsers(dest="work_command", required=True)
+    work_policy = work_commands.add_parser("policy")
+    work_policy.add_argument("--lane", choices=sorted(LANES))
+    work_next = work_commands.add_parser("next")
+    work_next.add_argument("path")
+    work_next.add_argument("--lane", choices=sorted(LANES))
+    work_next.add_argument("--repository")
+    work_next.add_argument("--capability", action="append", default=[])
+    work_next.add_argument("--limit", type=int, default=1)
+    scope_check = work_commands.add_parser("scope-check")
+    scope_check.add_argument("lane", choices=sorted(LANES))
+    scope_check.add_argument("path")
+    scope_check.add_argument("--repository")
+    for name in ("claim", "block", "complete"):
+        command = work_commands.add_parser(name)
+        command.add_argument("path")
+        command.add_argument("work_id")
+        command.add_argument("--actor-id", required=True)
+        command.add_argument("--actor-type", default="worker")
+        command.add_argument("--session-id")
+        command.add_argument("--expected-digest")
+        command.add_argument("--lane", choices=sorted(LANES))
+    block = work_commands.choices["block"]
+    block.add_argument("--reason", action="append", required=True)
+    complete = work_commands.choices["complete"]
+    complete.add_argument(
+        "--result", required=True, help="JSON object or path containing completion evidence"
+    )
+
+    family = commands.add_parser("family", help="inspect active family coordination coverage")
+    family_commands = family.add_subparsers(dest="family_command", required=True)
+    family_commands.add_parser("registry")
+    family_coverage = family_commands.add_parser("coverage")
+    family_coverage.add_argument("path")
 
     compat = commands.add_parser("compat")
     compat_commands = compat.add_subparsers(dest="compat_command", required=True)
@@ -271,6 +311,17 @@ def _cursor(value: str | None) -> Mapping[str, Any] | None:
     return parsed
 
 
+def _json_argument(value: str) -> Any:
+    path = Path(value)
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def _work_actor(args: argparse.Namespace) -> dict[str, str]:
+    return {"type": args.actor_type, "id": args.actor_id}
+
+
 def _participant(args: argparse.Namespace) -> ParticipantDescriptor | None:
     if not args.participant_id:
         return None
@@ -322,6 +373,11 @@ def main(argv: list[str] | None = None) -> int:
                 from .bootstrap import seed_public
 
                 _print(seed_public(Path(args.path), args.domain))
+                return 0
+            if args.store_command == "seed-work":
+                from .bootstrap import seed_work
+
+                _print(seed_work(Path(args.path), args.domain))
                 return 0
             if args.store_command == "verify":
                 verification = application.verify_store()
@@ -406,6 +462,81 @@ def main(argv: list[str] | None = None) -> int:
             result = application.local_doctor(domain=args.domain)
             _print(result)
             return 0 if result["valid"] else 2
+        if args.command == "work":
+            if args.work_command == "policy":
+                _print(CommonsApplication.work_policy(args.lane))
+                return 0
+            if args.work_command == "scope-check":
+                _print(
+                    CommonsApplication.work_scope_check(
+                        args.lane, args.path, repository=args.repository
+                    )
+                )
+                return 0
+            application = CommonsApplication(CommonsStore(args.path))
+            if args.work_command == "next":
+                _print(
+                    application.work_next(
+                        lane=args.lane,
+                        repository=args.repository,
+                        capabilities=set(args.capability),
+                        limit=args.limit,
+                    )
+                )
+                return 0
+            status = application.work_status(args.work_id)
+            current_digest = args.expected_digest or status["currentDigest"]
+            actor = _work_actor(args)
+            if args.work_command == "claim":
+                _print(
+                    application.claim_work(
+                        args.work_id,
+                        actor=actor,
+                        expected_previous_digest=current_digest,
+                        session_id=args.session_id,
+                        lane=args.lane,
+                    )
+                )
+                return 0
+            if args.work_command == "block":
+                _print(
+                    application.transition_work(
+                        args.work_id,
+                        {
+                            "state": "blocked",
+                            "coordinationState": "BLOCKED",
+                            "actor": actor,
+                            "expectedPreviousDigest": current_digest,
+                            "blockers": args.reason,
+                            "reason": args.reason[0],
+                        },
+                    )
+                )
+                return 0
+            result = _json_argument(args.result)
+            if not isinstance(result, Mapping):
+                raise ValueError("--result must contain a JSON object")
+            _print(
+                application.transition_work(
+                    args.work_id,
+                    {
+                        "state": "completed",
+                        "coordinationState": "COMPLETE",
+                        "actor": actor,
+                        "expectedPreviousDigest": current_digest,
+                        "result": result,
+                        "reason": "worker published completion evidence",
+                    },
+                )
+            )
+            return 0
+        if args.command == "family":
+            if args.family_command == "registry":
+                _print(CommonsApplication.family_registry())
+                return 0
+            application = CommonsApplication(CommonsStore(args.path))
+            _print(application.family_coverage())
+            return 0
         if args.command == "visibility":
             visibility_policy = VisibilityPolicy(Path(args.policy))
             if args.visibility_command == "set":
