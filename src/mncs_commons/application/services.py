@@ -658,31 +658,68 @@ class CommonsApplication:
         duplicate = None
         ambiguous: list[str] = []
         finding_identity = candidate.get("findingIdentity")
-        # For deduplication, use canonical repository identity
-        candidate_canonical = candidate.get("canonicalRepository")
+
+        # Build canonical repository surface for the candidate:
+        # primary + all canonical affected repositories.
+        def _candidate_repo_set() -> set[str]:
+            # Prefer canonical fields if present
+            canon_primary = candidate.get("canonicalRepository")
+            canon_affected = candidate.get("canonicalAffectedRepositories")
+            s: set[str] = set()
+            if isinstance(canon_primary, str) and canon_primary.strip():
+                s.add(canon_primary.strip())
+            if isinstance(canon_affected, list):
+                for v in canon_affected:
+                    if isinstance(v, str) and v.strip():
+                        s.add(v.strip())
+            if s:
+                return s
+            # Legacy fallback: resolve submitted strings via canonical identity
+            fallback: set[str] = set()
+            if isinstance(repository, str) and repository.strip():
+                ident = canonical_project_identity(repository)
+                fallback.add(ident["repository"] if ident else repository.strip())
+            for v in candidate.get("affectedRepositories", []) or []:
+                if isinstance(v, str) and v.strip():
+                    ident = canonical_project_identity(v)
+                    fallback.add(ident["repository"] if ident else v.strip())
+            return fallback
+
+        candidate_repo_set = _candidate_repo_set()
+
+        def _existing_repo_set(details: Mapping[str, Any]) -> set[str]:
+            canon_primary = details.get("canonicalRepository")
+            canon_affected = details.get("canonicalAffectedRepositories")
+            s: set[str] = set()
+            if isinstance(canon_primary, str) and canon_primary.strip():
+                s.add(canon_primary.strip())
+            if isinstance(canon_affected, list):
+                for v in canon_affected:
+                    if isinstance(v, str) and v.strip():
+                        s.add(v.strip())
+            if s:
+                return s
+            # Legacy fallback
+            fallback: set[str] = set()
+            legacy_primary = details.get("repository")
+            if isinstance(legacy_primary, str) and legacy_primary.strip():
+                ident = canonical_project_identity(legacy_primary)
+                fallback.add(ident["repository"] if ident else legacy_primary.strip())
+            for v in details.get("affectedRepositories", []) or []:
+                if isinstance(v, str) and v.strip():
+                    ident = canonical_project_identity(v)
+                    fallback.add(ident["repository"] if ident else v.strip())
+            return fallback
+
         for item in current:
             details = item["current"].get("details", {})
             if not isinstance(details, Mapping):
                 continue
-            # Check same repository via canonical identity (with fallback to legacy aliases)
-            item_canonical = details.get("canonicalRepository")
-            item_canonical_affected = details.get("canonicalAffectedRepositories", [])
-            if candidate_canonical and item_canonical:
-                same_repo = candidate_canonical == item_canonical
-            elif candidate_canonical and isinstance(item_canonical_affected, list):
-                same_repo = candidate_canonical in item_canonical_affected
-            elif isinstance(item_canonical_affected, list) and candidate_canonical:
-                same_repo = candidate_canonical in item_canonical_affected
-            else:
-                # Fallback for legacy records without canonical fields
-                same_repo = bool(
-                    repository and repository in details.get("affectedRepositories", [])
-                )
-                # Also check canonical against affected list strings
-                if not same_repo and candidate_canonical:
-                    same_repo = candidate_canonical in [
-                        str(v) for v in details.get("affectedRepositories", [])
-                    ]
+            # Repository overlap is any intersection of the two canonical surfaces
+            existing_repo_set = _existing_repo_set(details)
+            same_repo = bool(
+                candidate_repo_set & existing_repo_set
+            ) if candidate_repo_set and existing_repo_set else False
             same_finding = finding_identity and details.get("findingIdentity") == finding_identity
             existing_capability = details.get("capability")
             same_core = lane == "SHARED_CORE" and details.get("lane") == "SHARED_CORE"
@@ -827,10 +864,14 @@ class CommonsApplication:
                 proposals.append(proposal)
             elif normalized["outcome"] == "PASS":
                 # PASS supersession must be repository-scoped and strictly newer
+                # than the *latest* FAIL evidence for that (repo, findingIdentity),
+                # not merely the original WorkRequest observationTimestamp.
                 try:
                     pass_instant = parse_health_instant(normalized["observedAt"])
                 except ValueError:
                     continue
+                # Build canonical set for the PASS observation (single repo)
+                pass_repo_set = {normalized["canonicalRepository"]}
                 for item in list_work(
                     self.require_store().records(),
                     coordination_states={"AVAILABLE"},
@@ -841,47 +882,86 @@ class CommonsApplication:
                     if details.get("findingIdentity") != normalized["findingIdentity"]:
                         continue
                     # Health reconciliation identity must include canonical repository
-                    work_canonical = details.get("canonicalRepository")
-                    work_affected = details.get("canonicalAffectedRepositories", [])
-                    # Fallback for legacy work without canonical fields
-                    if work_canonical:
-                        same_repo = work_canonical == normalized["canonicalRepository"]
-                    elif isinstance(work_affected, list) and work_affected:
-                        same_repo = normalized["canonicalRepository"] in work_affected
-                    else:
-                        # Legacy: compare via aliases (repository string)
-                        work_repo = details.get("repository") or ""
-                        work_affected_old = details.get("affectedRepositories", [])
-                        # Try canonical resolution of work repo
-                        work_ident = canonical_project_identity(work_repo)
-                        work_canonical_old = (
-                            work_ident["repository"] if work_ident else work_repo
-                        )
-                        same_repo = work_canonical_old == normalized["canonicalRepository"]
-                        if not same_repo and isinstance(work_affected_old, list):
-                            same_repo = (
-                                normalized["canonicalRepository"]
-                                in work_affected_old
-                                or any(
-                                    (ident := canonical_project_identity(v)) is not None
-                                    and ident["repository"]
-                                    == normalized["canonicalRepository"]
-                                    for v in work_affected_old
-                                    if isinstance(v, str)
-                                )
+                    # Compare canonical sets: primary + all canonical affected
+                    def _work_repo_set(d: Mapping[str, Any]) -> set[str]:
+                        canon_primary = d.get("canonicalRepository")
+                        canon_affected = d.get("canonicalAffectedRepositories")
+                        s: set[str] = set()
+                        if isinstance(canon_primary, str) and canon_primary.strip():
+                            s.add(canon_primary.strip())
+                        if isinstance(canon_affected, list):
+                            for v in canon_affected:
+                                if isinstance(v, str) and v.strip():
+                                    s.add(v.strip())
+                        if s:
+                            return s
+                        # Legacy fallback
+                        fallback: set[str] = set()
+                        legacy_primary = d.get("repository")
+                        if isinstance(legacy_primary, str) and legacy_primary.strip():
+                            ident = canonical_project_identity(legacy_primary)
+                            fallback.add(
+                                ident["repository"] if ident else legacy_primary.strip()
                             )
-                    if not same_repo:
+                        for v in d.get("affectedRepositories", []) or []:
+                            if isinstance(v, str) and v.strip():
+                                ident = canonical_project_identity(v)
+                                fallback.add(ident["repository"] if ident else v.strip())
+                        return fallback
+
+                    work_repo_set = _work_repo_set(details)
+                    if not work_repo_set or not (pass_repo_set & work_repo_set):
                         continue
-                    # Stale PASS must never erase newer FAIL: PASS must be strictly newer
-                    work_timestamp = details.get("observationTimestamp")
-                    if not isinstance(work_timestamp, str):
-                        continue
-                    try:
-                        work_instant = parse_health_instant(work_timestamp)
-                    except ValueError:
-                        continue
+                    # Determine current failure freshness from durable health evidence/history
+                    # Look at all health Observation records for this (repo, finding) with FAIL
+                    latest_fail_instant = None
+                    work_finding = details.get("findingIdentity")
+                    # Scan all health observations (append-only) for latest FAIL
+                    for rec in self.require_store().records():
+                        if rec.get("kind") != "Observation":
+                            continue
+                        rec_details = rec.get("details", {})
+                        if not isinstance(rec_details, Mapping):
+                            continue
+                        if rec_details.get("observationType") != "family-health":
+                            continue
+                        if rec_details.get("outcome") != "FAIL":
+                            continue
+                        if rec_details.get("findingIdentity") != work_finding:
+                            continue
+                        # Match canonical repository via set intersection
+                        rec_canon = rec_details.get("canonicalHealthRepository")
+                        rec_health_repo = rec_details.get("healthRepository")
+                        rec_repo_set: set[str] = set()
+                        if isinstance(rec_canon, str) and rec_canon.strip():
+                            rec_repo_set.add(rec_canon.strip())
+                        elif isinstance(rec_health_repo, str) and rec_health_repo.strip():
+                            ident = canonical_project_identity(rec_health_repo)
+                            rec_repo_set.add(
+                                ident["repository"] if ident else rec_health_repo.strip()
+                            )
+                        if not rec_repo_set or not (rec_repo_set & work_repo_set):
+                            continue
+                        observed_at = rec_details.get("observedAt")
+                        if not isinstance(observed_at, str):
+                            continue
+                        try:
+                            instant = parse_health_instant(observed_at)
+                        except ValueError:
+                            continue
+                        if latest_fail_instant is None or instant > latest_fail_instant:
+                            latest_fail_instant = instant
+                    # Fallback to work's own observationTimestamp if no health history found
+                    if latest_fail_instant is None:
+                        work_timestamp = details.get("observationTimestamp")
+                        if not isinstance(work_timestamp, str):
+                            continue
+                        try:
+                            latest_fail_instant = parse_health_instant(work_timestamp)
+                        except ValueError:
+                            continue
                     # Equal-time PASS does not silently override without explicit policy
-                    if pass_instant <= work_instant:
+                    if pass_instant <= latest_fail_instant:
                         continue
                     superseded.append(
                         self.transition_work(

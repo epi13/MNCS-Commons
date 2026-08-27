@@ -583,3 +583,121 @@ def test_naive_timestamp_rejected(tmp_path) -> None:
                 }
             ]
         )
+
+
+def test_hygiene_chronology_across_deduplicated_fails(tmp_path) -> None:
+    app = _app(tmp_path)
+    fail1 = {
+        "repository": "mncs-forge-mcp",
+        "outcome": "FAIL",
+        "observedAt": "2026-08-27T01:00:00Z",
+        "source": "janitor",
+        "sourceIdentity": "id1",
+        "findingIdentity": "forge:ci:chron",
+        "finding": "fail1",
+        "categories": ["ci"],
+    }
+    r1 = app.family_health_sweep([fail1])
+    work_id = r1["proposals"][0]["workId"]
+    # Second FAIL at 03:00 deduplicates (ATTACHED) but health evidence is appended
+    fail2 = {**fail1, "observedAt": "2026-08-27T03:00:00Z", "sourceIdentity": "id2", "finding": "fail2"}  # noqa: E501
+    r2 = app.family_health_sweep([fail2])
+    assert r2["proposals"][0]["proposal"] == "ATTACHED"
+    # Work's original observationTimestamp remains 01:00, but health history has 03:00
+    status = app.work_status(work_id)
+    assert status["current"]["details"]["observationTimestamp"] == "2026-08-27T01:00:00Z"
+    # PASS at 02:00 is between the two FAILs – must NOT supersede because latest FAIL is 03:00
+    pass_mid = {
+        "repository": "mncs-forge-mcp",
+        "outcome": "PASS",
+        "observedAt": "2026-08-27T02:00:00Z",
+        "source": "janitor",
+        "sourceIdentity": "id3",
+        "findingIdentity": "forge:ci:chron",
+    }
+    r3 = app.family_health_sweep([pass_mid])
+    assert len(r3["superseded"]) == 0
+    assert len(app.work_next(lane="REPO_HYGIENE", repository="mncs-forge-mcp", limit=10)["work"]) == 1  # noqa: E501
+    # PASS at 04:00 is after latest FAIL (03:00) – must supersede
+    pass_late = {**pass_mid, "observedAt": "2026-08-27T04:00:00Z", "sourceIdentity": "id4"}
+    r4 = app.family_health_sweep([pass_late])
+    assert len(r4["superseded"]) == 1
+    assert len(app.work_next(lane="REPO_HYGIENE", repository="mncs-forge-mcp", limit=10)["work"]) == 0  # noqa: E501
+
+
+def test_repo_surface_overlap_primary_a_affects_b_new_primary_b(tmp_path) -> None:
+    app = _app(tmp_path)
+    # Existing: primary A affects B (CONVERSION_PREP, same_repo required)
+    p1 = {
+        "workId": "work:repo-a",
+        "submittingConsumer": {"type": "worker", "id": "w1"},
+        "project": {"id": "mncs-family", "revision": "test"},
+        "repository": "mncs-language-service",
+        "affectedRepositories": ["mncs-language-service", "mncs-language"],
+        "task": "task",
+        "lane": "CONVERSION_PREP",
+        "capability": "test.repo.cap",
+        "evidenceLinks": ["ev1"],
+        "proposalSource": "worker-discovery",
+        "priority": 20,
+        "sharedCoreImpact": False,
+    }
+    r1 = app.propose_work(p1)
+    assert r1["proposal"] == "ACCEPTED"
+    # New: primary B with same capability – B is in existing's affected set
+    p2 = {
+        "workId": "work:repo-b",
+        "submittingConsumer": {"type": "worker", "id": "w2"},
+        "project": {"id": "mncs-family", "revision": "test"},
+        "repository": "mncs-language",
+        "affectedRepositories": ["mncs-language"],
+        "task": "task",
+        "lane": "CONVERSION_PREP",
+        "capability": "test.repo.cap",
+        "evidenceLinks": ["ev2"],
+        "proposalSource": "worker-discovery",
+        "priority": 20,
+        "sharedCoreImpact": False,
+    }
+    r2 = app.propose_work(p2)
+    assert r2["proposal"] == "ATTACHED"
+    assert r2["workId"] == r1["workId"]
+
+
+def test_repo_surface_overlap_primary_b_existing_a_affects_b(tmp_path) -> None:
+    app = _app(tmp_path)
+    # Existing: primary B
+    p1 = {
+        "workId": "work:repo-c",
+        "submittingConsumer": {"type": "worker", "id": "w1"},
+        "project": {"id": "mncs-family", "revision": "test"},
+        "repository": "mncs-language",
+        "affectedRepositories": ["mncs-language"],
+        "task": "task",
+        "lane": "CONVERSION_PREP",
+        "capability": "test.repo.cap2",
+        "evidenceLinks": ["ev1"],
+        "proposalSource": "worker-discovery",
+        "priority": 20,
+        "sharedCoreImpact": False,
+    }
+    r1 = app.propose_work(p1)
+    assert r1["proposal"] == "ACCEPTED"
+    # New: primary A affects B – existing B is in new's affected set
+    p2 = {
+        "workId": "work:repo-d",
+        "submittingConsumer": {"type": "worker", "id": "w2"},
+        "project": {"id": "mncs-family", "revision": "test"},
+        "repository": "mncs-language-service",
+        "affectedRepositories": ["mncs-language-service", "mncs-language"],
+        "task": "task",
+        "lane": "CONVERSION_PREP",
+        "capability": "test.repo.cap2",
+        "evidenceLinks": ["ev2"],
+        "proposalSource": "worker-discovery",
+        "priority": 20,
+        "sharedCoreImpact": False,
+    }
+    r2 = app.propose_work(p2)
+    assert r2["proposal"] == "ATTACHED"
+    assert r2["workId"] == r1["workId"]
