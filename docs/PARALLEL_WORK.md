@@ -15,6 +15,13 @@ or grant repository permissions.
 | `REPO_HYGIENE` | Assigned repository health and CI surfaces | Repair red CI, stale pins, generated-file drift, warnings, skipped tests, and environment assumptions without changing intended semantics |
 | `SHARED_CORE` | Explicitly authorized shared-core scope | Language/compiler/stdlib, Commons protocol, Fabric contracts, Harness policy, and family-wide semantic contracts; single writer by default |
 
+The five safe lanes (`DOCUMENTATION`, `CONVERSION_PREP`, `VERIFICATION`, `REPO_LOCAL`,
+`REPO_HYGIENE`) may run concurrently within an assigned repository without modifying shared
+semantic infrastructure; `SHARED_CORE` is the sixth, exclusive single-writer lane for
+language/compiler/stdlib, Commons protocol, Fabric contracts, Harness policy, and family-wide
+semantic schemas. This 5+1 structure is referred to as the five-lane safe model with an
+exclusive shared-core escalation lane.
+
 The machine-readable policy is available from `mncs-commons work policy` and can assess a path
 with `mncs-commons work scope-check`. A safe lane may inspect the family and publish observations,
 findings, work requests, blockers, and handoffs, but must not modify shared semantic
@@ -41,6 +48,20 @@ deterministically when another writer has already claimed the task. By default, 
 one active substantive claim (`CLAIMED`, `IN_PROGRESS`, or `VERIFYING`). Blocked work names its
 blockers. Complete work carries `result.terminalOutcome`, non-empty `result.evidence`, and should
 include artifact, commit, or PR references where applicable.
+
+Coordination states and their execution `state` mapping:
+
+- `AVAILABLE` (`submitted`/`accepted`) — dependency-ready, claimable.
+- `CLAIMED` (`assigned`/`queued`) — exclusively owned after optimistic claim.
+- `IN_PROGRESS` (`running`) — active work inside the lane's allowed scope.
+- `VERIFYING` (`checkpointed`) — local verification before declaring completion.
+- `BLOCKED` (`blocked`) — waiting on an explicit blocker, often a missing shared-core capability.
+- `COMPLETE` (`completed`) — verified completion with evidence.
+- `ABANDONED`/`SUPERSEDED`/`NEEDS_RECONCILIATION` — terminal or reconciliation states for withdrawn, superseded, or incompletely classified work.
+
+Transitions are validated optimistically against `expectedPreviousDigest`; stale writers receive
+`WORK_CONFLICT`. See `src/mncs_commons/work.py:85` for the exact `WORK_COORDINATION_STATES` and
+`src/mncs_commons/work.py:99` for allowed transitions.
 
 ## Worker bootstrap
 
@@ -120,12 +141,34 @@ An operator can give four workers the same bootstrap prompt while assigning dist
 | D | `REPO_LOCAL` | Improve the MNEL differential-run reporting inside MNEL only |
 
 Each worker claims before substantive edits, so two workers do not silently interpret the same
-MNCS concept in incompatible ways. If B discovers that the language lacks a required traversal or
-reduction, B searches Commons for an existing request, adds its evidence if present, or submits a
-structured `SHARED_CORE` request containing `capability`, `consumer`, expected semantics,
-blocker/work identity, and fixture or corpus references. B then marks its task `BLOCKED` and can
-continue another eligible safe-lane task. Only the explicitly assigned shared-core worker changes
-the language or shared semantic contract.
+MNCS concept in incompatible ways.
+
+### Shared-core escalation (safe lane → SHARED_CORE)
+
+A safe-lane worker must not independently implement a missing shared capability. The bounded
+escalation is:
+
+1. **Search** Commons for an existing `SHARED_CORE` request with `capability_overlap == "exact"` for
+   the required capability (e.g., `bounded.text.traversal`). Use `mncs-commons work next
+   --lane SHARED_CORE` and capability filtering.
+2. **Attach** pressure/evidence — if found, add consumer, fixture/corpus/source evidence, and
+   dependency links via `work.propose` attachment rather than duplicating the request.
+3. **Propose** — if not found, submit a new bounded `SHARED_CORE` WorkRequest containing
+   `capability`, `consumer` (requesting workId/repository), `expectedSemantics`, blocker/work
+   identity, and fixture or corpus references. The proposal is classified; plausible-but-unproven
+   overlap becomes `NEEDS_RECONCILIATION`, not `AVAILABLE`.
+4. **Block** — mark the consumer work `BLOCKED` with explicit `blockers` and `blockingWorkIds`
+   referencing the `SHARED_CORE` request, attach the evidence, and continue another eligible safe-lane
+   task. Only the explicitly assigned single-writer shared-core worker changes the language or
+   shared semantic contract, and `mncs-commons work claim --lane SHARED_CORE` enforces the
+   single-writer invariant.
+
+Example: if B discovers that the language lacks a required traversal or reduction, B searches
+Commons for an existing request, adds its evidence if present, or submits a structured
+`SHARED_CORE` request containing `capability`, `consumer`, expected semantics, blocker/work
+identity, and fixture or corpus references. B then marks its task `BLOCKED` and can continue
+another eligible safe-lane task. Only the explicitly assigned shared-core worker changes the
+language or shared semantic contract.
 
 ## Seeding and escalation
 
