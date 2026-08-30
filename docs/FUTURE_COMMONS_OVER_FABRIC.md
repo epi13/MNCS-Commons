@@ -10,7 +10,7 @@ authority.
 remote model/inference
           |
           v
-Local Harness routing, tools, and policy
+MNCS Harness routing, tools, and policy
           |
           v
 one controller-local MNCS Commons
@@ -19,10 +19,11 @@ one controller-local MNCS Commons
 persistent local store
 ```
 
-Inference placement is outside Commons. In the Local Harness 0.5.0 integration a model can run on
+Inference placement is outside Commons. In the MNCS Harness 0.5.0 integration a model can run on
 an enrolled Fabric worker while its Commons operations remain controller-mediated through the
-fixed stdio MCP binding. The worker receives tool schemas and bounded results, never the Commons
-store path, subprocess command, controller filesystem, credentials, or direct MCP channel.
+persistent local consumer socket. The worker receives tool schemas and bounded results, never the
+Commons store path, operator socket, service lifecycle, controller filesystem, credentials, or a
+direct Commons channel. Fixed stdio MCP remains an explicit compatibility binding.
 
 Fabric execution records may be translated with `from_fabric_execution` and optionally published
 as inert Commons Observations. A source execution outcome such as `PASS` remains an observed

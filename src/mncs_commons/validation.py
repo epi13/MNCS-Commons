@@ -8,6 +8,16 @@ from typing import Any, Mapping, TypeGuard
 
 from .canonical import canonical_digest
 from .diagnostics import ValidationReport
+from .family import (
+    CLASSIFICATION_DISPOSITIONS,
+    CONCEPT_EXPERIMENT_SCHEMA,
+    EXPERIMENT_STATUSES,
+    FAILURE_CLASSES,
+    FAILURE_CLASSIFICATION_SCHEMA,
+    REPLICATION_SCHEMA,
+    FamilyRecordError,
+    normalize_producer_reference,
+)
 from .models import (
     API_VERSION,
     EVENT_KIND,
@@ -19,6 +29,7 @@ from .models import (
     WorkRequestState,
 )
 from .protocol import protocol_spec
+from .work import validate_work_record
 
 _RECORD_KEYS = {
     "apiVersion",
@@ -54,13 +65,153 @@ _EVENT_KEYS = {
 _SENSITIVITIES = {"public", "restricted", "sensitive", "security-sensitive"}
 _CONFIDENCE = {"low", "medium", "high", "unreported"}
 _REQUIRED_DETAILS = {
+    RecordKind.CONCEPT_EXPERIMENT.value: {
+        "schema",
+        "conceptId",
+        "languageProfile",
+        "targetProfile",
+        "hypothesis",
+        "task",
+        "falsifiers",
+        "protectedProperties",
+        "frozenInputs",
+        "hiddenInputs",
+        "resourceBudget",
+        "actors",
+        "references",
+        "experimentStatus",
+        "authorityBoundary",
+    },
+    RecordKind.FAILURE_CLASSIFICATION.value: {
+        "schema",
+        "failureReference",
+        "classification",
+        "disposition",
+        "classifier",
+        "evidenceReferences",
+        "authorityBoundary",
+    },
     RecordKind.OBSERVATION.value: {"outcome"},
     RecordKind.CLAIM.value: {"outcome", "falsifier"},
+    RecordKind.FINDING.value: {"basis", "significance"},
+    RecordKind.QUESTION.value: {"question", "answerCriteria"},
+    RecordKind.HYPOTHESIS.value: {"hypothesis", "falsifier"},
+    RecordKind.FAILED_APPROACH.value: {"approach", "failureMode", "lesson"},
+    RecordKind.HANDOFF.value: {"objective", "continuation", "authorityBoundary"},
+    RecordKind.ARTIFACT_REFERENCE.value: {"artifactIdentity", "artifactType"},
+    RecordKind.THREAD.value: {"topic", "status"},
     RecordKind.WORK_REQUEST.value: {"objective", "requestedKind", "authorityBoundary"},
     RecordKind.REPLICATION.value: {"targetRecord", "outcome", "independence"},
     RecordKind.ADVISORY.value: {"severity", "concern"},
     RecordKind.DECISION.value: {"domain", "rationale", "authorityScope"},
+    RecordKind.EPOCH.value: {"windowStart", "workAttempted"},
+    RecordKind.EPOCH_SUMMARY.value: {"epochId", "sourceIdentities"},
+    RecordKind.REPLICATION_SERIES.value: {"target", "passes", "failures", "sourceIdentities"},
+    RecordKind.OBSERVATION_SERIES.value: {"sourceIdentities"},
 }
+
+
+def _check_family_reference(value: Any, path: str, diagnostics: list[Diagnostic]) -> None:
+    if not isinstance(value, Mapping):
+        diagnostics.append(_error("TYPE_OBJECT", path, "must be a producer reference object"))
+        return
+    try:
+        normalize_producer_reference(value)
+    except FamilyRecordError as error:
+        diagnostics.append(_error("INVALID_PRODUCER_REFERENCE", path, str(error)))
+
+
+def _check_concept_experiment(details: Mapping[str, Any], diagnostics: list[Diagnostic]) -> None:
+    if details.get("schema") != CONCEPT_EXPERIMENT_SCHEMA:
+        diagnostics.append(
+            _error("EXPERIMENT_SCHEMA_UNSUPPORTED", "details.schema", "unsupported schema")
+        )
+    if details.get("experimentStatus") not in EXPERIMENT_STATUSES:
+        diagnostics.append(
+            _error(
+                "EXPERIMENT_STATUS_INVALID",
+                "details.experimentStatus",
+                "unsupported coordination status",
+            )
+        )
+    for field in ("targetProfile", "resourceBudget"):
+        if not isinstance(details.get(field), Mapping):
+            diagnostics.append(_error("TYPE_OBJECT", f"details.{field}", "must be an object"))
+    for field in (
+        "falsifiers",
+        "protectedProperties",
+        "frozenInputs",
+        "hiddenInputs",
+        "actors",
+        "references",
+    ):
+        if not isinstance(details.get(field), list):
+            diagnostics.append(_error("TYPE_ARRAY", f"details.{field}", "must be a list"))
+    for index, actor in enumerate(details.get("actors") or []):
+        path = f"details.actors[{index}]"
+        if not isinstance(actor, Mapping):
+            diagnostics.append(_error("TYPE_OBJECT", path, "must be an object"))
+            continue
+        _require_string(actor.get("role"), f"{path}.role", diagnostics)
+        _check_family_reference(actor.get("reference"), f"{path}.reference", diagnostics)
+        tools = actor.get("tools")
+        if tools is not None and (
+            not isinstance(tools, list) or not all(isinstance(item, str) for item in tools)
+        ):
+            diagnostics.append(_error("TYPE_ARRAY_STRINGS", f"{path}.tools", "must be strings"))
+    for index, entry in enumerate(details.get("references") or []):
+        path = f"details.references[{index}]"
+        if not isinstance(entry, Mapping):
+            diagnostics.append(_error("TYPE_OBJECT", path, "must be an object"))
+            continue
+        _require_string(entry.get("relation"), f"{path}.relation", diagnostics)
+        _check_family_reference(entry.get("reference"), f"{path}.reference", diagnostics)
+
+
+def _check_failure_classification(
+    details: Mapping[str, Any], diagnostics: list[Diagnostic]
+) -> None:
+    if details.get("schema") != FAILURE_CLASSIFICATION_SCHEMA:
+        diagnostics.append(
+            _error("FAILURE_SCHEMA_UNSUPPORTED", "details.schema", "unsupported schema")
+        )
+    if details.get("classification") not in FAILURE_CLASSES:
+        diagnostics.append(
+            _error("FAILURE_CLASS_INVALID", "details.classification", "unsupported class")
+        )
+    if details.get("disposition") not in CLASSIFICATION_DISPOSITIONS:
+        diagnostics.append(
+            _error("FAILURE_DISPOSITION_INVALID", "details.disposition", "unsupported disposition")
+        )
+    _check_family_reference(
+        details.get("failureReference"), "details.failureReference", diagnostics
+    )
+    _check_family_reference(details.get("classifier"), "details.classifier", diagnostics)
+    evidence = details.get("evidenceReferences")
+    if not isinstance(evidence, list):
+        diagnostics.append(_error("TYPE_ARRAY", "details.evidenceReferences", "must be a list"))
+    else:
+        for index, item in enumerate(evidence):
+            _check_family_reference(item, f"details.evidenceReferences[{index}]", diagnostics)
+
+
+def _check_replication(details: Mapping[str, Any], diagnostics: list[Diagnostic]) -> None:
+    # ``schema`` and ``references`` are optional for v0alpha1 compatibility with
+    # earlier generic Replication records; when present each must be well-formed.
+    if "schema" in details and details["schema"] != REPLICATION_SCHEMA:
+        diagnostics.append(
+            _error("REPLICATION_SCHEMA_UNSUPPORTED", "details.schema", "unsupported schema")
+        )
+    if "references" in details and not isinstance(details["references"], list):
+        diagnostics.append(_error("TYPE_ARRAY", "details.references", "must be a list"))
+        return
+    for index, entry in enumerate(details.get("references") or []):
+        path = f"details.references[{index}]"
+        if not isinstance(entry, Mapping):
+            diagnostics.append(_error("TYPE_OBJECT", path, "must be an object"))
+            continue
+        _require_string(entry.get("relation"), f"{path}.relation", diagnostics)
+        _check_family_reference(entry.get("reference"), f"{path}.reference", diagnostics)
 
 
 def _error(code: str, path: str, message: str) -> Diagnostic:
@@ -330,6 +481,43 @@ def validate_record(value: Any) -> ValidationReport:
             diagnostics.append(
                 _error("TYPE_OBJECT", "details.independence", "must preserve correlation metadata")
             )
+        if kind == RecordKind.FINDING.value and not isinstance(details.get("basis"), list):
+            diagnostics.append(
+                _error(
+                    "TYPE_ARRAY",
+                    "details.basis",
+                    "must be a list of source record or evidence identities",
+                )
+            )
+        if kind == RecordKind.QUESTION.value and not isinstance(
+            details.get("answerCriteria"), list
+        ):
+            diagnostics.append(
+                _error(
+                    "TYPE_ARRAY",
+                    "details.answerCriteria",
+                    "must be a list of bounded answer criteria",
+                )
+            )
+        if kind == RecordKind.HANDOFF.value and not isinstance(
+            details.get("continuation"), Mapping
+        ):
+            diagnostics.append(
+                _error(
+                    "TYPE_OBJECT",
+                    "details.continuation",
+                    "must describe bounded continuation state",
+                )
+            )
+        if kind == RecordKind.THREAD.value and details.get("status") not in {
+            "open",
+            "resolved",
+            "superseded",
+            "archived",
+        }:
+            diagnostics.append(
+                _error("INVALID_THREAD_STATUS", "details.status", "unsupported thread status")
+            )
         if kind == RecordKind.WORK_REQUEST.value and "requestState" in details:
             if details["requestState"] not in {item.value for item in WorkRequestState}:
                 diagnostics.append(
@@ -339,6 +527,14 @@ def validate_record(value: Any) -> ValidationReport:
                         "unsupported WorkRequest coordination state",
                     )
                 )
+        if kind == RecordKind.CONCEPT_EXPERIMENT.value:
+            _check_concept_experiment(details, diagnostics)
+        if kind == RecordKind.REPLICATION.value:
+            _check_replication(details, diagnostics)
+        if kind == RecordKind.FAILURE_CLASSIFICATION.value:
+            _check_failure_classification(details, diagnostics)
+        if kind == RecordKind.WORK_REQUEST.value:
+            diagnostics.extend(validate_work_record(value))
     if not diagnostics:
         expected = canonical_digest(value)
         if digest is not None and digest != expected:

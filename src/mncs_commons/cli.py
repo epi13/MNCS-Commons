@@ -12,6 +12,7 @@ from typing import Any, Mapping
 from .application import CommonsApplication, CompatibilityApplication
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
+from .lane_policy import LANES
 from .models import RecordKind
 from .query import QueryFilter
 from .remote import RemoteClient
@@ -52,9 +53,33 @@ def build_parser() -> argparse.ArgumentParser:
     store_commands.add_parser("recover").add_argument("path")
     store_commands.add_parser("list").add_argument("path")
     store_commands.add_parser("stats").add_argument("path")
+    store_commands.add_parser("retention-status").add_argument("path")
+    store_commands.add_parser("retention-plan").add_argument("path")
+    compact = store_commands.add_parser("compact")
+    compact.add_argument("path")
+    compact.add_argument("--dry-run", action="store_true")
+    compact.add_argument("--confirm", action="store_true")
+    compact.add_argument("--now")
+    store_commands.add_parser("archives").add_argument("path")
+    archive_verify = store_commands.add_parser("archive-verify")
+    archive_verify.add_argument("path")
+    archive_verify.add_argument("archive_id")
+    archive_inspect = store_commands.add_parser("archive-inspect")
+    archive_inspect.add_argument("path")
+    archive_inspect.add_argument("archive_id")
+    pin = store_commands.add_parser("pin")
+    pin.add_argument("path")
+    pin.add_argument("digest")
+    pin.add_argument("--reason", required=True)
+    unpin = store_commands.add_parser("unpin")
+    unpin.add_argument("path")
+    unpin.add_argument("digest")
     seed = store_commands.add_parser("seed-public")
     seed.add_argument("path")
     seed.add_argument("--domain", default="public")
+    seed_work = store_commands.add_parser("seed-work")
+    seed_work.add_argument("path")
+    seed_work.add_argument("--domain", default="local")
 
     local = commands.add_parser("local", help="operate a controller-local Commons node")
     local_commands = local.add_subparsers(dest="local_command", required=True)
@@ -89,10 +114,22 @@ def build_parser() -> argparse.ArgumentParser:
     query.add_argument("--contract")
     query.add_argument("--artifact")
     query.add_argument("--related")
+    query.add_argument("--institutional-memory", action="store_true")
     query.add_argument("--domain")
     query.add_argument("--open-work-requests", action="store_true")
     query.add_argument("--needs-review", action="store_true")
     query.add_argument("--now")
+    query.add_argument("--concept")
+    query.add_argument("--language-profile")
+    query.add_argument("--backend")
+    query.add_argument("--participant")
+    query.add_argument("--failure-classification")
+    query.add_argument("--experiment-status")
+    experiment = commands.add_parser("experiment")
+    experiment.add_argument("path")
+    experiment.add_argument("experiment_id")
+    experiment.add_argument("--depth", type=int, default=3)
+    experiment.add_argument("--max-nodes", type=int, default=1000)
     related = commands.add_parser("related")
     related.add_argument("path")
     related.add_argument("digest")
@@ -124,6 +161,52 @@ def build_parser() -> argparse.ArgumentParser:
     bundle_import = bundle_commands.add_parser("import")
     bundle_import.add_argument("bundle")
     bundle_import.add_argument("path")
+
+    work = commands.add_parser("work", help="select and update lane-scoped durable work")
+    work_commands = work.add_subparsers(dest="work_command", required=True)
+    work_policy = work_commands.add_parser("policy")
+    work_policy.add_argument("--lane", choices=sorted(LANES))
+    work_next = work_commands.add_parser("next")
+    work_next.add_argument("path")
+    work_next.add_argument("--lane", choices=sorted(LANES))
+    work_next.add_argument("--repository")
+    work_next.add_argument("--capability", action="append", default=[])
+    work_next.add_argument("--limit", type=int, default=1)
+    work_propose = work_commands.add_parser("propose")
+    work_propose.add_argument("path")
+    work_propose.add_argument("proposal", help="JSON object or path containing a proposal")
+    scope_check = work_commands.add_parser("scope-check")
+    scope_check.add_argument("lane", choices=sorted(LANES))
+    scope_check.add_argument("path")
+    scope_check.add_argument("--repository")
+    scope_check.add_argument("--allowed-write-scope", action="append", default=[])
+    for name in ("claim", "block", "complete"):
+        command = work_commands.add_parser(name)
+        command.add_argument("path")
+        command.add_argument("work_id")
+        command.add_argument("--actor-id", required=True)
+        command.add_argument("--actor-type", default="worker")
+        command.add_argument("--session-id")
+        command.add_argument("--expected-digest")
+        command.add_argument("--lane", choices=sorted(LANES))
+    block = work_commands.choices["block"]
+    block.add_argument("--reason", action="append", required=True)
+    complete = work_commands.choices["complete"]
+    complete.add_argument(
+        "--result", required=True, help="JSON object or path containing completion evidence"
+    )
+
+    family = commands.add_parser("family", help="inspect active family coordination coverage")
+    family_commands = family.add_subparsers(dest="family_command", required=True)
+    family_commands.add_parser("registry")
+    family_coverage = family_commands.add_parser("coverage")
+    family_coverage.add_argument("path")
+    family_consistency = family_commands.add_parser("consistency")
+    family_consistency.add_argument("standard")
+    family_consistency.add_argument("atlas")
+    family_health = family_commands.add_parser("health-sweep")
+    family_health.add_argument("path")
+    family_health.add_argument("observations", help="JSON array or path containing observations")
 
     compat = commands.add_parser("compat")
     compat_commands = compat.add_subparsers(dest="compat_command", required=True)
@@ -238,6 +321,17 @@ def _cursor(value: str | None) -> Mapping[str, Any] | None:
     return parsed
 
 
+def _json_argument(value: str) -> Any:
+    path = Path(value)
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def _work_actor(args: argparse.Namespace) -> dict[str, str]:
+    return {"type": args.actor_type, "id": args.actor_id}
+
+
 def _participant(args: argparse.Namespace) -> ParticipantDescriptor | None:
     if not args.participant_id:
         return None
@@ -290,6 +384,11 @@ def main(argv: list[str] | None = None) -> int:
 
                 _print(seed_public(Path(args.path), args.domain))
                 return 0
+            if args.store_command == "seed-work":
+                from .bootstrap import seed_work
+
+                _print(seed_work(Path(args.path), args.domain))
+                return 0
             if args.store_command == "verify":
                 verification = application.verify_store()
                 _print(verification)
@@ -310,6 +409,35 @@ def main(argv: list[str] | None = None) -> int:
                         else 0,
                     }
                 )
+                return 0
+            if args.store_command == "retention-status":
+                _print(application.retention_status())
+                return 0
+            if args.store_command == "retention-plan":
+                _print(application.retention_plan())
+                return 0
+            if args.store_command == "compact":
+                result = application.compact_store(
+                    confirm=args.confirm,
+                    dry_run=args.dry_run or not args.confirm,
+                    now=args.now,
+                )
+                _print(result)
+                return 0
+            if args.store_command == "archives":
+                _print(application.list_archives())
+                return 0
+            if args.store_command == "archive-verify":
+                _print(application.verify_archive(args.archive_id))
+                return 0
+            if args.store_command == "archive-inspect":
+                _print(application.inspect_archive(args.archive_id))
+                return 0
+            if args.store_command == "pin":
+                _print(application.pin_record(args.digest, reason=args.reason))
+                return 0
+            if args.store_command == "unpin":
+                _print(application.unpin_record(args.digest))
                 return 0
             if args.store_command == "diagnose":
                 diagnostic = application.diagnose_store()
@@ -344,6 +472,102 @@ def main(argv: list[str] | None = None) -> int:
             result = application.local_doctor(domain=args.domain)
             _print(result)
             return 0 if result["valid"] else 2
+        if args.command == "work":
+            if args.work_command == "policy":
+                _print(CommonsApplication.work_policy(args.lane))
+                return 0
+            if args.work_command == "scope-check":
+                _print(
+                    CommonsApplication.work_scope_check(
+                        args.lane,
+                        args.path,
+                        repository=args.repository,
+                        allowed_write_scope=args.allowed_write_scope or None,
+                    )
+                )
+                return 0
+            application = CommonsApplication(CommonsStore(args.path))
+            if args.work_command == "propose":
+                proposal = _json_argument(args.proposal)
+                if not isinstance(proposal, Mapping):
+                    raise ValueError("proposal must contain a JSON object")
+                _print(application.propose_work(proposal))
+                return 0
+            if args.work_command == "next":
+                _print(
+                    application.work_next(
+                        lane=args.lane,
+                        repository=args.repository,
+                        capabilities=set(args.capability),
+                        limit=args.limit,
+                    )
+                )
+                return 0
+            status = application.work_status(args.work_id)
+            current_digest = args.expected_digest or status["currentDigest"]
+            actor = _work_actor(args)
+            if args.work_command == "claim":
+                _print(
+                    application.claim_work(
+                        args.work_id,
+                        actor=actor,
+                        expected_previous_digest=current_digest,
+                        session_id=args.session_id,
+                        lane=args.lane,
+                    )
+                )
+                return 0
+            if args.work_command == "block":
+                _print(
+                    application.transition_work(
+                        args.work_id,
+                        {
+                            "state": "blocked",
+                            "coordinationState": "BLOCKED",
+                            "actor": actor,
+                            "expectedPreviousDigest": current_digest,
+                            "blockers": args.reason,
+                            "reason": args.reason[0],
+                        },
+                    )
+                )
+                return 0
+            result = _json_argument(args.result)
+            if not isinstance(result, Mapping):
+                raise ValueError("--result must contain a JSON object")
+            _print(
+                application.transition_work(
+                    args.work_id,
+                    {
+                        "state": "completed",
+                        "coordinationState": "COMPLETE",
+                        "actor": actor,
+                        "expectedPreviousDigest": current_digest,
+                        "result": result,
+                        "reason": "worker published completion evidence",
+                    },
+                )
+            )
+            return 0
+        if args.command == "family":
+            if args.family_command == "registry":
+                _print(CommonsApplication.family_registry())
+                return 0
+            if args.family_command == "consistency":
+                standard = _read(args.standard)
+                atlas = _read(args.atlas)
+                result = CommonsApplication.family_consistency(standard, atlas)
+                _print(result)
+                return 0 if result["valid"] else 2
+            application = CommonsApplication(CommonsStore(args.path))
+            if args.family_command == "health-sweep":
+                observations = _json_argument(args.observations)
+                if not isinstance(observations, list):
+                    raise ValueError("observations must contain a JSON array")
+                _print(application.family_health_sweep(observations))
+                return 0
+            _print(application.family_coverage())
+            return 0
         if args.command == "visibility":
             visibility_policy = VisibilityPolicy(Path(args.policy))
             if args.visibility_command == "set":
@@ -378,6 +602,7 @@ def main(argv: list[str] | None = None) -> int:
             "replications",
             "query",
             "evidence",
+            "experiment",
         }:
             application = CommonsApplication(CommonsStore(args.path))
         if args.command == "exchange":
@@ -460,11 +685,24 @@ def main(argv: list[str] | None = None) -> int:
                     related=args.related,
                     domain=args.domain,
                     open_work_requests=args.open_work_requests,
+                    institutional_memory=args.institutional_memory,
                     needs_review=args.needs_review,
                     now=query_now,
+                    concept=args.concept,
+                    language_profile=args.language_profile,
+                    backend=args.backend,
+                    participant=args.participant,
+                    failure_classification=args.failure_classification,
+                    experiment_status=args.experiment_status,
                 )
             )
             _print(query_records)
+        elif args.command == "experiment":
+            _print(
+                application.experiment(
+                    args.experiment_id, depth=args.depth, max_nodes=args.max_nodes
+                )
+            )
         elif args.command == "bundle":
             if args.bundle_command == "create":
                 manifest = CommonsApplication(CommonsStore(args.path)).create_bundle(

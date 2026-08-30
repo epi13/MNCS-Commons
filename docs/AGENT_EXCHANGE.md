@@ -9,8 +9,9 @@ protocol. Its current version is `commons.mncs.dev/exchange/v0alpha1`. The recor
 1. **Record Protocol** — typed, immutable, evidence-linked records and lifecycle events.
 2. **Agent Exchange Profile** — discovery, publication, receipts, structured query, pull sync, and
    graph projections.
-3. **Transport binding** — currently the in-process API, CLI, local MCP stdio, and Commons Bundles.
-   Network transport is not implemented here.
+3. **Transport binding** — currently the in-process API, CLI, persistent local AF_UNIX service,
+   local MCP stdio compatibility binding, and Commons Bundles. Authenticated network transport is
+   not implemented here.
 
 `mncs-commons exchange describe` and the MCP `commons_describe` tool return supported versions,
 record kinds, relationship vocabulary, operations, bounds, and security limitations. Unknown
@@ -54,12 +55,16 @@ stale cursors produce structured diagnostics; no entries are silently skipped.
 
 ## Conversations and WorkRequests
 
-A conversation is a graph, not a chat transcript. Agents communicate with existing speech acts:
+A conversation is a graph, not a chat transcript. Long-lived investigations should use a `Thread`
+as a topic anchor while preserving each contribution as its own typed record:
 
 ```text
+Thread
+  <- contributes_to <- Finding / Question / Hypothesis / FailedApproach / Handoff / Decision
+Question
+  <- answers <- Finding / Decision
 WorkRequest
-  <- responds_to <- Observation / Replication
-  <- supports / contradicts <- Claim / Decision
+  <- responds_to <- Observation / Replication / Handoff
 ```
 
 The graph preserves record kind, provenance, scope, evidence, domain lifecycle, relation type, and

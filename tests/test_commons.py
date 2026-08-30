@@ -22,6 +22,7 @@ from mncs_commons.query import (
     ScopeAssessment,
     assess_scope,
     bounded_graph,
+    records_for,
     replication_correlation,
     unresolved_relationships,
 )
@@ -31,12 +32,88 @@ from mncs_commons.validation import validate_event, validate_record
 
 def make_record(kind: str = "Observation") -> dict:
     details = {
+        "ConceptExperiment": {
+            "schema": "commons.mncs.dev/concept-experiment/v0alpha1",
+            "conceptId": "mncs:concept:tri-state",
+            "languageProfile": "mncs-language:0.2",
+            "targetProfile": {"backend": "portable"},
+            "hypothesis": "UNKNOWN is preserved",
+            "task": "exercise the tri-state lattice",
+            "falsifiers": ["UNKNOWN becomes PASS"],
+            "protectedProperties": ["FAIL dominates UNKNOWN"],
+            "frozenInputs": [],
+            "hiddenInputs": [],
+            "resourceBudget": {"seconds": 30},
+            "actors": [],
+            "references": [],
+            "experimentStatus": "FROZEN",
+            "authorityBoundary": "coordination only",
+        },
+        "FailureClassification": {
+            "schema": "commons.mncs.dev/failure-classification/v0alpha1",
+            "failureReference": {
+                "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+                "producer": "mncs-control-mcp",
+                "recordKind": "turn-failure",
+                "schemaVersion": "0.1",
+                "stableId": "control:failure:test",
+            },
+            "classification": "unresolved_insufficient_evidence",
+            "disposition": "UNRESOLVED",
+            "classifier": {
+                "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+                "producer": "mncs-harness",
+                "recordKind": "actor-route",
+                "schemaVersion": "0.1",
+                "stableId": "harness:actor:test",
+            },
+            "evidenceReferences": [],
+            "authorityBoundary": "classification is not automatic truth",
+        },
         "Observation": {"outcome": "UNKNOWN", "measurements": {"vrAM": 12.4}},
         "Claim": {"outcome": "UNKNOWN", "falsifier": "a bounded counterexample"},
+        "Finding": {
+            "basis": ["sha256:" + "a" * 64],
+            "significance": "preserves a reusable conclusion rather than raw execution exhaust",
+        },
+        "Question": {
+            "question": "Does this behavior persist on an independent worker?",
+            "answerCriteria": ["repeat on a second worker", "attach execution evidence"],
+        },
+        "Hypothesis": {
+            "hypothesis": "the behavior is provider-specific",
+            "falsifier": "the same behavior reproduces with a different provider",
+        },
+        "FailedApproach": {
+            "approach": "reuse an expired execution assumption",
+            "failureMode": "the assumption no longer matched the worker state",
+            "lesson": "bind future attempts to explicit worker capability evidence",
+        },
+        "Handoff": {
+            "objective": "continue the bounded investigation",
+            "continuation": {"next": "test the second provider", "blockers": []},
+            "authorityBoundary": "record-only; execution requires external authority",
+        },
+        "ArtifactReference": {
+            "artifactIdentity": "sha256:" + "d" * 64,
+            "artifactType": "test-report",
+        },
+        "Thread": {"topic": "Synthetic institutional-memory thread", "status": "open"},
         "WorkRequest": {
             "objective": "replicate the observation",
             "requestedKind": "Replication",
             "authorityBoundary": "verification-only; no repository mutation",
+        },
+        "DevelopmentRecord": {
+            "schema": "commons.mncs.dev/development-record/v0alpha1",
+            "mncdsVersion": "0.2-alpha.1",
+            "recordId": "development.record-fixture",
+            "recordDigest": "sha256:" + "e" * 64,
+            "profile": "MNCDS-D1",
+            "epochId": "epoch.fixture-1",
+            "computedStatus": "UNKNOWN",
+            "references": [],
+            "authorityBoundary": "projection only; MNCDS owns process semantics",
         },
         "Replication": {
             "targetRecord": "sha256:" + "a" * 64,
@@ -57,6 +134,18 @@ def make_record(kind: str = "Observation") -> dict:
             "rationale": "bounded evidence",
             "authorityScope": "local",
         },
+        "Epoch": {"windowStart": "2026-08-13T00:00:00Z", "workAttempted": []},
+        "EpochSummary": {
+            "epochId": "sha256:" + "a" * 64,
+            "sourceIdentities": ["sha256:" + "a" * 64],
+        },
+        "ReplicationSeries": {
+            "target": "sha256:" + "a" * 64,
+            "passes": 3,
+            "failures": 1,
+            "sourceIdentities": ["sha256:" + "a" * 64],
+        },
+        "ObservationSeries": {"sourceIdentities": ["sha256:" + "a" * 64]},
     }[kind]
     return {
         "apiVersion": "commons.mncs.dev/v0alpha1",
@@ -493,6 +582,37 @@ def test_review_query_requires_explicit_core_clock(tmp_path: Path) -> None:
     ) == 1
 
 
+def test_institutional_memory_query_excludes_raw_execution_observations(tmp_path: Path) -> None:
+    store = CommonsStore(tmp_path / "memory-store")
+    store.init()
+    store.add_record(make_record("Observation"))
+    store.add_record(make_record("Finding"))
+    store.add_record(make_record("Thread"))
+
+    records = store.query(QueryFilter(institutional_memory=True))
+
+    assert [item["kind"] for item in records] == ["Finding", "Thread"]
+
+
+def test_open_work_query_uses_latest_revision_only() -> None:
+    first = make_record("WorkRequest")
+    first["metadata"]["recordId"] = "work:stale-opportunity"
+    first["metadata"]["revision"] = 1
+    first["details"]["requestState"] = "open"
+    first["contentDigest"] = "sha256:" + "1" * 64
+
+    completed = copy.deepcopy(first)
+    completed["metadata"]["revision"] = 2
+    completed["metadata"]["previousDigest"] = first["contentDigest"]
+    completed["details"]["requestState"] = "completed"
+    completed["contentDigest"] = "sha256:" + "2" * 64
+    states = {first["contentDigest"]: "proposed", completed["contentDigest"]: "proposed"}
+
+    assert records_for(
+        [first, completed], QueryFilter(open_work_requests=True), states
+    ) == []
+
+
 def test_replication_preserves_correlation_and_reproduction_is_inert() -> None:
     replication = make_record("Replication")
     assert validate_record(replication).valid
@@ -523,10 +643,23 @@ def test_schema_snapshot_has_all_protocol_kinds() -> None:
     assert set(schema["$defs"]["record"]["properties"]["kind"]["enum"]) == {
         "Observation",
         "Claim",
+        "Finding",
+        "Question",
+        "Hypothesis",
+        "FailedApproach",
+        "Handoff",
+        "ArtifactReference",
+        "Thread",
         "WorkRequest",
         "Replication",
         "Advisory",
         "Decision",
+        "Epoch",
+        "EpochSummary",
+        "ReplicationSeries",
+        "ObservationSeries",
+        "ConceptExperiment",
+        "FailureClassification",
     }
 
 

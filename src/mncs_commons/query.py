@@ -7,6 +7,8 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any, Iterable, Mapping
 
+from .models import INSTITUTIONAL_MEMORY_KINDS
+
 
 class ScopeAssessment(StrEnum):
     COMPATIBLE = "compatible"
@@ -25,8 +27,15 @@ class QueryFilter:
     related: str | None = None
     domain: str | None = None
     open_work_requests: bool = False
+    institutional_memory: bool = False
     needs_review: bool = False
     now: datetime | None = None
+    concept: str | None = None
+    language_profile: str | None = None
+    backend: str | None = None
+    participant: str | None = None
+    failure_classification: str | None = None
+    experiment_status: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,7 +122,80 @@ def review_required(record: Mapping[str, Any], *, now: datetime | None) -> bool:
         return False
 
 
-def record_matches(record: Mapping[str, Any], query: QueryFilter, state: str | None = None) -> bool:
+def _experiment_matches(
+    record: Mapping[str, Any], query: QueryFilter, failure_experiments: set[str]
+) -> bool:
+    experiment_filter = any(
+        (
+            query.concept,
+            query.language_profile,
+            query.backend,
+            query.participant,
+            query.failure_classification,
+            query.experiment_status,
+        )
+    )
+    if not experiment_filter:
+        return True
+    if record.get("kind") != "ConceptExperiment":
+        return False
+    details = record.get("details")
+    if not isinstance(details, Mapping):
+        return False
+    if query.concept and details.get("conceptId") != query.concept:
+        return False
+    if query.language_profile and details.get("languageProfile") != query.language_profile:
+        return False
+    if query.experiment_status and details.get("experimentStatus") != query.experiment_status:
+        return False
+    references = [
+        item
+        for item in details.get("references") or []
+        if isinstance(item, Mapping) and isinstance(item.get("reference"), Mapping)
+    ]
+    if query.backend and not any(
+        item.get("relation") == "backend"
+        and query.backend
+        in {
+            item["reference"].get("stableId"),
+            item["reference"].get("recordKind"),
+            (item["reference"].get("scope") or {}).get("backend"),
+        }
+        for item in references
+    ):
+        return False
+    if query.participant:
+        actors = [item for item in details.get("actors") or [] if isinstance(item, Mapping)]
+        if not any(
+            query.participant
+            in {
+                actor.get("model"),
+                actor.get("provider"),
+                actor.get("worker"),
+                actor.get("route"),
+                (actor.get("reference") or {}).get("stableId"),
+                (actor.get("reference") or {}).get("producer"),
+            }
+            for actor in actors
+        ):
+            return False
+    if query.failure_classification:
+        identity = str(record.get("subject", {}).get("identity", ""))
+        if identity not in failure_experiments:
+            return False
+    return True
+
+
+def record_matches(
+    record: Mapping[str, Any],
+    query: QueryFilter,
+    state: str | None = None,
+    failure_experiments: set[str] | None = None,
+) -> bool:
+    if not _experiment_matches(record, query, failure_experiments or set()):
+        return False
+    if query.institutional_memory and record.get("kind") not in INSTITUTIONAL_MEMORY_KINDS:
+        return False
     if query.kind and record.get("kind") != query.kind:
         return False
     if query.state and state != query.state:
@@ -158,10 +240,49 @@ def record_matches(record: Mapping[str, Any], query: QueryFilter, state: str | N
 def records_for(
     records: Iterable[Mapping[str, Any]], query: QueryFilter, states: Mapping[str, str]
 ) -> list[Mapping[str, Any]]:
+    values = list(records)
+    failure_experiments: set[str] = set()
+    if query.failure_classification:
+        for record in values:
+            details = record.get("details")
+            subject = record.get("subject")
+            if (
+                record.get("kind") == "FailureClassification"
+                and isinstance(details, Mapping)
+                and details.get("classification") == query.failure_classification
+                and isinstance(subject, Mapping)
+                and isinstance(subject.get("identity"), str)
+            ):
+                failure_experiments.add(subject["identity"])
+    if query.open_work_requests:
+        latest: dict[str, Mapping[str, Any]] = {}
+        unrevisioned: list[Mapping[str, Any]] = []
+        for record in values:
+            if record.get("kind") != "WorkRequest":
+                continue
+            metadata = record.get("metadata")
+            record_id = metadata.get("recordId") if isinstance(metadata, Mapping) else None
+            revision = metadata.get("revision") if isinstance(metadata, Mapping) else None
+            if not isinstance(record_id, str) or not isinstance(revision, int):
+                unrevisioned.append(record)
+                continue
+            current = latest.get(record_id)
+            current_metadata = current.get("metadata") if isinstance(current, Mapping) else None
+            current_revision = (
+                current_metadata.get("revision") if isinstance(current_metadata, Mapping) else None
+            )
+            if not isinstance(current_revision, int) or revision > current_revision:
+                latest[record_id] = record
+        values = [*unrevisioned, *latest.values()]
     result = [
         record
-        for record in records
-        if record_matches(record, query, states.get(str(record.get("contentDigest"))))
+        for record in values
+        if record_matches(
+            record,
+            query,
+            states.get(str(record.get("contentDigest"))),
+            failure_experiments,
+        )
     ]
     return sorted(
         result,
@@ -265,6 +386,87 @@ def bounded_graph(
     )
 
 
+def concept_experiment_graph(
+    records: Iterable[Mapping[str, Any]],
+    root: str,
+    *,
+    max_depth: int = 3,
+    max_nodes: int = 1_000,
+) -> dict[str, object]:
+    """Project one bounded experiment graph without interpreting producer outcomes."""
+
+    values = tuple(records)
+    candidates = [
+        record
+        for record in values
+        if record.get("kind") == "ConceptExperiment"
+        and (
+            record.get("contentDigest") == root
+            or record.get("metadata", {}).get("recordId") == root
+            or record.get("subject", {}).get("identity") == root
+        )
+    ]
+    if not candidates:
+        raise ValueError("concept experiment was not found")
+    experiment = max(
+        candidates,
+        key=lambda item: (
+            int(item.get("metadata", {}).get("revision", 1)),
+            str(item.get("metadata", {}).get("createdAt", "")),
+        ),
+    )
+    graph = bounded_graph(
+        values,
+        [str(experiment.get("contentDigest"))],
+        max_depth=max_depth,
+        max_nodes=max_nodes,
+    ).as_dict()
+    details = experiment.get("details")
+    direct: dict[str, list[Mapping[str, Any]]] = {}
+    if isinstance(details, Mapping):
+        for entry in details.get("references") or []:
+            if isinstance(entry, Mapping) and isinstance(entry.get("reference"), Mapping):
+                direct.setdefault(str(entry.get("relation")), []).append(entry["reference"])
+        for values_for_relation in direct.values():
+            values_for_relation.sort(key=lambda item: str(item.get("stableId", "")))
+    graph_records = graph.get("records")
+    related_records = (
+        [
+            record
+            for record in graph_records
+            if isinstance(record, Mapping)
+            and record.get("contentDigest") != experiment.get("contentDigest")
+        ]
+        if isinstance(graph_records, list)
+        else []
+    )
+    revisions = sorted(
+        candidates,
+        key=lambda item: int(item.get("metadata", {}).get("revision", 1)),
+    )
+    lineage = [
+        item
+        for item in experiment.get("relationships") or []
+        if isinstance(item, Mapping)
+        and item.get("type") in {"rerun_of", "predecessor", "supersedes", "derived_from"}
+    ]
+    return {
+        "schema": "commons.mncs.dev/concept-experiment-graph/v0alpha1",
+        "experiment": experiment,
+        "revisions": revisions,
+        "producerReferences": {key: direct[key] for key in sorted(direct)},
+        "actors": list(details.get("actors") or []) if isinstance(details, Mapping) else [],
+        "lineage": lineage,
+        "relatedRecords": related_records,
+        "edges": graph["edges"],
+        "unresolved": graph["unresolved"],
+        "truncated": graph["truncated"],
+        "authorityBoundary": (
+            "bounded graph projection only; producer-native semantics and UNKNOWN are unchanged"
+        ),
+    }
+
+
 def replication_correlation(
     records: Iterable[Mapping[str, Any]], target: str
 ) -> ReplicationCorrelation:
@@ -344,3 +546,89 @@ def state_matches(state: str, query: QueryFilter, domain_states: Mapping[str, st
     if query.domain:
         return state == query.state
     return query.state in domain_states.values() or state == query.state
+
+
+def development_lineage(
+    records: Iterable[Mapping[str, Any]],
+    root: str,
+    *,
+    max_depth: int = 3,
+    max_nodes: int = 1_000,
+) -> dict[str, object]:
+    """Project the development lineage around one DevelopmentRecord.
+
+    The projection reconstructs, from durable identities only: the projected
+    MNCDS record, its supersession chain across DevelopmentRecord records, the
+    ConceptExperiment records it derives from, and every stored record reachable
+    through typed relationships.  Producer-native outcomes, including tri-state
+    statuses, are preserved exactly and never reinterpreted.
+    """
+
+    values = tuple(records)
+    candidates = [
+        record
+        for record in values
+        if record.get("kind") == "DevelopmentRecord"
+        and (
+            record.get("contentDigest") == root
+            or record.get("metadata", {}).get("recordId") == root
+            or (record.get("details", {}) or {}).get("recordId") == root
+        )
+    ]
+    if not candidates:
+        raise ValueError("development record was not found")
+    graph = bounded_graph(
+        values,
+        [str(record.get("contentDigest")) for record in candidates],
+        max_depth=max_depth,
+        max_nodes=max_nodes,
+    ).as_dict()
+    primary = candidates[0]
+    details = primary.get("details") or {}
+    supersession: list[dict[str, str]] = []
+    development_records: list[Mapping[str, Any]] = []
+    experiments: list[Mapping[str, Any]] = []
+    for record in values:
+        if record.get("kind") == "DevelopmentRecord":
+            development_records.append(record)
+            for relation in record.get("relationships", []):
+                if (
+                    isinstance(relation, Mapping)
+                    and relation.get("type") == "supersedes"
+                ):
+                    supersession.append(
+                        {
+                            "successor": str((record.get("details", {}) or {}).get("recordId", "")),
+                            "predecessor": str(relation.get("target", "")),
+                        }
+                    )
+        elif record.get("kind") == "ConceptExperiment":
+            experiments.append(record)
+    supersession.sort(key=lambda item: (item["successor"], item["predecessor"]))
+    graph_records = graph.get("records")
+    primary_digest = primary.get("contentDigest")
+    related = [
+        record
+        for record in (graph_records if isinstance(graph_records, list) else [])
+        if isinstance(record, Mapping) and record.get("contentDigest") != primary_digest
+    ]
+    return {
+        "schema": "commons.mncs.dev/development-lineage/v0alpha1",
+        "developmentRecord": primary,
+        "computedStatus": details.get("computedStatus", "UNKNOWN")
+        if isinstance(details, Mapping)
+        else "UNKNOWN",
+        "supersession": supersession,
+        "experiments": sorted(
+            experiments,
+            key=lambda item: str(item.get("contentDigest", "")),
+        ),
+        "relatedRecords": related,
+        "edges": graph["edges"],
+        "unresolved": graph["unresolved"],
+        "truncated": graph["truncated"],
+        "authorityBoundary": (
+            "bounded projection only; MNCDS owns selection, release, and lifecycle "
+            "meaning and producer-native UNKNOWN is unchanged"
+        ),
+    }

@@ -11,7 +11,7 @@
       "required": ["apiVersion", "kind", "metadata", "subject", "scope", "statement", "evidence", "dependencies", "affectedContracts", "provenance", "confidence", "security", "lifecycle", "relationships", "details"],
       "properties": {
         "apiVersion": {"const": "commons.mncs.dev/v0alpha1"},
-        "kind": {"enum": ["Observation", "Claim", "WorkRequest", "Replication", "Advisory", "Decision"]},
+        "kind": {"enum": ["ConceptExperiment", "FailureClassification", "Observation", "Claim", "Finding", "Question", "Hypothesis", "FailedApproach", "Handoff", "ArtifactReference", "Thread", "WorkRequest", "Replication", "Advisory", "Decision", "Epoch", "EpochSummary", "ReplicationSeries", "ObservationSeries"]},
         "contentDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
         "metadata": {"$ref": "#/$defs/metadata"},
         "subject": {"type": "object", "required": ["type", "identity"], "properties": {"type": {"type": "string"}, "identity": {"type": "string"}}, "additionalProperties": true},

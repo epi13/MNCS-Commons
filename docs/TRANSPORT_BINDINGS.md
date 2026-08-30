@@ -2,9 +2,11 @@
 
 The Commons record protocol and Agent Exchange Profile are transport-neutral.
 
-Implemented reference bindings are the in-process application API, the `mncs-commons` CLI, local
-stdio MCP (optional `mcp` extra), deterministic Commons Bundles, and independent subprocesses using
-the local API. The controller-local profile and shared descriptor are documented in
+Implemented reference bindings are the in-process application API, the `mncs-commons` CLI, the
+persistent local AF_UNIX service, local stdio MCP (optional `mcp` extra), deterministic Commons
+Bundles, and independent subprocesses using the local API. The local service uses separate
+same-UID consumer/operator endpoints and a versioned bounded protocol; it is not a network or
+multi-user authorization boundary. The controller-local profile and shared descriptor are documented in
 [`LOCAL_AGENT_NODE.md`](LOCAL_AGENT_NODE.md). The MCP server is configured with one store/domain at
 startup and never accepts an arbitrary filesystem root per request.
 

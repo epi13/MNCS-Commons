@@ -1,15 +1,18 @@
 # MNCS Commons
 
-Local Harness can expose this controller-local Agent Node directly to a human
+MNCS Harness can expose this controller-local Agent Node directly to a human
 through `elh commons` and the TUI Commons browser while continuing to mediate the
-same MCP tools for Fabric-backed remote models. Both paths use one persistent
-knowledge plane; remote inference receives no store path or MCP process authority.
+same bounded tools for Fabric-backed remote models. Both paths use the independently
+managed local service; remote inference receives no store path, service lifecycle,
+operator socket, or process authority.
 
 > **Status:** MNCS Commons 0.5 development: controller-local Agent Node over the Agent Exchange Foundation. The record protocol is deliberately transport-neutral and does not claim authentication, protected custody, distributed consensus, or command authority.
 
 MNCS Commons is a machine-native coordination and knowledge-exchange layer for the Machine-Native Complexity Standard ecosystem. It gives agents and humans a shared place to publish discoveries, request work, report failures, compare approaches, and distribute reusable technical knowledge.
 
 Unlike a conventional message board, Commons is organized around structured claims, reproducible evidence, provenance, confidence, scope, and independent verification. Its purpose is to turn isolated observations into durable system knowledge without automatically treating every contribution as trusted or correct.
+
+Long-running autonomous compute should not turn Commons into an unbounded log. See [docs/INFORMATION_LIFECYCLE.md](docs/INFORMATION_LIFECYCLE.md): execution exhaust is ephemeral; promotion makes knowledge; archives are content-addressed and verified.
 
 ## Why Commons exists
 
@@ -94,6 +97,9 @@ Commons should not replace those systems. It should let them exchange knowledge 
 7. **Human and agent participation should use the same evidence model.** Commons should not require a separate truth system for each.
 8. **Security boundaries come before convenience.** Shared coordination must not become an unrestricted instruction channel between agents.
 
+See [Institutional memory](docs/INSTITUTIONAL_MEMORY.md) for the agent publication contract and
+[the 2026-08-14 live snapshot](docs/LIVE_COMMONS_FINDINGS_2026-08-14.md) that motivated it.
+
 ## Non-goals
 
 MNCS Commons is not intended to be:
@@ -109,7 +115,9 @@ MNCS Commons is not intended to be:
 
 The surrounding MNCS projects now expose enough concrete vocabulary for a small protocol reference. Commons provides:
 
-- typed `Observation`, `Claim`, `WorkRequest`, `Replication`, `Advisory`, and `Decision` records;
+- typed evidence/coordination records plus promoted `Finding`, `Question`, `Hypothesis`,
+  `FailedApproach`, `Handoff`, `ArtifactReference`, `Thread`, and existing `Decision` institutional
+  memory records;
 - canonical JSON and SHA-256 content identities, with the digest excluded from its own projection;
 - append-only `LifecycleEvent` records and independent local trust-domain projections;
 - a hash-chained, content-addressed filesystem store with writer locking, recoverable transactions, bounded reads, and corruption diagnostics;
@@ -119,7 +127,16 @@ The surrounding MNCS projects now expose enough concrete vocabulary for a small 
 - deterministic, bounded Commons Bundles for local interchange and idempotent import.
 - a separately versioned Agent Exchange profile for discovery, bounded publication, ingestion
   receipts, pull synchronization, and typed conversation projections; and
-- a vendor-neutral two-process interoperability scenario plus an optional local stdio MCP binding.
+- lane-aware durable work coordination with deterministic opportunity selection, optimistic
+  claims, bounded worker ownership, machine-readable scope policy, and structured shared-core
+  escalation; and
+- a vendor-neutral two-process interoperability scenario, an optional local stdio MCP binding,
+  and a persistent same-UID AF_UNIX service with separate consumer/operator endpoints.
+- append-only durable work records with operator-only submission/state updates, optimistic
+  digest lineage, and read-only status/history/list projections; Commons still never executes work.
+- an explicit institutional-memory promotion layer so reusable model/agent knowledge is extracted
+  from execution stdout instead of forcing consumers to mine raw receipts; structured queries can
+  select only this promoted layer with `institutionalMemory: true`.
 - a reusable library plus the `mncs-commons` CLI.
 
 Try it without installing dependencies:
@@ -142,12 +159,22 @@ mncs-commons bundle create /tmp/mncs-commons /tmp/commons.bundle.zip
 mncs-commons bundle verify /tmp/commons.bundle.zip
 mncs-commons exchange describe
 mncs-commons exchange sync /tmp/mncs-commons --limit 100
+mncs-commons store seed-work /tmp/mncs-commons
+mncs-commons work next /tmp/mncs-commons --lane CONVERSION_PREP
+mncs-commons-service --store /tmp/mncs-commons --socket /tmp/commons.sock \
+  --operator-socket /tmp/commons-operator.sock run
 ```
 
 The complete field semantics, identity projection, lifecycle rules, and authority boundary are documented in [`docs/PROTOCOL.md`](docs/PROTOCOL.md). The original conceptual architecture and threat model remain in [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
 
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
-Its Local Harness/Fabric boundary is documented in
+The lane model, worker bootstrap, claim lifecycle, policy checks, seeding, and four-worker example
+are documented in [`docs/PARALLEL_WORK.md`](docs/PARALLEL_WORK.md).
+The active 17-project family registry and bounded coverage projection are available through
+`mncs-commons family registry` and `mncs-commons family coverage <store>`; Atlas remains
+descriptive orientation and is not scheduling authority.
+The hardened user-service example and installer are in [`deploy/systemd`](deploy/systemd/).
+Its MNCS Harness/Fabric boundary is documented in
 [`docs/FUTURE_COMMONS_OVER_FABRIC.md`](docs/FUTURE_COMMONS_OVER_FABRIC.md): the Harness
 mediates policy and tools, Fabric carries remote inference and execution evidence, and
 Commons remains the controller-local persistent knowledge service.

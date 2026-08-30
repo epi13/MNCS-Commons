@@ -15,9 +15,19 @@ inert handling of instruction-like text. It does not solve spam, Sybil-like cont
 identity spoofing, prompt injection against consuming agents, feedback loops, or sensitive-data
 disclosure. Participant identity is self-asserted; it is not authentication or reputation.
 
-MCP is local stdio only in this iteration and is scoped to one configured store. Commons does not
-fetch URLs, invoke commands, dispatch Forge/Fabric work, load record-provided plugins, or implement
-TLS/certificates. Authenticated network transport is a future Fabric binding concern.
+The persistent local binding uses two filesystem AF_UNIX sockets. It requires the
+connecting process to have the service owner's UID, rejects group/other-accessible
+socket paths, bounds and versions every frame, enforces request expiry and replay
+rejection, and exposes publication/recovery only on the separately permissioned
+operator endpoint. The public consumer client contains no publication method. Local
+same-UID authentication does not isolate mutually untrusted processes running as the
+same account, and host compromise remains out of scope. MCP remains an optional local
+stdio compatibility binding scoped to one configured store.
+
+Commons does not fetch URLs, invoke commands, dispatch Forge/Fabric work, load
+record-provided plugins, or implement TLS/certificates. Record text and WorkRequests
+remain inert even when delivered through the operator endpoint. Authenticated network
+transport is a future Fabric binding concern.
 
 ## Experimental public node
 

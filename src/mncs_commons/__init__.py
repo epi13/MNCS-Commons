@@ -6,8 +6,36 @@ from .application import CommonsApplication, CompatibilityApplication
 from .canonical import canonical_digest, canonical_json, identity_projection
 from .compatibility import CompatibilityStatus, ProducerContract, contracts
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
+from .family import (
+    FamilyRecordError,
+    make_concept_experiment_record,
+    make_development_record_record,
+    make_failure_classification_record,
+    make_replication_record,
+    normalize_producer_reference,
+    producer_reference,
+    reference_identity,
+)
+from .family_registry import (
+    CANONICAL_FAMILY,
+    SOURCE_ID_ALIASES,
+    CoverageState,
+    canonical_project_identity,
+    family_coverage,
+    family_registry,
+    validate_family_sources,
+)
+from .lane_policy import LANES, SAFE_LANES, LanePolicy, WorkLane, lane_policy, scope_decision
 from .lifecycle import derive_lifecycle, validate_transition
-from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
+from .local_service import CommonsAdminClient, CommonsClient
+from .models import (
+    LifecycleState,
+    RecordKind,
+    RelationType,
+    ResultStatus,
+    WorkCoordinationState,
+    WorkRequestState,
+)
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
 from .remote import RemoteClient
 from .store import CommonsStore
@@ -16,6 +44,8 @@ from .validation import ValidationReport, validate_event, validate_record
 __all__ = [
     "CommonsStore",
     "CommonsApplication",
+    "CommonsAdminClient",
+    "CommonsClient",
     "CompatibilityApplication",
     "CompatibilityStatus",
     "LifecycleState",
@@ -23,6 +53,20 @@ __all__ = [
     "RelationType",
     "ResultStatus",
     "WorkRequestState",
+    "WorkCoordinationState",
+    "CoverageState",
+    "CANONICAL_FAMILY",
+    "SOURCE_ID_ALIASES",
+    "canonical_project_identity",
+    "family_registry",
+    "family_coverage",
+    "validate_family_sources",
+    "LANES",
+    "SAFE_LANES",
+    "LanePolicy",
+    "WorkLane",
+    "lane_policy",
+    "scope_decision",
     "ScopeAssessment",
     "ValidationReport",
     "ProducerContract",
@@ -40,4 +84,12 @@ __all__ = [
     "ExchangePolicy",
     "ParticipantDescriptor",
     "RemoteClient",
+    "FamilyRecordError",
+    "producer_reference",
+    "normalize_producer_reference",
+    "reference_identity",
+    "make_concept_experiment_record",
+    "make_development_record_record",
+    "make_failure_classification_record",
+    "make_replication_record",
 ]

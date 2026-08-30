@@ -4,8 +4,18 @@ from __future__ import annotations
 
 from typing import Any
 
-from .models import LifecycleState, RecordKind, RelationType, ResultStatus, WorkRequestState
+from .family_registry import CoverageState
+from .lane_policy import LANES
+from .models import (
+    INSTITUTIONAL_MEMORY_KINDS,
+    LifecycleState,
+    RecordKind,
+    RelationType,
+    ResultStatus,
+    WorkRequestState,
+)
 from .validation import _CONFIDENCE, _SENSITIVITIES
+from .work import WORK_COORDINATION_STATES
 
 VOCABULARY_VERSION = "commons.mncs.dev/vocabulary/v0alpha1"
 
@@ -17,6 +27,7 @@ SUBJECT_TYPES = (
     "execution-bundle",
     "execution-receipt",
     "experiment",
+    "failure",
     "HIR",
     "obligation",
     "provider",
@@ -43,6 +54,7 @@ SCOPE_DIMENSIONS = (
     "repositoryRevision",
     "semanticGraph",
     "target",
+    "backend",
 )
 
 
@@ -55,11 +67,20 @@ def vocabulary() -> dict[str, Any]:
         "lifecycleStates": sorted(item.value for item in LifecycleState),
         "resultStatuses": sorted(item.value for item in ResultStatus),
         "workRequestStates": sorted(item.value for item in WorkRequestState),
+        "workLanes": sorted(LANES),
+        "workCoordinationStates": sorted(WORK_COORDINATION_STATES),
+        "familyCoverageStates": sorted(item.value for item in CoverageState),
         "relationships": sorted(item.value for item in RelationType),
         "securitySensitivities": sorted(_SENSITIVITIES),
         "confidenceLevels": sorted(_CONFIDENCE),
         "recommendedSubjectTypes": list(SUBJECT_TYPES),
         "recommendedScopeDimensions": list(SCOPE_DIMENSIONS),
+        "institutionalMemory": {
+            "recordKinds": sorted(INSTITUTIONAL_MEMORY_KINDS),
+            "threadAnchorKind": RecordKind.THREAD.value,
+            "promotionRule": "promote reusable knowledge; do not mirror raw execution exhaust",
+            "queryFlag": "institutionalMemory",
+        },
         "extensionRule": {
             "required": True,
             "form": "namespaced-term",

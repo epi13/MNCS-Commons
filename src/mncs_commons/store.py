@@ -19,7 +19,7 @@ from typing import Any, BinaryIO, Iterator, Mapping, Sequence
 from .canonical import canonical_digest, canonical_json
 from .lifecycle import LifecycleView, derive_lifecycle, domain_views, validate_transition
 from .models import Diagnostic, LifecycleEvent, Record
-from .query import QueryFilter, record_matches, review_required, state_matches
+from .query import QueryFilter, records_for, review_required, state_matches
 from .semantic import record_semantic_diagnostics
 from .validation import validate_event, validate_record
 
@@ -525,7 +525,69 @@ class CommonsStore:
         for item in (*self.records(), *self.events()):
             if item.get("contentDigest") == digest:
                 return item
-        return None
+        from .archive import load_archived_record
+
+        return load_archived_record(self, digest)
+
+    def add_snapshot(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        """Append an operator snapshot row. Snapshots have no content file."""
+
+        self._require_initialized()
+        with _file_lock(self.lock_path):
+            self._require_no_pending()
+            tail = self._load_tail_locked()
+            row = self._make_ledger_row("snapshot", dict(payload), tail)
+            self._append_row(row)
+            _atomic_write(
+                self.tail_path,
+                canonical_json(
+                    {
+                        "sequence": row["sequence"],
+                        "entryDigest": row["entryDigest"],
+                        "ledgerBytes": self.ledger_path.stat().st_size,
+                    }
+                ),
+            )
+            return dict(row)
+
+    def rebuild_tail(self) -> None:
+        rows = self._rows()
+        tail = self._tail_from_rows(rows)
+        _atomic_write(
+            self.tail_path,
+            canonical_json(
+                {
+                    "sequence": tail.sequence,
+                    "entryDigest": tail.entry_digest,
+                    "ledgerBytes": tail.ledger_bytes,
+                }
+            ),
+        )
+
+    def install_generation(self, staging: Path) -> None:
+        """Replace the hot ledger/content with a verified staging generation."""
+
+        import shutil
+
+        staging = Path(staging)
+        replacement = CommonsStore(staging)
+        verification = replacement.verify()
+        if not verification.valid:
+            raise StoreError("refusing to install an invalid compaction generation")
+        for name in ("ledger.jsonl", ".ledger-tail.json"):
+            source = staging / name
+            if source.exists():
+                os.replace(source, self.root / name)
+        for directory in ("records", "events"):
+            destination = self.root / directory
+            incoming = staging / directory
+            if destination.exists():
+                shutil.rmtree(destination)
+            if incoming.exists():
+                os.replace(incoming, destination)
+            else:
+                destination.mkdir(parents=True, exist_ok=True)
+        shutil.rmtree(staging, ignore_errors=True)
 
     def lifecycle(self, digest: str, domain: str | None = None) -> LifecycleView:
         record = next(
@@ -544,29 +606,30 @@ class CommonsStore:
         return domain_views(record, self.events())
 
     def query(self, query: QueryFilter) -> list[Mapping[str, Any]]:
-        result: list[Mapping[str, Any]] = []
-        for record in self.records():
+        records = self.records()
+        states: dict[str, str] = {}
+        domain_states: dict[str, Mapping[str, str]] = {}
+        for record in records:
             digest = str(record.get("contentDigest"))
             view = self.lifecycle(digest, domain=query.domain)
             domain_state_map = dict(view.domain_states)
-            match_state = (
+            states[digest] = (
                 query.state
                 if query.state and not query.domain and query.state in domain_state_map.values()
                 else view.current_state
             )
-            if record_matches(record, query, match_state) and state_matches(
-                view.current_state, query, domain_state_map
-            ):
-                if query.needs_review and not review_required(record, now=query.now):
-                    continue
-                result.append(record)
-        return sorted(
-            result,
-            key=lambda item: (
-                str(item.get("metadata", {}).get("createdAt", "")),
-                str(item.get("contentDigest", "")),
-            ),
-        )
+            domain_states[digest] = domain_state_map
+        result = records_for(records, query, states)
+        return [
+            record
+            for record in result
+            if state_matches(
+                self.lifecycle(str(record.get("contentDigest")), domain=query.domain).current_state,
+                query,
+                domain_states[str(record.get("contentDigest"))],
+            )
+            and (not query.needs_review or review_required(record, now=query.now))
+        ]
 
     def _verify_journal(self, transaction: Path) -> dict[str, Any]:
         journal_path = transaction / "journal.json"
@@ -710,6 +773,12 @@ class CommonsStore:
                     Diagnostic("PAYLOAD_INVALID", path, "ledger payload must be an object")
                 )
                 continue
+            if entry_type == "snapshot":
+                if payload.get("schema_version") != "commons.mncs.dev/store-snapshot/v0alpha1":
+                    diagnostics.append(
+                        Diagnostic("SNAPSHOT_INVALID", path, "snapshot schema is unsupported")
+                    )
+                continue
             if entry_type == "record":
                 report = validate_record(payload)
                 digest = payload.get("contentDigest")
@@ -720,7 +789,11 @@ class CommonsStore:
                 referenced_events.add(str(digest))
             else:
                 diagnostics.append(
-                    Diagnostic("UNKNOWN_ENTRY_TYPE", path, "entry type must be record or event")
+                    Diagnostic(
+                        "UNKNOWN_ENTRY_TYPE",
+                        path,
+                        "entry type must be record, event, or snapshot",
+                    )
                 )
                 continue
             file_path = self._content_path(str(entry_type), str(digest))

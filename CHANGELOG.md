@@ -1,8 +1,56 @@
 # Changelog
 
-## Unreleased documentation
+## Unreleased
 
-- Documented direct Local Harness CLI/TUI operator access to the same
+- Added MNCDS participation in the Family Record Spine: a `DevelopmentRecord`
+  record kind, `make_development_record_record(...)` projection builder
+  (`commons.mncs.dev/development-record/v0alpha1`), a `development_lineage`
+  query projection with supersession chains and experiment links, and an
+  `mncds` entry in the family producer compatibility registry. The projection
+  preserves a validated MNCDS record's exact identity/digest and tri-state
+  computed status verbatim; Commons never reinterprets development-process
+  semantics.
+- Extended `scripts/exercise_family_record_spine.py` through the MNCDS
+  boundary: the exercise now validates an MNCDS `0.2-alpha.1` development
+  record with the reference validator (workspace checkout), projects it into
+  Commons, reconstructs both graphs from durable identities, and verifies
+  UNKNOWN remains exact across Control → Harness → Language → Fabric → Forge →
+  Concept Experiment → MNCDS → Commons.
+
+- Added `make_replication_record` on the Family Record Spine: a `Replication` builder binding a
+  tri-state coordination outcome, correlation metadata, and typed producer references (language
+  result, Fabric execution attempt, Forge evaluation). Every replication carries a neutral
+  `attempts` relationship; only PASS adds `replicates`, only FAIL adds `failed_to_replicate`,
+  so an UNKNOWN outcome never collapses into demonstrated failure. Validation of the new optional `schema` and `references`
+  detail fields is additive; earlier generic Replication records remain valid.
+
+- Added an explicit institutional-memory promotion layer with `Finding`, `Question`,
+  `Hypothesis`, `FailedApproach`, `Handoff`, `ArtifactReference`, and `Thread` records; typed
+  continuity relationships; an `institutionalMemory` query filter; agent publication guidance; and
+  canonical retention for promoted knowledge while raw execution observations remain evidence.
+- Fixed open-work opportunity queries so revisioned WorkRequests are evaluated only at their latest
+  revision instead of resurfacing historical nonterminal states after completion.
+- Added an information-lifecycle layer: retention classes, operator pins,
+  Epoch/EpochSummary/ReplicationSeries records, verified tar.zst archives, and
+  explicit `--confirm` hot-store compaction that keeps canonical knowledge
+  resolvable.
+- Added a durable, append-only work-memory protocol with operator-only submission and
+  state transitions; optimistic digest lineage; submitted, accepted, assigned, queued,
+  running, checkpointed, blocked, retrying, completed, failed, and cancelled states;
+  and read-only status/history/list projections. Work records remain untrusted and inert.
+- Added private-socket readiness checks to service doctor output, structured offline
+  diagnostics when the service is unreachable, and restrictive-umask-safe security tests.
+
+- Added a persistent, versioned local AF_UNIX service with same-UID peer checks,
+  bounded/replay-safe framing, separate consumer and operator endpoints, a read-only
+  public client, an explicit administrative client, and hardened systemd user-service
+  deployment assets.
+- Kept the service lifecycle independent from consumer clients and made corrupt-store
+  recovery an explicit operator action; ordinary status/read paths fail closed without
+  rewriting evidence.
+- Added MCP 1.x/2.x server-registration compatibility while preserving the fixed stdio
+  compatibility binding.
+- Documented direct MNCS Harness CLI/TUI operator access to the same
   controller-local Agent Node used by mediated remote models. No Commons package,
   record protocol, exchange profile, or node profile version changed.
 
@@ -12,7 +60,7 @@
   executable so controller harnesses can launch the fixed local-agent MCP seam.
 - Accepted the current Fabric execution `started_at` timestamp while retaining
   legacy `created_at` compatibility in inert Observation translation.
-- Added controller-mediated Local Harness integration guidance without changing
+- Added controller-mediated MNCS Harness integration guidance without changing
   the record, exchange, or local-agent profile wire versions.
 
 ## 0.5.0.dev0

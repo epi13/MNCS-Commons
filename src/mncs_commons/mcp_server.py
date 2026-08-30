@@ -66,12 +66,12 @@ def build_server(
     policy = ExchangePolicy.public_profile() if public else ExchangePolicy()
 
     tools = [
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_describe",
             description="Describe this Commons exchange endpoint and vocabulary.",
             inputSchema={"type": "object", "properties": {}},
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_validate_record",
             description="Validate an inert Commons record without storing it.",
             inputSchema={
@@ -80,7 +80,7 @@ def build_server(
                 "properties": {"record": {"type": "object"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_publish_record",
             description=(
                 "Publish one validated record; delivery does not grant acceptance or authority."
@@ -109,7 +109,7 @@ def build_server(
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_get_record",
             description="Get one record by content digest.",
             inputSchema={
@@ -118,7 +118,7 @@ def build_server(
                 "properties": {"digest": {"type": "string"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_query",
             description="Run a bounded structured Commons query.",
             inputSchema={
@@ -132,13 +132,33 @@ def build_server(
                     "related": {"type": "string"},
                     "domain": {"type": "string"},
                     "openWorkRequests": {"type": "boolean"},
+                    "institutionalMemory": {"type": "boolean"},
                     "needsReview": {"type": "boolean"},
                     "now": {"type": "string"},
                     "limit": {"type": "integer", "minimum": 1, "maximum": 1000},
+                    "concept": {"type": "string"},
+                    "languageProfile": {"type": "string"},
+                    "backend": {"type": "string"},
+                    "participant": {"type": "string"},
+                    "failureClassification": {"type": "string"},
+                    "experimentStatus": {"type": "string"},
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
+            name="commons_experiment",
+            description="Project one bounded Concept Experiment graph without inferring truth.",
+            inputSchema={
+                "type": "object",
+                "required": ["experimentId"],
+                "properties": {
+                    "experimentId": {"type": "string"},
+                    "depth": {"type": "integer", "minimum": 0, "maximum": 8},
+                    "maxNodes": {"type": "integer", "minimum": 1, "maximum": 1000},
+                },
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
             name="commons_sync",
             description="Read a bounded ordered ledger slice after a store-local cursor.",
             inputSchema={
@@ -149,7 +169,7 @@ def build_server(
                 },
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_conversation",
             description="Project a bounded typed record graph for presentation.",
             inputSchema={
@@ -158,12 +178,53 @@ def build_server(
                 "properties": {"root": {"type": "string"}},
             },
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
             name="commons_work_list",
             description="List bounded opportunities; results are not commands or permissions.",
             inputSchema={"type": "object", "properties": {"limit": {"type": "integer"}}},
         ),
-        Tool(
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_registry",
+            description="Read the active family registry; Atlas remains orientation-only.",
+            inputSchema={"type": "object", "properties": {}},
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_coverage",
+            description="Project bounded current coordination coverage for every family project.",
+            inputSchema={"type": "object", "properties": {}},
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_consistency",
+            description="Check exact family identities across Standard and Atlas snapshots.",
+            inputSchema={
+                "type": "object",
+                "required": ["standard", "atlas"],
+                "properties": {"standard": {"type": "object"}, "atlas": {"type": "object"}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_work_propose",
+            description=(
+                "Classify and deduplicate a worker discovery before it becomes claimable work."
+            ),
+            inputSchema={
+                "type": "object",
+                "required": ["proposal"],
+                "properties": {"proposal": {"type": "object"}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
+            name="commons_family_health_sweep",
+            description=(
+                "Ingest bounded external health observations and reconcile hygiene opportunities."
+            ),
+            inputSchema={
+                "type": "object",
+                "required": ["observations"],
+                "properties": {"observations": {"type": "array", "items": {"type": "object"}}},
+            },
+        ),
+        Tool(  # type: ignore[call-arg]
             name="commons_evidence_trace",
             description="Trace bounded evidence lineage without inferring truth.",
             inputSchema={
@@ -188,8 +249,15 @@ def build_server(
                 related=arguments.get("related"),
                 domain=arguments.get("domain", domain),
                 open_work_requests=bool(arguments.get("openWorkRequests", False)),
+                institutional_memory=bool(arguments.get("institutionalMemory", False)),
                 needs_review=bool(arguments.get("needsReview", False)),
                 now=parsed_now,
+                concept=arguments.get("concept"),
+                language_profile=arguments.get("languageProfile"),
+                backend=arguments.get("backend"),
+                participant=arguments.get("participant"),
+                failure_classification=arguments.get("failureClassification"),
+                experiment_status=arguments.get("experimentStatus"),
             )
         )[:limit]
 
@@ -254,8 +322,42 @@ def build_server(
                     depth=int(arguments.get("depth", 2)),
                     max_nodes=int(arguments.get("maxNodes", 1000)),
                 )
+            elif name == "commons_experiment":
+                result = application.experiment(
+                    str(arguments["experimentId"]),
+                    depth=int(arguments.get("depth", 3)),
+                    max_nodes=int(arguments.get("maxNodes", 1000)),
+                )
             elif name == "commons_work_list":
                 result = application.work_queue(limit=int(arguments.get("limit", 100)))
+            elif name == "commons_family_registry":
+                result = application.family_registry()
+            elif name == "commons_family_coverage":
+                result = application.family_coverage()
+            elif name == "commons_family_consistency":
+                result = application.family_consistency(
+                    arguments.get("standard", {}), arguments.get("atlas", {})
+                )
+            elif name == "commons_work_propose":
+                if not policy.allow_write:
+                    raise ExchangeError(
+                        "PUBLIC_POLICY_REJECTED",
+                        "proposal intake is not available on a read-only profile",
+                    )
+                proposal = arguments.get("proposal")
+                if not isinstance(proposal, Mapping):
+                    raise ExchangeError("INVALID_PROPOSAL", "proposal must be an object")
+                result = application.propose_work(proposal)
+            elif name == "commons_family_health_sweep":
+                if not policy.allow_write:
+                    raise ExchangeError(
+                        "PUBLIC_POLICY_REJECTED",
+                        "health sweep is not available on a read-only profile",
+                    )
+                observations = arguments.get("observations")
+                if not isinstance(observations, list):
+                    raise ExchangeError("INVALID_OBSERVATIONS", "observations must be a list")
+                result = application.family_health_sweep(observations)
             elif name == "commons_evidence_trace":
                 result = application.trace_evidence(
                     str(arguments["root"]),
@@ -265,7 +367,9 @@ def build_server(
             else:
                 raise ExchangeError("UNKNOWN_OPERATION", "operation is not supported")
             text, truncated = _bounded_result(result)
-            return CallToolResult(content=[TextContent(type="text", text=text)], isError=truncated)
+            return CallToolResult(  # type: ignore[call-arg]
+                content=[TextContent(type="text", text=text)], isError=truncated
+            )
         except (ExchangeError, StoreError, ValueError, TypeError, KeyError) as error:
             result = (
                 error.as_dict()
@@ -273,15 +377,21 @@ def build_server(
                 else {"error": "INVALID_REQUEST", "message": str(error)}
             )
             text, _ = _bounded_result(result)
-            return CallToolResult(content=[TextContent(type="text", text=text)], isError=True)
+            return CallToolResult(  # type: ignore[call-arg]
+                content=[TextContent(type="text", text=text)], isError=True
+            )
 
     resources = [
-        Resource(name="protocol", uri="mncs-commons://protocol", mimeType="application/json"),
-        Resource(
+        Resource(  # type: ignore[call-arg]
+            name="protocol", uri="mncs-commons://protocol", mimeType="application/json"
+        ),
+        Resource(  # type: ignore[call-arg]
             name="exchange", uri="mncs-commons://schema/exchange", mimeType="application/json"
         ),
-        Resource(name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"),
-        Resource(
+        Resource(  # type: ignore[call-arg]
+            name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"
+        ),
+        Resource(  # type: ignore[call-arg]
             name="capabilities", uri="mncs-commons://capabilities", mimeType="application/json"
         ),
     ]
@@ -305,10 +415,54 @@ def build_server(
             raise ValueError("unknown Commons resource")
         return [ReadResourceContents(content=_json(values[key]), mime_type="application/json")]
 
+    instructions = "Commons communicates information; publication grants no authority."
+    if hasattr(Server, "list_tools"):
+        # MCP 1.x low-level servers use decorator registration.
+        server = Server("mncs-commons", version=__version__, instructions=instructions)
+        server.list_tools()(list_tools)  # type: ignore[attr-defined]
+        server.call_tool()(call_tool)  # type: ignore[attr-defined]
+        server.list_resources()(list_resources)  # type: ignore[attr-defined]
+        server.read_resource()(read_resource)  # type: ignore[attr-defined]
+        return server
+
+    # MCP 2.x makes low-level handlers explicit constructor arguments. Keep
+    # this compatibility path local to the optional transport adapter.
+    from mcp.types import (  # type: ignore[import-not-found]
+        ListResourcesResult,
+        ListToolsResult,
+        ReadResourceResult,
+        TextResourceContents,
+    )
+
+    async def modern_list_tools(_context: Any, _params: Any) -> Any:
+        return ListToolsResult(tools=tools)
+
+    async def modern_call_tool(_context: Any, params: Any) -> Any:
+        return await call_tool(str(params.name), dict(params.arguments or {}))
+
+    async def modern_list_resources(_context: Any, _params: Any) -> Any:
+        return ListResourcesResult(resources=resources)
+
+    async def modern_read_resource(_context: Any, params: Any) -> Any:
+        uri = str(params.uri)
+        contents = await read_resource(uri)
+        return ReadResourceResult(
+            contents=[
+                TextResourceContents(  # type: ignore[call-arg]
+                    uri=uri, mimeType=item.mime_type, text=item.content
+                )
+                for item in contents
+            ]
+        )
+
     server = Server(
         "mncs-commons",
         version=__version__,
-        instructions="Commons communicates information; publication grants no authority.",
+        instructions=instructions,
+        on_list_tools=modern_list_tools,
+        on_call_tool=modern_call_tool,
+        on_list_resources=modern_list_resources,
+        on_read_resource=modern_read_resource,
     )
     server.list_tools()(list_tools)
     server.call_tool()(call_tool)
