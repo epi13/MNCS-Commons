@@ -455,7 +455,7 @@ def build_server(
             ]
         )
 
-    return Server(
+    server = Server(
         "mncs-commons",
         version=__version__,
         instructions=instructions,
@@ -464,6 +464,11 @@ def build_server(
         on_list_resources=modern_list_resources,
         on_read_resource=modern_read_resource,
     )
+    server.list_tools()(list_tools)
+    server.call_tool()(call_tool)
+    server.list_resources()(list_resources)
+    server.read_resource()(read_resource)
+    return server
 
 
 async def _run(store: CommonsStore, *, domain: str, public: bool) -> None:
