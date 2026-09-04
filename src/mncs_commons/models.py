@@ -25,6 +25,7 @@ class RecordKind(StrEnum):
     WORK_REQUEST = "WorkRequest"
     REPLICATION = "Replication"
     DEVELOPMENT_RECORD = "DevelopmentRecord"
+    CHANGESET = "ChangeSet"
     ADVISORY = "Advisory"
     DECISION = "Decision"
     EPOCH = "Epoch"

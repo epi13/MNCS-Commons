@@ -108,6 +108,13 @@ _REQUIRED_DETAILS = {
     RecordKind.EPOCH_SUMMARY.value: {"epochId", "sourceIdentities"},
     RecordKind.REPLICATION_SERIES.value: {"target", "passes", "failures", "sourceIdentities"},
     RecordKind.OBSERVATION_SERIES.value: {"sourceIdentities"},
+    RecordKind.CHANGESET.value: {
+        "schema",
+        "changesetId",
+        "baseRevisions",
+        "references",
+        "authorityBoundary",
+    },
 }
 
 

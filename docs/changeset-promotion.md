@@ -9,17 +9,23 @@ affected repository assembles the same relationship graph.
 
 ## Carried references
 
-| ChangeSet element              | Owning contract                                              | Edge            |
-| ------------------------------ | ------------------------------------------------------------ | --------------- |
-| ChangeSet identity             | MNCDS ChangeSet (`development-pressure-protocol.md`)         | self            |
-| affected repositories/revisions| exact base revisions in the ChangeSet                        | self            |
-| MNCDS development record       | `mncds-development-record` check (MNCDS check catalog)       | `supported_by`  |
-| rights/lineage references      | `mncs-rights-provenance` lineage record                      | `supported_by`  |
-| Commons coordination relation  | this profile                                                 | `groups_with`   |
-| pressure/capability gaps       | `mncds-obligation-record/0.1` (projected pressure)           | `supports_pressure` |
-| evidence per affected repo     | each repository's `check-result/1` claims                    | `supported_by`  |
-| unresolved obligations         | `mncds-obligations` check `unresolved` entries               | `contradicts` (blocks) or `groups_with` (tolerated) |
-| eventual promotion evaluation  | `promotion-boundary` check (MNCS boundary evaluation)        | `promotes`      |
+| ChangeSet element              | Owning contract                                              | Mechanical edge              |
+| ------------------------------ | ------------------------------------------------------------ | ---------------------------- |
+| ChangeSet identity             | MNCDS ChangeSet (`development-pressure-protocol.md`)         | self                         |
+| affected repositories/revisions| exact `baseRevisions` in the ChangeSet record                | self                         |
+| MNCDS development record       | `mncds-development-record` check (MNCDS check catalog)       | `supports`                   |
+| rights/lineage references      | `mncs-rights-provenance` lineage record                      | `supports`                   |
+| pressure/capability gaps       | `mncds-obligation-record/0.2` (projected pressure)           | `pressure/supports-pressure` |
+| evidence per affected repo     | each repository's `check-result/1` claims                    | `supports`                   |
+| unresolved obligations         | `mncds-obligations` check `unresolved` entries               | `contradicts` (blocks)       |
+| eventual promotion evaluation  | `promotion-boundary` check (MNCS boundary evaluation)        | `promotion/promotes`         |
+
+The `supports`/`contradicts` edges use the shared Commons relationship
+vocabulary; `pressure/supports-pressure` and `promotion/promotes` are
+namespaced coordination extensions owned by this profile. Machine form:
+`make_changeset_record` in `src/mncs_commons/family.py` (kind
+`ChangeSet`), fixture `tests/fixtures/changeset-promotion-graph.json`,
+tests in `tests/test_changeset_promotion.py`.
 
 ## Rules
 

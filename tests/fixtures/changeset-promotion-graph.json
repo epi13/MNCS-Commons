@@ -1,0 +1,178 @@
+{
+  "affectedContracts": [],
+  "apiVersion": "commons.mncs.dev/v0alpha1",
+  "confidence": {
+    "level": "unreported",
+    "rationale": "coordination only; carried claims carry their own verdicts"
+  },
+  "dependencies": [],
+  "details": {
+    "authorityBoundary": "coordination relationships only; development-process semantics stay in MNCDS, promotion semantics stay in MNCS, and no conformance verdict is inferred from component records",
+    "baseRevisions": [
+      {
+        "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "repository": "epi13/mncs-actions"
+      },
+      {
+        "commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "repository": "epi13/mncs-language"
+      }
+    ],
+    "changesetId": "changeset.promotion-gate-demo-1",
+    "references": [
+      {
+        "group": "contradicts",
+        "reference": {
+          "contentDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "producer": "mncs-actions",
+          "recordKind": "obligation-record",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "mncds://obligation/pressure.gate.blocking-gap"
+        },
+        "relation": "contradicts"
+      },
+      {
+        "group": "pressure",
+        "reference": {
+          "contentDigest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "producer": "mncs-actions",
+          "recordKind": "obligation-record",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "mncds://obligation/pressure.gate.open-gap"
+        },
+        "relation": "pressure"
+      },
+      {
+        "group": "promotes",
+        "reference": {
+          "contentDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "producer": "mncs-promotion-boundary",
+          "recordKind": "check-result",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "mncs://check-result/promotion-boundary"
+        },
+        "relation": "promotes"
+      },
+      {
+        "group": "supports",
+        "reference": {
+          "contentDigest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "producer": "mncds",
+          "recordKind": "development-record",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "mncds://development-record/record.gate-1"
+        },
+        "relation": "supports"
+      },
+      {
+        "group": "supports",
+        "reference": {
+          "contentDigest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "producer": "mncs-validator-rs",
+          "recordKind": "check-result",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "mncs://check-result/mncs-validation"
+        },
+        "relation": "supports"
+      },
+      {
+        "group": "supports",
+        "reference": {
+          "contentDigest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "producer": "mncs-rights-provenance",
+          "recordKind": "lineage-record",
+          "schema": "commons.mncs.dev/producer-reference/v0alpha1",
+          "schemaVersion": "0.1",
+          "stableId": "rights://lineage/record.gate-1"
+        },
+        "relation": "supports"
+      }
+    ],
+    "schema": "commons.mncs.dev/changeset/v0alpha1"
+  },
+  "evidence": [],
+  "kind": "ChangeSet",
+  "lifecycle": {
+    "initialState": "proposed",
+    "reviewWhen": []
+  },
+  "metadata": {
+    "author": {
+      "id": "MNCS-Commons",
+      "type": "producer"
+    },
+    "createdAt": "2026-09-04T00:00:00Z",
+    "labels": [
+      "changeset",
+      "family-record-spine"
+    ],
+    "recordId": "changeset:changeset.promotion-gate-demo-1"
+  },
+  "provenance": {
+    "producer": {
+      "id": "MNCS-Commons",
+      "type": "producer"
+    },
+    "sourceRecords": [
+      "mncds://obligation/pressure.gate.blocking-gap",
+      "mncds://obligation/pressure.gate.open-gap",
+      "mncs://check-result/promotion-boundary",
+      "mncds://development-record/record.gate-1",
+      "mncs://check-result/mncs-validation",
+      "rights://lineage/record.gate-1"
+    ]
+  },
+  "relationships": [
+    {
+      "target": "mncds://obligation/pressure.gate.blocking-gap",
+      "type": "contradicts"
+    },
+    {
+      "target": "mncds://obligation/pressure.gate.open-gap",
+      "type": "pressure/supports-pressure"
+    },
+    {
+      "target": "mncs://check-result/promotion-boundary",
+      "type": "promotion/promotes"
+    },
+    {
+      "target": "mncds://development-record/record.gate-1",
+      "type": "supports"
+    },
+    {
+      "target": "mncs://check-result/mncs-validation",
+      "type": "supports"
+    },
+    {
+      "target": "rights://lineage/record.gate-1",
+      "type": "supports"
+    }
+  ],
+  "scope": {
+    "context": {
+      "baseRevisionCount": 2,
+      "changesetId": "changeset.promotion-gate-demo-1"
+    },
+    "limitations": [
+      "coordination status only; carried claims retain native owner semantics"
+    ]
+  },
+  "security": {
+    "executableAttachments": false,
+    "instructionsAreUntrusted": true,
+    "requiredExternalAuthority": false,
+    "sensitivity": "public"
+  },
+  "statement": {
+    "summary": "Demo ChangeSet relating development, obligations, evidence, and promotion."
+  },
+  "subject": {
+    "identity": "changeset.promotion-gate-demo-1",
+    "type": "changeset"
+  }
+}

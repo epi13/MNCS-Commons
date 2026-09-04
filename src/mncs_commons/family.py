@@ -17,6 +17,14 @@ CONCEPT_EXPERIMENT_SCHEMA = "commons.mncs.dev/concept-experiment/v0alpha1"
 FAILURE_CLASSIFICATION_SCHEMA = "commons.mncs.dev/failure-classification/v0alpha1"
 REPLICATION_SCHEMA = "commons.mncs.dev/replication/v0alpha1"
 DEVELOPMENT_RECORD_SCHEMA = "commons.mncs.dev/development-record/v0alpha1"
+CHANGESET_SCHEMA = "commons.mncs.dev/changeset/v0alpha1"
+
+CHANGESET_EDGE_TYPES = {
+    "supports": "supports",
+    "pressure": "pressure/supports-pressure",
+    "contradicts": "contradicts",
+    "promotes": "promotion/promotes",
+}
 
 EXPERIMENT_STATUSES = frozenset(
     {
@@ -627,6 +635,128 @@ def make_development_record_record(
         "confidence": {
             "level": "unreported",
             "rationale": "the projected MNCDS record carries its own computed status",
+        },
+        "security": {
+            "sensitivity": "public",
+            "executableAttachments": False,
+            "instructionsAreUntrusted": True,
+            "requiredExternalAuthority": False,
+        },
+        "lifecycle": {"initialState": "proposed", "reviewWhen": []},
+        "relationships": relationships,
+        "details": details,
+    }
+
+
+def make_changeset_record(
+    *,
+    changeset_id: str,
+    created_at: str,
+    base_revisions: Iterable[Mapping[str, str]],
+    supports: Iterable[Mapping[str, Any]] = (),
+    pressure: Iterable[Mapping[str, Any]] = (),
+    contradicts: Iterable[Mapping[str, Any]] = (),
+    promotes: Iterable[Mapping[str, Any]] = (),
+    summary: str,
+    producer_id: str = "MNCS-Commons",
+) -> dict[str, Any]:
+    """Coordinate one cross-repository ChangeSet through the family graph.
+
+    The record carries exact base revisions plus digest-bound references to
+    the claims produced elsewhere: supporting development records, lineage,
+    and per-repository evidence (``supports``); open development-pressure
+    obligations (``pressure``); blocking obligations or negative evidence
+    (``contradicts``); and at most one MNCS promotion-boundary evaluation
+    result (``promotes``).  Commons owns these relationships, never the
+    promotion semantics: a ``promotes`` edge only ever points at an
+    owner-native MNCS promotion result, and system-level PASS is never
+    inferred from component records.
+    """
+    changeset_id = _text(changeset_id, "changeset_id", maximum=256)
+    created_at = _timestamp(_text(created_at, "created_at", maximum=128))
+    pinned: list[dict[str, str]] = []
+    for index, revision in enumerate(base_revisions):
+        field = f"base_revisions[{index}]"
+        if not isinstance(revision, Mapping):
+            raise FamilyRecordError(f"{field} must be an object")
+        repository = _text(revision.get("repository"), f"{field}.repository", maximum=256)
+        commit = _text(revision.get("commit"), f"{field}.commit", maximum=64)
+        if len(commit) != 40 or any(
+            character not in "0123456789abcdef" for character in commit
+        ):
+            raise FamilyRecordError(f"{field}.commit must be an exact 40-hex revision")
+        pinned.append({"repository": repository, "commit": commit})
+    if not pinned:
+        raise FamilyRecordError("base_revisions must name at least one revision")
+
+    grouped: dict[str, list[Mapping[str, Any]]] = {
+        "supports": list(supports),
+        "pressure": list(pressure),
+        "contradicts": list(contradicts),
+        "promotes": list(promotes),
+    }
+    if len(grouped["promotes"]) > 1:
+        raise FamilyRecordError("a ChangeSet carries at most one promotion result")
+    entries: list[dict[str, Any]] = []
+    relationships: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for group, values in grouped.items():
+        for value in values:
+            if not isinstance(value, Mapping):
+                raise FamilyRecordError(f"{group} references must be objects")
+            reference = normalize_producer_reference(value)
+            key = (group, reference["stableId"])
+            if key in seen:
+                continue
+            seen.add(key)
+            entries.append({"group": group, "relation": group, "reference": reference})
+            relationships.append(
+                {"type": CHANGESET_EDGE_TYPES[group], "target": reference["stableId"]}
+            )
+    entries.sort(key=lambda item: (item["group"], item["reference"]["stableId"]))
+    relationships.sort(key=lambda item: (item["type"], item["target"]))
+
+    details: dict[str, Any] = {
+        "schema": CHANGESET_SCHEMA,
+        "changesetId": changeset_id,
+        "baseRevisions": pinned,
+        "references": entries,
+        "authorityBoundary": (
+            "coordination relationships only; development-process semantics stay "
+            "in MNCDS, promotion semantics stay in MNCS, and no conformance "
+            "verdict is inferred from component records"
+        ),
+    }
+    return {
+        "apiVersion": "commons.mncs.dev/v0alpha1",
+        "kind": "ChangeSet",
+        "metadata": {
+            "recordId": f"changeset:{changeset_id}",
+            "createdAt": created_at,
+            "author": {"type": "producer", "id": producer_id},
+            "labels": ["changeset", "family-record-spine"],
+        },
+        "subject": {"type": "changeset", "identity": changeset_id},
+        "scope": {
+            "context": {
+                "changesetId": changeset_id,
+                "baseRevisionCount": len(pinned),
+            },
+            "limitations": [
+                "coordination status only; carried claims retain native owner semantics"
+            ],
+        },
+        "statement": {"summary": _text(summary, "summary", maximum=20_000)},
+        "evidence": [],
+        "dependencies": [],
+        "affectedContracts": [],
+        "provenance": {
+            "producer": {"type": "producer", "id": producer_id},
+            "sourceRecords": [item["reference"]["stableId"] for item in entries],
+        },
+        "confidence": {
+            "level": "unreported",
+            "rationale": "coordination only; carried claims carry their own verdicts",
         },
         "security": {
             "sensitivity": "public",
