@@ -1,0 +1,59 @@
+mncs 0.10;
+
+// commons.mesh.lattice_check — mechanical no-divergence proof between the
+// mesh outcome lattice and the standard library.
+//
+// commons.mesh.outcome is deliberately self-contained (a mesh node must be
+// able to compile its normative contract with only the mesh sources
+// present; offline-first applies to the build too). The cost of that
+// independence is drift risk against mncs.core.status.v1, which owns the
+// authoritative status/evidence-dominance lattice. This module closes the
+// loop: it binds both modules and checks, over the full 3x3 domain, that
+// mesh combination agrees with stdlib combination under the documented
+// variant mapping (PASS<->Pass, FAIL<->Fail, UNKNOWN<->Unknown).
+//
+// Both modules export `combine`, so all cross-module references are
+// qualified through Profile 0.9 aliases (unqualified lookup is
+// deliberately conservative). The corpus expects `true` for all nine pairs
+// on every backend. Any future edit that diverges the tables fails the
+// experiment loudly.
+module commons.mesh.lattice_check;
+
+use commons.mesh.outcome as mesh_outcome;
+use mncs.core.status.v1 as status;
+
+fn status_to_outcome(value: status.Status) -> (result: mesh_outcome.Outcome) {
+    return match value {
+        status.Status.PASS => mesh_outcome.Outcome.Pass,
+        status.Status.FAIL => mesh_outcome.Outcome.Fail,
+        status.Status.UNKNOWN => mesh_outcome.Outcome.Unknown,
+    };
+}
+
+fn outcome_rank(value: mesh_outcome.Outcome) -> (result: i64) {
+    return match value {
+        mesh_outcome.Outcome.Pass => 0,
+        mesh_outcome.Outcome.Fail => 1,
+        mesh_outcome.Outcome.Unknown => 2,
+    };
+}
+
+fn status_rank(value: status.Status) -> (result: i64) {
+    return match value {
+        status.Status.PASS => 0,
+        status.Status.FAIL => 1,
+        status.Status.UNKNOWN => 2,
+    };
+}
+
+// Executable entry point: true exactly when both lattices agree.
+// NOTE: stdlib `combine` takes a StatusPair record, but qualified record
+// construction (`status.StatusPair { ... }`) does not elaborate (MNE123;
+// see MESH_PRESSURE_LEDGER.md P-COMMONS-03). `dominate` is the same lattice
+// join over scalar arguments (status.v1 defines combine via dominate), so
+// the check stays exact without the unsupported construct.
+fn candidate_lattice_agrees(left: status.Status, right: status.Status) -> (result: bool) {
+    let stdlib: status.Status = status.dominate(left, right);
+    let mesh: mesh_outcome.Outcome = mesh_outcome.candidate_combine(status_to_outcome(left), status_to_outcome(right));
+    return outcome_rank(mesh) == status_rank(stdlib);
+}

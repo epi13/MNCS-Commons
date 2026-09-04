@@ -1,0 +1,717 @@
+{
+  "schema_version": "0.1",
+  "name": "commons-outcome-exhaustive",
+  "cases": [
+    {
+      "id": "combine-pass-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+            "discriminant": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-pass-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-pass-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+            "discriminant": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-pass-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-pass-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+            "discriminant": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-pass-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-fail-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+            "discriminant": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-fail-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-fail-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+            "discriminant": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-fail-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-fail-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+            "discriminant": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-fail-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-unknown-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+            "discriminant": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-unknown-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-unknown-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+            "discriminant": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-unknown-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "combine-unknown-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_combine"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "finite": {
+            "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+            "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+            "discriminant": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "agrees-unknown-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "settled-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_is_settled"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Pass",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "settled-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_is_settled"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Fail",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "settled-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.outcome",
+          "function": "candidate_is_settled"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.outcome::Outcome",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.outcome::Outcome::Unknown",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    }
+  ]
+}

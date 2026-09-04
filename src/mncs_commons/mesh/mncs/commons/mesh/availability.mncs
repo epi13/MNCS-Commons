@@ -1,0 +1,58 @@
+mncs 0.10;
+
+// commons.mesh.availability — evidence-availability lattice for the Commons Mesh.
+//
+// Knowledge identity is not evidence possession. This module gives the mesh
+// the portable, total half of that distinction: ranking and merging
+// availability claims. Digest production, byte fetching, and custody remain
+// explicit host/capability boundaries (see MESH_PRESSURE_LEDGER.md).
+//
+// Retention priority (higher survives budget pressure longer):
+//   UNAVAILABLE(0) < SOURCE_AVAILABLE(1) < LOCAL(2)
+//     < MIRRORED(3) < DURABLE(4) < CANONICAL(5)
+//
+// LOCAL outranks SOURCE_AVAILABLE because possession is certain; the named
+// replicated tiers outrank local possession because they carry commitments.
+// Merge keeps the stronger tier; it merges knowledge, never truth.
+module commons.mesh.availability;
+
+enum Availability {
+    Unavailable,
+    SourceAvailable,
+    Local,
+    Mirrored,
+    Durable,
+    Canonical
+}
+
+fn rank(value: Availability) -> (result: i64) {
+    return match value {
+        Unavailable => 0,
+        SourceAvailable => 1,
+        Local => 2,
+        Mirrored => 3,
+        Durable => 4,
+        Canonical => 5,
+    };
+}
+
+fn merge(first: Availability, second: Availability) -> (result: Availability) {
+    if rank(first) >= rank(second) {
+        return first;
+    }
+    return second;
+}
+
+// Executable entry points (kept integer-valued so backend corpora stay exact).
+
+fn candidate_rank(value: Availability) -> (result: i64) {
+    return rank(value);
+}
+
+fn candidate_merge_rank(first: Availability, second: Availability) -> (result: i64) {
+    return rank(merge(first, second));
+}
+
+fn candidate_should_fetch(known: Availability, offered: Availability) -> (result: bool) {
+    return rank(offered) > rank(known);
+}

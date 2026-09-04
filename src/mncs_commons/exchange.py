@@ -23,6 +23,30 @@ MAX_SYNC_ENTRIES = 1_000
 MAX_CONVERSATION_NODES = 1_000
 
 
+def _mesh_capabilities() -> dict[str, object]:
+    """Advertise Commons Mesh protocol capabilities (additive, inert to old readers)."""
+
+    from .mesh.availability import AVAILABILITY_VERSION
+    from .mesh.capsule import CAPSULE_VERSION
+    from .mesh.interest import INTEREST_VERSION
+    from .mesh.node import MESH_VERSION, SYNC_MODES, TRANSPORTS
+    from .mesh.relay import RELAY_VERSION
+    from .mesh.view import VIEW_VERSION
+
+    return {
+        "meshVersion": MESH_VERSION,
+        "interestVersion": INTEREST_VERSION,
+        "availabilityVersion": AVAILABILITY_VERSION,
+        "capsuleVersion": CAPSULE_VERSION,
+        "relayVersion": RELAY_VERSION,
+        "viewVersion": VIEW_VERSION,
+        "syncModes": list(SYNC_MODES),
+        "transports": list(TRANSPORTS),
+        "negotiation": "capability-intersection; unknown vocabulary stays inert",
+        "authority": "possession-only; no correctness, conformance, or promotion",
+    }
+
+
 class ExchangeError(ValueError):
     """A stable, machine-readable exchange boundary error."""
 
@@ -164,6 +188,7 @@ class ExchangeDescriptor:
                 "pushSubscriptions": False,
                 "remoteTransport": False,
             },
+            "mesh": _mesh_capabilities(),
             "profile": {
                 "name": "local-agent-node"
                 if self.profile == LOCAL_NODE_PROFILE
@@ -262,9 +287,7 @@ def validate_participant(participant: ParticipantDescriptor | None) -> None:
         raise ExchangeError("INVALID_PARTICIPANT", "capabilities must be bounded strings")
 
 
-def validate_for_exchange(
-    value: Mapping[str, Any], policy: ExchangePolicy | None = None
-) -> None:
+def validate_for_exchange(value: Mapping[str, Any], policy: ExchangePolicy | None = None) -> None:
     policy = policy or ExchangePolicy()
     try:
         encoded = canonical_json(value)

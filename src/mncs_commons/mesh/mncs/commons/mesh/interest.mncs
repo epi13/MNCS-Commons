@@ -1,0 +1,98 @@
+mncs 0.10;
+
+// commons.mesh.interest — interest-projection matching for the Commons Mesh.
+//
+// A node interested in PTX compiler behavior must not retain every unrelated
+// record. This module is the portable matching kernel behind InterestFilter:
+// given a record's kind, outcome, and lifecycle state plus an explicit
+// subscription, decide membership deterministically.
+//
+// Textual names (kind strings, project paths, contract URNs) stay on the
+// host side: MNCS profiles have no bounded string-equality primitive for
+// open vocabularies (see MESH_PRESSURE_LEDGER.md, STDLIB_GAP-01). The host
+// projects names to the closed discriminants below; this module owns the
+// Boolean combination law, which is where silent over/under-matching bugs
+// would hide. Discriminant tables are part of the contract:
+//
+//   Kind:      0=Finding 1=Claim 2=Replication 3=Observation
+//              4=Question 5=WorkRequest 6=Other
+//   Outcome:   0=PASS 1=FAIL 2=UNKNOWN
+//   Lifecycle: 0=proposed 1=reproduced 2=verified 3=accepted
+//              4=disputed 5=other
+//
+// A subscription is six kind flags, three outcome flags, and a minimum
+// lifecycle rank (records below the rank are excluded). Lifecycle rank
+// follows mesh promotion order shifted by one so no subtraction is needed:
+// other/disputed(0) < proposed(1) < reproduced(2) < verified(3)
+// < accepted(4). A minimum rank of 0 matches everything; 1 and above
+// exclude disputed/other records.
+//
+// Source-profile notes: profiles have no `!` operator and no unary minus,
+// so negation is if/else (as in mncs.core.logic.v1) and ranks avoid
+// negative literals entirely (comparison-only code carries no
+// integer-overflow obligation).
+module commons.mesh.interest;
+
+fn kind_wanted(kind: i64, want_finding: bool, want_claim: bool, want_replication: bool, want_observation: bool, want_question: bool, want_work: bool) -> (result: bool) {
+    if kind == 0 {
+        return want_finding;
+    }
+    if kind == 1 {
+        return want_claim;
+    }
+    if kind == 2 {
+        return want_replication;
+    }
+    if kind == 3 {
+        return want_observation;
+    }
+    if kind == 4 {
+        return want_question;
+    }
+    if kind == 5 {
+        return want_work;
+    }
+    return false;
+}
+
+fn outcome_wanted(outcome: i64, want_pass: bool, want_fail: bool, want_unknown: bool) -> (result: bool) {
+    if outcome == 0 {
+        return want_pass;
+    }
+    if outcome == 1 {
+        return want_fail;
+    }
+    if outcome == 2 {
+        return want_unknown;
+    }
+    return false;
+}
+
+fn lifecycle_rank(state: i64) -> (result: i64) {
+    if state == 0 {
+        return 1;
+    }
+    if state == 1 {
+        return 2;
+    }
+    if state == 2 {
+        return 3;
+    }
+    if state == 3 {
+        return 4;
+    }
+    return 0;
+}
+
+// Executable entry point: full membership decision.
+fn candidate_matches(kind: i64, outcome: i64, state: i64, want_finding: bool, want_claim: bool, want_replication: bool, want_observation: bool, want_question: bool, want_work: bool, want_pass: bool, want_fail: bool, want_unknown: bool, min_rank: i64) -> (result: bool) {
+    let kind_ok: bool = kind_wanted(kind, want_finding, want_claim, want_replication, want_observation, want_question, want_work);
+    if kind_ok {
+        let outcome_ok: bool = outcome_wanted(outcome, want_pass, want_fail, want_unknown);
+        if outcome_ok {
+            return lifecycle_rank(state) >= min_rank;
+        }
+        return false;
+    }
+    return false;
+}

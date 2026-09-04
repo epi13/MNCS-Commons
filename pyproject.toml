@@ -30,7 +30,11 @@ mncs-commons-service = "mncs_commons.service_cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-mncs_commons = ["data/*.json"]
+mncs_commons = [
+  "data/*.json",
+  "mesh/mncs/commons/mesh/*.mncs",
+  "mesh/mncs/corpora/*.json",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

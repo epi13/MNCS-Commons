@@ -1,0 +1,2784 @@
+{
+  "schema_version": "0.1",
+  "name": "commons-availability-exhaustive",
+  "cases": [
+    {
+      "id": "rank-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 0,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rank-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 1,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rank-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rank-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rank-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "rank-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 0,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 1,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-unavailable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-unavailable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 1,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 1,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-sourceavailable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-sourceavailable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-local-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-local-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 3,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-mirrored-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-mirrored-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 4,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-durable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-durable-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-unavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Unavailable",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-sourceavailable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::SourceAvailable",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-local",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Local",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-mirrored",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Mirrored",
+              "discriminant": 3
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-durable",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Durable",
+              "discriminant": 4
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge-canonical-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_merge_rank"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 5,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fetch-canonical-canonical",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.availability",
+          "function": "candidate_should_fetch"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:commons.mesh.availability::Availability",
+              "variant_identity": "mncs:0.2:finite-variant:commons.mesh.availability::Availability::Canonical",
+              "discriminant": 5
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ]
+    }
+  ]
+}

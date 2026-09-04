@@ -1,0 +1,312 @@
+{
+  "schema_version": "0.1",
+  "name": "commons-lattice-agreement",
+  "cases": [
+    {
+      "id": "lattice-pass-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-pass-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-pass-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-fail-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-fail-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-fail-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-unknown-pass",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::PASS",
+              "discriminant": 0
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-unknown-fail",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::FAIL",
+              "discriminant": 1
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lattice-unknown-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "commons.mesh.lattice_check",
+          "function": "candidate_lattice_agrees"
+        },
+        "arguments": [
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          },
+          {
+            "finite": {
+              "type_identity": "mncs:0.2:finite-type:mncs.core.status.v1::Status",
+              "variant_identity": "mncs:0.2:finite-variant:mncs.core.status.v1::Status::UNKNOWN",
+              "discriminant": 2
+            }
+          }
+        ],
+        "step_budget": 4096
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ]
+    }
+  ]
+}
