@@ -26,7 +26,6 @@ from mncs_commons.mesh import (  # noqa: E402
     CommonsNode,
     CommonsRelay,
     DirectCarrier,
-    InterestFilter,
     RelayCarrier,
     account_node,
     build_view,
@@ -111,7 +110,8 @@ def main() -> int:
         node_d.init()
         relay_result = synchronize(node_d, RelayCarrier(relay), push=False)
         assert target in node_d.frontier()
-        print(f"5. relay-assisted sync: received={relay_result['pull']['received']}; relay dies now")
+        received = relay_result["pull"]["received"]
+        print(f"5. relay sync: received={received}; relay dies now")
 
         import shutil
 
@@ -126,7 +126,9 @@ def main() -> int:
             "verification-status",
         )
         budgets = check_budgets(node_b, account_node(node_b))
-        print(f"6. verification view rows={len(view['rows'])} budgets_ok={budgets['withinBudgets']}")
+        rows = len(view["rows"])
+        within = budgets["withinBudgets"]
+        print(f"6. verification rows={rows} budgets_ok={within}")
         print("DEMO OK: Commons is a protocol spoken by independent nodes, not a server.")
     return 0
 
