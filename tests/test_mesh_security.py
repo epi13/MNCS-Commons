@@ -76,7 +76,20 @@ def test_views_are_disposable_projections(tmp_path):
     work["metadata"]["recordId"] = "test:work:1"
     work_receipt = node.publish_local(work)
 
+    replication = make_record("Replication")
+    replication["metadata"]["recordId"] = "test:view-replication"
+    replication["details"] = {
+        "targetRecord": receipt.content_digest,
+        "outcome": "PASS",
+        "independence": {"modelFamily": "family-v"},
+    }
+    node.publish_local(replication)
+
     records = list(node.store.records())
+    status_view_first = build_view(records, "verification-status")
+    assert status_view_first["rows"] == [
+        {"target": receipt.content_digest, "outcomes": {"PASS": 1}, "replications": 1}
+    ]
     open_work = build_view(records, "open-work")
     assert open_work["disposable"] is True
     assert any(row["identity"] == work_receipt.content_digest for row in open_work["rows"])
