@@ -52,3 +52,22 @@ A coordination record needs no new schema to use this profile: it is a
 set of typed edges over existing producer records plus the ChangeSet's
 own base-revision pins. Producers keep their native stores; Commons
 keeps the graph.
+
+## Mechanical enforcement
+
+`make_changeset_record` enforces what the rules above declare:
+
+- rule 2: a `promotes` entry must be `recordKind: check-result` from
+  producer `mncs-promotion-boundary`. Anything else -- a component PASS,
+  a development record, a lineage entry -- is rejected, as is a second
+  promotion result.
+- rule 1: a reference carrying `scope.repository`/`scope.commit`
+  correlation-claims its revision and must name one of the ChangeSet's
+  base revisions exactly (40-hex, no moving refs). Evidence for another
+  revision is rejected. Scopeless references stay allowed: Commons
+  cannot demand correlation metadata a producer never carried.
+
+Enforcement is covered by `tests/test_changeset_promotion_evidence.py`,
+including a full tranche that relates genuine promotion-shaped evidence
+(candidate revisions, boundary, evidence, obligations, claim, digests)
+over real merged base revisions with recomputed digests.

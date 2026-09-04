@@ -648,6 +648,44 @@ def make_development_record_record(
     }
 
 
+def _check_reference_scope(
+    reference: Mapping[str, Any],
+    named: set[tuple[str, str]],
+    group: str,
+) -> None:
+    """Enforce the ChangeSet correlation key for scoped references.
+
+    A reference that carries ``scope.repository``/``scope.commit`` claims
+    its carried claim is bound to that exact revision; the pair must then
+    be one of the ChangeSet's named base revisions. Evidence for another
+    revision is not evidence for this ChangeSet. Scopeless references stay
+    allowed: producers keep their native stores and Commons cannot demand
+    what a producer never carried.
+    """
+    scope = reference.get("scope")
+    if scope is None:
+        return
+    if not isinstance(scope, Mapping):
+        raise FamilyRecordError(f"{group} reference scope must be an object")
+    repository = scope.get("repository")
+    commit = scope.get("commit")
+    if repository is None and commit is None:
+        return
+    if not isinstance(repository, str) or not repository:
+        raise FamilyRecordError(f"{group} reference scope.repository must be non-empty")
+    if (
+        not isinstance(commit, str)
+        or len(commit) != 40
+        or any(character not in "0123456789abcdef" for character in commit)
+    ):
+        raise FamilyRecordError(f"{group} reference scope.commit must be an exact revision")
+    if (repository, commit) not in named:
+        raise FamilyRecordError(
+            f"{group} reference is bound to {repository}@{commit}, "
+            "which this ChangeSet does not name"
+        )
+
+
 def make_changeset_record(
     *,
     changeset_id: str,
@@ -697,6 +735,20 @@ def make_changeset_record(
     }
     if len(grouped["promotes"]) > 1:
         raise FamilyRecordError("a ChangeSet carries at most one promotion result")
+    for value in grouped["promotes"]:
+        if not isinstance(value, Mapping):
+            raise FamilyRecordError("promotes references must be objects")
+        reference = normalize_producer_reference(value)
+        if (
+            reference["recordKind"] != "check-result"
+            or reference["producer"] != "mncs-promotion-boundary"
+        ):
+            raise FamilyRecordError(
+                "a promotes edge originates only from an MNCS "
+                "promotion-boundary evaluation result "
+                "(recordKind check-result, producer mncs-promotion-boundary)"
+            )
+    named = {(revision["repository"], revision["commit"]) for revision in pinned}
     entries: list[dict[str, Any]] = []
     relationships: list[dict[str, str]] = []
     seen: set[tuple[str, str]] = set()
@@ -705,6 +757,7 @@ def make_changeset_record(
             if not isinstance(value, Mapping):
                 raise FamilyRecordError(f"{group} references must be objects")
             reference = normalize_producer_reference(value)
+            _check_reference_scope(reference, named, group)
             key = (group, reference["stableId"])
             if key in seen:
                 continue
