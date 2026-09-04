@@ -1,0 +1,62 @@
+{
+  "availability": {
+    "forge:result:test": {
+      "availability": "UNAVAILABLE",
+      "digest": "forge:result:test"
+    }
+  },
+  "capsuleVersion": "commons.mncs.dev/capsule/v0alpha1",
+  "confidence": {
+    "level": "medium",
+    "rationale": "fixture is intentionally bounded"
+  },
+  "evidenceRoot": [
+    "forge:result:test"
+  ],
+  "identity": "sha256:d12bf40f2c97d2da11a056a87ca170a5b2713581b81b493db5b0c72925fa289f",
+  "lifecycle": {
+    "project-a": "proposed"
+  },
+  "producer": {
+    "id": "test:writer",
+    "type": "test"
+  },
+  "protocolVersion": "commons.mncs.dev/v0alpha1",
+  "provenanceRoot": [
+    "run:test"
+  ],
+  "recordKind": "Finding",
+  "relationships": [],
+  "reproductionReference": {
+    "expected": [
+      "record result without changing authority"
+    ],
+    "hasProcedure": true,
+    "prerequisites": 1
+  },
+  "scope": {
+    "context": {
+      "compiler": {
+        "name": "clang",
+        "version": "18"
+      },
+      "project": "proj-golden",
+      "sourceRevision": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "target": {
+        "architecture": "x86_64",
+        "os": "linux"
+      }
+    },
+    "limitations": [
+      "not generalized beyond this target"
+    ]
+  },
+  "security": {
+    "instructionsAreUntrusted": true,
+    "sensitivity": "public"
+  },
+  "subject": {
+    "identity": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "type": "artifact"
+  }
+}

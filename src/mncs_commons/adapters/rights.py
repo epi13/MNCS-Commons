@@ -119,9 +119,7 @@ def from_rights_evidence_record(
         created_at=created_at or record.get("context", {}).get("timestamp"),
         source_version=schema_version,
         details=details,
-        unresolved_fields=(
-            ["rights_confidence"] if insufficient else []
-        ),
+        unresolved_fields=(["rights_confidence"] if insufficient else []),
     )
 
 
@@ -139,13 +137,63 @@ def rights_finding_summary(report: Mapping[str, Any]) -> dict[str, Any]:
         "findings": [str(item) for item in report.get("findings") or ()],
         "manifestIdentity": report.get("manifest_identity_expected"),
         "legalConclusion": "NOT_MADE",
-        "note": report.get("note")
-        or "Historical evaluation result; not current policy by itself.",
+        "note": report.get("note") or "Historical evaluation result; not current policy by itself.",
     }
 
 
+PARTICIPANT_ASSERTION_VERSIONS = frozenset({"mncs.rights.participant-assertion/v0.1"})
+
+
+def independence_from_participant_assertion(
+    assertion: Mapping[str, Any], *, mesh_native: Mapping[str, Any] | None = None
+) -> dict[str, Any]:
+    """Build a Replication ``independence`` object around a rights assertion.
+
+    Rights & Provenance owns the participant/producer identity material;
+    Commons preserves it verbatim under ``rightsAssertion`` so replication
+    correlation can inspect shared dimensions mechanically.  Mesh-native
+    independence dimensions (model family, harness, machine, provider,
+    artifact ancestry) may be supplied by the caller and are kept separate:
+    Commons never invents them from rights data and never reduces either
+    side to an independence score.
+    """
+
+    if not isinstance(assertion, Mapping):
+        raise ValueError("participant assertion must be an object")
+    version = assertion.get("assertionVersion")
+    if version not in PARTICIPANT_ASSERTION_VERSIONS:
+        raise ValueError(f"unsupported participant assertion {version!r}; refusing to guess")
+    producer = assertion.get("producer")
+    independence: dict[str, Any] = {
+        "rightsAssertion": {
+            "assertionVersion": version,
+            "evidenceId": assertion.get("evidenceId"),
+            "bindingOk": bool(assertion.get("bindingOk", False)),
+            "producerId": producer.get("id") if isinstance(producer, Mapping) else None,
+            "claimKinds": list(assertion.get("claimKinds", []))
+            if isinstance(assertion.get("claimKinds"), list)
+            else [],
+        }
+    }
+    if isinstance(mesh_native, Mapping):
+        for key in (
+            "modelFamily",
+            "promptSource",
+            "harness",
+            "compiler",
+            "machine",
+            "provider",
+            "artifactAncestry",
+        ):
+            if mesh_native.get(key) is not None:
+                independence[key] = mesh_native[key]
+    return independence
+
+
 __all__ = [
+    "PARTICIPANT_ASSERTION_VERSIONS",
     "RIGHTS_EVIDENCE_SCHEMA_VERSIONS",
     "from_rights_evidence_record",
+    "independence_from_participant_assertion",
     "rights_finding_summary",
 ]

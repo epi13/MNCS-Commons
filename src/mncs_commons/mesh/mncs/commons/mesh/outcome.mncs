@@ -1,0 +1,70 @@
+mncs 0.10;
+
+// commons.mesh.outcome — replication-outcome combination for the Commons Mesh.
+//
+// A claim may carry PASS and FAIL replications at once; disagreement is
+// another record, never a deletion. This module gives the mesh the portable
+// combination law: FAIL dominates UNKNOWN dominates PASS, so combining
+// evidence can only weaken a claim. No operation here can turn UNKNOWN into
+// PASS or delete FAIL.
+//
+// This mirrors the lattice shape of mncs.core.status.v1 specialized to the
+// mesh's replication-correlation vocabulary; authority, promotion, and
+// evaluator independence stay outside this module by construction.
+module commons.mesh.outcome;
+
+enum Outcome { Pass, Fail, Unknown }
+
+fn combine(left: Outcome, right: Outcome) -> (result: Outcome) {
+    return match left {
+        Pass => right,
+        Fail => Outcome.Fail,
+        Unknown => match right {
+            Pass => Outcome.Unknown,
+            Fail => Outcome.Fail,
+            Unknown => Outcome.Unknown,
+        },
+    };
+}
+
+fn agrees(left: Outcome, right: Outcome) -> (result: bool) {
+    return match left {
+        Pass => match right {
+            Pass => true,
+            Fail => false,
+            Unknown => false,
+        },
+        Fail => match right {
+            Pass => false,
+            Fail => true,
+            Unknown => false,
+        },
+        Unknown => match right {
+            Pass => false,
+            Fail => false,
+            Unknown => true,
+        },
+    };
+}
+
+fn is_settled(value: Outcome) -> (result: bool) {
+    return match value {
+        Pass => true,
+        Fail => true,
+        Unknown => false,
+    };
+}
+
+// Executable entry points.
+
+fn candidate_combine(left: Outcome, right: Outcome) -> (result: Outcome) {
+    return combine(left, right);
+}
+
+fn candidate_agrees(left: Outcome, right: Outcome) -> (result: bool) {
+    return agrees(left, right);
+}
+
+fn candidate_is_settled(value: Outcome) -> (result: bool) {
+    return is_settled(value);
+}
