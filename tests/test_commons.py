@@ -146,6 +146,15 @@ def make_record(kind: str = "Observation") -> dict:
             "sourceIdentities": ["sha256:" + "a" * 64],
         },
         "ObservationSeries": {"sourceIdentities": ["sha256:" + "a" * 64]},
+        "ChangeSet": {
+            "schema": "commons.mncs.dev/changeset/v0alpha1",
+            "changesetId": "changeset.test-kind",
+            "baseRevisions": [
+                {"repository": "epi13/mncs-actions", "commit": "a" * 40},
+            ],
+            "references": [],
+            "authorityBoundary": "coordination only",
+        },
     }[kind]
     return {
         "apiVersion": "commons.mncs.dev/v0alpha1",
