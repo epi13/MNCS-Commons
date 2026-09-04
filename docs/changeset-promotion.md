@@ -71,3 +71,15 @@ Enforcement is covered by `tests/test_changeset_promotion_evidence.py`,
 including a full tranche that relates genuine promotion-shaped evidence
 (candidate revisions, boundary, evidence, obligations, claim, digests)
 over real merged base revisions with recomputed digests.
+
+## Publication
+
+An accepted family graph's ChangeSet is published by committing the
+bundle bytes verbatim to `family/changesets/<changeset-id>.json`
+through a reviewed Commons PR (staged from mncs-actions with
+`family_proof.py publish-commons`, which re-derives the owner content
+digest and refuses overwrites). Publication is append-only and decides
+nothing: merging records that Commons relates this constellation, with
+exactly one `promotes` edge and a `predecessorGraph` chain link.
+`tests/test_published_family_changesets.py` revalidates every published
+record with the owner validator, so publication stays self-checking.
