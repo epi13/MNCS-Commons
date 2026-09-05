@@ -34,9 +34,7 @@ jobs:
           # Pinned review-line revision carrying the kernel surface this
           # lane proves (qualified record construction, text_map stdlib).
           # Advance deliberately with the corpora, never to a moving ref.
-          # Tracks mncs-language PR #107; re-pin to its merge commit once
-          # merged.
-          ref: 503b1cf1613565f1369a923cdcd604a6222fab23
+          ref: 5b417c82ba2f8f445917d0e3148973489e838e22
           path: mncs-language
 
       - name: Set up Python
