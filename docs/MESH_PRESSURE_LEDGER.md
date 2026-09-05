@@ -59,6 +59,11 @@ Host interop kept as a deliberate bounded ABI boundary is marked
 - Commons consumer: `candidate_lattice_agrees`.
 - Evidence digest: `mncs:0.2:capability-gap:e2ac5125d915242e2c1ebddfd4b4a2bfe5a0f3fa03ff2d1d42938ffcf386dc7e`.
 - Status: `RECORDED` (artifact issued, workaround exact).
+- Update (conversion run): **resolved upstream** — `mncs-language` PR #107
+  retries two-segment `alias.Record { ... }` in the record namespace
+  (finite constructors keep priority). The lattice probe now constructs a
+  real `StatusPair` and calls stdlib `combine` directly; the `dominate`
+  workaround is removed. Status: `RESOLVED`.
 
 ## P-COMMONS-04 — capability-gap artifact machinery existed only as prose
 
@@ -113,6 +118,54 @@ Host interop kept as a deliberate bounded ABI boundary is marked
 - Tests: interest corpus invalid-vocabulary cases (`k6/o9/s5`) agree
   (excluded) across Python mirror and both backends.
 - Status: `RECORDED` (narrow follow-on).
+- Update (conversion run): **resolved upstream** — `mncs.std.text_map.v1`
+  (`mncs-language` PR #107) provides bounded caller-owned `Coded16/32`
+  tables with total `lookup16/32` over `text_view` matchers. The named
+  interest tables (`kind_code_of`, `outcome_code_of`, `state_code_of`)
+  consume it; the machine-readable table-authority test binds host
+  projections to the same literals. Status: `RESOLVED`.
+
+## P-COMMONS-08 — per-decision subprocess execution cannot own hot paths
+
+- Originating capability: executing normative kernels on production sync
+  paths (`select_for_peer`, `receive_records`).
+- Classification: `RUNTIME_GAP` (embeddable execution). One
+  `experiment run` costs seconds (compile-dominated); per-decision
+  subprocess calls are infeasible on synchronous paths, and
+  `experiment execute` refuses substituted corpora by design (frozen
+  replication only).
+- Owning repository: `mncs-language`.
+- Resolution: filed upstream as `commons.mesh/embeddable-execution`
+  (`GapStatus::Fail`, `mncs-language` PR #107); sanctioned fallback is
+  the batched production executor (`MncsKernelExecutor`: one
+  `experiment run` per batch, verdicts read from per-case `returned`),
+  wired opt-in through `synchronize`/`select_for_peer`/`receive_records`.
+  Hot single-decision paths keep Python mirrors pinned by corpus
+  agreement until the runtime closes the gap.
+- Tests: `test_executor_lane_agrees_with_mirror_on_sync` (both lanes
+  receive identical digests through a real sync round).
+- Status: `RECORDED` (open upstream, fallback exact).
+
+## P-COMMONS-09 — plain integer `+` leaves overflow obligations
+
+- Originating capability: summing violation-mask bits in the lifecycle
+  transition kernel (`transition_check`).
+- Classification: `LANGUAGE_GAP` (narrow; resolved by existing
+  semantics, newly applied).
+- Minimal reproduction: `transition_check` with `+` compiles
+  `completed_with_unresolved_obligations`
+  (`body:integer-overflow`); the same kernel with `+%` compiles
+  `completed` with zero obligations.
+- Owning repository: `mncs-language` (documented in
+  `mncs.core.numeric.v1`; applied here, no compiler change needed).
+- Resolution: **resolved in-kernel** — wrapping addition expresses the
+  exact intent (each bit set at most once, sum far below range), so the
+  lifecycle law is PASS-capable end to end. If-chain kernels stay
+  obligation-free; `iterate`-carrying kernels (textmap lookups) retain
+  `iteration-exact-resource-cost` obligations and gate in agreement mode.
+- Tests: `commons-lifecycle-corpus.json` (484 cases) PASS on
+  research-bytecode; source-study `completed`.
+- Status: `RESOLVED`.
 
 ## What Commons forced MNCS-language to learn
 
@@ -139,6 +192,16 @@ Host interop kept as a deliberate bounded ABI boundary is marked
    enforced by `test_capability_covers_tracked_actions_files`). A FAIL
    verdict is data: the first red aggregate honestly reported the
    unmapped-file suite failure, not a broken mechanism.
+6. Converting production behavior to MNCS is shaped like the toolchain:
+   single-assignment pushes law into total if-chains and `&&`
+   conjunctions (proven on research-bytecode; wasm proof pending);
+   `experiment run` economics (~1.5s fixed + ~0.45s/case) make the batch
+   the unit of
+   production execution, with per-case `returned` payloads as the
+   decision channel and placeholder `expected` values as harness
+   affordance. The host projects, the kernel decides — and the Python
+   fast path is a pinned transcription of the kernel, not a second
+   implementation.
 
 ## Family verification adoption (2026-09)
 

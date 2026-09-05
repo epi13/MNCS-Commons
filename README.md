@@ -94,11 +94,13 @@ This repository consumes the shared `mncs-actions` family workflow
 (`.github/workflows/mncs-family.yml`) on every push to `main` and every
 pull request. The declared boundary is `mncs-commons-mesh-boundary`:
 the deterministic mesh unit scope (`commons-mesh-tests`, via
-`scripts/mncs_commons_check.py`) is required; the toolchain-bound
-interop scope, the full test matrix, and the example/compat validators
-stay in this repo's own CI. The aggregate verdict renders the badge
-above (`docs/mncs-badge.svg` plus the machine-readable
-`docs/mncs-badge.json` sidecar) on `main` pushes.
+`scripts/mncs_commons_check.py`) is required — including the law-parity
+tests that bind the Python mirrors to the normative MNCS kernels — while
+the toolchain-bound interop scope runs in the dedicated
+`mncs-toolchain-interop` lane. The full test matrix and the
+example/compat validators stay in this repo's own CI. The aggregate
+verdict renders the badge above (`docs/mncs-badge.svg` plus the
+machine-readable `docs/mncs-badge.json` sidecar) on `main` pushes.
 
 ## Design principles
 

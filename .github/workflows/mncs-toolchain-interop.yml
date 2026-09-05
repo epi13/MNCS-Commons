@@ -1,0 +1,60 @@
+name: MNCS toolchain interop
+
+# Heavyweight lane: builds the real MNCS toolchain and proves every mesh
+# kernel against both language backends, plus the production executor
+# lane.  The fast `mncs-actions` boundary stays fast; this lane is where
+# toolchain-backed interop actually executes instead of skipping.
+#
+# Sibling layout is load-bearing: tests locate the toolchain at
+# ../mncs-language relative to this checkout.
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  toolchain-interop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out Commons
+        uses: actions/checkout@v4
+        with:
+          path: MNCS-Commons
+
+      - name: Check out mncs-language at the pinned revision
+        uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-language
+          # Pinned review-line revision carrying the kernel surface this
+          # lane proves (qualified record construction, text_map stdlib).
+          # Advance deliberately with the corpora, never to a moving ref.
+          ref: MNCS_LANGUAGE_PIN
+          path: mncs-language
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Rust 1.85
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.85
+
+      - name: Build the mncs toolchain
+        working-directory: mncs-language
+        run: cargo build --locked -p mncs-cli
+
+      - name: Install Commons with dev extras
+        working-directory: MNCS-Commons
+        run: python -m pip install -e ".[dev]"
+
+      - name: Prove mesh kernels on both backends
+        working-directory: MNCS-Commons
+        run: python -m pytest tests/test_mesh_interop.py -q

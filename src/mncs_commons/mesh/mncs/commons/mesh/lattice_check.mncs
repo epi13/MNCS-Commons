@@ -47,13 +47,12 @@ fn status_rank(value: status.Status) -> (result: i64) {
 }
 
 // Executable entry point: true exactly when both lattices agree.
-// NOTE: stdlib `combine` takes a StatusPair record, but qualified record
-// construction (`status.StatusPair { ... }`) does not elaborate (MNE123;
-// see MESH_PRESSURE_LEDGER.md P-COMMONS-03). `dominate` is the same lattice
-// join over scalar arguments (status.v1 defines combine via dominate), so
-// the check stays exact without the unsupported construct.
+// P-COMMONS-03 resolved: qualified record construction now elaborates, so
+// the probe constructs a real StatusPair and calls stdlib `combine`
+// directly instead of routing around it through `dominate`.
 fn candidate_lattice_agrees(left: status.Status, right: status.Status) -> (result: bool) {
-    let stdlib: status.Status = status.dominate(left, right);
+    let pair: status.StatusPair = status.StatusPair { left: left, right: right };
+    let stdlib: status.Status = status.combine(pair);
     let mesh: mesh_outcome.Outcome = mesh_outcome.candidate_combine(status_to_outcome(left), status_to_outcome(right));
     return outcome_rank(mesh) == status_rank(stdlib);
 }

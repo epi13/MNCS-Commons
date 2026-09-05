@@ -229,6 +229,16 @@ def _is_promotion_relevant(record: Mapping[str, Any], lifecycle_state: str | Non
 # law.  ``matches_discriminants`` is the exact Python mirror of the kernel
 # entry point ``candidate_matches`` and must agree with it on every input
 # (see ``tests/test_mesh_interop.py`` and the lattice corpora).
+#
+# ``mirror_matches_full`` below is the Python transcription of the
+# production kernel entry point ``candidate_matches_full``.  ``matches``
+# is defined through it, so the Python fast path cannot evolve
+# independently of the kernel law: changing membership semantics means
+# changing the kernel, its corpus, and this mirror together (the corpus
+# agreement tests fail otherwise).  The kernel is normative; this module
+# is its capability shell plus a pinned transcription.
+KIND_ORDER = ("Finding", "Claim", "Replication", "Observation", "Question", "WorkRequest")
+OUTCOME_ORDER = ("PASS", "FAIL", "UNKNOWN")
 KIND_DISCRIMINANTS = {
     "Finding": 0,
     "Claim": 1,
@@ -243,7 +253,9 @@ LIFECYCLE_DISCRIMINANTS = {
     "reproduced": 1,
     "verified": 2,
     "accepted": 3,
-    "disputed": 4,
+    # Ranked states only. Every other lifecycle token (disputed, archived,
+    # unknown) projects to 5, matching the MNCS state-table fallback: such
+    # records are excluded unless the subscription minimum rank is 0.
 }
 
 
@@ -308,54 +320,140 @@ def _projected_outcome_discriminant(record: Mapping[str, Any]) -> int:
     return 9
 
 
+def _record_producer_id(record: Mapping[str, Any]) -> str | None:
+    provenance = record.get("provenance")
+    if not isinstance(provenance, Mapping):
+        return None
+    producer = provenance.get("producer")
+    if not isinstance(producer, Mapping):
+        return None
+    producer_id = producer.get("id")
+    return producer_id if isinstance(producer_id, str) else None
+
+
+def _record_contract_names(record: Mapping[str, Any]) -> set[str]:
+    contracts = record.get("affectedContracts")
+    if not isinstance(contracts, list):
+        return set()
+    return {str(item) for item in contracts if isinstance(item, str)}
+
+
+def mirror_kind_wanted(code: int, want: tuple[bool, ...]) -> bool:
+    """Transcription of the kernel ``kind_wanted`` law (closed six)."""
+
+    return code in range(6) and bool(want[code])
+
+
+def mirror_dim(has_dimension: bool, satisfied: bool) -> bool:
+    """Transcription of the kernel ``dim_pass``/``gate_pass`` law."""
+
+    return (not has_dimension) or satisfied
+
+
+def mirror_matches_full(
+    kind_code: int,
+    want_kinds: tuple[bool, bool, bool, bool, bool, bool],
+    has_kinds: bool,
+    has_projects: bool,
+    projects_ok: bool,
+    has_contracts: bool,
+    contracts_ok: bool,
+    has_producers: bool,
+    producers_ok: bool,
+    has_outcomes: bool,
+    outcomes_ok: bool,
+    has_states: bool,
+    states_ok: bool,
+    has_reltypes: bool,
+    reltypes_ok: bool,
+    has_labels: bool,
+    labels_ok: bool,
+    record_id_hit: bool,
+    open_work_only: bool,
+    is_open_work: bool,
+    promotion_relevant: bool,
+    is_promo_relevant: bool,
+) -> bool:
+    """Transcription of the kernel ``candidate_matches_full`` law.
+
+    Argument order mirrors the kernel entry point exactly so corpus cases
+    and executor calls project positionally.
+    """
+
+    if record_id_hit:
+        return True
+    return bool(
+        mirror_dim(has_kinds, mirror_kind_wanted(kind_code, want_kinds))
+        and mirror_dim(has_projects, projects_ok)
+        and mirror_dim(has_contracts, contracts_ok)
+        and mirror_dim(has_producers, producers_ok)
+        and mirror_dim(has_outcomes, outcomes_ok)
+        and mirror_dim(has_states, states_ok)
+        and mirror_dim(has_reltypes, reltypes_ok)
+        and mirror_dim(has_labels, labels_ok)
+        and mirror_dim(open_work_only, is_open_work)
+        and mirror_dim(promotion_relevant, is_promo_relevant)
+    )
+
+
+def project_full_args(
+    record: Mapping[str, Any],
+    interest: InterestFilter,
+    *,
+    lifecycle_state: str | None = None,
+) -> tuple:
+    """Project a record and a filter to the kernel law's flat arguments.
+
+    This is the capability shell: open-vocabulary strings become closed
+    discriminants and (has, ok) pairs here; every combination decision
+    happens in the kernel (or its pinned mirror).
+    """
+
+    digest = _record_digest(record)
+    kinds = set(interest.kinds)
+    want_kinds = tuple((not kinds) or (name in kinds) for name in KIND_ORDER)
+    projected_outcome = _projected_outcome_discriminant(record)
+    outcomes = set(interest.outcomes)
+    return (
+        KIND_DISCRIMINANTS.get(str(record.get("kind")), 6),
+        want_kinds,
+        bool(interest.kinds),
+        bool(interest.projects),
+        bool(_record_projects(record) & set(interest.projects)),
+        bool(interest.contracts),
+        bool(_record_contract_names(record) & set(interest.contracts)),
+        bool(interest.producers),
+        _record_producer_id(record) in set(interest.producers),
+        bool(interest.outcomes),
+        projected_outcome <= 2 and OUTCOME_ORDER[projected_outcome] in outcomes,
+        bool(interest.lifecycle_states),
+        lifecycle_state in set(interest.lifecycle_states),
+        bool(interest.relationship_types),
+        bool(_record_relationship_types(record) & set(interest.relationship_types)),
+        bool(interest.labels),
+        bool(_record_labels(record) & set(interest.labels)),
+        digest is not None and digest in interest.record_ids,
+        bool(interest.open_work_only),
+        _is_open_work(record),
+        bool(interest.promotion_relevant),
+        _is_promotion_relevant(record, lifecycle_state),
+    )
+
+
 def matches(
     record: Mapping[str, Any],
     interest: InterestFilter,
     *,
     lifecycle_state: str | None = None,
 ) -> bool:
-    """Decide deterministically whether ``record`` falls in ``interest``."""
+    """Decide deterministically whether ``record`` falls in ``interest``.
 
-    digest = _record_digest(record)
-    if digest is not None and digest in interest.record_ids:
-        return True
-    if interest.kinds and str(record.get("kind")) not in interest.kinds:
-        return False
-    if interest.projects and not (_record_projects(record) & set(interest.projects)):
-        return False
-    if interest.contracts:
-        contracts = record.get("affectedContracts")
-        names = (
-            {str(item) for item in contracts if isinstance(item, str)}
-            if isinstance(contracts, list)
-            else set()
-        )
-        if not (names & set(interest.contracts)):
-            return False
-    if interest.producers:
-        provenance = record.get("provenance")
-        producer_id = None
-        if isinstance(provenance, Mapping):
-            producer = provenance.get("producer")
-            if isinstance(producer, Mapping):
-                producer_id = producer.get("id")
-        if not isinstance(producer_id, str) or producer_id not in interest.producers:
-            return False
-    if interest.outcomes:
-        projected = _projected_outcome_discriminant(record)
-        outcome_names = ("PASS", "FAIL", "UNKNOWN")
-        if projected > 2 or outcome_names[projected] not in interest.outcomes:
-            return False
-    if interest.lifecycle_states and lifecycle_state not in interest.lifecycle_states:
-        return False
-    if interest.relationship_types and not (
-        _record_relationship_types(record) & set(interest.relationship_types)
-    ):
-        return False
-    if interest.labels and not (_record_labels(record) & set(interest.labels)):
-        return False
-    if interest.open_work_only and not _is_open_work(record):
-        return False
-    if interest.promotion_relevant and not _is_promotion_relevant(record, lifecycle_state):
-        return False
-    return True
+    Defined through the pinned transcription of the kernel law: the
+    kernel owns membership semantics, this fast path only projects.
+    One deliberate closed-world tightening versus the pre-kernel
+    string-exact path: a filter naming kinds outside the closed six
+    matches nothing (unknown vocabulary stays inert).
+    """
+
+    projected = project_full_args(record, interest, lifecycle_state=lifecycle_state)
+    return mirror_matches_full(*projected)
