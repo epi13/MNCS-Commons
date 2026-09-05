@@ -130,3 +130,31 @@ Host interop kept as a deliberate bounded ABI boundary is marked
    agreement tests, as pioneered by rights pressure provenance) ports
    cleanly to application-owned kernels via `MNCS_LIBRARY_PATH`, with the
    lattice-agreement probe proving stdlib/mesh coherence mechanically.
+5. Dogfooding the family workflow as a first caller finds real defects
+   fast: `required-checks` takes comma-separated ids (a JSON array fails
+   the aggregate closed with `check id is not declared`), the reusable
+   workflow runs on the runner's default `python3` (no `pytest` — the
+   caller installs its hash-pinned lock first), and every new caller
+   file must extend the owning capability map (`family-capability.json`,
+   enforced by `test_capability_covers_tracked_actions_files`). A FAIL
+   verdict is data: the first red aggregate honestly reported the
+   unmapped-file suite failure, not a broken mechanism.
+
+## Family verification adoption (2026-09)
+
+- `mncs-actions` self-hosts its own reusable workflow
+  (`mncs-actions-orchestration-boundary`: `project-tests` pytest suite +
+  `action-pins` immutable-ref hygiene; PR #26).
+- `mncs-language` declares `mncs-language-pressure-boundary`
+  (`language-pressure-tests`: `cargo test -p mncs-compiler --test
+  module_imports`, 34 tests incl. P-COMMONS-03 coverage; PR #106).
+- `MNCS-Commons` declares `mncs-commons-mesh-boundary`
+  (`commons-mesh-tests`: deterministic mesh unit scope, 22 tests across
+  evidence/node/rights/security/storage; PR #39). The
+  toolchain-latency-bound interop scope (one `mncs` source-study per
+  kernel, tens of minutes) stays in repo CI by explicit boundary
+  statement, not by omission.
+- All three render evidence-backed MNCS badges
+  (`docs/mncs-badge.svg` + `docs/mncs-badge.json` sidecar) from the
+  aggregate verdict on `main` pushes. Carrier pin for this round:
+  `mncs-actions@9469d8d61f4604df0f00f983aedb3d66c6ff8616`.
