@@ -214,9 +214,7 @@ TABLE_FALLBACK = re.compile(r"lookup16<\d+>\(table, \w+, \w+_length, (-?\d+)\)")
 
 def _parse_mncs_tables() -> tuple[dict[str, list[tuple[str, int, int]]], dict[str, int]]:
     """Parse normative TABLE blocks into rows plus per-table fallbacks."""
-    source = (MNCS_DIR / "commons" / "mesh" / "interest_named.mncs").read_text(
-        encoding="utf-8"
-    )
+    source = (MNCS_DIR / "commons" / "mesh" / "interest_named.mncs").read_text(encoding="utf-8")
     tables: dict[str, list[tuple[str, int, int]]] = {}
     fallbacks: dict[str, int] = {}
     current: str | None = None

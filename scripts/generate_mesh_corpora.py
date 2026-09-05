@@ -296,12 +296,19 @@ def build_named_interest_corpus() -> dict:
         (True, False, False),
         3,
     )
+    probe_kinds = list(NAMED_KINDS) + ["LifecycleEvent", ""]
+    probe_outcomes = ["PASS", "FAIL", "UNKNOWN", "BOGUS"]
+    probe_states = ["proposed", "reproduced", "verified", "accepted", "archived"]
     probes = (
-        [("match-all", match_all, kind, "PASS", "proposed") for kind in NAMED_KINDS]
-        + [("match-all", match_all, name, "PASS", "proposed") for name in ("LifecycleEvent", "")]
-        + [("match-all", match_all, "Finding", outcome, "verified") for outcome in ("PASS", "FAIL", "UNKNOWN", "BOGUS")]
-        + [("match-all", match_all, "Claim", "FAIL", state) for state in ("proposed", "reproduced", "verified", "accepted", "archived")]
-        + [("restricted", restricted, kind, outcome, state) for kind in ("Finding", "LifecycleEvent") for outcome in ("PASS", "BOGUS") for state in ("verified", "archived")]
+        [("match-all", match_all, kind, "PASS", "proposed") for kind in probe_kinds]
+        + [("match-all", match_all, "Finding", outcome, "verified") for outcome in probe_outcomes]
+        + [("match-all", match_all, "Claim", "FAIL", state) for state in probe_states]
+        + [
+            ("restricted", restricted, kind, outcome, state)
+            for kind in ("Finding", "LifecycleEvent")
+            for outcome in ("PASS", "BOGUS")
+            for state in ("verified", "archived")
+        ]
     )
     cases = []
     for sub_name, (kf, of_, min_rank), kind, outcome, state in probes:
