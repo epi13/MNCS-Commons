@@ -153,6 +153,22 @@ def test_python_mirror_agrees_with_interest_corpus():
         assert _boolean(case["expected"][0]) == decided, case["id"]
 
 
+def test_mixed_evidence_projects_strongest_outcome():
+    from mncs_commons.mesh import InterestFilter, matches
+
+    record = make_record("Observation")
+    record["details"] = {"outcome": "FAIL", "measurements": {}}
+    record["evidence"] = [
+        {"id": "a", "status": "FAIL"},
+        {"id": "b", "status": "PASS"},
+    ]
+    # Strongest asserted outcome (PASS) decides on both paths; a FAIL-only
+    # subscription does not match a record that also asserts PASS.
+    assert matches(record, InterestFilter.from_mapping({"outcomes": ["PASS"]})) is True
+    assert matches(record, InterestFilter.from_mapping({"outcomes": ["FAIL"]})) is False
+    assert matches(record, InterestFilter.from_mapping({"outcomes": ["PASS", "FAIL"]})) is True
+
+
 def test_lattice_corpus_encodes_agreement():
     corpus = _load_corpus("commons-lattice-corpus.json")
     assert len(corpus["cases"]) == 9
