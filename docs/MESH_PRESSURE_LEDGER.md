@@ -194,8 +194,9 @@ Host interop kept as a deliberate bounded ABI boundary is marked
    unmapped-file suite failure, not a broken mechanism.
 6. Converting production behavior to MNCS is shaped like the toolchain:
    single-assignment pushes law into total if-chains and `&&`
-   conjunctions (proven on research-bytecode; wasm proof pending);
-   `experiment run` economics (~1.5s fixed + ~0.45s/case) make the batch
+   conjunctions (proven on research-bytecode and portable-wasm);
+   `experiment run` economics (~1.5s fixed, ~0.5s/case for small
+   argument lists, ~30s/case for textmap-heavy lookups) make the batch
    the unit of
    production execution, with per-case `returned` payloads as the
    decision channel and placeholder `expected` values as harness
