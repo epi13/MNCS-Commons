@@ -1,0 +1,64 @@
+mncs 0.10;
+
+// commons.mesh.interest_named — open-vocabulary name tables for mesh interest.
+//
+// This module exists for one backend-economic reason: textmap lookups
+// carry `iteration-exact-resource-cost` obligations, so any module that
+// contains them gates at agreement level rather than clean PASS. The
+// closed discriminant law lives obligation-free in
+// commons.mesh.interest; this module projects open names onto it and
+// owns only the projection. Splitting the two keeps the PASS gate
+// meaningful for the law while the tables stay fully executed under
+// agreement gating.
+//
+// Source-profile notes: names arrive as fixed 16-byte views with explicit
+// lengths (profiles have no heap strings); unknown names map to the
+// never-matching discriminants (kind 6, outcome 9, state 5).
+module commons.mesh.interest_named;
+
+use commons.mesh.interest as law;
+use mncs.std.text_map.v1 as textmap;
+
+// TABLE kind
+fn kind_code_of(kind: [byte; 16], kind_length: u64) -> (result: i64) {
+    let table: [textmap.Coded16; 6] = [
+        textmap.Coded16 { key: [70 as byte, 105 as byte, 110 as byte, 100 as byte, 105 as byte, 110 as byte, 103 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 7, code: 0 },
+        textmap.Coded16 { key: [67 as byte, 108 as byte, 97 as byte, 105 as byte, 109 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 5, code: 1 },
+        textmap.Coded16 { key: [82 as byte, 101 as byte, 112 as byte, 108 as byte, 105 as byte, 99 as byte, 97 as byte, 116 as byte, 105 as byte, 111 as byte, 110 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 11, code: 2 },
+        textmap.Coded16 { key: [79 as byte, 98 as byte, 115 as byte, 101 as byte, 114 as byte, 118 as byte, 97 as byte, 116 as byte, 105 as byte, 111 as byte, 110 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 11, code: 3 },
+        textmap.Coded16 { key: [81 as byte, 117 as byte, 101 as byte, 115 as byte, 116 as byte, 105 as byte, 111 as byte, 110 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 8, code: 4 },
+        textmap.Coded16 { key: [87 as byte, 111 as byte, 114 as byte, 107 as byte, 82 as byte, 101 as byte, 113 as byte, 117 as byte, 101 as byte, 115 as byte, 116 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 11, code: 5 }
+    ];
+    return textmap.lookup16<6>(table, kind, kind_length, 6);
+}
+
+// TABLE outcome
+fn outcome_code_of(outcome: [byte; 16], outcome_length: u64) -> (result: i64) {
+    let table: [textmap.Coded16; 3] = [
+        textmap.Coded16 { key: [80 as byte, 65 as byte, 83 as byte, 83 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 4, code: 0 },
+        textmap.Coded16 { key: [70 as byte, 65 as byte, 73 as byte, 76 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 4, code: 1 },
+        textmap.Coded16 { key: [85 as byte, 78 as byte, 75 as byte, 78 as byte, 79 as byte, 87 as byte, 78 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 7, code: 2 }
+    ];
+    return textmap.lookup16<3>(table, outcome, outcome_length, 9);
+}
+
+// TABLE state
+fn state_code_of(state: [byte; 16], state_length: u64) -> (result: i64) {
+    let table: [textmap.Coded16; 4] = [
+        textmap.Coded16 { key: [112 as byte, 114 as byte, 111 as byte, 112 as byte, 111 as byte, 115 as byte, 101 as byte, 100 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 8, code: 0 },
+        textmap.Coded16 { key: [114 as byte, 101 as byte, 112 as byte, 114 as byte, 111 as byte, 100 as byte, 117 as byte, 99 as byte, 101 as byte, 100 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 10, code: 1 },
+        textmap.Coded16 { key: [118 as byte, 101 as byte, 114 as byte, 105 as byte, 102 as byte, 105 as byte, 101 as byte, 100 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 8, code: 2 },
+        textmap.Coded16 { key: [97 as byte, 99 as byte, 99 as byte, 101 as byte, 112 as byte, 116 as byte, 101 as byte, 100 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte, 0 as byte], key_length: 8, code: 3 }
+    ];
+    return textmap.lookup16<4>(table, state, state_length, 5);
+}
+
+// Executable entry point: membership over open-vocabulary names. The host
+// marshals strings to bounded byte views (capability shell); projection
+// runs here and the closed law runs in commons.mesh.interest.
+fn candidate_matches_named(kind: [byte; 16], kind_length: u64, outcome: [byte; 16], outcome_length: u64, state: [byte; 16], state_length: u64, want_finding: bool, want_claim: bool, want_replication: bool, want_observation: bool, want_question: bool, want_work: bool, want_pass: bool, want_fail: bool, want_unknown: bool, min_rank: i64) -> (result: bool) {
+    let kind_code: i64 = kind_code_of(kind, kind_length);
+    let outcome_code: i64 = outcome_code_of(outcome, outcome_length);
+    let state_code: i64 = state_code_of(state, state_length);
+    return law.candidate_matches(kind_code, outcome_code, state_code, want_finding, want_claim, want_replication, want_observation, want_question, want_work, want_pass, want_fail, want_unknown, min_rank);
+}

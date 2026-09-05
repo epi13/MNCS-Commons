@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -153,6 +154,41 @@ def test_python_mirror_agrees_with_interest_corpus():
         assert _boolean(case["expected"][0]) == decided, case["id"]
 
 
+def _byte_view_name(argument: dict) -> str:
+    values = [entry["byte"]["value"] for entry in argument["sequence"]["values"]]
+    return bytes(values).split(b"\x00")[0].decode("ascii")
+
+
+def test_python_mirror_agrees_with_named_interest_corpus():
+    from mncs_commons.mesh.interest import (
+        KIND_DISCRIMINANTS,
+        LIFECYCLE_DISCRIMINANTS,
+        OUTCOME_DISCRIMINANTS,
+    )
+
+    corpus = _load_corpus("commons-interest-named-corpus.json")
+    assert len(corpus["cases"]) == 25
+    for case in corpus["cases"]:
+        request = case["request"]
+        assert request["target"]["function"] == "candidate_matches_named"
+        args = request["arguments"]
+        assert len(args) == 16, case["id"]
+        kind = _byte_view_name(args[0])
+        outcome = _byte_view_name(args[2])
+        state = _byte_view_name(args[4])
+        flags = [_boolean(item) for item in args[6:15]]
+        min_rank = _integer(args[15])
+        decided = matches_discriminants(
+            KIND_DISCRIMINANTS.get(kind, 6),
+            OUTCOME_DISCRIMINANTS.get(outcome, 9),
+            LIFECYCLE_DISCRIMINANTS.get(state, 5),
+            want_kinds=(flags[0], flags[1], flags[2], flags[3], flags[4], flags[5]),
+            want_outcomes=(flags[6], flags[7], flags[8]),
+            min_rank=min_rank,
+        )
+        assert _boolean(case["expected"][0]) == decided, case["id"]
+
+
 def test_mixed_evidence_projects_strongest_outcome():
     from mncs_commons.mesh import InterestFilter, matches
 
@@ -167,6 +203,77 @@ def test_mixed_evidence_projects_strongest_outcome():
     assert matches(record, InterestFilter.from_mapping({"outcomes": ["PASS"]})) is True
     assert matches(record, InterestFilter.from_mapping({"outcomes": ["FAIL"]})) is False
     assert matches(record, InterestFilter.from_mapping({"outcomes": ["PASS", "FAIL"]})) is True
+
+
+TABLE_ROW = re.compile(
+    r"textmap\.Coded16 \{ key: \[([0-9 as byte,]+)\], key_length: (\d+), code: (-?\d+) \}"
+)
+TABLE_SECTION = re.compile(r"// TABLE (\w+)")
+TABLE_FALLBACK = re.compile(r"lookup16<\d+>\(table, \w+, \w+_length, (-?\d+)\)")
+
+
+def _parse_mncs_tables() -> tuple[dict[str, list[tuple[str, int, int]]], dict[str, int]]:
+    """Parse normative TABLE blocks into rows plus per-table fallbacks."""
+    source = (MNCS_DIR / "commons" / "mesh" / "interest_named.mncs").read_text(encoding="utf-8")
+    tables: dict[str, list[tuple[str, int, int]]] = {}
+    fallbacks: dict[str, int] = {}
+    current: str | None = None
+    for line in source.splitlines():
+        section = TABLE_SECTION.match(line.strip())
+        if section:
+            current = section.group(1)
+            tables[current] = []
+            continue
+        if current is None:
+            continue
+        row = TABLE_ROW.search(line)
+        if row:
+            raw_bytes = [
+                int(piece.strip().removesuffix("as byte")) for piece in row.group(1).split(",")
+            ]
+            length = int(row.group(2))
+            code = int(row.group(3))
+            name = bytes(raw_bytes[:length]).decode("ascii")
+            assert raw_bytes[length:] == [0] * (16 - length), f"padding drift in {name}"
+            assert length == len(name), f"length drift in {name}"
+            tables[current].append((name, length, code))
+        fallback = TABLE_FALLBACK.search(line)
+        if fallback and current is not None:
+            fallbacks[current] = int(fallback.group(1))
+    return tables, fallbacks
+
+
+def test_mncs_tables_are_normative_for_host_projection():
+    """The .mncs TABLE literals own name->discriminant mapping; host dicts must match.
+
+    Mutating a code, name, or row in interest_named.mncs without updating
+    the host materialization fails here. The backends execute the .mncs
+    side (named corpus); this test binds the Python side to the same
+    literals.
+    """
+    from mncs_commons.mesh.interest import (
+        KIND_DISCRIMINANTS,
+        LIFECYCLE_DISCRIMINANTS,
+        OUTCOME_DISCRIMINANTS,
+    )
+
+    tables, fallbacks = _parse_mncs_tables()
+    assert set(tables) == {"kind", "outcome", "state"}
+    assert set(fallbacks) == {"kind", "outcome", "state"}
+    expected = {
+        "kind": KIND_DISCRIMINANTS,
+        "outcome": OUTCOME_DISCRIMINANTS,
+        "state": LIFECYCLE_DISCRIMINANTS,
+    }
+    for name, rows in tables.items():
+        materialized = {row[0]: row[2] for row in rows}
+        assert materialized == dict(expected[name]), f"{name} table drifted"
+        assert len(rows) == len(materialized), f"{name} has duplicate keys"
+        # Unknown names must project to the table fallback on both sides.
+        assert fallbacks[name] not in materialized.values(), f"{name} fallback collides"
+    assert KIND_DISCRIMINANTS.get("Nope", 6) == fallbacks["kind"]
+    assert OUTCOME_DISCRIMINANTS.get("BOGUS", 9) == fallbacks["outcome"]
+    assert LIFECYCLE_DISCRIMINANTS.get("archived", 5) == fallbacks["state"]
 
 
 def test_lattice_corpus_encodes_agreement():
@@ -222,12 +329,67 @@ needs_toolchain = pytest.mark.skipif(
     _toolchain() is None, reason="mncs-language checkout with a built mncs binary is absent"
 )
 
+# Each kernel maps to (corpora, mode). Mode "pass" requires a clean PASS
+# verdict (no unmet expectations, no blocking obligations). Mode "agreement"
+# requires every case to return with its expectation met while tolerating a
+# top-level UNKNOWN carried by visible backend obligations -- the same
+# tolerance source-study applies (completed_with_unresolved_obligations).
+# Agreement mode is a ratchet, not a loophole: kernels whose bodies avoid
+# obligation-carrying constructs (iteration with unproven exact cost, as in
+# mncs.std.text_map.v1 lookups) belong in "pass" mode, and any kernel that
+# stops carrying obligations must be promoted to it.
 KERNEL_CASES = {
-    "commons/mesh/availability.mncs": "commons-availability-corpus.json",
-    "commons/mesh/outcome.mncs": "commons-outcome-corpus.json",
-    "commons/mesh/interest.mncs": "commons-interest-corpus.json",
-    "commons/mesh/lattice_check.mncs": "commons-lattice-corpus.json",
+    "commons/mesh/availability.mncs": [("commons-availability-corpus.json", "pass")],
+    "commons/mesh/outcome.mncs": [("commons-outcome-corpus.json", "pass")],
+    "commons/mesh/interest.mncs": [
+        ("commons-interest-corpus.json", "pass"),
+        ("commons-interest-full-corpus.json", "pass"),
+    ],
+    "commons/mesh/interest_named.mncs": [
+        ("commons-interest-named-corpus.json", "agreement"),
+    ],
+    "commons/mesh/lattice_check.mncs": [("commons-lattice-corpus.json", "pass")],
+    "commons/mesh/lifecycle.mncs": [("commons-lifecycle-corpus.json", "pass")],
 }
+
+
+def _split_corpus(payload: dict, budget: int) -> list[dict]:
+    """Split a corpus envelope into chunk envelopes of at most budget cases.
+
+    The envelope (schema version, name) is preserved on every chunk; only
+    the case list is partitioned, in order. A budget at or above the case
+    count yields the single original batch.
+    """
+    cases = payload.get("cases", [])
+    return [
+        {**payload, "cases": cases[index : index + budget]}
+        for index in range(0, len(cases), budget)
+    ]
+
+
+# Per-invocation case budget by kernel. The mncs-research-bytecode backend
+# needs ~30s per case for textmap tables (iteration-exact resource
+# accounting) and ~2s per case of harness overhead even for trivial integer
+# law, so corpora above the budget are split into multiple `experiment run`
+# invocations. Every case still executes and every assertion still applies;
+# only the batching changes, keeping each invocation under the timeout.
+KERNEL_CHUNK_CASES = {
+    "commons/mesh/interest_named.mncs": 10,
+    "commons/mesh/lifecycle.mncs": 150,
+}
+
+
+def _assert_corpus_result(result: dict, mode: str, corpus: str) -> None:
+    cases = result.get("cases", [])
+    assert cases, f"{corpus}: no cases executed"
+    unmet = [
+        item.get("case_id")
+        for item in cases
+        if item.get("status") != "returned" or not item.get("expectation_met")
+    ]
+    assert not unmet, f"{corpus}: unmet cases {unmet[:5]}"
+    if mode == "pass":
+        assert result["status"] == "PASS", json.dumps(result)[:2000]
 
 
 @needs_toolchain
@@ -237,34 +399,103 @@ def test_mncs_backends_execute_mesh_corpora(tmp_path, kernel, backend):
     checkout = _toolchain()
     assert checkout is not None
     binary = checkout / "target" / "debug" / "mncs"
-    corpus = CORPORA / KERNEL_CASES[kernel]
     source = MNCS_DIR / kernel
     environment = dict(os.environ)
     library = str(checkout / "library")
     environment["MNCS_LIBRARY_PATH"] = library + ":" + str(MNCS_DIR)
-    completed = subprocess.run(
-        [
-            str(binary),
-            "experiment",
-            "run",
-            str(source),
-            "--backend",
-            backend,
-            "--corpus",
-            str(corpus),
-            "--output-dir",
-            str(tmp_path / "result"),
-            "--node-id",
-            "commons-interop",
-        ],
-        capture_output=True,
-        text=True,
-        env=environment,
-        timeout=240,
-    )
-    assert completed.returncode == 0, completed.stderr[-2000:]
-    result = json.loads(completed.stdout)
-    assert result["status"] == "PASS", json.dumps(result)[:2000]
+    for name, mode in KERNEL_CASES[kernel]:
+        corpus = CORPORA / name
+        payload = json.loads(corpus.read_text())
+        budget = KERNEL_CHUNK_CASES.get(kernel, len(payload.get("cases", [])) or 1)
+        chunks = _split_corpus(payload, budget)
+        executed = 0
+        for index, chunk in enumerate(chunks):
+            chunk_path = tmp_path / f"{corpus.stem}-chunk{index}.json"
+            chunk_path.write_text(json.dumps(chunk))
+            completed = subprocess.run(
+                [
+                    str(binary),
+                    "experiment",
+                    "run",
+                    str(source),
+                    "--backend",
+                    backend,
+                    "--corpus",
+                    str(chunk_path),
+                    "--output-dir",
+                    str(tmp_path / f"result-{index}"),
+                    "--node-id",
+                    "commons-interop",
+                ],
+                capture_output=True,
+                text=True,
+                env=environment,
+                timeout=600,
+            )
+            assert completed.returncode == 0, completed.stderr[-2000:]
+            label = name if len(chunks) == 1 else f"{name} chunk {index + 1}/{len(chunks)}"
+            result = json.loads(completed.stdout)
+            _assert_corpus_result(result, mode, label)
+            executed += len(result.get("cases", []))
+        assert executed == len(payload.get("cases", [])), (
+            f"{name}: executed {executed} of {len(payload.get('cases', []))} cases"
+        )
+
+
+@needs_toolchain
+def test_executor_lane_agrees_with_mirror_on_sync(tmp_path):
+    """Production kernel lane decides the identical sync as the mirror.
+
+    Two fresh node pairs exchange the same fixture set under the same
+    restrictive interest; the mirror lane and the ``experiment run``
+    lane must receive the same digests with the same skip accounting.
+    This is the production execution path for MNCS-owned membership law.
+    """
+
+    from mncs_commons.mesh import InterestFilter, MncsKernelExecutor
+    from mncs_commons.mesh.node import CommonsNode
+    from mncs_commons.mesh.transport import synchronize
+
+    def fixture(suffix: str, kind: str, outcome: str) -> dict:
+        record = make_record(kind)
+        record["metadata"]["recordId"] = f"test:exec:{suffix}"
+        details = dict(record.get("details", {}))
+        details["outcome"] = outcome
+        record["details"] = details
+        return record
+
+    fixtures = [
+        ("a", "Finding", "PASS"),
+        ("b", "Finding", "FAIL"),
+        ("c", "Claim", "PASS"),
+        ("d", "Observation", "UNKNOWN"),
+        ("e", "Question", "PASS"),
+    ]
+    interest = InterestFilter.from_mapping({"kinds": ["Finding", "Claim"], "outcomes": ["PASS"]})
+    received: list[set] = []
+    skipped: list[int] = []
+    for lane in ("mirror", "kernel"):
+        local = CommonsNode(tmp_path / f"local-{lane}", node_id=f"local-{lane}", domain="d")
+        local.init()
+        remote = CommonsNode(tmp_path / f"remote-{lane}", node_id=f"remote-{lane}", domain="d")
+        remote.init()
+        for suffix, kind, outcome in fixtures:
+            local.publish_local(fixture(suffix, kind, outcome))
+        executor = MncsKernelExecutor() if lane == "kernel" else None
+        if executor is not None:
+            assert executor.available
+        report = synchronize(
+            remote,
+            DirectCarrier(local),
+            interest=interest,
+            push=False,
+            executor=executor,
+        )
+        received.append(set(remote.frontier()))
+        skipped.append(report["pull"]["skippedByInterest"])
+    assert received[0] == received[1]
+    assert len(received[0]) == 2
+    assert skipped[0] == skipped[1] == 3
 
 
 @needs_toolchain

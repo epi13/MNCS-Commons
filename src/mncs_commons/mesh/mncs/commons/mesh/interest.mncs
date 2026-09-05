@@ -31,6 +31,15 @@ mncs 0.10;
 // so negation is if/else (as in mncs.core.logic.v1) and ranks avoid
 // negative literals entirely (comparison-only code carries no
 // integer-overflow obligation).
+//
+// Open-vocabulary names reach the sibling module
+// commons.mesh.interest_named as bounded byte views; its tables
+// (P-COMMONS-07, via mncs.std.text_map.v1) project them to the closed
+// discriminants above. Unknown names fall back to the `Other`
+// discriminants (6 / 9 / 5), which the law never matches: unknown names
+// stay inert, never silently included. Table rows are machine-checked
+// against the host materialization (see test_mesh_interop table-authority
+// coverage): the .mncs literals are normative.
 module commons.mesh.interest;
 
 fn kind_wanted(kind: i64, want_finding: bool, want_claim: bool, want_replication: bool, want_observation: bool, want_question: bool, want_work: bool) -> (result: bool) {
@@ -95,4 +104,43 @@ fn candidate_matches(kind: i64, outcome: i64, state: i64, want_finding: bool, wa
         return false;
     }
     return false;
+}
+
+// Open-vocabulary name tables live in commons.mesh.interest_named (separate
+// module: textmap lookups carry iteration-cost obligations, and the split
+// keeps this module's PASS gate meaningful — see that file's header).
+
+// A dimension imposes nothing when the subscription leaves it empty;
+// otherwise the record must satisfy it.
+fn dim_pass(has: bool, ok: bool) -> (result: bool) {
+    if has {
+        return ok;
+    }
+    return true;
+}
+
+// A gate admits everything unless the subscription enables it.
+fn gate_pass(gate: bool, holds: bool) -> (result: bool) {
+    if gate {
+        return holds;
+    }
+    return true;
+}
+
+// Executable entry point: the full production membership law behind
+// InterestFilter.matches. The host projects the record and the filter to
+// discriminants plus per-dimension (has, ok) pairs (capability shell);
+// every combination decision runs here. kind_code follows the kind table
+// (unknown names are code 6 and never match a restricted kind dimension:
+// unknown vocabulary stays inert, never silently included). One deliberate
+// closed-world tightening versus the legacy string-exact path: a filter
+// that names kinds outside the closed six matches nothing, where the old
+// path exact-matched unknown record kinds. All other dimensions decide
+// exactly as before.
+fn candidate_matches_full(kind_code: i64, want_finding: bool, want_claim: bool, want_replication: bool, want_observation: bool, want_question: bool, want_work: bool, has_kinds: bool, has_projects: bool, projects_ok: bool, has_contracts: bool, contracts_ok: bool, has_producers: bool, producers_ok: bool, has_outcomes: bool, outcomes_ok: bool, has_states: bool, states_ok: bool, has_reltypes: bool, reltypes_ok: bool, has_labels: bool, labels_ok: bool, record_id_hit: bool, open_work_only: bool, is_open_work: bool, promotion_relevant: bool, is_promo_relevant: bool) -> (result: bool) {
+    if record_id_hit {
+        return true;
+    }
+    let kind_ok: bool = kind_wanted(kind_code, want_finding, want_claim, want_replication, want_observation, want_question, want_work);
+    return dim_pass(has_kinds, kind_ok) && dim_pass(has_projects, projects_ok) && dim_pass(has_contracts, contracts_ok) && dim_pass(has_producers, producers_ok) && dim_pass(has_outcomes, outcomes_ok) && dim_pass(has_states, states_ok) && dim_pass(has_reltypes, reltypes_ok) && dim_pass(has_labels, labels_ok) && gate_pass(open_work_only, is_open_work) && gate_pass(promotion_relevant, is_promo_relevant);
 }

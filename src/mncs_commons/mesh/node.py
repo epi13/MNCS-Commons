@@ -53,6 +53,7 @@ from .availability import (
 )
 from .capsule import CAPSULE_VERSION
 from .errors import MeshError
+from .executor import MncsKernelExecutor, decide_membership
 from .interest import INTEREST_VERSION, InterestFilter, matches
 
 MESH_VERSION = "commons.mncs.dev/mesh/v0alpha1"
@@ -486,11 +487,18 @@ class CommonsNode:
         interest: InterestFilter,
         *,
         limit: int | None = None,
+        executor: MncsKernelExecutor | None = None,
     ) -> list[Mapping[str, Any]]:
-        """Records this node holds that the peer lacks, filtered by interest."""
+        """Records this node holds that the peer lacks, filtered by interest.
+
+        With ``executor`` (and an available toolchain), membership runs
+        batched through the normative ``candidate_matches_full`` kernel;
+        otherwise the pinned Python mirror decides.  Both lanes implement
+        the identical law.
+        """
         bound = min(limit if limit is not None else self.policy.max_sync_records, MAX_SYNC_RECORDS)
         wanted = sorted(set(self.frontier()) - set(remote_frontier))
-        selected = []
+        candidates = []
         for digest in wanted:
             record = self.store.get(digest)
             if record is None or record.get("kind") == EVENT_KIND:
@@ -500,6 +508,16 @@ class CommonsNode:
                 state = str(self.store.lifecycle(digest, self.domain).current_state)
             except Exception:
                 state = None
+            candidates.append((record, state))
+        if executor is not None and executor.available:
+            verdicts = decide_membership(
+                executor, [(record, interest, state) for record, state in candidates]
+            )
+            return [record for (record, _), keep in zip(candidates, verdicts, strict=True) if keep][
+                :bound
+            ]
+        selected = []
+        for record, state in candidates:
             if matches(record, interest, lifecycle_state=state):
                 selected.append(record)
             if len(selected) >= bound:
@@ -512,15 +530,39 @@ class CommonsNode:
         *,
         source: str,
         interest: InterestFilter | None = None,
+        executor: MncsKernelExecutor | None = None,
     ) -> SyncReport:
-        """Ingest an offered batch: interest-filtered, bounded, possession-only."""
+        """Ingest an offered batch: interest-filtered, bounded, possession-only.
+
+        With ``executor`` (and an available toolchain), the interest gate
+        runs batched through the normative kernel; otherwise the pinned
+        Python mirror decides.  Both lanes implement the identical law.
+        """
+        use_kernel = interest is not None and executor is not None and executor.available
+        kernel_verdicts: dict[int, bool] = {}
+        if use_kernel:
+            assert interest is not None
+            assert executor is not None
+            # Non-mappings never reach the gate (policy-skipped first); they
+            # still occupy a batch slot so verdict indices stay aligned.
+            kernel_verdicts = dict(
+                enumerate(
+                    decide_membership(
+                        executor,
+                        [
+                            (record if isinstance(record, Mapping) else {}, interest, None)
+                            for record in records
+                        ],
+                    )
+                )
+            )
         received = 0
         duplicates = 0
         skipped_interest = 0
         skipped_policy = 0
         bytes_received = 0
         diagnostics: list[str] = []
-        for record in records[: self.policy.max_sync_records]:
+        for index, record in enumerate(records[: self.policy.max_sync_records]):
             if not isinstance(record, Mapping):
                 skipped_policy += 1
                 diagnostics.append("NON_RECORD_SKIPPED")
@@ -535,9 +577,14 @@ class CommonsNode:
                 skipped_policy += 1
                 diagnostics.append("OVERSIZE_RECORD_SKIPPED")
                 continue
-            if interest is not None and not matches(record, interest):
-                skipped_interest += 1
-                continue
+            if interest is not None:
+                if use_kernel:
+                    gated = not kernel_verdicts.get(index, False)
+                else:
+                    gated = not matches(record, interest)
+                if gated:
+                    skipped_interest += 1
+                    continue
             try:
                 receipt = self.ingest_foreign(record, source=source)
             except MeshError as error:

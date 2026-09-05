@@ -30,6 +30,9 @@ from .errors import MeshError
 from .interest import InterestFilter
 
 if TYPE_CHECKING:
+    from .executor import MncsKernelExecutor
+
+if TYPE_CHECKING:
     from .node import CommonsNode
     from .relay import CommonsRelay
 
@@ -229,6 +232,7 @@ def synchronize(
     push_interest: InterestFilter | None = None,
     limit: int | None = None,
     push: bool = True,
+    executor: MncsKernelExecutor | None = None,
 ) -> Mapping[str, object]:
     """Run one bounded pull (+ optional push) sync round over any carrier.
 
@@ -236,6 +240,9 @@ def synchronize(
     fetch them bounded, ingest through the node's interest gate.
     Push: offer locally-held records the remote lacks (only carriers that
     accept offers; read-only carriers report ``pushSkipped``).
+
+    With ``executor``, both interest gates run through the normative MNCS
+    kernel; otherwise the pinned Python mirror decides.
     """
 
     from .node import MAX_SYNC_RECORDS, SyncReport
@@ -247,13 +254,18 @@ def synchronize(
     missing = sorted(remote_frontier - local_frontier)[:bound]
     offered = len(missing)
     fetched = carrier.fetch_records(missing, limit=bound) if missing else []
-    pull_report = local.receive_records(fetched, source=carrier.source_label, interest=interest)
+    pull_report = local.receive_records(
+        fetched, source=carrier.source_label, interest=interest, executor=executor
+    )
 
     push_report: SyncReport | None = None
     push_skipped: str | None = None
     if push:
         outgoing = local.select_for_peer(
-            remote_frontier, push_interest or InterestFilter.match_all(), limit=bound
+            remote_frontier,
+            push_interest or InterestFilter.match_all(),
+            limit=bound,
+            executor=executor,
         )
         try:
             carrier.offer_records(outgoing, source=local.node_id)

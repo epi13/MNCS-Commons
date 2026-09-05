@@ -1,0 +1,179 @@
+mncs 0.10;
+
+// commons.mesh.lifecycle — append-only lifecycle transition law for the Commons Mesh.
+//
+// A record's lifecycle is a closed nine-state machine; only the transitions
+// below ever advance it. This module owns that law: which (current, target)
+// pairs are allowed and which violation bits a rejected transition carries.
+// Event sourcing (digests, domains, history folding) stays on the host;
+// digest production and wall-clock reads are explicit capability
+// boundaries (see MESH_PRESSURE_LEDGER.md). The host projects state names
+// to the closed discriminants below and folds histories; this module owns
+// the transition decision, which is where silent promotion/demotion bugs
+// would hide.
+//
+//   State: 0=proposed 1=reproduced 2=verified 3=accepted 4=disputed
+//          5=superseded 6=expired 7=rejected 8=withdrawn
+//   Anything else (including unknowns the host could not project) is
+//   rejected: unknown states never participate in a valid transition.
+//
+// Violation mask bits returned by transition_check:
+//   1 = unknown current state, 2 = unknown target state,
+//   4 = forbidden transition, 8 = stale transition (from != current),
+//   16 = authority domain required. Zero means the transition is valid.
+//
+// Source-profile notes: profiles have no `!` operator and no unary minus,
+// so range checks use `< 0` / `> 8` comparisons (never a negative
+// literal) and every combination is a nested if/else. The law is written
+// as code, not data: 81 explicit cells, total over the 9x9 vocabulary.
+module commons.mesh.lifecycle;
+
+fn transition_allowed(current: i64, target: i64) -> (result: bool) {
+    if current == 0 {
+        if target == 1 {
+            return true;
+        }
+        if target == 4 {
+            return true;
+        }
+        if target == 6 {
+            return true;
+        }
+        if target == 7 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 1 {
+        if target == 2 {
+            return true;
+        }
+        if target == 4 {
+            return true;
+        }
+        if target == 6 {
+            return true;
+        }
+        if target == 7 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 2 {
+        if target == 3 {
+            return true;
+        }
+        if target == 4 {
+            return true;
+        }
+        if target == 5 {
+            return true;
+        }
+        if target == 6 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 3 {
+        if target == 5 {
+            return true;
+        }
+        if target == 6 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 4 {
+        if target == 1 {
+            return true;
+        }
+        if target == 2 {
+            return true;
+        }
+        if target == 5 {
+            return true;
+        }
+        if target == 6 {
+            return true;
+        }
+        if target == 7 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 5 {
+        return false;
+    }
+    if current == 6 {
+        return false;
+    }
+    if current == 7 {
+        if target == 5 {
+            return true;
+        }
+        if target == 8 {
+            return true;
+        }
+        return false;
+    }
+    if current == 8 {
+        return false;
+    }
+    return false;
+}
+
+fn unknown_bit(value: i64, bit: i64) -> (result: i64) {
+    if value < 0 {
+        return bit;
+    }
+    if value > 8 {
+        return bit;
+    }
+    return 0;
+}
+
+// Executable entry point: violation mask for one transition request.
+// from_matches says the event's transition.from equals current;
+// authority_ok says the event carries a non-empty authority domain.
+fn forbidden_bit(current: i64, target: i64) -> (result: i64) {
+    if transition_allowed(current, target) {
+        return 0;
+    }
+    return 4;
+}
+
+fn stale_bit(from_matches: bool) -> (result: i64) {
+    if from_matches {
+        return 0;
+    }
+    return 8;
+}
+
+fn authority_bit(authority_ok: bool) -> (result: i64) {
+    if authority_ok {
+        return 0;
+    }
+    return 16;
+}
+
+fn transition_check(current: i64, target: i64, from_matches: bool, authority_ok: bool) -> (result: i64) {
+    // Wrapping addition: each bit is set at most once and the sum stays far
+    // below i64 range, so wrapping intent is exact and no overflow
+    // obligation survives compilation (see mncs.core.numeric.v1).
+    return unknown_bit(current, 1) +% unknown_bit(target, 2) +% forbidden_bit(current, target) +% stale_bit(from_matches) +% authority_bit(authority_ok);
+}

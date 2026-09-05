@@ -35,9 +35,11 @@ def main() -> int:
     args = parser.parse_args()
 
     repo = Path(__file__).resolve().parents[1]
-    # Deterministic unit scope only; test_mesh_interop.py is
-    # toolchain-latency-bound (one mncs source-study per kernel) and is
-    # covered by this repository's own CI instead.
+    # Deterministic unit scope only, including the always-on law-parity
+    # tests that bind the Python mirrors to the normative MNCS kernels
+    # (test_mesh_interest_full, test_mesh_lifecycle). test_mesh_interop.py
+    # is toolchain-latency-bound and runs in the dedicated interop lane
+    # plus this repository's own CI instead.
     targets = sorted(
         path
         for path in glob.glob("tests/test_mesh_*.py", root_dir=repo)

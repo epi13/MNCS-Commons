@@ -16,6 +16,7 @@ from .availability import (
 from .budgets import StorageAccount, account_node, check_budgets
 from .capsule import CAPSULE_VERSION, assess_capsule, compose_capsule
 from .errors import MeshError
+from .executor import KernelCall, MeshExecutorError, MncsKernelExecutor, decide_membership
 from .interest import (
     INTEREST_VERSION,
     KIND_DISCRIMINANTS,
@@ -24,6 +25,8 @@ from .interest import (
     InterestFilter,
     matches,
     matches_discriminants,
+    mirror_matches_full,
+    project_full_args,
     project_to_discriminants,
 )
 from .node import (
@@ -71,7 +74,10 @@ __all__ = [
     "FabricCarrier",
     "InterestFilter",
     "KIND_DISCRIMINANTS",
+    "KernelCall",
     "LIFECYCLE_DISCRIMINANTS",
+    "MeshExecutorError",
+    "MncsKernelExecutor",
     "OUTCOME_DISCRIMINANTS",
     "MeshError",
     "MeshPolicy",
@@ -86,9 +92,12 @@ __all__ = [
     "build_view",
     "check_budgets",
     "compose_capsule",
+    "decide_membership",
     "matches",
     "matches_discriminants",
     "merge_availability",
+    "mirror_matches_full",
+    "project_full_args",
     "project_to_discriminants",
     "negotiate",
     "synchronize",
