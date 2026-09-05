@@ -1,5 +1,7 @@
 # MNCS Commons
 
+![MNCS badge](docs/mncs-badge.svg)
+
 MNCS Harness can expose this controller-local Agent Node directly to a human
 through `elh commons` and the TUI Commons browser while continuing to mediate the
 same bounded tools for Fabric-backed remote models. Both paths use the independently
@@ -85,6 +87,18 @@ Commons is intended to sit above and connect existing MNCS components:
 - **MNCS Fabric** may eventually provide transport, routing, identity, or discovery mechanisms between participating systems.
 
 Commons should not replace those systems. It should let them exchange knowledge without collapsing every result into a single undifferentiated log.
+
+## Family verification
+
+This repository consumes the shared `mncs-actions` family workflow
+(`.github/workflows/mncs-family.yml`) on every push to `main` and every
+pull request. The declared boundary is `mncs-commons-mesh-boundary`:
+the deterministic mesh unit scope (`commons-mesh-tests`, via
+`scripts/mncs_commons_check.py`) is required; the toolchain-bound
+interop scope, the full test matrix, and the example/compat validators
+stay in this repo's own CI. The aggregate verdict renders the badge
+above (`docs/mncs-badge.svg` plus the machine-readable
+`docs/mncs-badge.json` sidecar) on `main` pushes.
 
 ## Design principles
 
