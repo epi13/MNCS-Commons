@@ -353,6 +353,32 @@ KERNEL_CASES = {
 }
 
 
+def _split_corpus(payload: dict, budget: int) -> list[dict]:
+    """Split a corpus envelope into chunk envelopes of at most budget cases.
+
+    The envelope (schema version, name) is preserved on every chunk; only
+    the case list is partitioned, in order. A budget at or above the case
+    count yields the single original batch.
+    """
+    cases = payload.get("cases", [])
+    return [
+        {**payload, "cases": cases[index : index + budget]}
+        for index in range(0, len(cases), budget)
+    ]
+
+
+# Per-invocation case budget by kernel. The mncs-research-bytecode backend
+# needs ~30s per case for textmap tables (iteration-exact resource
+# accounting) and ~2s per case of harness overhead even for trivial integer
+# law, so corpora above the budget are split into multiple `experiment run`
+# invocations. Every case still executes and every assertion still applies;
+# only the batching changes, keeping each invocation under the timeout.
+KERNEL_CHUNK_CASES = {
+    "commons/mesh/interest_named.mncs": 10,
+    "commons/mesh/lifecycle.mncs": 150,
+}
+
+
 def _assert_corpus_result(result: dict, mode: str, corpus: str) -> None:
     cases = result.get("cases", [])
     assert cases, f"{corpus}: no cases executed"
@@ -379,28 +405,41 @@ def test_mncs_backends_execute_mesh_corpora(tmp_path, kernel, backend):
     environment["MNCS_LIBRARY_PATH"] = library + ":" + str(MNCS_DIR)
     for name, mode in KERNEL_CASES[kernel]:
         corpus = CORPORA / name
-        completed = subprocess.run(
-            [
-                str(binary),
-                "experiment",
-                "run",
-                str(source),
-                "--backend",
-                backend,
-                "--corpus",
-                str(corpus),
-                "--output-dir",
-                str(tmp_path / "result"),
-                "--node-id",
-                "commons-interop",
-            ],
-            capture_output=True,
-            text=True,
-            env=environment,
-            timeout=600,
+        payload = json.loads(corpus.read_text())
+        budget = KERNEL_CHUNK_CASES.get(kernel, len(payload.get("cases", [])) or 1)
+        chunks = _split_corpus(payload, budget)
+        executed = 0
+        for index, chunk in enumerate(chunks):
+            chunk_path = tmp_path / f"{corpus.stem}-chunk{index}.json"
+            chunk_path.write_text(json.dumps(chunk))
+            completed = subprocess.run(
+                [
+                    str(binary),
+                    "experiment",
+                    "run",
+                    str(source),
+                    "--backend",
+                    backend,
+                    "--corpus",
+                    str(chunk_path),
+                    "--output-dir",
+                    str(tmp_path / f"result-{index}"),
+                    "--node-id",
+                    "commons-interop",
+                ],
+                capture_output=True,
+                text=True,
+                env=environment,
+                timeout=600,
+            )
+            assert completed.returncode == 0, completed.stderr[-2000:]
+            label = name if len(chunks) == 1 else f"{name} chunk {index + 1}/{len(chunks)}"
+            result = json.loads(completed.stdout)
+            _assert_corpus_result(result, mode, label)
+            executed += len(result.get("cases", []))
+        assert executed == len(payload.get("cases", [])), (
+            f"{name}: executed {executed} of {len(payload.get('cases', []))} cases"
         )
-        assert completed.returncode == 0, completed.stderr[-2000:]
-        _assert_corpus_result(json.loads(completed.stdout), mode, name)
 
 
 @needs_toolchain
