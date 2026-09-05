@@ -280,51 +280,56 @@ OUTCOME_NAMES = {"PASS": 0, "FAIL": 1, "UNKNOWN": 2}
 STATE_NAMES = {"proposed": 0, "reproduced": 1, "verified": 2, "accepted": 3}
 
 
+NAMED_KINDS = ("Finding", "Claim", "Replication", "Observation", "Question", "WorkRequest")
+
+
 def build_named_interest_corpus() -> dict:
+    # Structural sample, not a cross product: backend cost is ~30s/case
+    # (thousands of steps per textmap lookup), so the checked-in contract
+    # hits every table row plus miss/unknown/empty fallbacks plus
+    # restricted-subscription combinations (25 cases). The Python mirror
+    # test replays every checked-in case fast.
     module = "commons.mesh.interest_named"
-    subscriptions = {
-        "match-all": ((True,) * 6, (True,) * 3, 0),
-        "finding-pass-verified": (
-            (True, False, False, False, False, False),
-            (True, False, False),
-            3,
-        ),
-        "proposed-gate": ((True,) * 6, (True,) * 3, 1),
-    }
-    kinds = ["Finding", "Replication", "LifecycleEvent"]
-    outcomes = ["PASS", "UNKNOWN", "BOGUS"]
-    states = ["proposed", "verified", "disputed", "archived"]
+    match_all = ((True,) * 6, (True,) * 3, 0)
+    restricted = (
+        (True, False, False, False, False, False),
+        (True, False, False),
+        3,
+    )
+    probes = (
+        [("match-all", match_all, kind, "PASS", "proposed") for kind in NAMED_KINDS]
+        + [("match-all", match_all, name, "PASS", "proposed") for name in ("LifecycleEvent", "")]
+        + [("match-all", match_all, "Finding", outcome, "verified") for outcome in ("PASS", "FAIL", "UNKNOWN", "BOGUS")]
+        + [("match-all", match_all, "Claim", "FAIL", state) for state in ("proposed", "reproduced", "verified", "accepted", "archived")]
+        + [("restricted", restricted, kind, outcome, state) for kind in ("Finding", "LifecycleEvent") for outcome in ("PASS", "BOGUS") for state in ("verified", "archived")]
+    )
     cases = []
-    for sub_name, (kf, of_, min_rank) in subscriptions.items():
-        for kind in kinds:
-            for outcome in outcomes:
-                for state in states:
-                    kind_code = KIND_NAMES.get(kind, 6)
-                    outcome_code = OUTCOME_NAMES.get(outcome, 9)
-                    state_code = STATE_NAMES.get(state, 5)
-                    expected = mirror_matches(
-                        kind_code, outcome_code, state_code, kf, of_, min_rank
-                    )
-                    args = (
-                        [
-                            byte_view(kind),
-                            u64(len(kind)),
-                            byte_view(outcome),
-                            u64(len(outcome)),
-                            byte_view(state),
-                            u64(len(state)),
-                        ]
-                        + [boolean(flag) for flag in kf]
-                        + [boolean(flag) for flag in of_]
-                        + [integer(min_rank)]
-                    )
-                    cases.append(
-                        {
-                            "id": f"named-{sub_name}-{kind}-{outcome}-{state}",
-                            "request": request(module, "candidate_matches_named", args),
-                            "expected": [boolean(expected)],
-                        }
-                    )
+    for sub_name, (kf, of_, min_rank), kind, outcome, state in probes:
+        kind_code = KIND_NAMES.get(kind, 6)
+        outcome_code = OUTCOME_NAMES.get(outcome, 9)
+        state_code = STATE_NAMES.get(state, 5)
+        expected = mirror_matches(kind_code, outcome_code, state_code, kf, of_, min_rank)
+        args = (
+            [
+                byte_view(kind),
+                u64(len(kind)),
+                byte_view(outcome),
+                u64(len(outcome)),
+                byte_view(state),
+                u64(len(state)),
+            ]
+            + [boolean(flag) for flag in kf]
+            + [boolean(flag) for flag in of_]
+            + [integer(min_rank)]
+        )
+        case_kind = kind if kind else "empty"
+        cases.append(
+            {
+                "id": f"named-{sub_name}-{case_kind}-{outcome}-{state}",
+                "request": request(module, "candidate_matches_named", args),
+                "expected": [boolean(expected)],
+            }
+        )
     return {"schema_version": "0.1", "name": "commons-interest-named", "cases": cases}
 
 

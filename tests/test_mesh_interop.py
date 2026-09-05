@@ -167,7 +167,7 @@ def test_python_mirror_agrees_with_named_interest_corpus():
     )
 
     corpus = _load_corpus("commons-interest-named-corpus.json")
-    assert len(corpus["cases"]) == 108
+    assert len(corpus["cases"]) == 25
     for case in corpus["cases"]:
         request = case["request"]
         assert request["target"]["function"] == "candidate_matches_named"
