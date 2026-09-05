@@ -34,7 +34,10 @@ jobs:
           # Pinned review-line revision carrying the kernel surface this
           # lane proves (qualified record construction, text_map stdlib).
           # Advance deliberately with the corpora, never to a moving ref.
-          ref: 5b417c82ba2f8f445917d0e3148973489e838e22
+          # b360ce6 carries the issue-108 corpus-scoped execution sessions
+          # (per-case decode/validate moved to once per corpus); budgets
+          # below are calibrated for that toolchain.
+          ref: b360ce64a7901f3727b74652bc5e982ba0a7803b
           path: mncs-language
 
       - name: Set up Python

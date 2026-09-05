@@ -367,22 +367,21 @@ def _split_corpus(payload: dict, budget: int) -> list[dict]:
     ]
 
 
-# Per-invocation case budget by kernel. Measured 2026-09-05 (debug
-# toolchain) after the mncs-language issue #108 session-reuse fix, which
-# decodes/validates each artifact once per `experiment run` instead of once
-# per case: trivial integer law costs ~0.10s/case on research-bytecode (was
-# ~0.86s/case; at parity with portable-wasm), and textmap tables cost
-# ~10.4s/case on both backends (was ~26.7s research / ~14.9s wasm). The
-# remaining textmap cost is the shared body/SSA reference interpretation of
-# MNCS-level iterate loops under iteration-exact accounting -- identical on
-# both backends, so no backend-specific overhead remains. Corpora above the
-# budget are still split into multiple `experiment run` invocations as a
-# safety measure (chunking is batching, not the fix). Every case still
-# executes and every assertion still applies; only the batching changes,
-# keeping each invocation under the timeout.
+# Per-invocation case budget by kernel. Budgets must hold on the CI
+# runners with the PINNED toolchain (see mncs-toolchain-interop.yml),
+# not on any developer desktop: a 500-case lifecycle budget timed out on
+# main at ~1.2s+/case with the pre-fix toolchain even though the same
+# budget measures ~52s locally with the fix. Current calibration, with the
+# issue-108 corpus-scoped sessions in the pinned toolchain (desktop debug
+# slopes: lifecycle ~0.10s/case research-bytecode, interest_named
+# ~10.4s/case both backends): lifecycle 200 keeps a single chunk under the
+# timeout even if CI hardware runs an order of magnitude slower than this
+# desktop; interest_named 15 keeps each chunk under it with the residual
+# iteration-exact reference cost. Chunking stays safety batching, not the
+# fix. Every case still executes and every assertion still applies.
 KERNEL_CHUNK_CASES = {
     "commons/mesh/interest_named.mncs": 15,
-    "commons/mesh/lifecycle.mncs": 500,
+    "commons/mesh/lifecycle.mncs": 200,
 }
 
 
