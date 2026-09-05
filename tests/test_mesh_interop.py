@@ -367,15 +367,22 @@ def _split_corpus(payload: dict, budget: int) -> list[dict]:
     ]
 
 
-# Per-invocation case budget by kernel. The mncs-research-bytecode backend
-# needs ~30s per case for textmap tables (iteration-exact resource
-# accounting) and ~2s per case of harness overhead even for trivial integer
-# law, so corpora above the budget are split into multiple `experiment run`
-# invocations. Every case still executes and every assertion still applies;
-# only the batching changes, keeping each invocation under the timeout.
+# Per-invocation case budget by kernel. Measured 2026-09-05 (debug
+# toolchain) after the mncs-language issue #108 session-reuse fix, which
+# decodes/validates each artifact once per `experiment run` instead of once
+# per case: trivial integer law costs ~0.10s/case on research-bytecode (was
+# ~0.86s/case; at parity with portable-wasm), and textmap tables cost
+# ~10.4s/case on both backends (was ~26.7s research / ~14.9s wasm). The
+# remaining textmap cost is the shared body/SSA reference interpretation of
+# MNCS-level iterate loops under iteration-exact accounting -- identical on
+# both backends, so no backend-specific overhead remains. Corpora above the
+# budget are still split into multiple `experiment run` invocations as a
+# safety measure (chunking is batching, not the fix). Every case still
+# executes and every assertion still applies; only the batching changes,
+# keeping each invocation under the timeout.
 KERNEL_CHUNK_CASES = {
-    "commons/mesh/interest_named.mncs": 10,
-    "commons/mesh/lifecycle.mncs": 150,
+    "commons/mesh/interest_named.mncs": 15,
+    "commons/mesh/lifecycle.mncs": 500,
 }
 
 
