@@ -823,7 +823,7 @@
         "mncs-test"
       ],
       "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python"
@@ -833,7 +833,7 @@
         "mncs-store",
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "discovered",
       "target": "language",
@@ -844,7 +844,7 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -1292,15 +1292,17 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-007",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-770B42F56E6C",
       "reporters": [
         "mncs-test",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",

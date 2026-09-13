@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "typed in-process execution retained until the explicit external result/check JSON boundary"
+  },
+  "contentDigest": "sha256:00613e6194f8437ea5679d696424267610aed937dd1acc5f7cca6e311a5c7d6f",
+  "evidence": [
+    {
+      "id": "mncs-test:retained-typed-batch",
+      "ref": "tests/test_runner.py::test_self_suite",
+      "status": "PASS",
+      "summary": "One retained session executes six requests and preserves distinct per-test observations, identities, and PASS/UNKNOWN projection."
+    },
+    {
+      "id": "mncs-test:result-schema",
+      "ref": "schemas/test-result.schema.json",
+      "status": "PASS",
+      "summary": "The external schema identifies compiler inventory and experiment data as projections rather than replacing language-owned semantics."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-8EE189B6A49E",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "disposition": "narrowed",
+    "localPressureId": "MNCS-TEST-P-006",
+    "targetLayer": "tooling/serialization"
+  },
+  "observedAt": "2026-09-13T21:10:28Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the mncs-test self-suite with --embed-library and inspect result provenance and experiment projection.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-first-class-tests-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "The canonical provider carries typed inventory and per-test observations through the retained embed boundary, while JSON remains only the external result and check-result interoperability format.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python still writes the external JSON result/check-result documents and uses ctypes for the explicit embed ABI boundary; it does not evaluate or aggregate MNCS test semantics.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

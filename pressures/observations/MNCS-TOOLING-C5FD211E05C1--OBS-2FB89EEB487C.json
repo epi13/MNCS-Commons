@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "test-inventory compiler command and mncs-test live runner pass"
+  },
+  "contentDigest": "sha256:bf6b071ba9c1876058bf92acdb4293fc90d7336a82ce1d4bca4fb9b4744e8e05",
+  "evidence": [
+    {
+      "id": "mncs-language:inventory-command",
+      "ref": "crates/mncs-cli/tests/test_inventory.rs",
+      "status": "PASS",
+      "summary": "The compiler emits deterministic declaration identities, source spans, profile, subject identity, and test-case identity."
+    },
+    {
+      "id": "mncs-test:no-registration-table",
+      "ref": "mncs-test/mncs-test.toml",
+      "status": "PASS",
+      "summary": "The native self-suite has no per-test [[tests]] entries and no handwritten suite aggregation."
+    }
+  ],
+  "id": "MNCS-TOOLING-C5FD211E05C1--OBS-2FB89EEB487C",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "disposition": "narrowed",
+    "localPressureId": "MNCS-TEST-P-002",
+    "targetLayer": "tooling/discovery"
+  },
+  "observedAt": "2026-09-13T21:10:28Z",
+  "pressureId": "MNCS-TOOLING-C5FD211E05C1",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run mncs test-inventory on a Profile 0.17 source target, then run mncs-test without per-test manifest entries.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-first-class-tests-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "Compiler-owned static inventory replaces recursive filesystem discovery for ordinary first-class tests. The runner accepts a source/module target; recursive filesystem enumeration remains only for explicitly declared project/library roots and legacy fixture discovery.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python still walks explicitly named library/fixture roots for transport and compatibility concerns; it does not scan MNCS source to discover test declarations.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

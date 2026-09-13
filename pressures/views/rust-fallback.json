@@ -240,7 +240,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-010",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python",
@@ -251,7 +251,7 @@
         "mncs-doctor",
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "moderate",
       "status": "confirmed",
       "target": "tooling",
@@ -562,7 +562,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-011",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python",
@@ -573,7 +573,7 @@
         "mncs-doctor",
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "moderate",
       "status": "confirmed",
       "target": "tooling",
@@ -623,7 +623,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-008",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "python",
@@ -634,7 +634,7 @@
         "mncs-doctor",
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "tooling",
@@ -771,7 +771,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-001",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python",
@@ -782,7 +782,7 @@
         "mncs-doctor",
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "tooling",

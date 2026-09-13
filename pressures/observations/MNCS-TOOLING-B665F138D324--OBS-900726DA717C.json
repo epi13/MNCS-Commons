@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "one compile and one retained embed session for the normal provider path"
+  },
+  "contentDigest": "sha256:00f51306362a76ba0f6efb577d8c2814db752360503af9c655e5aa66409b7dec",
+  "evidence": [
+    {
+      "id": "mncs-test:retained-session-self-suite",
+      "ref": "tests/test_runner.py::test_self_suite",
+      "status": "PASS",
+      "summary": "Execution reports retained-embed-batch, batch_size 6, and reused_session true."
+    },
+    {
+      "id": "mncs-language:retained-session-dogfood",
+      "ref": "mncs-language/tests/first_class_tests.mncs",
+      "status": "PASS",
+      "summary": "Representative language tests report retained-embed-batch with batch_size 2 and reused_session true."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-900726DA717C",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "disposition": "narrowed",
+    "localPressureId": "MNCS-TEST-P-004",
+    "targetLayer": "tooling/process-boundary"
+  },
+  "observedAt": "2026-09-13T21:10:28Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run mncs-test self-tests with MNCS_EMBED_LIBRARY set and inspect execution.mode, batch_size, and session.reused_session.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-first-class-tests-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "The old subprocess-per-test architecture no longer governs normal execution: mncs-test compiles one test artifact, opens one retained embed session, and sends a batch. Process supervision remains only for compiler launch, timeout enforcement, and the explicit no-embed fallback.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python remains at the process-launch/timeout/capture boundary and preserves a per-test mncs execute fallback when the embed library is unavailable.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

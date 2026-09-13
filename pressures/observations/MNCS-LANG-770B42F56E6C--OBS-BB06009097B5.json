@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "mncs-test self-suite and mncs-language dogfood pass through compiler inventory and retained embed batch"
+  },
+  "contentDigest": "sha256:3140b1dfad1c6895793b4de627af3b920f423cd64fb160083077eb55965ddd87",
+  "evidence": [
+    {
+      "id": "mncs-test:compiler-inventory-discovery",
+      "ref": "tests/test_runner.py::test_compiler_inventory_discovery",
+      "status": "PASS",
+      "summary": "Six first-class declarations are discovered and ordered by compiler-provided identity without source regex scanning or callable registration."
+    },
+    {
+      "id": "mncs-test:self-suite-first-class",
+      "ref": "tests/self_suite.mncs",
+      "status": "PASS",
+      "summary": "The native self-suite executes six compiler-discovered declarations with five passed and one skipped."
+    }
+  ],
+  "id": "MNCS-LANG-770B42F56E6C--OBS-BB06009097B5",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "disposition": "narrowed",
+    "localPressureId": "MNCS-TEST-P-005",
+    "targetLayer": "language/runtime"
+  },
+  "observedAt": "2026-09-13T21:10:28Z",
+  "pressureId": "MNCS-LANG-770B42F56E6C",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run mncs-test against the Profile 0.17 self-suite and inspect compiler inventory and execution metadata.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-first-class-tests-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "First-class named test declarations and compiler-owned static inventory remove the need for callable values or handler registration in the normal runtime test path. Advanced callback-shaped framework features remain constrained by the absence of unrestricted closures.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Static declaration discovery is the normal path; advanced fixtures, parameterized callbacks, and middleware-like composition remain bounded without general callable values.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

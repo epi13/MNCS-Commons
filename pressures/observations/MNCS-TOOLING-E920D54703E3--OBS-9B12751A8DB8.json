@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "compile-pass/compile-fail fixture tests consume structured CLI diagnostics"
+  },
+  "contentDigest": "sha256:b06d6241fad10f099d6e3414ffbc9a913fe6d00778d3acc63732d31cf2070936",
+  "evidence": [
+    {
+      "id": "mncs-test:compile-fail-structured-diagnostic",
+      "ref": "tests/test_runner.py::test_compile_fail",
+      "status": "PASS",
+      "summary": "Expected diagnostic code and structured fields are matched through the provider result."
+    },
+    {
+      "id": "mncs-language:old-profile-refusal",
+      "ref": "crates/mncs-compiler/tests/test_inventory.rs::old_profile_refuses_test_declaration",
+      "status": "PASS",
+      "summary": "Profile 0.16 refuses the 0.17 declaration with diagnostic MNP220 and no test inventory."
+    }
+  ],
+  "id": "MNCS-TOOLING-E920D54703E3--OBS-9B12751A8DB8",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "disposition": "narrowed",
+    "localPressureId": "MNCS-TEST-P-003",
+    "targetLayer": "tooling/diagnostics"
+  },
+  "observedAt": "2026-09-13T21:10:28Z",
+  "pressureId": "MNCS-TOOLING-E920D54703E3",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the mncs-test compile-fail and profile compatibility tests and inspect diagnostic code/stage/severity/span matching.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-first-class-tests-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "Compile-fail and profile-refusal tests consume structured diagnostic records including code, stage, severity, and span; the canonical provider no longer matches human-readable compiler prose. A native in-language diagnostic value API is still absent.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The provider transports structured CLI diagnostics through Python; compiler internals do not yet expose a stable native diagnostic value boundary to MNCS code.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

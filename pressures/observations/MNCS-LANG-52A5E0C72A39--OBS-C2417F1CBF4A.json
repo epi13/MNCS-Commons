@@ -1,0 +1,50 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ea5e5940084dee6124d26a8dbe944528ef6f754d",
+    "validation": "full cargo workspace/all-targets tests, clippy -D warnings, and live mncs-test consumer runs pass"
+  },
+  "contentDigest": "sha256:406dff4c7645e695e0b36038359cf7e5fe7561438ed6ac9afd8162628d9c3e79",
+  "evidence": [
+    {
+      "id": "mncs-test:self-suite-retained-embed",
+      "ref": "tests/test_runner.py::test_self_suite",
+      "status": "PASS",
+      "summary": "Six compiler-discovered tests execute as retained-embed-batch with batch_size 6 and reused_session true; five pass and one skips."
+    },
+    {
+      "id": "mncs-language:dogfood-retained-embed",
+      "ref": "mncs-language/tests/first_class_tests.mncs",
+      "status": "PASS",
+      "summary": "Two representative first-class language tests execute as retained-embed-batch with batch_size 2 and reused_session true."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-C2417F1CBF4A",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T21:10:38Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e396217ef53494828e584acee54237298a7273ce",
+    "path": "tests/test_runner.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "Current mncs-test consumer verification passes through the language-owned test inventory and one retained embed session: self-suite 5 passed and 1 skipped; representative mncs-language dogfood 2 passed. The historical per-test subprocess workaround is no longer the normal path, but host compiler launch, timeout/capture, no-embed fallback, and the mncs-store consumer remain.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}
