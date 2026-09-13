@@ -46,3 +46,24 @@ Publication is not acceptance. Contributors may publish competing pressures and 
 Consumers must be able to recover origin, exact revisions, candidates, supporting/contradicting evidence, unknowns, policy, decision-maker, and later amendments. Commons must not import private Forge/Fabric state, rewrite raw execution receipts, convert observations into authority, infer system-level PASS from component records, or hide unavailable/disagreeing evaluators.
 
 Forge may publish through a public adapter, but Commons must remain useful with independently produced records.
+
+## Atlas WASM backend pressures (2026-09)
+
+The Atlas family-registry campaign produced two concrete language/backend
+pressures. They are recorded as separate immutable declarations because their
+root causes and regression tests are different:
+
+| Pressure | Root cause | Owner | Status |
+| --- | --- | --- | --- |
+| [`MNCS-LANG-4F3798658F55`](../pressures/records/MNCS-LANG-4F3798658F55.json) | Recursive cell flattening passed an `i64` scratch local directly to a WASM `i32.load` address operand. | `mncs-language` | resolved |
+| [`MNCS-LANG-4219A56741DB`](../pressures/records/MNCS-LANG-4219A56741DB.json) | Packed bounded view descriptors were treated as allocating views, suppressing loop-region reclamation until Atlas exhausted its arena. | `mncs-language` | resolved |
+
+Both records preserve a pre-fix Atlas reproduction, the exact language
+revision at which it was observed, implementation metadata, and separate
+current PASS verification from `mncs-language` and `mncs-atlas`. The focused
+regressions are `nested_flatten_wraps_i64_scratch_addresses_before_memory_access`
+and `packed_bounded_views_are_preserved_as_nonallocating_words`; Atlas's
+consumer verification is `tests.test_experimental_wasm`.
+
+The corresponding human-readable investigation is
+[`atlas-wasm-2026-09.md`](development-pressure-evidence/atlas-wasm-2026-09.md).

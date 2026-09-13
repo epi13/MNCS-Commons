@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "a0255f8"
+  },
+  "contentDigest": "sha256:5f11498a7ddc95530f06f1c9ca1d574cf99bf099f66031cf13c734cadd94f660",
+  "evidence": [
+    {
+      "id": "mncs-atlas:nested-cell-address:pre-fix-wasm-validation",
+      "kind": "wasm-validation",
+      "ref": "mncs-atlas:3ff5a11:mncs/atlas-model.mncs",
+      "status": "PASS",
+      "summary": "WASM validation rejected the i64 scratch local used as an i32 memory address."
+    }
+  ],
+  "id": "MNCS-LANG-4F3798658F55--OBS-A3F4051E4D8F",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": false,
+    "failureClass": "codegen-type-mismatch"
+  },
+  "observedAt": "2026-09-13T08:10:01Z",
+  "pressureId": "MNCS-LANG-4F3798658F55",
+  "repository": "mncs-atlas",
+  "reproduction": {
+    "instructions": "Build the cited Atlas model at the pre-fix language revision and validate the resulting WASM module.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "3ff5a11",
+    "languageCommit": "a0255f8",
+    "path": "mncs/atlas-model.mncs",
+    "repository": "mncs-atlas"
+  },
+  "summary": "The pre-fix Atlas model build reproduced the invalid WASM address typing failure.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "No consumer-side workaround; the address representation must be corrected in the generic lowering layer."
+  }
+}

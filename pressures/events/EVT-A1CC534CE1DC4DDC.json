@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-atlas",
+  "contentDigest": "sha256:4f1aeb18a5596775ae3be2650aa4e9f9413912ea922775c1ffbead0b3e13f0d4",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4219A56741DB--OBS-73716F86C272",
+    "MNCS-LANG-4219A56741DB--OBS-DB92B3F2B12F"
+  ],
+  "from": "verifying",
+  "id": "EVT-A1CC534CE1DC4DDC",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:20:07Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "previousEvent": "EVT-D34D1AEBA4C1EDD9",
+  "reason": "The original Atlas reproducer passes with the generic language fix and no consumer workaround remains.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

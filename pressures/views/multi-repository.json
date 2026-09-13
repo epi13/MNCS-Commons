@@ -3,6 +3,64 @@
   "pressures": [
     {
       "affectedRepositories": [
+        "mncs-atlas",
+        "mncs-language"
+      ],
+      "capability": "packed-bounded-view-lifetime",
+      "currentValidation": true,
+      "domain": "backend.region-reclamation",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4219A56741DB",
+      "reporters": [
+        "mncs-atlas",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Packed bounded views must survive safe region reclamation",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-atlas",
+        "mncs-language"
+      ],
+      "capability": "nested-cell-address-normalization",
+      "currentValidation": true,
+      "domain": "backend.wasm-address-typing",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4F3798658F55",
+      "reporters": [
+        "mncs-atlas",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Nested cell loads require explicit WASM address normalization",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-store"
       ],

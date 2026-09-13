@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "e39f370"
+  },
+  "contentDigest": "sha256:7124f2cbea4e084964cf116382357fda1d3a5d3b1d9104f7572482eba690b8ae",
+  "evidence": [
+    {
+      "id": "mncs-language:packed_bounded_views_are_preserved_as_nonallocating_words",
+      "kind": "regression-test",
+      "ref": "cargo test -p mncs-codegen",
+      "status": "PASS",
+      "summary": "The focused regression and the Atlas consumer validation passed."
+    }
+  ],
+  "id": "MNCS-LANG-4219A56741DB--OBS-73716F86C272",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T08:20:10Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "command": "cargo test -p mncs-codegen",
+    "commit": "e39f370",
+    "pressureFix": "mncs-language:f9d790b:crates/mncs-codegen/src/lower.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current Atlas/language validation passes after the generic backend fix; the original consumer path is operational.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

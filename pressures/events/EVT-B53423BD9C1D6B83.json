@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:bc6a8e5e7e5b35b26f36e5f8f8930e0eaf41b74995c26b01fec458e55c4ff5cc",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F3798658F55--OBS-A3F4051E4D8F"
+  ],
+  "from": "confirmed",
+  "id": "EVT-B53423BD9C1D6B83",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:10:03Z",
+  "pressureId": "MNCS-LANG-4F3798658F55",
+  "previousEvent": "EVT-F078A438E00FF528",
+  "reason": "The pressure belongs in the generic MNCS code generation and region-planning layer.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

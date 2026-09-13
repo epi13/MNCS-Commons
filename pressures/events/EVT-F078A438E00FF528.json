@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-atlas",
+  "contentDigest": "sha256:ef396acc048653af56a2113a435aae70fa6166154d05e740c01ea968904f909e",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F3798658F55--OBS-A3F4051E4D8F"
+  ],
+  "from": "discovered",
+  "id": "EVT-F078A438E00FF528",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:10:02Z",
+  "pressureId": "MNCS-LANG-4F3798658F55",
+  "previousEvent": null,
+  "reason": "The pre-fix Atlas reproducer and WASM/runtime evidence confirm the pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

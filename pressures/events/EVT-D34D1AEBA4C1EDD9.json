@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-atlas",
+  "contentDigest": "sha256:9a3589ae572efd474820a446025a2f79726436d3e1e50d65d342670bcac5514a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4219A56741DB--OBS-73716F86C272",
+    "MNCS-LANG-4219A56741DB--OBS-DB92B3F2B12F"
+  ],
+  "from": "available",
+  "id": "EVT-D34D1AEBA4C1EDD9",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:20:06Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "previousEvent": "EVT-A46914CAF79E6BE5",
+  "reason": "Both the language owner and Atlas consumer have supplied current PASS verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

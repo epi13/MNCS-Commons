@@ -8,6 +8,12 @@
       "MNCS-TOOLING-01C791D9EFF4",
       "MNCS-TOOLING-F20E1933C004"
     ],
+    "backend.region-reclamation": [
+      "MNCS-LANG-4219A56741DB"
+    ],
+    "backend.wasm-address-typing": [
+      "MNCS-LANG-4F3798658F55"
+    ],
     "control-flow.iteration": [
       "MNCS-COMPILER-0D3D67141BA4",
       "MNCS-COMPILER-4EEFAEBA916A",

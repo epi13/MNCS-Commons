@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "f527b49"
+  },
+  "contentDigest": "sha256:64716e34f4752871e23b63902f92ca4909ef2a754bc202cad56546b4b183e76e",
+  "evidence": [
+    {
+      "id": "mncs-atlas:packed-view-region-reset:pre-fix-full-render",
+      "kind": "runtime-boundary",
+      "ref": "mncs-atlas:3ff5a11:tests/test_experimental_wasm.py::test_full_model_render_plan",
+      "status": "PASS",
+      "summary": "Repeated model chunks exhausted the arena because packed views prevented reclaiming temporary regions."
+    }
+  ],
+  "id": "MNCS-LANG-4219A56741DB--OBS-190279510F28",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": false,
+    "failureClass": "region-reclamation-lifetime"
+  },
+  "observedAt": "2026-09-13T08:20:01Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "repository": "mncs-atlas",
+  "reproduction": {
+    "instructions": "Run the full Atlas model render plan at the pre-fix language revision and inspect the bounded-view region planner outcome.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "3ff5a11",
+    "languageCommit": "f527b49",
+    "path": "tests/test_experimental_wasm.py::test_full_model_render_plan",
+    "repository": "mncs-atlas"
+  },
+  "summary": "The pre-fix Atlas full render plan reproduced arena exhaustion after bounded-view region reclamation was suppressed.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "No safe Atlas-side workaround; retaining all loop regions only delays the exhaustion and changes the backend memory contract."
+  }
+}
