@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:34ae0742fb256796fd9ff66fd948915853498b06165b41fdfbb9cfa5287e5daa",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-010",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-010-byte-comparison-asymmetry.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-493C32111AA5--OBS-07DE0A62FFA9",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-493C32111AA5",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "```mncs\nfn byte_less(left: byte, right: byte) -> (result: bool) {\n    return left < right;  // MNE121; the <= spelling elaborates\n}\n```",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "`((left[i] <= right[i]) && (left[i] != right[i])) as i64`\ninside `content_less` (see `src/store/identity.mncs`).",
+    "legacyStatus": "workaround (compound idiom, pinned by ordering corpus cases)"
+  }
+}

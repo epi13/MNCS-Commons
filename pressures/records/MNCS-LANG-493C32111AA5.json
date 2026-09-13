@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+  "contentDigest": "sha256:41c2ce4111c351f5a23948184fbba2701294dc7004fc13f9c9e8efdf993d6c29",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-493C32111AA5",
+  "identity": {
+    "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (compound idiom, pinned by ordering corpus cases)",
+    "legacyId": "P1-010",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:0a9d3f40537052a4fc77aa7feb8b4ee94e354b03ba68eed34ddd141813dd5f01",
+    "sourcePath": "mncs-store:P1-010-byte-comparison-asymmetry.md",
+    "sourceText": "# P1-010 — Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121)\n\nStorage feature being implemented: canonical digest ordering\n(`content_less`: first differing byte decides).\n\nObserved language/runtime/compiler behavior: `mncs.core.bytes.v1`\ndefines ordering via `left <= right`, and `<=` elaborates over `byte` —\nbut `<` is rejected (MNE121). `!=` and `==` work over bytes. So byte\n`less-than` must be spelled `(a <= b) && (a != b)`, a three-operator\nidiom for a primitive relation.\n\nMinimal reproducer (mncs-language):\n\n```mncs\nfn byte_less(left: byte, right: byte) -> (result: bool) {\n    return left < right;  // MNE121; the <= spelling elaborates\n}\n```\n\nRequired semantics: the full ordered comparison set (`<`, `<=`, `>`,\n`>=`) over `byte`, consistent with the integer types.\n\nWhy the current behavior/API is insufficient: digest ordering is load-\nbearing for canonical key order (sorted chunk indices, deterministic\nmerges). Spelling it through a compound idiom is a readability and audit\ncost on security-adjacent code; worse, a future reader may \"simplify\" the\nidiom into something subtly different.\n\nSafety/correctness implications: LOW (the idiom is exact and corpus-\npinned: `content-less-*` cases). Audit cost, not soundness.\n\nPerformance implications: none.\n\nWorkaround used: `((left[i] <= right[i]) && (left[i] != right[i])) as i64`\ninside `content_less` (see `src/store/identity.mncs`).\n\nWhat the language/stdlib/runtime should ideally provide: `<` (and `>`,\n`>=`) over `byte` with the same total semantics as `<=`.\n\nAffected backend(s) / target(s), if known: all (frontend rule).\n\nSeverity: minor\n\nStatus: workaround (compound idiom, pinned by ordering corpus cases)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\n`left < right` over `byte` elaborates and executes (the old MNE121\nreproducer now completes). Removed from `content_less` together with\nP1-009; same corpus evidence.\n"
+  },
+  "legacyIds": [
+    "P1-010",
+    "mncs-store:P1-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-010",
+    "text": "```mncs\nfn byte_less(left: byte, right: byte) -> (result: bool) {\n    return left < right;  // MNE121; the <= spelling elaborates\n}\n```"
+  },
+  "requiredBehavior": "the full ordered comparison set (`<`, `<=`, `>`,\n`>=`) over `byte`, consistent with the integer types.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-010-byte-comparison-asymmetry.md"
+  },
+  "summary": "Imported legacy pressure P1-010: Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121).",
+  "target": "language",
+  "title": "Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121)",
+  "version": "1"
+}

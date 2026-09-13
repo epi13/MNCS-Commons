@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:06d24e9c3c02b4c7a3da6ca0592a630af4302de2329340c91286dee2768768e5",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-017",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-017-no-path-type.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-E06C0D4EC0D1--OBS-1D8A29753C81",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-E06C0D4EC0D1",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "format a 32-byte digest as 64 hex\ncharacters to derive a chunk filename. There is no string builder, no\nbyte-to-hex primitive, and no filename value to pass anywhere even if\nformatting existed.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "host-side `digest.hex()` / f-string paths in\n`store_phase1a.py`; layout documented in RFC 0016 as host-owned Phase-1a\nmechanics pending path + I/O capabilities.",
+    "legacyStatus": "blocked (layout naming host-owned)"
+  }
+}

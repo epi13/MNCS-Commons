@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:2ab99dd39181cee9ab58c00fcb51603ad5bf4d0001f2b2cd354eab69a4ef01dc",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-015",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-015-no-identity-issuance.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-CD0DEF98FD10--OBS-D80F9A5F73C9",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-CD0DEF98FD10",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "any `fn fresh_id() -> u64` with no\ninputs — either it returns a constant (not fresh) or it cannot be\nwritten. Freshness requires state or entropy; the language offers neither\nto source programs.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "host-owned `meta` counter (16-byte file, fsync'd per\ncommit) + `O_EXCL` creation guards + open-time serial healing scan, all\nin `store_phase1a.py` and labeled as host mechanics.",
+    "legacyStatus": "workaround (host counter file + exclusive-create guards)"
+  }
+}

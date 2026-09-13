@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-017.no-path-string-type-layout-names-are-unrepresentable-in-language",
+  "contentDigest": "sha256:c4a64dcfbea185f8994706726aef02b32eb339857a27ad5b32c59ebe7a1cac43",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-E06C0D4EC0D1",
+  "identity": {
+    "capability": "legacy.p1-017.no-path-string-type-layout-names-are-unrepresentable-in-language",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-017",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "blocked (layout naming host-owned)",
+    "legacyId": "P1-017",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:7ac79c0c1260eba2275b0d1312f96bfbc0369749803db22041d6e39c1ad059ca",
+    "sourcePath": "mncs-store:P1-017-no-path-type.md",
+    "sourceText": "# P1-017 — No path/string type: layout names are unrepresentable in-language\n\nStorage feature being implemented: store layout naming (`chunks/<hex>`,\n`objects/<hex>`, `generations/<gen>`, `temp/`) as store-owned\nimplementation detail (RFC: \"the filesystem layout is an implementation\ndetail; the store abstraction must own the layout\").\n\nObserved language/runtime/compiler behavior: MNCS has bytes, byte views,\nand bounded text-scan vocabulary over granted bytes — but no string,\npath, or filename type, no hex formatting, and no way to construct a\nname from a digest. `host_read` grants bind capability→path OUTSIDE the\nlanguage (`--grant-read capability=path`); inside, the program sees only\nanonymous bytes. A store abstraction cannot \"own its layout\" if it cannot\nname it.\n\nMinimal reproducer (mncs-language): format a 32-byte digest as 64 hex\ncharacters to derive a chunk filename. There is no string builder, no\nbyte-to-hex primitive, and no filename value to pass anywhere even if\nformatting existed.\n\nRequired semantics: bounded string/path values with hex/base encoding,\njoin/normalize operations that cannot escape a store root (no `..`\ntraversal by construction), and capability-gated resolution of paths to\nbyte sources/sinks (composing P1-001/P1-003 with names).\n\nWhy the current behavior/API is insufficient: layout derivation (content\nhash → path) is a pure, deterministic, SAFETY-CRITICAL function\n(path confusion = reading the wrong chunk = integrity failure), and it\nmust live in host string code because the language has no strings.\n`bytes.hex()` in the driver is correct but unaudited-by-compiler.\n\nSafety/correctness implications: MEDIUM. Path-confusion bugs (wrong\ndirectory, unsanitized serial, case/encoding mismatch) are a classic\nstorage corruption vector; a path type with root-confinement would rule\nout the entire class.\n\nPerformance implications: none.\n\nWorkaround used: host-side `digest.hex()` / f-string paths in\n`store_phase1a.py`; layout documented in RFC 0016 as host-owned Phase-1a\nmechanics pending path + I/O capabilities.\n\nWhat the language/stdlib/runtime should ideally provide: bounded `Path`\nvalues (root-confined join, hex encoding of digests, explicit\nnormalization errors) composed with the file effects of P1-001/P1-003.\n\nAffected backend(s) / target(s), if known: all (type absence).\n\nSeverity: moderate\n\nStatus: blocked (layout naming host-owned)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nNo string/path/filename type in any 0.13 feature list. The fs_* design\ndeliberately avoids paths: u64 entry indices plus <= 64-byte name values\nkeep authority in grants and indices as data. Layout derivation\n(digest -> hex filename) stays host `bytes.hex()`; names crossing into\nMNCS are opaque bytes. The pressure narrows (indices compose better than\nnothing) but the type absence stands.\n\nSeverity: moderate (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-017",
+    "mncs-store:P1-017"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-017",
+    "text": "format a 32-byte digest as 64 hex\ncharacters to derive a chunk filename. There is no string builder, no\nbyte-to-hex primitive, and no filename value to pass anywhere even if\nformatting existed."
+  },
+  "requiredBehavior": "bounded string/path values with hex/base encoding,\njoin/normalize operations that cannot escape a store root (no `..`\ntraversal by construction), and capability-gated resolution of paths to\nbyte sources/sinks (composing P1-001/P1-003 with names).",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-017-no-path-type.md"
+  },
+  "summary": "Imported legacy pressure P1-017: No path/string type: layout names are unrepresentable in-language.",
+  "target": "language",
+  "title": "No path/string type: layout names are unrepresentable in-language",
+  "version": "1"
+}

@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:cf116d6860c1c2be567bb0baad472c80a1096254df1f74b3dcc3a28d606274cd",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-B01",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-B01-c11-checked-arith-divergence.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-4719D1B72215--OBS-42A3668462CD",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-4719D1B72215",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "`tests/fixtures/checked_arith_canary.mncs` +\n`tests/corpora/canary-corpus.json` (`decode-plain-max` case). Run on\n`mncs-c11` vs any other executable backend.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "store decoders use wrapping operators where the true\nvalue provably fits u32 (exact, not approximate); the canary stays in the\nsuite with a `KNOWN_DIVERGENCES` allowlist entry so the divergence is\npinned, not hidden — if C11 starts passing, the suite fails loudly\ndemanding allowlist removal.",
+    "legacyStatus": "workaround (wrapping discipline) + pinned (canary + allowlist)"
+  }
+}

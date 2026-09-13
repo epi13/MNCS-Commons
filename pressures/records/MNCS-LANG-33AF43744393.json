@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-019.host-read-grants-are-single-file-64-byte-whole-content-snapshots",
+  "contentDigest": "sha256:01bb52b9a5c0a56e82b2f223de0654693cfa8ec26997e68c232fab9cb5ea8dac",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-33AF43744393",
+  "identity": {
+    "capability": "legacy.p1-019.host-read-grants-are-single-file-64-byte-whole-content-snapshots",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-store:P1-019",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (argument-passed bytes for bulk; single-file proof kept)",
+    "legacyId": "P1-019",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:05fd4c43e5ab30bc5865df5278376bea6b8f2e41307f64c78bb291f4e7652ee2",
+    "sourcePath": "mncs-store:P1-019-host-read-grant-shape.md",
+    "sourceText": "# P1-019 — host_read grants are single-file, ≤64-byte, whole-content snapshots\n\nStorage feature being implemented: in-language read-path verification\n(`store.read_verify`: read chunk file → hash → compare).\n\nObserved language/runtime/compiler behavior: `--grant-read\ncapability=path` binds ONE capability name to ONE file path, and the\nrealized value is the whole file as `[byte; up_to 64]`. A function\ndeclares one capability, so one function reads one file; verifying N\nchunks needs N capabilities/grants/functions (or N invocations with\ndifferent grants). Files larger than 64 bytes cannot be fully observed\n(truncation/error behavior for oversize grants is undocumented from the\nsource side). There are no positioned reads, no partial grants, no\ngrant-per-invocation parameterization.\n\nMinimal reproducer: verify two chunk files in one MNCS call. Each needs\nits own `host_read()` under its own capability, i.e. two grants and —\nsince authority is per-function — awkward plumbing that scales with the\nnumber of files, not the logic.\n\nRequired semantics: parameterized read grants (a read effect that takes a\nbounded path/index argument within an authorized root), positioned and\npartial reads, and documented oversize behavior, so bulk verification is\none function over many files.\n\nWhy the current behavior/API is insufficient: `store.read_verify` proves\nthe SHAPE (in-language file→digest verification works, dual effects\ncompose — a positive finding), but only one file per function. The\nlifecycle driver verifies through argument-passed bytes instead, because\nper-file capabilities do not scale to a store with thousands of chunks.\n\nSafety/correctness implications: LOW-MEDIUM. Capability-per-file is\narguably GOOD least-authority design; the pressure is ergonomic/scale,\nnot safety. The real gap is the missing parameterized form: per-file\ncapabilities without a way to mint them programmatically.\n\nPerformance implications: one CLI invocation per file for in-language\nreads (compounds P1-016).\n\nWorkaround used: lifecycle verification passes file bytes as corpus\narguments to pure MNCS validators (one batched invocation for N files);\n`read_verify` covers the single-file in-language path as proof, tested\nin `test_in_language_chunk_file_verification` (skips honestly if combined\nread+crypto grants are refused).\n\nWhat the language/stdlib/runtime should ideally provide: root-scoped\nread capabilities with bounded path arguments\n(`host_read_at(root_cap, index)`), positioned reads, and documented\noversize/truncation semantics.\n\nAffected backend(s) / target(s), if known: all (grant-shape design).\n\nSeverity: moderate\n\nStatus: workaround (argument-passed bytes for bulk; single-file proof kept)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nGranted directory enumeration (`fs_list_count/generation/entry_name_at/\nentry_kind_at`) and positioned chunked reads (`fs_read_bytes_at`, <= 64\nB per call, short reads as EOF) now exist and execute as documented\n(verified against a 3-entry fixture tree, including the wild-index\nInvalidRequest). The \"one function reads one file\" ceiling is lifted\nfor observation: one function can now scan a granted tree by index.\n\nRemaining: one root per capability, <= 64 B per read call, names <= 64\nB, no read-back of `host_write` appends, bytecode-only realization. Bulk\nlifecycle verification still passes bytes as corpus arguments (one\nbatched invocation per N files) because per-call chunking multiplies\ninvocations (P1-016 compounding).\n\nSeverity now: minor-moderate (was moderate).\n"
+  },
+  "legacyIds": [
+    "P1-019",
+    "mncs-store:P1-019"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-019",
+    "text": "verify two chunk files in one MNCS call. Each needs\nits own `host_read()` under its own capability, i.e. two grants and —\nsince authority is per-function — awkward plumbing that scales with the\nnumber of files, not the logic."
+  },
+  "requiredBehavior": "parameterized read grants (a read effect that takes a\nbounded path/index argument within an authorized root), positioned and\npartial reads, and documented oversize behavior, so bulk verification is\none function over many files.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-019-host-read-grant-shape.md"
+  },
+  "summary": "Imported legacy pressure P1-019: host_read grants are single-file, ≤64-byte, whole-content snapshots.",
+  "target": "language",
+  "title": "host_read grants are single-file, ≤64-byte, whole-content snapshots",
+  "version": "1"
+}

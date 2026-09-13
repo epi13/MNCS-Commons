@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:011955999742cdabb13fb6d037f183185686be361e09a90b0876c99fe32e1c70",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P2-001",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P2-001-digest-realization-bound-64.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-4130BB4C42C3--OBS-54D9E9187DE5",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-4130BB4C42C3",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "```mncs\nmncs 0.13;\nmodule probe.hash2;\nfn digest128(payload: [byte; 128]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    let view: [byte; up_to 128] = payload[0..128];\n    return sha256_digest(view);\n}\n```\n\nwith a 128-byte sequence argument: status invalid_request at step 4.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "manifest-v2 chained root (`chain_init`/`chain_step` in\n`src/store/manifest.mncs`), pinned by chain corpora with hashlib\noracles including order-sensitivity pairs. Semantically exact for the\nbounded domain (0..992 B, 1..31 chunks), a bootstrap substitute for\narbitrary sizes.",
+    "legacyStatus": "workaround (chained roots to 992 B; arbitrary sizes deferred)"
+  }
+}

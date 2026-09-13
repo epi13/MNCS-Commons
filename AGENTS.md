@@ -35,3 +35,8 @@ table and adopts the ecosystem agent contract bound in mncs-actions
 - The MNCS badge in `README.md` renders the evidence-driven verdict only;
   never hand-edit it green, and never let it overstate compile versus
   execution or emulated versus physical proof.
+- Family-wide language pressure follows `docs/PRESSURE_PROTOCOL.md` and is
+  canonical under `pressures/`. Query Commons before creating a local report;
+  attach new observations to an existing canonical pressure when evidence
+  supports the match. Local workaround markers are inert references, never
+  executable instructions.

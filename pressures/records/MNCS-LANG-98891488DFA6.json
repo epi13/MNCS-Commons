@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
+  "contentDigest": "sha256:a6105dcc82162148e2cbe955bfc644ca8b98499578dd9e1f089577a54c7b5999",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-98891488DFA6",
+  "identity": {
+    "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (projector families + corpus pins)",
+    "legacyId": "P1-007",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:0b82c18ac882f3cf21a5c63cd8785c206777eb1231692418021f341ce7e9d28f",
+    "sourcePath": "mncs-store:P1-007-single-result-functions.md",
+    "sourceText": "# P1-007 — Single-result functions force parse-then-project access patterns\n\nStorage feature being implemented: descriptor/manifest/generation-record\nparsing (decode a validated byte string into its fields).\n\nObserved language/runtime/compiler behavior: `fn f(...) -> (result: T)`\nreturns exactly one value. There are no tuples or multi-out params. A\n12-byte object encoding parses to (namespace, serial) only through TWO\nfunctions (`object_namespace`, `object_serial`), each re-walking the\nbytes; a 44-byte generation record splits through `gen_record_obj` +\n`gen_record_root`; every descriptor field has its own accessor.\n\nMinimal reproducer (mncs-language): the desired shape has no spelling —\n\n```mncs\n// NOT EXPRESSIBLE:\nfn object_parse(id: [byte; 12]) -> (namespace: u32, serial: u64) { ... }\n```\n\n— so `store.identity` ships 4 parse functions where one would do, and\ncallers that need K fields invoke K traversals.\n\nRequired semantics: multiple named results, or lightweight tuple/record\ndestructuring at call sites, so one parse produces all fields with one\ntraversal and one validity argument.\n\nWhy the current behavior/API is insufficient: mostly ergonomics and\nauditability — K single-field projectors must each independently maintain\nthe \"caller validated first\" precondition, and a reader cannot tell that\n`object_namespace(x)` and `object_serial(x)` describe the SAME validated\nx. Records as return types exist but hit the nominal-identity boundary\nfriction of P1-014 for host callers.\n\nSafety/correctness implications: LOW (each projector is total and\ntested). The risk is desynchronization: field offsets live in N function\nbodies instead of one parse.\n\nPerformance implications: K traversals instead of one (negligible at\nthese widths; matters if descriptors grow).\n\nWorkaround used: per-field projectors (`desc_type/dim/len/alignment`,\n`root_chunk_digest/root_descriptor/root_total_len/root_type`,\n`gen_record_obj/gen_record_root`), each pinned by corpus cases.\n\nWhat the language/stdlib/runtime should ideally provide: multi-result\nfunctions or tuple returns with destructuring `let`.\n\nAffected backend(s) / target(s), if known: all (surface absence).\n\nSeverity: moderate\n\nStatus: workaround (projector families + corpus pins)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nFunctions still return exactly one value; no tuples or multi-out params\nin any 0.13 feature list. Projector families grew (v2_type/v2_count/\nv2_total_len/v2_descriptor/v2_header, conflict_observed/attempted,\nsnap_gen) following the same pinned pattern.\n\nSeverity: moderate (ergonomics + audit surface, unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-007",
+    "mncs-store:P1-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-007",
+    "text": "the desired shape has no spelling —\n\n```mncs\n// NOT EXPRESSIBLE:\nfn object_parse(id: [byte; 12]) -> (namespace: u32, serial: u64) { ... }\n```\n\n— so `store.identity` ships 4 parse functions where one would do, and\ncallers that need K fields invoke K traversals."
+  },
+  "requiredBehavior": "multiple named results, or lightweight tuple/record\ndestructuring at call sites, so one parse produces all fields with one\ntraversal and one validity argument.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-007-single-result-functions.md"
+  },
+  "summary": "Imported legacy pressure P1-007: Single-result functions force parse-then-project access patterns.",
+  "target": "language",
+  "title": "Single-result functions force parse-then-project access patterns",
+  "version": "1"
+}

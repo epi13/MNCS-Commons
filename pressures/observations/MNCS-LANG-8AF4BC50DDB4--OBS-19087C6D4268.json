@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:035bb31360393cce8cb42b5bcc58bb298a4ce70ce788e062d3c01e1e901dc516",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-001",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-001-no-file-write-effect.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-8AF4BC50DDB4--OBS-19087C6D4268",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-8AF4BC50DDB4",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "```mncs\nmncs 0.10;\n\nmodule store.write_probe;\n\nfn persist_chunk(frame: [byte; 12]) -> (result: bool)\n    capability store_writer\n    effect host_write authorized_by store_writer\n{\n    return host_write(frame);\n}\n```\n\n`source-study` rejects the `effect host_write` declaration (unknown\neffect; cf. MNE235/MNE236 for the `host_read` analogue). There is no\nspelling of this program that elaborates.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "`tests/store_phase1a.py` performs all file mutation in\nPython (clearly labeled host transport, never semantics). MNCS owns every\nsemantic byte; Python owns files, fsync, and rename.",
+    "legacyStatus": "blocked (lifecycle mechanics host-owned; semantics in-language)"
+  }
+}

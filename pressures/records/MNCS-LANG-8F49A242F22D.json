@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
+  "contentDigest": "sha256:95de44917013a5e8ee703134b09987dd61462ac03371192732e9b0bb94012e02",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-8F49A242F22D",
+  "identity": {
+    "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P2-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "measured (batching + counters; no semantic workaround needed)",
+    "legacyId": "P2-008",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:e610da1604e3b038dda71cb2d4bc365541a54ac46b5beca57983f114d57b5235",
+    "sourcePath": "mncs-store:P2-008-step-and-boundary-costs.md",
+    "sourceText": "# P2-008 — Step-cost and boundary-crossing pressure at store scale\n\nNew Phase-2 pressure (measured 2026-09-10; performance evidence, not a\ncorrectness gap).\n\nStorage feature being implemented: reclamation scans, chain\ncomputation, and suite runtime for 0..992-byte objects (ROADMAP Phase 2\nexit proof at bounded scale).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13, research-bytecode, x86_64 Linux, debug CLI):\n\n- A 1024-iteration loop with a scalar body costs ~9.2k steps (~9/iter);\n  carrying a `replace` per step costs ~11.3k steps (~11/iter).\n- Calling a 32-iteration callee (`content_equal`) once per table byte\n  costs > 250 steps/byte: the full scan exhausts even a 262144-step\n  budget. Restructured to an incremental mismatch latch\n  (`store.generation.scan_step`), the scan costs 33808 steps and is\n  CORRECT — just above the harness's 32768 default, so reclamation\n  passes an explicit 65536 budget. The per-step helper call dominates;\n  `&&` does not short-circuit callees (an all-inactive scan costs the\n  same as a full scan).\n- Chain depth scales invocations: a 40-byte put plan needs ~10 batched\n  CLI invocations (descriptors, frames, tails, digests, oids, headers,\n  init, depth steps, preview, commit transitions); a 31-chunk object\n  needs ~40.\n- Boundary transport: a 1024-byte `table_contains` argument is ~50 KB\n  of JSON (~25x expansion per stored byte, P1-016 pattern); corpus\n  files carrying such cases grow ~50 KB per case.\n- Single-case CLI invocations cost seconds (compile-dominated); the\n  suite stays runnable only through maximal batching (one corpus per\n  operation-kind per phase).\n\nMinimal reproducer: `table_contains` over a 1024-byte table at the\ndefault 32768-step budget -> budget_exhausted at 32768 steps; returns\nthe correct verdict at 65536 (33808 steps used). Bisectors in\n`probe.cost` (`plain1024` 9223 steps, `replace1024` 11272 steps)\nisolate the callee-call constant.\n\nRequired semantics (tooling/runtime, not storage): cheaper calls or an\nin-process execution boundary (P1-016), short-circuiting `&&` over\neffect-free callees, and binary (non-JSON) value transport — any one of\nwhich collapses the constant by an order of magnitude.\n\nWhy the current behavior/API is insufficient: nothing is incorrect, but\nthe constants dictate driver architecture (depth-batching, explicit\nbudgets, 50 KB corpus cases) and bound how far bounded verification\nscales before invocations dominate. If the language forces an obviously\npathological amount of copying or boundary overhead at production\ngranularity, that cost should be visible here first.\n\nSafety/correctness implications: none (budgets are host execution\nparameters; the step model accounts every operation exactly).\n\nPerformance implications: suite runtime is ~95% subprocess + JSON\noverhead (unchanged from Phase 1a); per-object put latency is ~10\ninvocations; reclamation scans are 34k steps per 32-entry window.\n\nWorkaround used: maximal batching, explicit scan budgets, Engine\ninvocation/byte counters for honest reporting, `MNCS_BACKENDS`\nnarrowing for iteration speed. No semantic content.\n\nWhat the language/stdlib/runtime should ideally provide: a stable C ABI\nor session mode for load-once/call-many execution with binary\narguments (P1-016), plus documented step-cost guidance so call-heavy\nscans can be budgeted without bisection.\n\nAffected backend(s): all (tooling-shape absence; step constants are\nbytecode-measured — compiled-backend constants unmeasured, P1-B02).\n\nSeverity: moderate (test-time only).\n\nStatus: measured (batching + counters; no semantic workaround needed)\n\nAcceptance test: the same `table_contains` scan completes within the\ndefault budget after a call-cost improvement, or an in-process boundary\nruns the Phase-2 suite with invocation overhead excluded from the\nreport.\n"
+  },
+  "legacyIds": [
+    "P2-008",
+    "mncs-store:P2-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-008",
+    "text": "`table_contains` over a 1024-byte table at the\ndefault 32768-step budget -> budget_exhausted at 32768 steps; returns\nthe correct verdict at 65536 (33808 steps used). Bisectors in\n`probe.cost` (`plain1024` 9223 steps, `replace1024` 11272 steps)\nisolate the callee-call constant.\n\nRequired semantics (tooling/runtime, not storage): cheaper calls or an\nin-process execution boundary (P1-016), short-circuiting `&&` over\neffect-free callees, and binary (non-JSON) value transport — any one of\nwhich collapses the constant by an order of magnitude."
+  },
+  "requiredBehavior": "cheaper calls or an\nin-process execution boundary (P1-016), short-circuiting `&&` over\neffect-free callees, and binary (non-JSON) value transport — any one of\nwhich collapses the constant by an order of magnitude.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-008-step-and-boundary-costs.md"
+  },
+  "summary": "Imported legacy pressure P2-008: Step-cost and boundary-crossing pressure at store scale.",
+  "target": "language",
+  "title": "Step-cost and boundary-crossing pressure at store scale",
+  "version": "1"
+}

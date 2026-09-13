@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:d293fb3d868d2f57fb30470ff42e2921dae2628ceaa5c4f62a04fcbe3382fecc",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P2-006",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P2-006-generation-scan-bound.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-9EFB17CE75B3--OBS-8BD4D69DBED8",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-9EFB17CE75B3",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "validate a 24-record generation file (1064 bytes)\nwith `header_validate` — the argument does not bind (bound exceeded);\nsplitting into two views fails to typecheck (MNE133).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "`_classify_generation_file` runs MNCS `header_validate`\nto 23 records and the host length gate beyond, with per-object MNCS\nverification in both cases. Semantically exact for structure (same\nequality), bootstrap substitute for authority. Phase-2 test generations\nstay within 23 records so the primary path is fully in-language.",
+    "legacyStatus": "workaround (host length-gate parity past 23 records)"
+  }
+}

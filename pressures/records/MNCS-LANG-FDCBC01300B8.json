@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+  "contentDigest": "sha256:c79c242acadaed486ed8cb2a83ffb441bcf7a82a2b166dff211b0307c9949094",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-FDCBC01300B8",
+  "identity": {
+    "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "blocked",
+    "legacyId": "P1-002",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:ddece72dd528751b5eb6ced486d772788935f72ce2be3e3e8ee09abbf6d2407c",
+    "sourcePath": "mncs-store:P1-002-no-durable-sync-barrier.md",
+    "sourceText": "# P1-002 — No durable-sync barrier distinct from userspace buffering\n\nStorage feature being implemented: commit durability — the promise that a\ngeneration acknowledged as durable survives process and OS crashes\n(invariants 11–12, RFC 0005 durability, RFC 0015 recovery).\n\nObserved language/runtime/compiler behavior: even if P1-001 (writes) were\nresolved, no API exposes a persistence barrier (`fsync`/`fdatasync`/\nflush-to-stable-media or a durability-policy acknowledgment). The four\nexisting host effects are pure observations. There is no spelling for\n\"make preceding writes durable\" and no way for an MNCS program to learn\nwhich durability barrier, if any, backs its storage.\n\nMinimal reproducer: any program requiring post-commit crash survival —\ne.g. write chunk bytes, issue a (nonexistent) sync barrier, acknowledge\ndurability. The barrier step has no expression; see P1-001 reproducer.\n\nRequired semantics: an explicit, capability-gated sync operation whose\ncompletion means bytes reached the durability domain promised by the\nactive policy, with failure (I/O error, read-only media, unsupported\nbarrier) reported as a value, not assumed.\n\nWhy the current behavior/API is insufficient: without a barrier, no MNCS\nprogram can truthfully distinguish \"visible to this process\" from\n\"durable\". Any durability acknowledgment would be a fabrication\n(invariant 11 forbids acknowledging an uncompleted barrier).\n\nSafety/correctness implications: HIGH. Crash-consistency arguments for\ngenerations (Phase 2) cannot even be stated, let alone proven, until the\nbarrier exists. Recovery semantics rest on a host promise the language\ncannot name.\n\nPerformance implications: barrier batching/group-commit policy cannot be\nexpressed or tuned from MNCS; durability costs stay invisible.\n\nWorkaround used: host driver calls `os.fsync` after every file write and\ndirectory mutation, and documents the exact barrier order in\n`store_phase1a.py` (`_write_sync`, `_write_create_exclusive`,\n`_fsync_dir`). Durability claims in this run cover the host driver only.\n\nWhat the language/stdlib/runtime should ideally provide: a `sync`\neffect (file + directory scope) tied to the durability-policy vocabulary\nof RFC 0008, with explicit completion/failure and backend capability\ndeclarations (some targets cannot offer more than \"process-visible\").\n\nAffected backend(s) / target(s), if known: all (frontend-level absence);\nsome future targets (bare metal, WASM sandboxes) may only ever offer\nweakened barriers, which must then be DECLARED, not silent.\n\nSeverity: blocker (for any durability claim; visibility-only commits work)\n\nStatus: blocked\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nNo sync/fsync/flush primitive exists in any profile (source grep over\n`crates/mncs-compiler/src/frontend.rs`, `mncs-model`, `mncs-syntax`:\nzero hits for fsync/fdatasync/sync-barrier effects). `host_write`\nappending without a barrier still cannot distinguish \"visible to this\nprocess\" from \"durable\". Durability acknowledgments stay host-side\n(`os.fsync` ordering in the driver).\n\nSeverity: still blocker for any in-language durability claim.\n"
+  },
+  "legacyIds": [
+    "P1-002",
+    "mncs-store:P1-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-002",
+    "text": "any program requiring post-commit crash survival —\ne.g. write chunk bytes, issue a (nonexistent) sync barrier, acknowledge\ndurability. The barrier step has no expression; see P1-001 reproducer."
+  },
+  "requiredBehavior": "an explicit, capability-gated sync operation whose\ncompletion means bytes reached the durability domain promised by the\nactive policy, with failure (I/O error, read-only media, unsupported\nbarrier) reported as a value, not assumed.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-002-no-durable-sync-barrier.md"
+  },
+  "summary": "Imported legacy pressure P1-002: No durable-sync barrier distinct from userspace buffering.",
+  "target": "language",
+  "title": "No durable-sync barrier distinct from userspace buffering",
+  "version": "1"
+}

@@ -1,0 +1,32 @@
+{
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-8AF4BC50DDB4",
+      "reporters": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    }
+  ],
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "multi-repository"
+}

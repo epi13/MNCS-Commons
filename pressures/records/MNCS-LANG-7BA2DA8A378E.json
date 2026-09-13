@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+  "contentDigest": "sha256:ee70d33d7f35d5a07dc980509648fb0e3a9d3efb796a333610f4b405b9b2b94b",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-LANG-7BA2DA8A378E",
+  "identity": {
+    "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-store:P1-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (indexing discipline; no nested loops needed in 1a)",
+    "legacyId": "P1-008",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:240d7254edec250576acaf7b3a02329b44d6e45f0f2e5884b71cc9cfca258175",
+    "sourcePath": "mncs-store:P1-008-iteration-bound-ceiling.md",
+    "sourceText": "# P1-008 — Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans\n\nStorage feature being implemented: digest comparison/ordering (32-byte\nloops), descriptor validation, any future multi-chunk root scan.\n\nObserved language/runtime/compiler behavior: counted/traversal bounds are\n1..=32 per level (MNE142 otherwise); Profile 0.11 allows exactly two\nnested levels (third refused, MNE147). A 64-byte manifest cannot be\nscanned in one level; 32-byte digest loops sit exactly AT the ceiling, so\nany wider digest (e.g. SHA-512) or any scan with setup margin needs\nnesting for purely arithmetic reasons.\n\nMinimal reproducer (mncs-language):\n\n```mncs\nfn scan64(x: [byte; 64]) -> (result: bool) {\n    iterate i over x carrying found: bool = false {  // MNE142: bound 64 refused\n        next found = found || x[i] == 0;\n    }\n    return found;\n}\n```\n\nRequired semantics: bounds that scale with the sequence bound (a full\nsingle-level traversal of any legal array), or an explicit\nhigher-bound construct for u8-scale scans.\n\nWhy the current behavior/API is insufficient: it worked (barely) for\nPhase 1a — digest loops use bound 32, manifest validation avoids loops\nvia direct indexing — but the ceiling interacts badly with P1-005: if\nviews ever grow to KB scale, two levels of 32 (1024 steps) still cannot\nscan them, so raising the sequence bound REQUIRES raising iteration\nbounds in lockstep.\n\nSafety/correctness implications: LOW (refusals are explicit). The subtle\nrisk is step-budget accounting across nesting levels, which we did not\nneed to probe.\n\nPerformance implications: none observed.\n\nWorkaround used: direct-index field checks (no loops) for 16/64-byte\nstructures; single-level bound-32 loops only for 32-byte digests.\n\nWhat the language/stdlib/runtime should ideally provide: single-level\ntraversal bounds that cover the maximum sequence bound, documented\ntogether (one \"bounded data\" envelope, not two independent ceilings).\n\nAffected backend(s) / target(s), if known: all (profile-level rule).\n\nSeverity: moderate\n\nStatus: workaround (indexing discipline; no nested loops needed in 1a)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nBounds are 1..=1024 per level with a 1024x1024 = 1M static work envelope.\nVerified: `scan64` (the old MNE142 reproducer) and a 1024-wide traversal\nboth elaborate and execute; 32-byte digest loops sit at 3% of the\nceiling instead of exactly at it. Nesting stays 2 levels (sufficient:\nthe store's deepest nesting is 1 level + callee loops, product 32k <<\n1M). No store workaround remains for iteration shape; loops read\nnaturally at every width used (4/8/16/32/1024).\n\nKept as regression evidence: the corpus pins bound-32 digest loops and\nthe new 1024 scan covers the ceiling.\n"
+  },
+  "legacyIds": [
+    "P1-008",
+    "mncs-store:P1-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-008",
+    "text": "```mncs\nfn scan64(x: [byte; 64]) -> (result: bool) {\n    iterate i over x carrying found: bool = false {  // MNE142: bound 64 refused\n        next found = found || x[i] == 0;\n    }\n    return found;\n}\n```"
+  },
+  "requiredBehavior": "bounds that scale with the sequence bound (a full\nsingle-level traversal of any legal array), or an explicit\nhigher-bound construct for u8-scale scans.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-008-iteration-bound-ceiling.md"
+  },
+  "summary": "Imported legacy pressure P1-008: Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans.",
+  "target": "language",
+  "title": "Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans",
+  "version": "1"
+}

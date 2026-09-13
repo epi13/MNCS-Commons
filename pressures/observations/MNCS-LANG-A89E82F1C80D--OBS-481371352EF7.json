@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:9c3a995bd89d928dbf3176c5c1d6d242b703157c5b89ab81d8f502cf0738412c",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-B02",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-B02-effects-bytecode-only.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-A89E82F1C80D--OBS-481371352EF7",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-A89E82F1C80D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "`tests/fixtures/effects_probe.mncs` +\n`tests/corpora/effects-corpus.json`, run with `--grant-crypto\nprobe_crypto --grant-read probe_reader=tests/fixtures/read_grant.bin`\non any compiled backend. Pinned in-suite by\n`test_effects_probe_per_backend` with EXPECTED_REFUSALS allowlist\n(stale-entry discipline: a backend that starts executing effects fails\nloudly, forcing suite widening).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "crypto suites scoped to `EFFECT_BACKENDS =\n[\"mncs-research-bytecode\"]`; per-backend support pinned cheaply by the\ntiny probe program (fast compile) instead of recompiling full store\nmodules per backend per run; lifecycle driver runs on bytecode.",
+    "legacyStatus": "workaround (bytecode-scoped crypto suites) + pinned (probe +"
+  }
+}

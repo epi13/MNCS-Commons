@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
+  "contentDigest": "sha256:1d2f1eff97d9aa04d100bd7dbeaaf87745abe71f27989815b5e9c059eb9f520d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-D1947FFBA6D9",
+  "identity": {
+    "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (monomorphized widths; volume-induced bug caught by tests)",
+    "legacyId": "P1-006",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:c23bfbdce8809088c6bd55e4ad2f1dbb4ed75d260bd3adf7a39237745c21884e",
+    "sourcePath": "mncs-store:P1-006-no-scatter-write.md",
+    "sourceText": "# P1-006 — No scatter-write into byte buffers; only whole-array functional construction\n\nStorage feature being implemented: generic chunk framing (tag + length +\nN-byte payload for arbitrary N), variable-length manifest assembly,\nzero-padded blob handling.\n\nObserved language/runtime/compiler behavior: sequences are immutable\nvalues. The only \"update\" shape is functional rebuild of the whole array\n(cf. `put4` in `library/core/sequences.mncs`, which rewrites a 4-element\narray through an if-chain). There is no indexed assignment, no mutable\nbyte buffer, no `memcpy`-like primitive, no view-to-exact materialization.\nBuilding a 36-byte frame for a runtime-length payload would require an\nO(N) if-chain over positions or 36 explicit element expressions per width\n— i.e. monomorphized literals, which is what `store.chunk` does\n(`frame4/8/16/32`).\n\nMinimal reproducer (mncs-language): frame a runtime-length view into an\nexact array:\n\n```mncs\nfn frame_generic(payload: [byte; up_to 64], length: u64) -> (result: [byte; 36]) {\n    // No expression writes payload[i] into result slots: indexing\n    // constructs values, and there is no buffer to scatter into.\n    // Only a 36-arm explicit construction works (see frame32).\n    return frame32(payload); // MNE133: view is not [byte; 32]\n}\n```\n\nRequired semantics: a bounded scatter primitive (write `byte` at a\nproven-in-bounds index of a mutable buffer, or bulk copy view->buffer\nwith explicit length), so framing/parsing need not be monomorphized per\nwidth.\n\nWhy the current behavior/API is insufficient: every new payload width\ncosts a hand-written ~15-line framing function plus matching\ndigest/verify/projector variants. `store.chunk` is ~450 lines for FIVE\nwidths; a 6th (e.g. 48-byte frames, still under the 64 bound) costs\nanother ~60 lines of near-identical code. This is not abstraction\nresistance in the problem — it is missing bulk-data vocabulary.\n\nSafety/correctness implications: MEDIUM. The monomorphized code is\ncorrect but its very volume invites copy/paste width errors (we caught\none: `get_u64` initially took `[byte; 12]`-vs-`[byte; 20]` — found only by\nexecuting the corpus). A scatter primitive with checked indices would\nhave one code path, not five.\n\nPerformance implications: functional rebuilds copy whole arrays per\n\"update\"; framing is O(widths × sizes) source and O(N) copies at best.\n\nWorkaround used: exact-width monomorphization (frame4/8/16/32 +\nverify_frame* + payload* + get_*); arbitrary widths rejected with\n`frame_valid` code 5; 64-byte manifest/root literals spelled element by\nelement (64-element array literal in `manifest.encode`).\n\nWhat the language/stdlib/runtime should ideally provide: bounded mutable\nbyte buffers (or linear/unique buffer types) with checked indexed write\nand view->buffer bulk copy; or first-class bulk constructors\n(repeat/splat, concat of exact arrays, view materialization with explicit\nlength).\n\nAffected backend(s) / target(s), if known: all (surface absence).\n\nSeverity: major\n\nStatus: workaround (monomorphized widths; volume-induced bug caught by tests)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nNew bulk vocabulary: `replace(array, index, value)` with iteration\ncarried state, `[value; N]` repeat literals, and 1024-wide construction\nall elaborate and execute (verified: fill16, zero16, concat32_32). The\nmanifest-v2 chain needs exactly one 64-byte concatenation, which is now\none monomorphized function instead of an impossibility.\n\nRemaining: no indexed assignment to buffers, no view concatenation, no\nview-to-exact materialization, no scatter into file regions. Variable\ngeometry still costs one hand-written function per width (tail_ok4/8/16/\n32, payload4/8/16/32) and dynamic table assembly stays host-side. The\nmonomorphization tax fell (5 widths -> 1 concat + 4 tails) but persists.\n\nSeverity now: moderate (was major).\n"
+  },
+  "legacyIds": [
+    "P1-006",
+    "mncs-store:P1-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-006",
+    "text": "frame a runtime-length view into an\nexact array:\n\n```mncs\nfn frame_generic(payload: [byte; up_to 64], length: u64) -> (result: [byte; 36]) {\n    // No expression writes payload[i] into result slots: indexing\n    // constructs values, and there is no buffer to scatter into.\n    // Only a 36-arm explicit construction works (see frame32).\n    return frame32(payload); // MNE133: view is not [byte; 32]\n}\n```"
+  },
+  "requiredBehavior": "a bounded scatter primitive (write `byte` at a\nproven-in-bounds index of a mutable buffer, or bulk copy view->buffer\nwith explicit length), so framing/parsing need not be monomorphized per\nwidth.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-006-no-scatter-write.md"
+  },
+  "summary": "Imported legacy pressure P1-006: No scatter-write into byte buffers; only whole-array functional construction.",
+  "target": "language",
+  "title": "No scatter-write into byte buffers; only whole-array functional construction",
+  "version": "1"
+}

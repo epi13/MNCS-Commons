@@ -1,0 +1,722 @@
+{
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
+      "domain": "type-system.views",
+      "id": "MNCS-LANG-0EEA4F938BAB",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No memory-mapped / zero-copy view primitive (RFC 0009 design pressure)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-004.no-streaming-or-incremental-hash-api-single-shot-digests-over-64-byte-views-only",
+      "domain": "type-system.views",
+      "id": "MNCS-LANG-162B2B90388C",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No streaming or incremental hash API; single-shot digests over ≤64-byte views only",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-002.no-view-width-subsumption-forces-widest-view-boundary-signatures",
+      "domain": "type-system.views",
+      "id": "MNCS-LANG-3214070482A7",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No view-width subsumption forces widest-view boundary signatures",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-019.host-read-grants-are-single-file-64-byte-whole-content-snapshots",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-33AF43744393",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "host_read grants are single-file, ≤64-byte, whole-content snapshots",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-001.single-shot-digest-realization-bound-64-b-with-no-incremental-api",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-4130BB4C42C3",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Single-shot digest realization bound (64 B) with no incremental API",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
+      "domain": "backend",
+      "id": "MNCS-LANG-4719D1B72215",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "C11 backend traps on large-but-valid u32 checked products (backend divergence)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-493C32111AA5",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-005.max-sequence-bound-64-caps-value-chunk-and-manifest-sizes",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-4EC58934F8DB",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-52A5E0C72A39",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+      "domain": "type-system.records",
+      "id": "MNCS-LANG-532C63CD5EA3",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Record nominal identities are brittle at the process boundary",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-013.host-cannot-invoke-generic-functions-no-type-arguments-at-the-process-boundary",
+      "domain": "type-system.generics",
+      "id": "MNCS-LANG-5B2AD8F659B6",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Host cannot invoke generic functions (no type arguments at the process boundary)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-020.no-typed-error-vocabulary-at-the-process-boundary-u64-status-codes-instead",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-649A6B6FA08E",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No typed-error vocabulary at the process boundary (u64 status codes instead)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-007.observation-granularity-64-b-reads-one-root-per-capability",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-7181F1DBC345",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Observation granularity: 64 B reads, one root per capability",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-71DAE5A34032",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No atomic publication, namespace mutation, or durability barrier",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+      "domain": "control-flow.iteration",
+      "id": "MNCS-LANG-7BA2DA8A378E",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-8AF4BC50DDB4",
+      "reporters": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-012.no-view-width-subsumption-byte-up-to-8-is-not-a-byte-up-to-64",
+      "domain": "type-system.views",
+      "id": "MNCS-LANG-8D86843C5F1C",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No view-width subsumption: `[byte; up_to 8]` is not a `[byte; up_to 64]`",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-8F49A242F22D",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Step-cost and boundary-crossing pressure at store scale",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-973FAC2F4FBD",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No atomic rename, directory creation/iteration, or file metadata",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-98891488DFA6",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Single-result functions force parse-then-project access patterns",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-006.in-language-generation-scans-bound-at-23-records",
+      "domain": "type-system.records",
+      "id": "MNCS-LANG-9EFB17CE75B3",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "In-language generation scans bound at 23 records",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-A0C3744B0B9A",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "Append-only host_write cannot express store file semantics",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-009.no-over-bool-mne121",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-A29B3EFA5B73",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No `==` over `bool` (MNE121)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-b02.host-effects-realized-only-by-research-bytecode-compiled-backends-refuse-silentl",
+      "domain": "effects",
+      "id": "MNCS-LANG-A89E82F1C80D",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-021.checked-arithmetic-obligations-have-no-discharge-path-for-input-bounded-values",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-AED76C32EC2E",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Checked-arithmetic obligations have no discharge path for input-bounded values",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-015.no-unique-identity-issuance-primitive-objectid-serials-are-host-issued",
+      "domain": "identity",
+      "id": "MNCS-LANG-CD0DEF98FD10",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No unique-identity issuance primitive (ObjectId serials are host-issued)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-D1947FFBA6D9",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No scatter-write into byte buffers; only whole-array functional construction",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-017.no-path-string-type-layout-names-are-unrepresentable-in-language",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-E06C0D4EC0D1",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No path/string type: layout names are unrepresentable in-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-003.no-generic-boundary-functions-forces-per-width-tail-families",
+      "domain": "type-system.generics",
+      "id": "MNCS-LANG-ECDA8EDB6183",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No generic boundary functions forces per-width tail families",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-FDCBC01300B8",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No durable-sync barrier distinct from userspace buffering",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-011.wrapping-operator-literal-inference-is-position-sensitive-mne117-mne119",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-FF5CADADD439",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Wrapping-operator literal inference is position-sensitive (MNE117/MNE119)",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    }
+  ],
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "unresolved-language"
+}

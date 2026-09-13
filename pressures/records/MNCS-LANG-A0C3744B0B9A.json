@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+  "contentDigest": "sha256:d9d280e7c3cdb29352b99c97027fe9e5a8e37588b33cf89bd91b73a5594df03c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-A0C3744B0B9A",
+  "identity": {
+    "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-store:P2-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (host file mechanics; semantics in-language)",
+    "legacyId": "P2-004",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:66e4f1b380ac70b41616c5e4e4a0621d45149af7e94ec6d247d94ba17d457b43",
+    "sourcePath": "mncs-store:P2-004-append-only-write-limits.md",
+    "sourceText": "# P2-004 — Append-only host_write cannot express store file semantics\n\nNarrows P1-001 (partially resolved 2026-09-10): the write half that\n`host_write` does NOT cover, with Phase-2 evidence for each missing\nshape.\n\nStorage feature being implemented: chunk persistence (create-exclusive),\ngeneration staging and publication, snapshot pins, reclamation deletes,\nserial-counter durability (RFC 0005 commit protocol, RFC 0015 recovery).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13): `host_write(view)` appends at most 64 bytes per\ncall to the granted path, creating it when absent, returning the count.\nVerified working on research-bytecode (returns 4+4, file holds 8 bytes,\neffect event carries grant path + digest). There is no:\n\n- create-exclusive (chunk files need same-bytes-idempotent /\n  different-bytes-fatal; append cannot refuse a second writer);\n- overwrite/truncate (generation `current` pointer moves need exact\n  8-byte replacement; append-only would grow it unboundedly);\n- read-back (staging must be re-read for verification);\n- per-call sizes above 64 bytes (a 1020-byte manifest needs 16 appends\n  with no atomicity across them).\n\nMinimal reproducer: express \"create this chunk file, fail if different\nbytes exist\" or \"replace these 8 current-pointer bytes atomically\" with\n`host_write` — the first silently unions writers, the second is\ninexpressible (append has no position).\n\nRequired semantics: a bounded file effect family with positioned and\nexclusive variants (`write_at`, `create_exclusive`, `truncate`,\n`delete`) behind a namespace capability, each returning a rich status\n(written/denied/exists/mismatch/unsupported) rather than trapping.\n\nWhy the current behavior/API is insufficient: the store's two strongest\nfile-level invariants — committed-chunk immutability and atomic current\npublication — are enforced by host `O_EXCL` + `os.replace`, unaudited by\nthe compiler. `host_write` staging logs would still need an atomic\nlink step to become authoritative (invariant 10).\n\nSafety/correctness implications: HIGH (same as P1-001: the commit verbs\nlive outside the language).\n\nPerformance implications: 64 B/call forces 16+ invocations per large\nmanifest with no batching across the append boundary.\n\nWorkaround used: host `_write_create_exclusive` + `_write_sync`\n(tmp + fsync + replace) in the driver, each labeled with the missing\ncapability. Semantically a bootstrap substitute (authority outside MNCS);\nbyte-identical to what the language effects must produce when they land\n(file formats stay MNCS-owned).\n\nWhat the language/stdlib/runtime should ideally provide: positioned and\nexclusive file effects composed with the fs_* grant model (root-scoped\ncapabilities, bounded path arguments), plus the sync barrier (P1-002)\nand atomic rename (P2-005) in the same tranche — one without the others\nstill strands the commit protocol.\n\nAffected backend(s): all for the missing shapes; `host_write` itself is\nbytecode-only (P1-B02).\n\nSeverity: major (blocker for in-language lifecycle).\n\nStatus: workaround (host file mechanics; semantics in-language)\n\nAcceptance test: an MNCS program create-exclusively writes two chunks\n(same bytes -> idempotent count, different bytes -> mismatch status),\nreplaces an 8-byte pointer, and lists the results via fs_* — with the\ndriver asserting byte-identical files to today's host path.\n"
+  },
+  "legacyIds": [
+    "P2-004",
+    "mncs-store:P2-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-004",
+    "text": "express \"create this chunk file, fail if different\nbytes exist\" or \"replace these 8 current-pointer bytes atomically\" with\n`host_write` — the first silently unions writers, the second is\ninexpressible (append has no position)."
+  },
+  "requiredBehavior": "a bounded file effect family with positioned and\nexclusive variants (`write_at`, `create_exclusive`, `truncate`,\n`delete`) behind a namespace capability, each returning a rich status\n(written/denied/exists/mismatch/unsupported) rather than trapping.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-004-append-only-write-limits.md"
+  },
+  "summary": "Imported legacy pressure P2-004: Append-only host_write cannot express store file semantics.",
+  "target": "language",
+  "title": "Append-only host_write cannot express store file semantics",
+  "version": "1"
+}

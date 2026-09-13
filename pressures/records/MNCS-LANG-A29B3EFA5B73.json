@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-009.no-over-bool-mne121",
+  "contentDigest": "sha256:b6759ad7074cb49b03635095af614aff47f981b674ed742d89dcfb996dcf1b1c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-A29B3EFA5B73",
+  "identity": {
+    "capability": "legacy.p1-009.no-over-bool-mne121",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (i64 flag discipline)",
+    "legacyId": "P1-009",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:e51c0ecec28d3aa5aad887a2c1f74ace4ee6d744109da84e86eba24c16c552a1",
+    "sourcePath": "mncs-store:P1-009-no-bool-equality.md",
+    "sourceText": "# P1-009 — No `==` over `bool` (MNE121)\n\nStorage feature being implemented: first-differing-byte digest ordering\n(`content_less`), flag-based scan state.\n\nObserved language/runtime/compiler behavior: `==` requires integer\noperands; comparing two bools is rejected (MNE121 \"comparison operands\nmust have an integer type\"). The natural `state.decided == false` does\nnot elaborate. Boolean algebra must go through `&&`/`||` (which exist)\nor be encoded as i64 flags (0/1) with `as i64` casts from comparisons\n(which is what both `mncs.core.identity.v1` and `store.identity` do).\n\nMinimal reproducer (mncs-language):\n\n```mncs\nfn negated(flag: bool) -> (result: bool) {\n    return flag == false;  // MNE121\n}\n```\n\nThe working spelling is `(flag && false) || ...` contortions, or carrying\ni64 flags instead of bools.\n\nRequired semantics: `==`/`!=` over `bool` (and, symmetrically, the full\ncomparison vocabulary over every ordered type — see P1-010).\n\nWhy the current behavior/API is insufficient: ordering/state code that is\none line in any conventional language becomes flag-encoding discipline\n(`OrderState { decided: i64, before: i64 }` with `*%`/`+%` arithmetic in\n`content_less`). The encoding is correct and tested, but every reader\nmust verify the 0/1 discipline instead of reading boolean logic.\n\nSafety/correctness implications: LOW-MEDIUM. i64 flag encodings are a\nknown bug farm (a `2` where only 0/1 is expected silently misbehaves);\nbool-typed state would make illegal states unrepresentable.\n\nPerformance implications: none.\n\nWorkaround used: i64 0/1 flags with wrapping arithmetic, mirroring\n`mncs.core.identity.v1::less` (which hit the same wall first).\n\nWhat the language/stdlib/runtime should ideally provide: `==` and `!=`\nover `bool` (total, no obligations).\n\nAffected backend(s) / target(s), if known: all (frontend rule).\n\nSeverity: minor\n\nStatus: workaround (i64 flag discipline)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\n`bool == bool`, `!=`, and prefix `!` elaborate and execute (CP-0004;\n17-case corpus over all five backends upstream). The old MNE121\nreproducer (`flag == false`) now completes clean.\n\nStore workaround REMOVED: `store.identity.content_less` dropped the i64\n0/1 flag discipline for boolean state (`OrderState { decided: bool,\nbefore: bool }`, `!state.decided`, `left[i] < right[i]`). All 33\nidentity corpus cases pass on all five backends after the change.\n"
+  },
+  "legacyIds": [
+    "P1-009",
+    "mncs-store:P1-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-009",
+    "text": "```mncs\nfn negated(flag: bool) -> (result: bool) {\n    return flag == false;  // MNE121\n}\n```\n\nThe working spelling is `(flag && false) || ...` contortions, or carrying\ni64 flags instead of bools."
+  },
+  "requiredBehavior": "`==`/`!=` over `bool` (and, symmetrically, the full\ncomparison vocabulary over every ordered type — see P1-010).",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-009-no-bool-equality.md"
+  },
+  "summary": "Imported legacy pressure P1-009: No `==` over `bool` (MNE121).",
+  "target": "language",
+  "title": "No `==` over `bool` (MNE121)",
+  "version": "1"
+}

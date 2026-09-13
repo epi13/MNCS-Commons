@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-002.no-view-width-subsumption-forces-widest-view-boundary-signatures",
+  "contentDigest": "sha256:d112f87c15c12a5f6c5a2c807784d572d74a4c6533547982e948d4ef0a54f97e",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-3214070482A7",
+  "identity": {
+    "capability": "legacy.p2-002.no-view-width-subsumption-forces-widest-view-boundary-signatures",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-store:P2-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (widest-view signatures + manual length gates)",
+    "legacyId": "P2-002",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:5f041581e56b4b4112418698f5d8e24908d5236fca98497ac21a0b3f6af7a311",
+    "sourcePath": "mncs-store:P2-002-view-invariance-widest-signatures.md",
+    "sourceText": "# P2-002 — No view-width subsumption forces widest-view boundary signatures\n\nContinues P1-012 (STILL_REPRODUCES on Source Profile 0.13; do not treat\nthis as a new report — it is the Phase-2 cost of that gap).\n\nStorage feature being implemented: v2 boundary functions that accept\nshort exact structures (8-byte generation headers, 28..1020-byte v2\nmanifests, 1024-byte digest tables) under RFC 0017.\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13, research-bytecode): a `[byte; up_to 8]` view still\ncannot feed a `[byte; up_to 64]` parameter (MNE117 + MNE133, reproduced\n2026-09-10). Hit live in Phase 2: the planned in-language\ngeneration-header round trip was removed because an 8-byte header view\ncannot feed `header_validate`'s up-to-1024 view; the corpus pins the\nround trip across the harness boundary instead (see P1-012 re-baseline).\n\nRequired semantics: width subsumption on view arguments (a shorter view\nsatisfies a wider `up_to` bound), so functions take the view they mean.\n\nWhy the current behavior/API is insufficient: every boundary function\nmust take the WIDEST view it may ever receive, and recover precision\nwith manual length gates:\n\n- `header_validate(view: [byte; up_to 1024])` validates an 8-byte\n  header; the first thing it does is `if view.len < 8 { return 1; }`\n  (code 1 BAD_VIEW_LEN) — a check the signature could have carried.\n- `validate_v2` takes `[byte; up_to 1024]` for manifests of 28..1020\n  bytes, with codes 1 BAD_VIEW_LEN / 8 COUNT_MISMATCH doing the work\n  the type system declines.\n- `table_contains(table: [byte; 1024], ...)` takes an EXACT 1024-byte\n  table, forcing the host to zero-pad every digest window to exactly\n  1024 bytes before transport (see `reclaim` in `tests/store_phase2.py`).\n\nSafety/correctness implications: LOW-MEDIUM. The manual gates are\ntested (every `validate_v2` code has corpus cases), but each gate is a\nhand-written replica of a subsumption rule — one missed `view.len`\ncheck is an over-read-shaped bug the signature should prevent.\n\nPerformance implications: argument bytes on the wire are the true\nlength (views are length-carrying), so there is no transport bloat;\nthe cost is surface area and audit load, not steps.\n\nWorkaround used: widest-view signatures everywhere on the boundary\n(`src/store/generation.mncs`, `src/store/manifest.mncs`); exact-1024\ntables with host zero-padding; manual BAD_VIEW_LEN gates as the first\ncheck of every validator.\n\nWhat the language/stdlib/runtime should ideally provide: argument\nsubsumption for `up_to` views (short view into wider bound), keeping\nexact-width parameters exact where padding is semantically load-bearing\n(`table_contains`).\n\nAffected backend(s): all (elaboration-shape rejection).\n\nSeverity: moderate.\n\nStatus: workaround (widest-view signatures + manual length gates)\n\nAcceptance test for the future fix: an 8-byte header view passes\ndirectly to a `[byte; up_to 64]` (or narrower-than-1024) parameter and\n`header_validate` takes `[byte; up_to 64]`; the header round trip moves\nback in-language and the harness-boundary pin is removed.\n"
+  },
+  "legacyIds": [
+    "P2-002",
+    "mncs-store:P2-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-002",
+    "text": ""
+  },
+  "requiredBehavior": "width subsumption on view arguments (a shorter view\nsatisfies a wider `up_to` bound), so functions take the view they mean.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-002-view-invariance-widest-signatures.md"
+  },
+  "summary": "Imported legacy pressure P2-002: No view-width subsumption forces widest-view boundary signatures.",
+  "target": "language",
+  "title": "No view-width subsumption forces widest-view boundary signatures",
+  "version": "1"
+}

@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-011.wrapping-operator-literal-inference-is-position-sensitive-mne117-mne119",
+  "contentDigest": "sha256:b3d9c83f8f89bb5124b99ad1b81c08db5956639b9bef81b352f2bbfb480066e7",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-FF5CADADD439",
+  "identity": {
+    "capability": "legacy.p1-011.wrapping-operator-literal-inference-is-position-sensitive-mne117-mne119",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-011",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (coding discipline + comment in sources)",
+    "legacyId": "P1-011",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:20aaf8aff29cd95a20330b81c1ffeebaf0c3fa3660146144fdb83e23cecb1132",
+    "sourcePath": "mncs-store:P1-011-wrapping-literal-position.md",
+    "sourceText": "# P1-011 — Wrapping-operator literal inference is position-sensitive (MNE117/MNE119)\n\nStorage feature being implemented: length arithmetic in chunk-frame\nvalidation (`store.chunk.frame_valid`).\n\nObserved language/runtime/compiler behavior: in `view.len != 4 +% declared`\n(`view.len: u64`, `declared: u64`), the literal `4` on the LEFT of `+%`\nfails (MNE117 \"resolved name does not have the required expression type\"\n+ MNE119 \"binary operands must have the same type\"), while `declared +% 4`\n(literal on the right) and `4 + x` (plain operator) both elaborate.\nMinimal probe at `/tmp` (reproducible; also hit in-session in\n`store.chunk` line 249 before the fix):\n\n```mncs\nmncs 0.10;\nmodule probe.wrap;\nfn literal_left(x: u64) -> (result: u64) {\n    return 4 +% x;  // MNE117 + MNE119\n}\nfn literal_right(x: u64) -> (result: u64) {\n    return x +% 4;  // OK\n}\nfn plain_add(x: u64) -> (result: u64) {\n    return 4 + x;  // OK\n}\n```\n\nRequired semantics: symmetric literal inference for wrapping operators\n(the literal takes the other operand's type regardless of side), matching\nplain-operator behavior.\n\nWhy the current behavior/API is insufficient: the asymmetry is silent and\nconfusing — identical-looking expressions differ in validity by operand\norder, with an error message (\"resolved name ...\") that points at the\nWRONG operand (`declared`, not the literal `4`). Session cost: real\ndebugging time on a two-character difference.\n\nSafety/correctness implications: LOW (fail-closed at elaboration). No\nwrong code is accepted; valid code is merely rejected confusingly.\n\nPerformance implications: none.\n\nWorkaround used: bind typed locals first (`let framed: u64 = declared +% 4;`)\nand keep literals on the right of wrapping operators throughout the store\nsources.\n\nWhat the language/stdlib/runtime should ideally provide: order-independent\nliteral coercion for `+%`/`-%`/`*%`, plus an MNE diagnostic that names the\nliteral when IT is the offender.\n\nAffected backend(s) / target(s), if known: all (frontend rule).\n\nSeverity: minor\n\nStatus: workaround (coding discipline + comment in sources)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\n`4 +% x` still fails (MNE117 + MNE119); `x +% 4` elaborates. Hit live\nduring this run at `src/store/manifest.mncs:309` (`28 +% count *% 32`),\nfixed with the right-side discipline (`count *% 32 +% 28`). Coding\ndiscipline stays; each site carries a P1-011 comment.\n\nSeverity: minor (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-011",
+    "mncs-store:P1-011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-011",
+    "text": ""
+  },
+  "requiredBehavior": "symmetric literal inference for wrapping operators\n(the literal takes the other operand's type regardless of side), matching\nplain-operator behavior.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-011-wrapping-literal-position.md"
+  },
+  "summary": "Imported legacy pressure P1-011: Wrapping-operator literal inference is position-sensitive (MNE117/MNE119).",
+  "target": "language",
+  "title": "Wrapping-operator literal inference is position-sensitive (MNE117/MNE119)",
+  "version": "1"
+}

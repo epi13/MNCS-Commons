@@ -7,13 +7,14 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from .application import CommonsApplication, CompatibilityApplication
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
 from .lane_policy import LANES
 from .models import RecordKind
+from .pressure import TARGETS, PressureError, PressureRegistry, extract_pressure_markers
 from .query import QueryFilter
 from .remote import RemoteClient
 from .store import CommonsStore, StoreError
@@ -208,6 +209,89 @@ def build_parser() -> argparse.ArgumentParser:
     family_health.add_argument("path")
     family_health.add_argument("observations", help="JSON array or path containing observations")
 
+    pressure = commands.add_parser(
+        "pressure", help="operate the canonical family-wide development-pressure exchange"
+    )
+    pressure_commands = pressure.add_subparsers(dest="pressure_command", required=True)
+    pressure_commands.add_parser("init").add_argument("root")
+    pressure_validate = pressure_commands.add_parser("validate")
+    pressure_validate.add_argument("root")
+    pressure_list = pressure_commands.add_parser("list")
+    pressure_list.add_argument("root")
+    pressure_list.add_argument("--status")
+    pressure_list.add_argument("--target", choices=sorted(TARGETS))
+    pressure_list.add_argument("--domain")
+    pressure_list.add_argument("--repository")
+    pressure_list.add_argument("--severity")
+    pressure_list.add_argument("--unresolved", action="store_true")
+    pressure_list.add_argument("--multi-repository", action="store_true")
+    pressure_list.add_argument("--awaiting-verification", action="store_true")
+    pressure_list.add_argument("--workaround-active", action="store_true")
+    pressure_list.add_argument("--language-profile")
+    pressure_list.add_argument("--rust-fallback", action="store_true")
+    pressure_list.add_argument("--format", choices=("json", "text"), default="json")
+    pressure_show = pressure_commands.add_parser("show")
+    pressure_show.add_argument("root")
+    pressure_show.add_argument("id")
+    pressure_candidates = pressure_commands.add_parser("candidates")
+    pressure_candidates.add_argument("root")
+    pressure_candidates.add_argument("--target", required=True)
+    pressure_candidates.add_argument("--domain", required=True)
+    pressure_candidates.add_argument("--capability", required=True)
+    pressure_candidates.add_argument("--exclude")
+    pressure_add = pressure_commands.add_parser("add")
+    pressure_add.add_argument("root")
+    pressure_add.add_argument("spec", help="JSON object or path containing a pressure declaration")
+    pressure_observe = pressure_commands.add_parser("observe")
+    pressure_observe.add_argument("root")
+    pressure_observe.add_argument("id")
+    pressure_observe.add_argument("spec", help="JSON object or path containing an observation")
+    pressure_verify = pressure_commands.add_parser("verify")
+    pressure_verify.add_argument("root")
+    pressure_verify.add_argument("id")
+    pressure_verify.add_argument("--repository", required=True)
+    pressure_verify.add_argument("--status", required=True, choices=("PASS", "FAIL", "UNKNOWN"))
+    pressure_verify.add_argument(
+        "--workaround-removed", choices=("true", "false", "not_needed"), default="not_needed"
+    )
+    pressure_verify.add_argument("--summary", default="")
+    pressure_verify.add_argument("--source-ref")
+    pressure_verify.add_argument("--language-profile")
+    pressure_verify.add_argument("--compiler")
+    pressure_verify.add_argument("--evidence", action="append", default=[])
+    pressure_verify.add_argument("--observed-at")
+    pressure_transition = pressure_commands.add_parser("transition")
+    pressure_transition.add_argument("root")
+    pressure_transition.add_argument("id")
+    pressure_transition.add_argument("target")
+    pressure_transition.add_argument("--actor", required=True)
+    pressure_transition.add_argument("--reason", default="")
+    pressure_transition.add_argument("--evidence-ref", action="append", default=[])
+    pressure_transition.add_argument("--implementation")
+    pressure_transition.add_argument("--details")
+    pressure_transition.add_argument("--expected-previous")
+    pressure_transition.add_argument("--occurred-at")
+    pressure_relate = pressure_commands.add_parser("relate")
+    pressure_relate.add_argument("root")
+    pressure_relate.add_argument("id")
+    pressure_relate.add_argument("relation")
+    pressure_relate.add_argument("target")
+    pressure_relate.add_argument("--actor", required=True)
+    pressure_relate.add_argument("--evidence-ref", action="append", default=[])
+    pressure_relate.add_argument("--details")
+    pressure_relate.add_argument("--occurred-at")
+    pressure_generate = pressure_commands.add_parser("generate")
+    pressure_generate.add_argument("root")
+    pressure_migrate = pressure_commands.add_parser("migrate")
+    pressure_migrate.add_argument("root")
+    pressure_migrate.add_argument("--repository", required=True)
+    pressure_migrate.add_argument("source")
+    pressure_migrate.add_argument("--dry-run", action="store_true")
+    pressure_migrate.add_argument("--refresh", action="store_true")
+    pressure_migrate.add_argument("--limit", type=int)
+    pressure_markers = pressure_commands.add_parser("markers")
+    pressure_markers.add_argument("source")
+
     compat = commands.add_parser("compat")
     compat_commands = compat.add_subparsers(dest="compat_command", required=True)
     compat_commands.add_parser("list")
@@ -328,6 +412,17 @@ def _json_argument(value: str) -> Any:
     return json.loads(value)
 
 
+def _pressure_text(items: Sequence[Mapping[str, Any]]) -> str:
+    lines = []
+    for item in items:
+        repositories = ",".join(item.get("affectedRepositories", []))
+        lines.append(
+            f"{item.get('id')}  {item.get('status')}  {item.get('severity')}  "
+            f"{item.get('title')}  [{repositories}]"
+        )
+    return "\n".join(lines) if lines else "No pressures matched."
+
+
 def _work_actor(args: argparse.Namespace) -> dict[str, str]:
     return {"type": args.actor_type, "id": args.actor_id}
 
@@ -367,6 +462,148 @@ def main(argv: list[str] | None = None) -> int:
             if "contentDigest" not in normalized:
                 normalized["contentDigest"] = application.identity(normalized)
             print(application.canonicalize(normalized).decode("utf-8"))
+            return 0
+        if args.command == "pressure":
+            registry = PressureRegistry(args.root) if hasattr(args, "root") else None
+            if args.pressure_command == "markers":
+                source = Path(args.source)
+                text = source.read_text(encoding="utf-8")
+                _print({"source": str(source), "markers": list(extract_pressure_markers(text))})
+                return 0
+            assert registry is not None
+            if args.pressure_command == "init":
+                _print(registry.init())
+                return 0
+            if args.pressure_command == "validate":
+                report = registry.validate()
+                _print(report.as_dict())
+                return 0 if report.valid else 2
+            if args.pressure_command == "list":
+                values = registry.query(
+                    status=args.status,
+                    target=args.target,
+                    domain=args.domain,
+                    repository=args.repository,
+                    severity=args.severity,
+                    unresolved=args.unresolved,
+                    multi_repository=args.multi_repository,
+                    awaiting_verification=args.awaiting_verification,
+                    workaround_active=args.workaround_active,
+                    language_profile=args.language_profile,
+                    rust_fallback=args.rust_fallback,
+                )
+                if args.format == "text":
+                    print(_pressure_text(values))
+                else:
+                    _print(values)
+                return 0
+            if args.pressure_command == "show":
+                _print(registry.show(args.id).as_dict())
+                return 0
+            if args.pressure_command == "candidates":
+                _print(
+                    registry.candidates(
+                        target=args.target,
+                        domain=args.domain,
+                        capability=args.capability,
+                        exclude=args.exclude,
+                    )
+                )
+                return 0
+            if args.pressure_command == "add":
+                spec = _json_argument(args.spec)
+                if not isinstance(spec, Mapping):
+                    raise ValueError("pressure spec must contain a JSON object")
+                _print(registry.add(spec))
+                return 0
+            if args.pressure_command == "observe":
+                spec = _json_argument(args.spec)
+                if not isinstance(spec, Mapping):
+                    raise ValueError("observation spec must contain a JSON object")
+                _print(registry.observe(args.id, spec))
+                return 0
+            if args.pressure_command == "verify":
+                evidence: list[Mapping[str, Any]] = []
+                for item in args.evidence:
+                    value = _json_argument(item)
+                    if not isinstance(value, Mapping):
+                        raise ValueError("--evidence values must contain JSON objects")
+                    evidence.append(value)
+                source_ref = _json_argument(args.source_ref) if args.source_ref else None
+                compiler = _json_argument(args.compiler) if args.compiler else None
+                if source_ref is not None and not isinstance(source_ref, Mapping):
+                    raise ValueError("--source-ref must contain a JSON object")
+                if compiler is not None and not isinstance(compiler, Mapping):
+                    raise ValueError("--compiler must contain a JSON object")
+                removed: bool | str = args.workaround_removed
+                if removed in {"true", "false"}:
+                    removed = removed == "true"
+                _print(
+                    registry.verify(
+                        args.id,
+                        repository=args.repository,
+                        status=args.status,
+                        evidence=evidence,
+                        workaround_removed=removed,
+                        summary=args.summary,
+                        source_ref=source_ref,
+                        language_profile=args.language_profile,
+                        compiler=compiler,
+                        observed_at=args.observed_at,
+                    )
+                )
+                return 0
+            if args.pressure_command == "transition":
+                implementation = (
+                    _json_argument(args.implementation) if args.implementation else None
+                )
+                details = _json_argument(args.details) if args.details else None
+                if implementation is not None and not isinstance(implementation, Mapping):
+                    raise ValueError("--implementation must contain a JSON object")
+                if details is not None and not isinstance(details, Mapping):
+                    raise ValueError("--details must contain a JSON object")
+                _print(
+                    registry.transition(
+                        args.id,
+                        args.target,
+                        actor=args.actor,
+                        reason=args.reason,
+                        evidence_refs=args.evidence_ref,
+                        implementation=implementation,
+                        details=details,
+                        expected_previous=args.expected_previous,
+                        occurred_at=args.occurred_at,
+                    )
+                )
+                return 0
+            if args.pressure_command == "relate":
+                details = _json_argument(args.details) if args.details else None
+                if details is not None and not isinstance(details, Mapping):
+                    raise ValueError("--details must contain a JSON object")
+                _print(
+                    registry.relate(
+                        args.id,
+                        args.relation,
+                        args.target,
+                        actor=args.actor,
+                        evidence_refs=args.evidence_ref,
+                        details=details,
+                        occurred_at=args.occurred_at,
+                    )
+                )
+                return 0
+            if args.pressure_command == "generate":
+                _print(registry.generate_views())
+                return 0
+            _print(
+                registry.migrate_legacy(
+                    args.repository,
+                    args.source,
+                    dry_run=args.dry_run,
+                    limit=args.limit,
+                    refresh=args.refresh,
+                )
+            )
             return 0
         if args.command == "store":
             application = CommonsApplication(CommonsStore(args.path))
@@ -609,9 +846,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.exchange_command == "describe":
                 policy = ExchangePolicy.public_profile() if args.public else ExchangePolicy()
                 _print(
-                    CommonsApplication.describe(
-                        domain=args.domain, policy=policy, binding="cli"
-                    )
+                    CommonsApplication.describe(domain=args.domain, policy=policy, binding="cli")
                 )
                 return 0
             application = CommonsApplication(CommonsStore(args.path))
@@ -735,7 +970,7 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 )
         return 0
-    except (OSError, ValueError, StoreError) as error:
+    except (OSError, PressureError, ValueError, StoreError) as error:
         print(json.dumps({"valid": False, "error": str(error)}), file=sys.stderr)
         return 2
 

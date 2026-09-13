@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-015.no-unique-identity-issuance-primitive-objectid-serials-are-host-issued",
+  "contentDigest": "sha256:9c260b4c128ae13ae68133bd20be632fffcf0d8df2699bbb7c516f836268e265",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "identity",
+  "id": "MNCS-LANG-CD0DEF98FD10",
+  "identity": {
+    "capability": "legacy.p1-015.no-unique-identity-issuance-primitive-objectid-serials-are-host-issued",
+    "domain": "identity",
+    "reproducerSignature": "legacy:mncs-store:P1-015",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (host counter file + exclusive-create guards)",
+    "legacyId": "P1-015",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:ca39f28218f38122ac85211c08120bd1fbc71ef46ab445b1287ce46178c8c6a4",
+    "sourcePath": "mncs-store:P1-015-no-identity-issuance.md",
+    "sourceText": "# P1-015 — No unique-identity issuance primitive (ObjectId serials are host-issued)\n\nStorage feature being implemented: logical ObjectId issuance — minting a\nfresh (namespace, serial) pair that has never been used (RFC 0002\nissuance mechanism, deliberately deferred there).\n\nObserved language/runtime/compiler behavior: no randomness, UUID,\nmonotonic-counter, or compare-and-swap primitive is reachable from MNCS\nsource. `mncs.core.random.v1` documents itself as deterministic\ntransparency, not uniqueness; `clock_read` is wall time (explicitly\nunpinned, skew-tolerant) and unsuitable for identity; there is no atomic\nor persistent-state primitive at all (functions are pure over their\narguments). An MNCS function cannot mint a fresh identity: same inputs\nalways yield the same outputs, by design.\n\nMinimal reproducer (mncs-language): any `fn fresh_id() -> u64` with no\ninputs — either it returns a constant (not fresh) or it cannot be\nwritten. Freshness requires state or entropy; the language offers neither\nto source programs.\n\nRequired semantics: a capability-gated uniqueness source (monotonic\nserial allocation, UUID generation, or CAS-backed counter) with explicit\ndurability of the allocation itself (a serial that is issued but whose\nobject never commits must not be silently reusable — or the reuse policy\nmust be explicit).\n\nWhy the current behavior/API is insufficient: Phase-1a serial issuance\nlives in the host driver's `meta.next_serial` counter file, with\ntorn-write healing (`max(objects)+1` scan on open) implemented in\nunaudited host code. The most collision-sensitive operation in the store\n— the one that keeps distinct logical objects distinct — is outside the\nlanguage.\n\nSafety/correctness implications: MEDIUM. A host counter bug (reuse after\na torn meta write, concurrent creators) merges logical identities\nsilently. The O_EXCL guard on `objects/` converts the worst case into a\nloud failure, but issuance itself deserves language-level authority.\n\nPerformance implications: none at this scale.\n\nWorkaround used: host-owned `meta` counter (16-byte file, fsync'd per\ncommit) + `O_EXCL` creation guards + open-time serial healing scan, all\nin `store_phase1a.py` and labeled as host mechanics.\n\nWhat the language/stdlib/runtime should ideally provide: a uniqueness\ncapability (`fresh_serial(namespace)`, `uuid_v4`, or durable atomic\ncounter) with stated crash semantics for the allocation record.\n\nAffected backend(s) / target(s), if known: all (surface absence).\n\nSeverity: moderate\n\nStatus: workaround (host counter file + exclusive-create guards)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nNo randomness, UUID, monotonic-counter, or CAS primitive is reachable\nfrom source in any 0.13 feature list; functions stay pure over their\narguments. Serial issuance remains the host `meta` counter with O_EXCL\nguards and open-time healing. Unchanged.\n\nSeverity: moderate (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-015",
+    "mncs-store:P1-015"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-015",
+    "text": "any `fn fresh_id() -> u64` with no\ninputs — either it returns a constant (not fresh) or it cannot be\nwritten. Freshness requires state or entropy; the language offers neither\nto source programs."
+  },
+  "requiredBehavior": "a capability-gated uniqueness source (monotonic\nserial allocation, UUID generation, or CAS-backed counter) with explicit\ndurability of the allocation itself (a serial that is issued but whose\nobject never commits must not be silently reusable — or the reuse policy\nmust be explicit).",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-015-no-identity-issuance.md"
+  },
+  "summary": "Imported legacy pressure P1-015: No unique-identity issuance primitive (ObjectId serials are host-issued).",
+  "target": "language",
+  "title": "No unique-identity issuance primitive (ObjectId serials are host-issued)",
+  "version": "1"
+}

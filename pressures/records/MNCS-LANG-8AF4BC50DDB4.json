@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+  "contentDigest": "sha256:7526ba24b672a525ba31329a49832014918650c3e096a55ad95068dc697f2d82",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-8AF4BC50DDB4",
+  "identity": {
+    "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-store:P1-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "blocked (lifecycle mechanics host-owned; semantics in-language)",
+    "legacyId": "P1-001",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:0cc9bd2e227466e8f945e6c65f0eab9b6bb1bd51775e6967921a6cff0fcad945",
+    "sourcePath": "mncs-store:P1-001-no-file-write-effect.md",
+    "sourceText": "# P1-001 — No file-write effect: persistence mechanics cannot be expressed in mncs-language\n\nStorage feature being implemented: Phase 1 store lifecycle — chunk files,\nobject-root files, generation files, store metadata (all of §6–7 of the\ncampaign: create/open, write data, close, reopen, retrieve).\n\nObserved language/runtime/compiler behavior: the compiler exposes exactly\nfour host effects, all read/observe-only (`clock_read`, `sha256_digest`,\n`ed25519_verify`, `host_read`; see `elaborate_*` in\n`crates/mncs-compiler/src/frontend.rs` and the `operation_id` dispatch in\n`crates/mncs-model/src/execution.rs` / `ssa_execution.rs`). There is no\n`host_write`, `file_write`, append, truncate, or any other mutation\neffect in any source profile (0.1–0.11). A function declaring an unknown\neffect is rejected at elaboration.\n\nMinimal reproducer (mncs-language):\n\n```mncs\nmncs 0.10;\n\nmodule store.write_probe;\n\nfn persist_chunk(frame: [byte; 12]) -> (result: bool)\n    capability store_writer\n    effect host_write authorized_by store_writer\n{\n    return host_write(frame);\n}\n```\n\n`source-study` rejects the `effect host_write` declaration (unknown\neffect; cf. MNE235/MNE236 for the `host_read` analogue). There is no\nspelling of this program that elaborates.\n\nRequired semantics: bounded, capability-authorized mutation of named\npersistent bytes with explicit error reporting (absent path, quota,\nI/O failure), so that chunk/object/generation writes are MNCS operations\nwith compiler-checked authority.\n\nWhy the current behavior/API is insufficient: the entire write path —\nthe core verb of a storage engine — must live outside the language in\nthe Phase-1a host driver (`tests/store_phase1a.py`). Authority over\nmutation is therefore unenforceable by the compiler, and the store's most\nsafety-critical operations are invisible to MNCS verification.\n\nSafety/correctness implications: HIGH. Write-path invariants (never\noverwrite committed chunks, atomic generation publication, serial\nissuance) are enforced by unaudited host code instead of typed MNCS\ncapabilities. A host bug can silently violate committed-content\nimmutability with no language-level tripwire.\n\nPerformance implications: every put/get crosses a subprocess + JSON\nboundary (see P1-016); in-language writes would not by themselves fix\nthat, but they are a prerequisite.\n\nWorkaround used: `tests/store_phase1a.py` performs all file mutation in\nPython (clearly labeled host transport, never semantics). MNCS owns every\nsemantic byte; Python owns files, fsync, and rename.\n\nWhat the language/stdlib/runtime should ideally provide: a bounded\n`host_write(name, bytes)`-family effect behind an explicit write\ncapability, with positioned/append/create-exclusive variants, returning a\nrich status (written/denied/absent/unsupported) rather than trapping.\n\nAffected backend(s) / target(s), if known: all (frontend-level absence).\n\nSeverity: blocker\n\nStatus: blocked (lifecycle mechanics host-owned; semantics in-language)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653 (branch feat/proof-transport-exhaustion-hardening, dirty tree), Source Profile 0.13, `mncs 0.1.0` CLI.\n\nOld behavior: no mutation effect of any kind (four read-only effects only).\n\nCurrent behavior: `host_write(view)` exists (Profile 0.12+): bounded\nappend-only write to the operator-granted path (`--grant-write\ncapability=path`), creating the file when absent, returning the appended\nbyte count as u64. Verified by execution: two sequential appends returned\n4 + 4 and the file held all 8 bytes on research-bytecode; the effect\nevent records grant path + content digest. There is still no overwrite,\ntruncate, exclusive-create, rename, mkdir, delete, or sync primitive\n(grep over frontend/model/syntax sources, 2026-09-10).\n\nRemaining gap: append-only covers staging logs, not chunk files (which\nneed create-exclusive), generation publication (rename), or durability\nbarriers (sync). The store lifecycle stays host-owned.\n\nSeverity now: major (was blocker for lifecycle; staging narrowed).\n"
+  },
+  "legacyIds": [
+    "P1-001",
+    "mncs-store:P1-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-001",
+    "text": "```mncs\nmncs 0.10;\n\nmodule store.write_probe;\n\nfn persist_chunk(frame: [byte; 12]) -> (result: bool)\n    capability store_writer\n    effect host_write authorized_by store_writer\n{\n    return host_write(frame);\n}\n```\n\n`source-study` rejects the `effect host_write` declaration (unknown\neffect; cf. MNE235/MNE236 for the `host_read` analogue). There is no\nspelling of this program that elaborates."
+  },
+  "requiredBehavior": "bounded, capability-authorized mutation of named\npersistent bytes with explicit error reporting (absent path, quota,\nI/O failure), so that chunk/object/generation writes are MNCS operations\nwith compiler-checked authority.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-001-no-file-write-effect.md"
+  },
+  "summary": "Imported legacy pressure P1-001: No file-write effect: persistence mechanics cannot be expressed in mncs-language.",
+  "target": "language",
+  "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
+  "version": "1"
+}

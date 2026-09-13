@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-021.checked-arithmetic-obligations-have-no-discharge-path-for-input-bounded-values",
+  "contentDigest": "sha256:807db901b76c7c35bba919bc07c69b500b1d04c52b089df6289709693627361e",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-AED76C32EC2E",
+  "identity": {
+    "capability": "legacy.p1-021.checked-arithmetic-obligations-have-no-discharge-path-for-input-bounded-values",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-021",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (wrapping discipline + canary)",
+    "legacyId": "P1-021",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:39a333acc5535408a3b3de06dce43ed774db4dfa4304aee03d4763b8d5d2701c",
+    "sourcePath": "mncs-store:P1-021-overflow-obligation-debt.md",
+    "sourceText": "# P1-021 — Checked-arithmetic obligations have no discharge path for input-bounded values\n\nStorage feature being implemented: big-endian decoders over byte inputs\n(`object_namespace`, `u32_from_be`, `desc_len`, manifest length fields).\n\nObserved language/runtime/compiler behavior: plain `*`/`+` carry\n`integer-overflow` obligations; unproven obligations keep a\n\"conservative fallback\" and the study status\n`completed_with_unresolved_obligations` (CMP301). There is no source-level\nproof vocabulary for the actual argument — \"each factor fits in a byte,\nso the product fits u32\" — because `requires` contracts name declared\ncheckers, not value relationships, and the bound lives in the element\ntype (`byte`), not in a form the obligation solver consumes. Every store\ndecoder therefore compiles with permanent proof debt, even where a human\nsees total safety in one line.\n\nMinimal reproducer: `object_namespace` over `[byte; 12]` — all four\nproducts are byte×constant, the sum is ≤ 0xFFFFFFFF by construction, yet\nfour CMP301 obligations persist with no source annotation that discharges\nthem.\n\nRequired semantics: a way to discharge overflow obligations from input\ntype bounds (byte-ness implies ≤ 255; products of bounded values fit\ndeclared widths), e.g. bound-propagating `requires`, solver support for\nelement-type ranges, or explicit-but-checked `wrapping_where_exact`\nintent.\n\nWhy the current behavior/API is insufficient: two costs. First, proof\ndebt is INDISTINGUISHABLE from real risk: every module reports\n\"completed_with_unresolved_obligations\", so a genuinely risky plain `+`\nhides among provably-safe ones. Second, the fallback is backend-defined —\nand P1-B01 shows the C11 fallback TRAPS on large-but-valid products\nwhile other backends return exact values. Unprovable-but-safe code is\nthus also non-portable code, with no diagnostic pointing at the gap.\n\nSafety/correctness implications: MEDIUM (via P1-B01: the obligation\nsystem's sharp edge is a real backend divergence, found by this run).\n\nPerformance implications: conservative fallbacks may emit checked code\nwhere wrapping would do; unmeasured (see P1-016 on instrumentation).\n\nWorkaround used: wrapping operators (`*%`/`+%`) everywhere exactness is\nprovable by construction, with comments citing P1-B01; plain operators\nkept only where smallness is trivially visible (≤ 16-bit intermediates).\nPlus the `checked_arith_canary` fixture pinning the divergence.\n\nWhat the language/stdlib/runtime should ideally provide: (1) range-aware\nobligation discharge from element types; (2) a UNIFORM, documented\nfallback semantic for unproven-but-appropriate checked ops across all\nbackends (trap vs wrap must not differ silently); (3) per-site obligation\nreporting that names the operation (today's CMP301 lists opaque\nobligation identities).\n\nAffected backend(s) / target(s), if known: all for the debt; C11 for the\ndivergent fallback (P1-B01).\n\nSeverity: moderate\n\nStatus: workaround (wrapping discipline + canary)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nEvery new module compiles with permanent CMP301 obligations\n(integer-overflow on decoders, iteration-exact-resource-cost on every\nloop, view-range-valid on effect operands) and the conservative\nfallback; no source annotation discharges byte-bound reasoning. The\nwrapping discipline (`*%`/`+%` where exactness is provable) extends to\nall new decoders and the chain arithmetic. Proof debt stays\nindistinguishable from real risk at the study layer.\n\nSeverity: moderate+ (unchanged; extended surface).\n"
+  },
+  "legacyIds": [
+    "P1-021",
+    "mncs-store:P1-021"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-021",
+    "text": "`object_namespace` over `[byte; 12]` — all four\nproducts are byte×constant, the sum is ≤ 0xFFFFFFFF by construction, yet\nfour CMP301 obligations persist with no source annotation that discharges\nthem."
+  },
+  "requiredBehavior": "a way to discharge overflow obligations from input\ntype bounds (byte-ness implies ≤ 255; products of bounded values fit\ndeclared widths), e.g. bound-propagating `requires`, solver support for\nelement-type ranges, or explicit-but-checked `wrapping_where_exact`\nintent.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-021-overflow-obligation-debt.md"
+  },
+  "summary": "Imported legacy pressure P1-021: Checked-arithmetic obligations have no discharge path for input-bounded values.",
+  "target": "language",
+  "title": "Checked-arithmetic obligations have no discharge path for input-bounded values",
+  "version": "1"
+}

@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-013.host-cannot-invoke-generic-functions-no-type-arguments-at-the-process-boundary",
+  "contentDigest": "sha256:754a4551a265672a038d44d65632eb54fd364dc37d60b4d8d13c011f6603807b",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.generics",
+  "id": "MNCS-LANG-5B2AD8F659B6",
+  "identity": {
+    "capability": "legacy.p1-013.host-cannot-invoke-generic-functions-no-type-arguments-at-the-process-boundary",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-store:P1-013",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (non-generic boundary layer)",
+    "legacyId": "P1-013",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:21e5c66028717c7d04de1e0043c1f82ad02219e98afcaffdd9b98c6e84fc51dd",
+    "sourcePath": "mncs-store:P1-013-host-cannot-call-generics.md",
+    "sourceText": "# P1-013 — Host cannot invoke generic functions (no type arguments at the process boundary)\n\nStorage feature being implemented: test/harness invocation of\nwidth-polymorphic validators (first attempted for `frame_valid<N: Nat>`).\n\nObserved language/runtime/compiler behavior: an execution request names\n(module, function, arguments) with NO type-argument channel. Targeting a\ngeneric function yields `\"execution target SSA function does not exist\"`\n(the generic template is not an executable symbol; only in-language\nmonomorphizations via explicit turbofish call sites executable). Probed\n2026-09-08 with:\n\n```mncs\nfn vlen<N: Nat>(view: [byte; up_to N]) -> (result: u64) { return view.len; }\n```\n\ncalled from a corpus with a 5-byte sequence argument: status FAIL,\n`failure_reason: \"execution target SSA function does not exist\"`. (The\nstdlib's generic corpus cases all target NON-generic wrapper functions in\nconsumer modules — e.g. `examples.status.generic_consumer` — confirming\nthis is the ecosystem's own pattern, not a misunderstanding.)\n\nRequired semantics: either host-nameable type arguments in execution\nrequests, or argument-driven instantiation of generic entry\npoints, so polymorphic validators are directly testable.\n\nWhy the current behavior/API is insufficient: it forces a non-generic\nwrapper layer over every polymorphic function the harness must call\n(`verify_frame4/8/16/32` instead of one `verify_frame<N>`; concrete\n`frame_valid` over `[byte; up_to 64]` instead of generic). The wrappers\nare pure boilerplate that must be maintained per width (compounds\nP1-006).\n\nSafety/correctness implications: LOW (wrappers are thin and tested).\nThe cost is surface area, not soundness.\n\nPerformance implications: none.\n\nWorkaround used: non-generic boundary functions throughout\n(`store.chunk`, `store.descriptor`, `store.manifest` expose only concrete\nsignatures); generics used solely inside in-language call graphs (none\nneeded in Phase 1a beyond the abandoned `frame_valid<N>` attempt).\n\nWhat the language/stdlib/runtime should ideally provide: a `type_arguments`\nfield on execution-request targets with elaboration-time checking, so a\nhost can invoke `frame_valid<8>` exactly as source does.\n\nAffected backend(s) / target(s), if known: all (execution-request shape).\n\nSeverity: moderate\n\nStatus: workaround (non-generic boundary layer)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nSource-level inference exists and works (ENG-0019): omitted `<...>` over\nexact-sequence structure, cross-module, and forwarding callers all\nelaborate (verified with the pressure-generics shapes). BUT the\nexecution-boundary half still reproduces exactly: invoking a generic\nentry point from a corpus yields invalid_request \"execution target SSA\nfunction does not exist\" (reproduced 2026-09-10 against a generic\n`grow_fill_local` with concrete sequence arguments). No `type_arguments`\nchannel exists on execution requests. Inference through view bounds\n(`[byte; up_to N]`) is additionally not inferred (MNE220).\n\nThe store keeps its non-generic boundary layer. Do NOT mark resolved on\nsource ergonomics alone: the boundary problem is the storage problem.\n\nSeverity: moderate (unchanged for the store).\n"
+  },
+  "legacyIds": [
+    "P1-013",
+    "mncs-store:P1-013"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-013",
+    "text": ""
+  },
+  "requiredBehavior": "either host-nameable type arguments in execution\nrequests, or argument-driven instantiation of generic entry\npoints, so polymorphic validators are directly testable.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-013-host-cannot-call-generics.md"
+  },
+  "summary": "Imported legacy pressure P1-013: Host cannot invoke generic functions (no type arguments at the process boundary).",
+  "target": "language",
+  "title": "Host cannot invoke generic functions (no type arguments at the process boundary)",
+  "version": "1"
+}

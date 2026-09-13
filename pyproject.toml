@@ -33,6 +33,7 @@ where = ["src"]
 mncs_commons = [
   "data/*.json",
   "mesh/mncs/commons/mesh/*.mncs",
+  "mesh/mncs/commons/pressure/*.mncs",
   "mesh/mncs/corpora/*.json",
 ]
 

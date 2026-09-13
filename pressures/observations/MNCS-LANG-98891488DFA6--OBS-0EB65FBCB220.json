@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:12ca85c0a7d325bfee4414fc2680c6ebf8140fcd4890d46e0c191fa14e732dbe",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-007",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-007-single-result-functions.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-98891488DFA6--OBS-0EB65FBCB220",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-98891488DFA6",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "the desired shape has no spelling —\n\n```mncs\n// NOT EXPRESSIBLE:\nfn object_parse(id: [byte; 12]) -> (namespace: u32, serial: u64) { ... }\n```\n\n— so `store.identity` ships 4 parse functions where one would do, and\ncallers that need K fields invoke K traversals.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "per-field projectors (`desc_type/dim/len/alignment`,\n`root_chunk_digest/root_descriptor/root_total_len/root_type`,\n`gen_record_obj/gen_record_root`), each pinned by corpus cases.",
+    "legacyStatus": "workaround (projector families + corpus pins)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:113739150260411b929bdee2de8cc65c3b74ba10ce42db115c9dbc6ce429371d",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-005",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-005-sequence-bound-64.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-4EC58934F8DB--OBS-CF01DE325865",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-4EC58934F8DB",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "```mncs\nfn wide() -> (result: [byte; 65]) {\n    return [0, 0, /* ... 65 elements ... */];\n}\n```\n\nElaboration rejects the 65-element sequence (bound exceeded). Likewise a\n`[byte; up_to 128]` parameter is unspellable.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "exact-width value classes (4/8/16/32-byte payloads);\narbitrary-length byte strings deferred; manifest squeezed to 64 bytes;\n`frame_valid` code 5 (`UNSUPPORTED_WIDTH`) marks the boundary explicitly.",
+    "legacyStatus": "workaround (exact-width classes; arbitrary sizes deferred)"
+  }
+}

@@ -1,0 +1,62 @@
+mncs 0.10;
+
+// Commons pressure lifecycle kernel.
+//
+// The host owns JSON, Git append-only storage, timestamps, and evidence
+// lookup. This pure MNCS kernel owns the closed transition law used by the
+// Python projection and the executable corpus. The numeric codes are a
+// deliberately small ABI so the language can be exercised without smuggling
+// filesystem or command authority into the source program.
+//
+// 0 discovered, 1 confirmed, 2 accepted, 3 implementing, 4 available,
+// 5 verifying, 6 resolved, 7 duplicate, 8 rejected, 9 superseded,
+// 10 deferred, 11 obsolete.
+module commons.pressure.lifecycle;
+
+fn transition_allowed(current: i64, target: i64) -> (result: bool) {
+    if current == 0 {
+        return target == 1 || target == 7 || target == 8 || target == 10 || target == 11;
+    }
+    if current == 1 {
+        return target == 2 || target == 7 || target == 8 || target == 10 || target == 9 || target == 11;
+    }
+    if current == 2 {
+        return target == 3 || target == 10 || target == 7 || target == 9 || target == 11;
+    }
+    if current == 3 {
+        return target == 4 || target == 10 || target == 9 || target == 11;
+    }
+    if current == 4 {
+        return target == 5 || target == 3 || target == 10 || target == 9 || target == 11;
+    }
+    if current == 5 {
+        return target == 6 || target == 4 || target == 10 || target == 9 || target == 11;
+    }
+    if current == 10 {
+        return target == 1 || target == 2 || target == 3 || target == 11 || target == 9;
+    }
+    if current == 8 {
+        return target == 9 || target == 11;
+    }
+    return false;
+}
+
+fn unresolved(current: i64) -> (result: bool) {
+    if current == 6 || current == 7 || current == 8 || current == 9 || current == 11 {
+        return false;
+    }
+    return true;
+}
+
+fn resolution_ready(affected: i64, passed: i64, failed: i64, unknown: i64, removed: i64) -> (result: bool) {
+    if affected <= 0 {
+        return false;
+    }
+    if passed != affected {
+        return false;
+    }
+    if failed != 0 || unknown != 0 {
+        return false;
+    }
+    return removed == affected;
+}
