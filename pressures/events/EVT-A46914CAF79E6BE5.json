@@ -1,0 +1,27 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:79e52c680981af403a2971f546852d06219f35fe8f93cf0c2ac6bf5ca1d4a1f5",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4219A56741DB--OBS-190279510F28"
+  ],
+  "from": "implementing",
+  "id": "EVT-A46914CAF79E6BE5",
+  "implementation": {
+    "profile": "0.16",
+    "ref": "mncs-language:f9d790b:crates/mncs-codegen/src/lower.rs",
+    "repository": "mncs-language",
+    "revision": "e39f370",
+    "tests": [
+      "cargo test -p mncs-codegen"
+    ]
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:20:05Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "previousEvent": "EVT-D5CB2F0DD2924058",
+  "reason": "The generic backend fix is merged and available to Atlas.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

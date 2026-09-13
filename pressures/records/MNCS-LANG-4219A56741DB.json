@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-atlas",
+    "mncs-language"
+  ],
+  "capability": "packed-bounded-view-lifetime",
+  "contentDigest": "sha256:c0a745fc3678437489f03868b39673a739b86891347602c14a8e0bf3e98b848b",
+  "discoveredAt": "2026-09-13T08:20:00Z",
+  "discoveredBy": "mncs-atlas",
+  "domain": "backend.region-reclamation",
+  "id": "MNCS-LANG-4219A56741DB",
+  "identity": {
+    "capability": "packed-bounded-view-lifetime",
+    "domain": "backend.region-reclamation",
+    "reproducerSignature": "atlas:packed-bounded-view-region-reset.v1",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.16",
+  "legacyIds": [],
+  "notes": "Resolved by classifying packed bounded views as nonallocating words in region planning.",
+  "reproducer": {
+    "signature": "atlas:packed-bounded-view-region-reset.v1",
+    "text": "Run the full Atlas model render plan with repeated bounded byte view chunks at language revision f527b49. The region planner misclassifies the packed descriptor as a view allocation, skips reclamation, and the 32 MiB arena eventually traps out of bounds."
+  },
+  "requiredBehavior": "The backend must distinguish allocating cell-backed views from packed bounded view descriptors. Packed bounded views must remain valid across region resets, and loop-region reclamation must remain enabled when no allocating value crosses the region boundary.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "correctness": true,
+    "nativeConversionBlocked": true,
+    "performance": true
+  },
+  "sourceRef": {
+    "backend": "mncs-portable-wasm-mvp",
+    "commit": "3ff5a11",
+    "languageCommit": "f527b49",
+    "languageRepository": "mncs-language",
+    "path": "mncs/atlas-model.mncs",
+    "repository": "mncs-atlas"
+  },
+  "summary": "The Atlas stateful model retained packed bounded view descriptors across bounded iterations, but the backend classified those values as heap-backed views and disabled safe region reclamation. Repeated model chunks then exhausted the arena and caused an out-of-bounds failure.",
+  "target": "language",
+  "title": "Packed bounded views must survive safe region reclamation",
+  "version": "1"
+}

@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "04804ca"
+  },
+  "contentDigest": "sha256:8de3dbb91f3c6d5bfa6c437014640b3cdb543b6e47c20189235583e3a3760887",
+  "evidence": [
+    {
+      "id": "mncs-atlas:tests.test_experimental_wasm:test_full_model_render_plan",
+      "kind": "regression-test",
+      "ref": "python -m unittest tests.test_experimental_wasm -q",
+      "status": "PASS",
+      "summary": "The focused regression and the Atlas consumer validation passed."
+    }
+  ],
+  "id": "MNCS-LANG-4219A56741DB--OBS-DB92B3F2B12F",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T08:20:11Z",
+  "pressureId": "MNCS-LANG-4219A56741DB",
+  "repository": "mncs-atlas",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "command": "python -m unittest tests.test_experimental_wasm -q",
+    "commit": "04804ca",
+    "pressureFix": "mncs-language:f9d790b:crates/mncs-codegen/src/lower.rs",
+    "repository": "mncs-atlas"
+  },
+  "summary": "Current Atlas/language validation passes after the generic backend fix; the original consumer path is operational.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

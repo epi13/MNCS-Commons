@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-atlas",
+    "mncs-language"
+  ],
+  "capability": "nested-cell-address-normalization",
+  "contentDigest": "sha256:bcaf1dcad90eecbd14c28f0d734a5cfa3b2b7dc6f5b46135b417bc96b6d3a916",
+  "discoveredAt": "2026-09-13T08:10:00Z",
+  "discoveredBy": "mncs-atlas",
+  "domain": "backend.wasm-address-typing",
+  "id": "MNCS-LANG-4F3798658F55",
+  "identity": {
+    "capability": "nested-cell-address-normalization",
+    "domain": "backend.wasm-address-typing",
+    "reproducerSignature": "atlas:nested-cell-address.i64-scratch-load.v1",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.16",
+  "legacyIds": [],
+  "notes": "Resolved by explicit i64-to-i32 address wrapping in the generic code generator.",
+  "reproducer": {
+    "signature": "atlas:nested-cell-address.i64-scratch-load.v1",
+    "text": "Build mncs-atlas/mncs/atlas-model.mncs at language revision a0255f8 with backend mncs-portable-wasm-mvp. The recursive cell flattening path emits LocalGet(i64 scratch) immediately before I32Load, producing an invalid address operand."
+  },
+  "requiredBehavior": "Recursive flattening must preserve typed cell layout while explicitly normalizing scratch addresses to the address type required by each memory instruction; valid nested-cell programs must produce valid WASM without a consumer-side address workaround.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "backendDivergence": true,
+    "correctness": true,
+    "nativeConversionBlocked": true
+  },
+  "sourceRef": {
+    "backend": "mncs-portable-wasm-mvp",
+    "commit": "3ff5a11",
+    "languageCommit": "a0255f8",
+    "languageRepository": "mncs-language",
+    "path": "mncs/atlas-model.mncs",
+    "repository": "mncs-atlas"
+  },
+  "summary": "Atlas nested-cell flattening passed i64 scratch locals directly to WASM i32.load address operands. The generated model artifact was rejected by WASM validation before it could be instantiated.",
+  "target": "language",
+  "title": "Nested cell loads require explicit WASM address normalization",
+  "version": "1"
+}
