@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:6eac424b268ff8d994c0af95ca782de0a66cfb7e51f824b3e64e604fa73e7a8f",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-005",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-88C97B4EEEB1--OBS-61664B5362E6",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-005",
+    "sourceEntry": 4,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-88C97B4EEEB1",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "Two genuine transfer-slice bugs, both caught by\n`tests/convergence.rs`, not the compiler: dead lanes overwrote\n`classes[0]` with `-1` (source entity lost, every sentence failed);\ndigit accumulation multiplied by 10 on dead lanes (quantity garbage\n`5594136148269072384` for input `3`).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

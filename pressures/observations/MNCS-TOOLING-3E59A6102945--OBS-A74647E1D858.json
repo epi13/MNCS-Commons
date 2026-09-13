@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1b166617c09ca9591bd836feaf89af9844068ed444b1e3adbae9df86c885a048",
+  "evidence": [
+    {
+      "id": "legacy:mncs-doctor:DOC-P-005",
+      "kind": "legacy-markdown",
+      "ref": "mncs-doctor:DOC-P-005.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-3E59A6102945--OBS-A74647E1D858",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "DOC-P-005",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:dfed9f42772f765a7bea6c597b3bbac6f78bcea1ae4d356ae6b866ac2439a616"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-3E59A6102945",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Leading-comment headers (`/* c */ mncs 0.10; …`) already disagree between\nupstream layers (see `CP-0006`); Doctor's mirror adds a third\nimplementation of the same rule.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-005.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "workaround"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0010",
+  "contentDigest": "sha256:e28bbf6d3aa5fb98b739bebaa7d37ed1230025bc39e5d4558f91292cd675e149",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-4924C0E45913",
+  "identity": {
+    "capability": "legacy.cp-0010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0010",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "resolved (2026-09-12)",
+    "legacyId": "CP-0010",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:88a2afcbe8e153eaf00808a6d2b2393660b2e7bfabe58695dd162462e89fb411",
+    "sourcePath": "mncs-compiler:0010-scalar-match-dispatch.md",
+    "sourceText": "# Pressure Finding CP-0010\n\nID: CP-0010\n\nStatus: resolved (2026-09-12)\n\nCategory: language\n\nSeverity: medium\n\nFrequency: common\n\n## No scalar dispatch: match takes only finite/bool shapes, no integer patterns\n\n`match` arms must open with an identifier, `true`, or `false` pattern\n(MNP084 on an integer literal pattern). There is no match on `u64`\nvalues of any kind — no integer patterns, no range patterns, no guard\nsyntax observed. Opcode-style dispatch (token kinds, operator precedences,\nerror codes) therefore compiles to long `if`/`else` chains over `u64`\nequality, exactly as the existing lexer does for punctuation and as the\nexpression parser does for its 24-operator precedence table.\n\n## Compiler workload\n\nEvery compiler table is keyed by small integers: token kind to\nprecedence (`prec`), byte to character class, keyword bytes to keyword\nkind, operator kind to IR mnemonic. All of them are `if`-chains in the\ncurrent core (see `prec` in `src/compiler/decl.mncs`).\n\n## Minimal MNCS reproduction\n\n`pressure/repro/match-u64-pattern.mncs`:\n\n```text\nfn f(x: u64) -> (result: u64) { return match x { 0 => 1, _ => 2 }; }\n```\n\nStage-0 reports MNP084 at the `0` pattern (plus recovery cascades).\n\n## Current behavior\n\nThe grammar's match arms accept finite-variant patterns, bare variant\nnames, and boolean literals only. Scalar scrutinees have no pattern\nform. Related boolean gap: there is no logical-negation operator either\n(`!` is MNL002; see the CP-0004 update note), so negative conditions\nalso spell out through `select` or inverted comparisons.\n\n## Current workaround\n\n`if`-chains over `u64 ==` comparisons, exactly mirroring what the\nworkaround would be anywhere else. Correct but linear, repetitive, and\nunchecked for exhaustiveness: unlike `match` on finite types (which\nrejects missing variants with MNE140), nothing verifies that an\nif-chain over 24 operators covers all of them.\n\n## Why the workaround is insufficient\n\n- Exhaustiveness is the main loss: adding an operator to the lexer table\n  without updating `prec` (or vice versa) fails silently at differential\n  tests rather than at elaboration.\n- Linear if-chains over opcode spaces cost one comparison per candidate\n  at every dispatch site, in both interpreter steps and generated\n  semantic/HIR size (each arm is checked arithmetic plus a branch).\n- The codebase now contains two dispatch idioms (`match` for trees,\n  `if`-chains for scalars) with different safety properties, and the\n  boundary between them is an accident of the pattern grammar.\n\n## Desired behavior\n\nSome total scalar-dispatch form with exhaustiveness checking — integer\npatterns, or a `select`-chain with a coverage obligation, or documented\nguidance that scalar dispatch is intentionally left to `if`-chains (in\nwhich case the pressure is editorial, not technical).\n\n## Likely ownership\n\nlanguage\n\n## Impact\n\n- Correctness: silent non-exhaustiveness at dispatch sites.\n- Safety: none.\n- Runtime performance: linear dispatch where a jump table belongs.\n- Compiler performance: larger semantic artifacts per dispatch site.\n- Memory: none measurable.\n- Determinism: deterministic.\n- Implementation complexity: low per site, high in aggregate review cost.\n\n## Evidence / reproduction\n\n```text\nmncs abi pressure/repro/match-u64-pattern.mncs  # MNP084 at the `0` pattern\n```\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision: profile 0.13 (scalar integer match with `_` totality)\n- Follow-up evidence in this repository:\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): resolved\n\nProbed on the current pin: `match x { 0 => 1, _ => 2 }` over `u64`\nelaborates at 0.13; a missing `_` default is MNE140 (non-exhaustive\nscalar match) — the exhaustiveness check the original pressure asked\nfor, delivered as an elaboration property. The 0.10 control still\nyields MNP084, so old-profile behavior is preserved.\n\nProven in real compiler code: `lexer.mncs` `punctuation` is now a\nnested scalar match (10 two-byte groups with single-kind inner\ndefaults, 12 single kinds, `_ => 7` outer default), and `decl.mncs`\n`prec` (24 operator rows), `is_operand_start`, and `is_value_name` are\ntotal scalar matches. Every punctuation token of the 1586-token\nfrontend differential flows through the migrated dispatch\n(`tools/test_frontend.py` green), and interpreter steps dropped ~9%,\nso the branch-chain lowering is measurably cheaper than the if-chains\nit replaced. `decl.mncs` tables are parse-checked with elaboration\nproof staged after CP-0014. History preserved above: the MNP084\nrefusal, the if-chain workaround, and the silent non-exhaustiveness\nthat motivated totality.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0010",
+    "text": ""
+  },
+  "requiredBehavior": "Some total scalar-dispatch form with exhaustiveness checking — integer\npatterns, or a `select`-chain with a coverage obligation, or documented\nguidance that scalar dispatch is intentionally left to `if`-chains (in\nwhich case the pressure is editorial, not technical).",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0010-scalar-match-dispatch.md"
+  },
+  "summary": "Imported legacy pressure CP-0010: CP-0010.",
+  "target": "compiler",
+  "title": "CP-0010",
+  "version": "1"
+}

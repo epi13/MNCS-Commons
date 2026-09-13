@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-002",
+  "contentDigest": "sha256:38b7f5a4d638ce376284b057b5ddcbca3eb6de6d2bf8d6af005eaf1b5cc22072",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-D695B014F6DB",
+  "identity": {
+    "capability": "legacy.doc-p-002",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-002",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround",
+    "legacyId": "DOC-P-002",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:d23c61091f7c6f48df82ab74b7cc53d80cf0d84e9b5f68bb357507df52ad7a77",
+    "sourcePath": "mncs-doctor:DOC-P-002.md",
+    "sourceText": "# DOC-P-002 — No shared structured fix/edit contract upstream\n\nStatus: workaround\n\nCategory: language | tooling\n\nSeverity: high\n\nFrequency: common\n\n## Doctor workload\n\n`fix --dry-run` must show exactly what `fix` would apply; an LSP code\naction and `mncs-doctor fix` should invoke the same repair semantics.\n\n## Minimal reproducer\n\nUpstream search: `autofix|auto_fix|apply_fix|CodeAction|remediation`\nacross `mncs-language` yields nothing; the language service offers exactly\none fix family (MNE131 missing-import `use` insertion) plus compute-only\nrename. There is no upstream edit representation (spans, conflict rules,\nordering, stale-base handling).\n\n## Current behavior\n\nDoctor defines its own `TextEdit`/`EditSet` (span replacement, overlap\nconflicts, deterministic ordering, SHA-256 stale-base refusal) and a\n`Diagnostic` envelope shaped as a *proposal* for the shared contract\n(code, severity, span, message, explanation, applicability, version\nmetadata, migration transition). Built-in providers cover SAFE hygiene\nonly (whitespace, final newline, CRLF, BOM). Production fix planning,\nconflict validation, and application now call the MNCS edit policy; the\nRust edit implementation remains an independent oracle and host mechanism.\n\n## Why the workaround is insufficient\n\n- Doctor-side fixes cannot address semantic diagnostics (MNE*) — only the\n  language side knows the authoritative basis for those.\n- Two edit representations (service-local `FileEdit`, doctor `EditSet`)\n  will drift unless unified upstream.\n\n## Desired behavior\n\nUpstream adopts (or supersedes, with migration) a shared diagnostic/fix\nenvelope: codes, spans, applicability levels, edit sets with conflict and\nstaleness semantics, and per-code authoritative fix providers. The service\nand Doctor both become consumers.\n\n## Likely ownership\n\nlanguage (contract + per-code providers); service/Doctor adopt.\n\n## Impact\n\n- Safety: semantic autofix is correctly absent rather than guessed.\n- Implementation complexity: Doctor's engine is ready; providers await\n  upstream knowledge.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-002",
+    "text": "Upstream search: `autofix|auto_fix|apply_fix|CodeAction|remediation`\nacross `mncs-language` yields nothing; the language service offers exactly\none fix family (MNE131 missing-import `use` insertion) plus compute-only\nrename. There is no upstream edit representation (spans, conflict rules,\nordering, stale-base handling)."
+  },
+  "requiredBehavior": "Upstream adopts (or supersedes, with migration) a shared diagnostic/fix\nenvelope: codes, spans, applicability levels, edit sets with conflict and\nstaleness semantics, and per-code authoritative fix providers. The service\nand Doctor both become consumers.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-002.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-002: No shared structured fix/edit contract upstream.",
+  "target": "tooling",
+  "title": "No shared structured fix/edit contract upstream",
+  "version": "1"
+}

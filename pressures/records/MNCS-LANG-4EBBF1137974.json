@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-002",
+  "contentDigest": "sha256:6614341b60fad3b26a80634c174a983d4850cd7618aac4d1f3926bcdee70b504",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "type-system.generics",
+  "id": "MNCS-LANG-4EBBF1137974",
+  "identity": {
+    "capability": "legacy.p-002",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-numerics:P-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-002",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:76cec08cf5b2031ecdbfbca8c06083971b33451e8eeea0c4617dd4278e1a699b",
+    "sourcePath": "mncs-numerics:P-002-host-multi-generic/README.md",
+    "sourceText": "# P-002 — Host seeding drops repeated generic spellings\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-002`.\n\n`repro.mncs` is `matvec_into<M, N>` (two Nat params); `corpus.json`\nnames `(2, 2)` (expects `[17.0, 39.0]`) and `(3, 2)` (expects\n`[23.0, 53.0, 83.0]`) via `type_arguments`.\n\n```bash\ncargo run -q -p mncs-cli -- experiment run repros/P-002-host-multi-generic/repro.mncs \\\n  --backend mncs-research-bytecode --corpus repros/P-002-host-multi-generic/corpus.json\n```\n\n**RESOLVED (2026-09-12).** Native artifacts resolve through\n`args_spellings`, which the seed merge used to mangle (`sort`+`dedup`\nin `mncs-model/src/generics.rs` treated positional arguments as a\nset): on C11 the two cases reported `compiled instantiations: [(2),\n(2, 3)]` — `(2, 2)` collapsed by dedup, `(3, 2)` reordered by sort.\nThe language repair keeps positional spelling addresses whole\n(first-seen order, unioned per instantiation), so both cases now\nreturn on bytecode/C11/Cranelift. LLVM/WASM still fail this repro,\nbut with the honest P-001 construction symptoms (LLVM float-`replace`\nmiscompile, WASM float-`replace` refusal) — mis-addressing is gone.\nLibrary workaround (`tests/drivers/`) retired; `mat_float` corpora\nname multi-param instantiations directly.\n\nKept as a reproducer: on the repaired toolchain the addressing half\npasses wherever P-001 permits construction.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-002",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-002-host-multi-generic/README.md"
+  },
+  "summary": "Imported legacy pressure P-002: Host seeding drops repeated generic spellings.",
+  "target": "language",
+  "title": "Host seeding drops repeated generic spellings",
+  "version": "1"
+}

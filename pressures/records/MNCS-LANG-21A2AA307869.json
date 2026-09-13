@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-012",
+  "contentDigest": "sha256:7a21689571ae01fe395c85475a9e2999ebc675735acd6ef738a25c2b0d014e34",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "backend",
+  "id": "MNCS-LANG-21A2AA307869",
+  "identity": {
+    "capability": "legacy.web-p-012",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-012",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-012",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:18d7ed79d4f576f3e6b031f93f11461883af8c711549ac95cf6922c1f1d70382",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-012 — Native backends trap past small feed-staging counts\n\n- Status: open\n- Severity: major (the full chunk-convergence battery can only run on\n  the interpreter; every native backend needs a reduced matrix)\n- Category: compiler/backends (codegen resource scaling)\n\nWhat mncs-web was trying to implement: chunk-size convergence —\n`feed_pattern` staging the same message in 1, 5, and 64-byte pieces\nmust converge with the one-shot parse, on every backend.\n\nExpected behavior: staging N chunks costs steps, not soundness. Past\nany resource limit the backend should report budget exhaustion (or a\nnamed resource error), identically to the interpreter.\n\nActual behavior: past a small, backend-specific live-chunk count, the\nsame corpus that converges on `mncs-research-bytecode` dies on every\nnative backend, each in its own way:\n- `mncs-portable-wasm-mvp`: `runtime_failure: backend trap:\n  out-of-bounds memory store` at 13+ live chunks (12 verified good).\n- `mncs-cranelift`: `cranelift JIT cell access exceeded the arena\n  image; failing closed` (same 13-chunk trigger).\n- `mncs-c11` / `mncs-llvm-ir`: bare `runtime_failure` with null\n  reason at 1 step — no diagnostic at all (10 live chunks fails; 1-2\n  verified good).\nVerified brackets (live `fold_feed` chunks, 37 B message unless\nnoted): wasm 12 pass / 13 trap; c11 1 pass / 10 fail; llvm and\ncranelift 2 pass (upper range unprobed); 5 B message at chunk size 1\n(5 live) passes on wasm. The trigger tracks live-chunk count, not\nmessage bytes (23 B in 12 chunks passes; 37 B in 13 chunks traps).\n\nWhy this is a language/runtime issue: identical MNCS source\ntraps/fails-opaquely on native backends while the reference\ninterpreter converges. Application code cannot distinguish \"too many\nchunks\" from correct code, and two backends give no actionable\ndiagnostic (null reason; arena internals). Suspected family:\nloop-carried large-array temporaries (`build_chunk` 256 B carrier +\n1024 B staged copies per live chunk) exhausting per-backend\nmemory/arena sizing — but that is a guess from symptoms, for the\nbackend owners to confirm.\n\nCurrent workaround: per-backend live-chunk ceilings in\n`tests/test_fragmentation.py` (`BACKEND_LIVE_CAP`: bytecode full\nbattery; wasm 12; c11/llvm/cranelift 2), with every excluded\n(chunk-size, backend) pair printed and tabulated instead of silently\nskipped. Unknown backends fail closed (explicit ceiling required).\n\nCost of the workaround: convergence is proved in full only on the\ninterpreter; native-backend portability covers 1-12 chunks depending\non backend. If backend ceilings move, the caps must be re-verified by\nexecution (the table records exactly what was verified).\n\nDesired capability: native backends stage arbitrary chunk counts\nlike the interpreter, or refuse with a named, actionable resource\nerror — never a trap or a null-reason failure.\n\nOther projects likely affected: any project looping over\nlarge-array temporaries on native backends (mncs-store chunking,\nmncs-media frames).\n\nEvidence/tests: `repro/feed-chunk-trap.py` (5-live control +\n13-live trigger on any backend); `BACKEND_LIVE_CAP` and SKIP lines in\n`tests/test_fragmentation.py`; coverage table in `tests/README.md`.\n\n## Investigated but rejected (not language pressures)\n\n- `!=` on integers/bytes: suspected missing, actually present (probed\n  `u64 != u64` and `byte != byte`: 0 errors). The codebase uses\n  `!(x == y)` in older spots purely from caution; no change needed.\n- Same-capacity view slicing (`buf[s..e]` at unchanged capacity):\n  works (0 errors). Only *narrowing* is refused (WEB-P-006).\n- `select` over sequences/records/bytes: works (probe: sequence, byte,\n  and record selections all elaborate and execute). Strictness (both\n  sides evaluate) is real but documented and designed, not a defect.\n- `iterate` over exact arrays, local arrays, and record-field arrays:\n  all elaborate. The cost model (WEB-P-004) is the pressure, not the\n  mechanism.\n- Async runtime absence: correctly out of language scope for this\n  milestone (structured `mncs.std.task.v1` lifecycle + host-driven I/O\n  is the honest decomposition, mirroring mncs-store). Not filed.\n- `repeat [value; N]` with symbolic N: refused by design (MNP203,\n  documented in 0.13). Filed nowhere; the padded-literal and\n  fill-loop patterns cover v1 needs.\n- `fail`/`next` as identifiers: reserved words, correctly rejected with\n  precise diagnostics. Ergonomics note at most; not filed.\n- Round-trip TE law code 1036 vs expected 2036: suspected codec\n  regression, actually a stale test expectation. The implementation\n  follows its own tier scheme (`1000 + kind*10 + error` for first-parse\n  failure); kind 2 + error 16 (`UnsupportedTransfer`) yields 1036, and\n  no 2xxx tier exists in `request_roundtrip`. Fixed the test, not the\n  source (`tests/test_roundtrip.py`)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-012",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-012: Native backends trap past small feed-staging counts.",
+  "target": "language",
+  "title": "Native backends trap past small feed-staging counts",
+  "version": "1"
+}

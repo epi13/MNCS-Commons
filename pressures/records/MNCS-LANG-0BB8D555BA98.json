@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-003",
+  "contentDigest": "sha256:9b843387eb726cb3bf60fc280c44b0ecad0cf735f0a7f40c309ebeb02bbd51b5",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-0BB8D555BA98",
+  "identity": {
+    "capability": "legacy.ingest-p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-003",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:cb74b5b127b731f0026ae632ac140733879d47a8658744fc48804b308190e283",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-003 — No UTF-8 scalar semantics in MNCS\n\n## Problem\nUnicode entity names (`Zoë`) must survive ingestion with exact identity,\nand eventually the pipeline needs to validate (and later fold) text\nitself rather than trusting the host's pre-validation.\n\n## Reproducer\n`vocab.mncs::is_entity_word` accepts bytes `>= 128` opaquely; the host\nvalidates UTF-8 first (`tests/adapters.rs::\nunicode_entities_pass_through_all_adapters`). Stdlib deals only in\nproducer-attested `utf8_valid` flags (`text_view`), never validation.\n\n## Expected semantics\nProducer-attested UTF-8 views plus a minimal scalar-step primitive\n(first-scalar/rest), so classifiers can walk characters without owning\ndecoding tables.\n\n## Current result\nStill reproduces at 0.14: no validator, no scalar step, no\nnon-ASCII fold in stdlib or intrinsics.\n\n## Architectural impact\nHost validates; MNCS passes high bytes through. Any future\nnormalization (case-insensitive entity convergence, NFC) must live on\nthe host, outside semantic authority.\n\n## Severity\nModerate.\n\n## Owning layer\nStandard library (validator); type system (validated-text marker).\n\n## Acceptance test\nAn MNCS function rejects invalid UTF-8 (`[0xC3, 0x28]`) and folds one\nnon-ASCII case pair, executed on all backends.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-003",
+    "text": "`vocab.mncs::is_entity_word` accepts bytes `>= 128` opaquely; the host\nvalidates UTF-8 first (`tests/adapters.rs::\nunicode_entities_pass_through_all_adapters`). Stdlib deals only in\nproducer-attested `utf8_valid` flags (`text_view`), never validation."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-003: No UTF-8 scalar semantics in MNCS.",
+  "target": "language",
+  "title": "No UTF-8 scalar semantics in MNCS",
+  "version": "1"
+}

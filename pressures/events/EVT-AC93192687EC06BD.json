@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:1bd398a0b18193819dfd276afab59c98883728b16cfdf6e7dee40a2dba884255",
+  "details": {
+    "reason": "Both report unbounded text/string plumbing as the limiting capability; evidence and consumer behavior remain separate.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-AC93192687EC06BD",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:17:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-E5C253732BF2",
+  "targetPressure": "MNCS-LANG-9DE65A412CF7",
+  "version": "1"
+}

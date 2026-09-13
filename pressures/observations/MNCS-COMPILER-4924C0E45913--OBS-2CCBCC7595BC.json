@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:dd395259a641fea365d83bea0e3eb26813bab5908570b063972de25b7935ab89",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0010",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0010-scalar-match-dispatch.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-4924C0E45913--OBS-2CCBCC7595BC",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0010",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:88a2afcbe8e153eaf00808a6d2b2393660b2e7bfabe58695dd162462e89fb411"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-4924C0E45913",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0010-scalar-match-dispatch.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "`if`-chains over `u64 ==` comparisons, exactly mirroring what the\nworkaround would be anywhere else. Correct but linear, repetitive, and\nunchecked for exhaustiveness: unlike `match` on finite types (which\nrejects missing variants with MNE140), nothing verifies that an\nif-chain over 24 operators covers all of them.",
+    "legacyStatus": "resolved (2026-09-12)"
+  }
+}

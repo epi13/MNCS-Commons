@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-007",
+  "contentDigest": "sha256:7f8f42bf42a4280fa3b33e2eecf95d8247331943fa03d61298b9c1fb26c30636",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-53E07BB00417",
+  "identity": {
+    "capability": "legacy.press-007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-007",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:4de4db2a25c9b197152dae6f39da125921bdc7eb69375edab640ac130c0bb29c",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-007 — No watching or clocks (P1, watch/time, runtime)\n\n- Observed: RFC 0023 (time) `NONE`; no watch effect exists. Performance\n  evidence (wall time, throughput) can only be collected host-side.\n- Desired: filesystem-event effects with coalescing-tolerant semantics, or\n  an explicit statement that watching stays host-side with a normalized\n  event-hint contract.\n- Workaround: polling watcher with quiet-period coalescing (`watch.py`);\n  hints select transactions, content re-derives truth (RFC 0005 pattern).\n  Proven by `tests/test_watch.py`. Host `time.monotonic` supplies\n  intervals and performance evidence.\n- Slice-4 verdict 2026-09-07 (`index/phase2-pressure`): **partially\n  available — clock half confirmed, watch half still missing.**\n  Smallest legal program `pressure/reproducers/probe-clock.mncs`\n  (`mncs 0.10`, `use mncs.std.clock.v1 as clock`,\n  `capability ticker`, `effect clock_read authorized_by ticker`,\n  `clock.expired(0, clock_read())`) elaborates with zero\n  `MNE`/`MNB`/`MNP` errors and, under `--grant-time ticker`, returns\n  `true` (`steps: 6`, `expectation_met` + `effects_met`, effect\n  `{kind: clock_read, target: clock_read, capability: ticker,\n  provenance: host-clock:wall}`). Only relational booleans are pinned —\n  absolute instants are wall time and must never be asserted.\n  Fail-closed without grant (`unsupported`). Cost: ~0.5 s per minimal\n  invocation (stdlib compile). No filesystem-event/watch effect exists\n  at source level, so the polling watcher + quiet-period coalescing\n  workaround stays.\n  Corpus: `pressure/reproducers/probe-clock-corpus.json`;\n  regression: `tests/test_language_probes.py` (granted + fail-closed).\n- Update (gap review): the watcher no longer trusts hints alone. A\n  same-size/same-CRC32 content change leaves `snapshot_id` identical, so\n  hint-gated triggering would keep HEAD stale forever; every\n  `validate_every`-th quiet window (default 4) now runs the full\n  incremental transaction regardless, and a validation that finds every\n  verdict 0 publishes nothing (`tests/test_watch.py::\n  test_watch_detects_hint_collision` simulates the collision by blinding\n  hints). Bound: hint-invisible changes surface within `validate_every`\n  quiet windows. The watcher also follows the store's richness\n  (`--rich` runs the v2 transaction over the same concurrent acquisition\n  stage as builds; `test_watch_rich_keeps_tables`) instead of silently\n  degrading v2 stores to v1.\n- Cost: event-burst/duplication pressure cannot be exercised against real\n  watcher semantics; latency is poll-bound.\n- Classification: runtime/stdlib.\n- Slice-7 verdict 2026-09-08: **confirmed still partial** (RFC 0023\n  still `NONE`). Reran: clock probe green with identical verdicts\n  (`past-expired true`, `steps: 6`; fail-closed without grant);\n  still relational booleans only, no watch effect at source level.\n- Acceptance-test-after-language-fix: an MNCS watch effect delivers a\n  coalesced event for a fixture mutation within a bounded quiet\n  window and `tests/test_watch.py` passes with hints as language\n  values (polling `watch.py` loop deleted, `validate_every` fallback\n  redundant)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-007",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-007: No watching or clocks (P1, watch/time, runtime).",
+  "target": "language",
+  "title": "No watching or clocks (P1, watch/time, runtime)",
+  "version": "1"
+}

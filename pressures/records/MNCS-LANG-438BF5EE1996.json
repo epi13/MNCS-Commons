@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-002",
+  "contentDigest": "sha256:7b3908f30fae668cf60a43c2b307640d8065564c09e06d8c75f93c3b8d042485",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-438BF5EE1996",
+  "identity": {
+    "capability": "legacy.ingest-p-002",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-002",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:2241cb676e160af6dacde2df5fa14514edad1e3afbe8f1634f9c18a09176df0a",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-002 — No arbitrary view sub-slicing (partially relieved by 0.14)\n\n## Problem\nA streaming decoder needs a bounded zero-copy cursor that advances\nthrough a leased byte region while preserving provenance and bounds:\ncarve word/field/line spans out of a sentence/chunk view and hand the\nspan itself to shared classifiers.\n\n## Reproducer\nPre-0.14 `vocab.mncs` takes `(text, start, length)` triples with manual\nclamping because `[byte; up_to 64]` cannot be sub-viewed\n(`span_byte`, `span_eq`, `span_prefix_eq` prologues ≈15% of the file).\n\n## Expected semantics\nBounded borrow-slices over views with compiler-checked bounds, so a\ncallee receives a view it cannot index out of.\n\n## Current result\nPartially relieved at 0.14: `copy_span(dst, dst_at, src, src_at, len)`\nstages spans into exact buffers, exact arrays slice to views\n(`buf[0..n]`), and views narrow (`[E; up_to A]` → `[E; up_to B]`).\nStill missing: `view[a..b]` sub-slicing of a view directly. Tranche A\nproves the composition (`stage` + `copy_span` + narrow) and records\nwhere it falls short.\n\n## Architectural impact\nSpan-triple convention retained in `vocab.mncs`; new streaming code\nstages through exact buffers with extra copies that a sub-slice would\navoid (measured in Tranche A benchmarks as copies/byte).\n\n## Severity\nMajor (was blocker-adjacent; 0.14 reduced it).\n\n## Owning layer\nBorrow/view model; compiler (bounds discharge for dynamic ranges).\n\n## Acceptance test\n`vocab.mncs` classifiers take one view argument each; the\n`(text, start, length)` prologues disappear with no added copies.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-002",
+    "text": "Pre-0.14 `vocab.mncs` takes `(text, start, length)` triples with manual\nclamping because `[byte; up_to 64]` cannot be sub-viewed\n(`span_byte`, `span_eq`, `span_prefix_eq` prologues ≈15% of the file)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-002: No arbitrary view sub-slicing (partially relieved by 0.14).",
+  "target": "language",
+  "title": "No arbitrary view sub-slicing (partially relieved by 0.14)",
+  "version": "1"
+}

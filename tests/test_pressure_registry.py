@@ -357,6 +357,8 @@ def test_generated_views_are_deterministic_and_repositories_are_descriptive(tmp_
         "by-domain",
         "by-repository",
         "multi-repository",
+        "needs-revalidation",
+        "python-fallback",
         "recently-resolved",
         "rust-fallback",
         "unresolved-language",
@@ -367,6 +369,43 @@ def test_generated_views_are_deterministic_and_repositories_are_descriptive(tmp_
     registry.generate_views()
     assert first == (registry.views_dir / "unresolved-language.json").read_bytes()
     assert any(item["id"] == "mncs-store" for item in known_repositories())
+
+
+def test_migration_reads_nested_and_multi_entry_ledgers_without_alias_collisions(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "legacy"
+    nested = source / "repros" / "P-001"
+    nested.mkdir(parents=True)
+    (nested / "README.md").write_text(
+        "# P-001 — A bounded parser gap\n\n"
+        "## Minimal reproducer\n\n`probe.mncs`\n\n"
+        "## Current workaround\n\nPython adapter.\n\nSeverity: high\n",
+        encoding="utf-8",
+    )
+    (source / "ledger.md").write_text(
+        "# Local ledger\n\n"
+        "## INGEST-P-002 — A second gap\n\n"
+        "## Reproducer\n\n`second.mncs`\n\n"
+        "## Desired behavior\n\nA typed view.\n\n"
+        "## INGEST-P-003 — A third gap\n\n"
+        "## Reproducer\n\n`third.mncs`\n",
+        encoding="utf-8",
+    )
+    registry = PressureRegistry(tmp_path / "pressures")
+    result = registry.migrate_legacy("mncs-ingest", source, target="language")
+    assert [item["legacyId"] for item in result["imported"]] == [
+        "INGEST-P-002",
+        "INGEST-P-003",
+        "P-001",
+    ]
+    assert len(registry.projections()) == 3
+    migrated = registry.show(result["imported"][2]["id"])
+    assert migrated.data["legacyIds"] == ["mncs-ingest:P-001"]
+    assert migrated.data["signals"]["fallbackLanguage"] == "python"
+    assert migrated.data["legacy"]["sourcePath"].endswith("repros/P-001/README.md")
+    assert migrated.data["legacy"]["sourceText"].startswith("# P-001")
+    assert registry.validate().valid
 
 
 def test_mncs_lifecycle_mirror_has_same_transition_cells() -> None:

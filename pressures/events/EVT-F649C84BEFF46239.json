@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:bece1001b3842b198419ee8c89f46900955cfb47bb1b037f59ef3d88297e96e8",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-973FAC2F4FBD--OBS-724343E59695"
+  ],
+  "from": "discovered",
+  "id": "EVT-F649C84BEFF46239",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:11Z",
+  "pressureId": "MNCS-LANG-973FAC2F4FBD",
+  "previousEvent": null,
+  "reason": "Current Profile 0.16 implementation evidence confirms the legacy pressure boundary.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

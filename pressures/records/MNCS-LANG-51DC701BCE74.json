@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-010",
+  "contentDigest": "sha256:7b760a2a85ae487e4adbee61eeff2108df890c3317fc6931d906262f655f225c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-51DC701BCE74",
+  "identity": {
+    "capability": "legacy.web-p-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (expected; memory-model scope)",
+    "legacyId": "WEB-P-010",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:20b73470c11e62561f46ad19f477c6f7ae8c85eaec1c9722ba01bdc6bf782b5b",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-010 — No growable buffers (fixed capacities are structural)\n\n- Status: open (expected; memory-model scope)\n- Severity: major (caps the protocol surface)\n- Category: memory\n\nWhat mncs-web was trying to implement: request/response bodies beyond\n1024 bytes, header blocks beyond 32 entries, routes beyond 16, reason\ntables without padded slots.\n\nExpected behavior: growable (still bounded, still explicit) buffers, or\na streaming body API that does not require staging the whole body.\n\nActual behavior: no heap allocation exists in any profile; every\ncapacity is a structural constant (`[byte; 1024]`, `[Header; 32]`,\n`[Route; 16]`, `[byte; 256]` bodies). Bodies larger than the wire\nbuffer cannot be represented; `BodyTooLarge`/`HeadTooLarge` are load-\nbearing API, not just hardening.\n\nCurrent workaround: v1 caps (documented in `mncs-web.toml`\n`[capacities]`), span-based zero-copy bodies within the buffer,\nexplicit errors past the caps. No fake streaming.\n\nCost of the workaround: the stack tops out at small-message workloads\n(health checks, small JSON APIs); file upload, SSE/EventStreams scale,\nand large-header workloads are out of scope until the memory story\nlands.\n\nDesired capability: bounded growable buffers (or first-class streaming\nbody/structure support) with explicit limits preserved.\n\nOther projects likely affected: mncs-store (multi-chunk objects),\nmncs-media, mncs-doc.\n\nEvidence/tests: `[capacities]` in `mncs-web.toml`;\n`BodyTooLarge`/`HeadTooLarge` cases in `tests/test_parser.py`."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-010",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-010: No growable buffers (fixed capacities are structural).",
+  "target": "language",
+  "title": "No growable buffers (fixed capacities are structural)",
+  "version": "1"
+}

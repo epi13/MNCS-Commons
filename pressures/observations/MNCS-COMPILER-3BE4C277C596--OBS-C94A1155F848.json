@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:7364cf8997176f5b74873fa146c3d923b8694c8ac1e299d33e02309b64c0a541",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0004",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0004-boolean-comparison.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-3BE4C277C596--OBS-C94A1155F848",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0004",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:42bc61aee31b0dc285084f586564cf4a1c7aedbe32a55ef18324f49e0e8f0650"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-3BE4C277C596",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0004-boolean-comparison.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "resolved (2026-09-12). Category: language, tooling. Severity:"
+  }
+}

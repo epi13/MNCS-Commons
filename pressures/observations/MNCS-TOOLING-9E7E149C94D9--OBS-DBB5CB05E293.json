@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "validation": "historical-ledger-review"
+  },
+  "contentDigest": "sha256:6de5ab4e022b22ec06c103a76802eb109a8d67abb7ca11942ae531d2cfc461db",
+  "evidence": [
+    {
+      "id": "mncs-forge-mcp:FORGE-P-0001-ledger-review",
+      "ref": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md",
+      "status": "PASS",
+      "summary": "Repository source explicitly records this pressure and its local behavior/workaround."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-DBB5CB05E293",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": false,
+    "legacyId": "mncs-forge-mcp:FORGE-P-0001",
+    "reviewKind": "historical-ledger-confirmation"
+  },
+  "observedAt": "2026-09-13T06:31:12Z",
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "Consult the inert source ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/forge-modernization-2026-09",
+    "commit": "c045b34bc0fcb7a6c043f59934b71fc953e6ff98",
+    "path": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md",
+    "repository": "mncs-forge-mcp",
+    "workingTree": "dirty-at-inspection"
+  },
+  "summary": "Forge pressure record reviewed at the repository pin; the local toolchain identity constraint is confirmed as an observed ecosystem constraint. This is historical ledger evidence, not a current-language rerun.",
+  "version": "1",
+  "workaround": {
+    "description": "Preserved from the imported repository observation; consumer-specific removal remains unverified.",
+    "fallbackLanguage": null
+  }
+}

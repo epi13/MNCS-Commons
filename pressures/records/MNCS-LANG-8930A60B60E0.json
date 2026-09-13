@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-011",
+  "contentDigest": "sha256:110295ce63b4d6f34f83c0752c23d5fe1cf185f57dcc0b29c40bcdb3eb526e42",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "backend",
+  "id": "MNCS-LANG-8930A60B60E0",
+  "identity": {
+    "capability": "legacy.web-p-011",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-011",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-011",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:604d19f474de6ed8d506df61eff532573cc3142c8030b9f9a7946cb8b84791df",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-011 — Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order\n\n- Status: open\n- Severity: major (silent cross-backend divergence; every synthesized\n  record argument was rejected on wasm)\n- Category: compiler/backends (value-contract validation)\n\nWhat mncs-web was trying to implement: corpus arguments carrying\nsynthesized records (`HeaderBlock` for header lookup, `RouteTable` for\ncustom-table routing, `Parser` for record-threading paths).\n\nExpected behavior: record fields match by name (MNCS records are\nnominal, name-matched values), so field order in a corpus argument\nshould not matter — or the corpus schema should state a canonical\norder.\n\nActual behavior: the bytecode interpreter accepts record fields in\nsource declaration order, but `mncs-portable-wasm-mvp` rejects the\nsame argument with `invalid_request: backend request violates the\nlanguage-owned value contract`. Reordering fields alphabetically —\nthe order used in the `type_identity` spelling — is accepted on wasm\nAND on bytecode with identical results. The compiled-backend check\n(`backend_input_matches` in `mncs-codegen/src/lib.rs`) zips contract\nfields with value fields positionally (`name == field_name` per\nposition), so any order other than the contract's canonical order\nfails. The contract order is alphabetical for every record observed\n(`Route`, `RouteTable`, `Header`, `HeaderBlock`, `Parser`,\n`ParseOut`, `GetOut`).\n\nWhy this is a language/runtime issue: two conforming backends\ndisagree on whether a valid value is valid. Either the corpus schema\nshould mandate canonical field order (and the bytecode backend should\nenforce it, so producers learn the rule), or the compiled-backend\ncheck should match fields by name. Today the lenient backend teaches\nproducers an order the strict backends reject, and the rejection\ncarries no hint (no expected-vs-actual field listing).\n\nWorse, the strictness is only skin-deep: top-level record fields are\nvalidated positionally (wrong order rejected), but NESTED records\ninside sequences pass validation unchecked (`scalar_field_matches`\nreturns true for any sequence) and are then bound positionally —\ndeclaration-order nested records are silently misread instead of\nrejected. Demonstrated in the reproducer: canonical top-level order\nwith declaration-order nested `Header` values returns\n`found: false` for a present header (the spans bind to the wrong\nfields); fully canonical order returns the correct span. A rejection\nwould be a papercut; a silent wrong read is a soundness hole in\ncross-backend corpus validity.\n\nCurrent workaround: `REC` in `tests/web_exec.py` sorts fields into\ncanonical (alphabetical) order at every nesting level; nested RECs\nare sorted recursively by construction. Guarded by\n`tests/test_harness.py`.\n\nCost of the workaround: trivial in code, but every downstream corpus\nproducer must independently discover the canonical-order rule; the\ndivergence stays a trap for other projects until the backends agree.\n\nDesired capability: backends agree — either all enforce canonical\norder with a diagnostic that names the expected order, or all match\nby name.\n\nOther projects likely affected: any project synthesizing record\ncorpus arguments (mncs-store, conformance suites).\n\nEvidence/tests: `repro/record-field-order.py` (same call, both\norders, prints both verdicts); `tests/test_harness.py`;\nwasm `invalid_request` failures in the pre-fix full-matrix log\n(`test_header_block_ops`, `test_custom_table_priority_and_wildcard`,\n`test_parser_record_paths`)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-011",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-011: Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order.",
+  "target": "language",
+  "title": "Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order",
+  "version": "1"
+}

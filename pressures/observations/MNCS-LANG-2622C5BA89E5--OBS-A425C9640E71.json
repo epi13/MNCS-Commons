@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:dddc5328816dfb6d864e308d33b8116ac1a83755181e6af2ece38d4f9d843c85",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-006",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-2622C5BA89E5--OBS-A425C9640E71",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-006",
+    "sourceEntry": 5,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-2622C5BA89E5",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "`span_start`/`span_length` clamp twice (sentinel `-1` plus storage\nbound) because both `select` candidates evaluate — the established\n`text_scan` idiom.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

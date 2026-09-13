@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-004",
+  "contentDigest": "sha256:68c4bcf81c9b7caf7129d8e93084b0318e9732d48a4abbffcc13554ed921b45d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-LANG-470A89615EFE",
+  "identity": {
+    "capability": "legacy.web-p-004",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-004",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:3248043bd84a2507ac7500f26a6011d3cb76554fa2cf000d88dd0b92b68d08f7",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-004 — Bounded iteration always pays the static capacity\n\n- Status: open\n- Severity: minor (budget pressure, not correctness)\n- Category: semantics / optimizer (bounded iteration)\n\nWhat mncs-web was trying to implement: `stage_append` over a runtime\n`take <= 256` and `feed_pattern` over short messages without paying for\nthe full 1024-slot staging capacity on every feed.\n\nExpected behavior: iteration cost proportional to the live window\n(`take`, `hlen`), with dead iterations either skipped or provably free.\n\nActual behavior: `iterate` traverses the static bound (1024 for the\nstaging buffer, 256 for chunks) and every dead iteration still\nevaluates both `select` candidates (strictness), including a full\n`replace`. The first `stage_append` shape (iterate the 1024 staging\nbuffer) blew the 200k budget on a 37-byte message; restructuring to\niterate the 256 chunk fixed it, but short takes still pay 256.\n\nWhy this is a language issue: bounds must be static for verification,\nbut the compiler could specialize on the (already computed) runtime\nlength, or offer an explicit bounded-prefix traversal form. Application\ncode cannot express \"exactly the first `take` slots\" as a traversal\ndomain today.\n\nCurrent workaround: iterate the smallest statically-sized value\navailable (chunk, not staging buffer); size budgets generously.\n\nCost of the workaround: 4-8x step overpayment on small feeds; budget\nplanning per entry point; throughput ceiling for chunked protocols.\n\nDesired capability: runtime-length-bounded traversal (or optimizer\nspecialization) with the same static guarantees.\n\nOther projects likely affected: every bounded-buffer protocol workload.\n\nEvidence/tests: `feed_pattern` 1M-budget cases; the stage_append\nrestructure (commit history) shows the before/after shape."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-004: Bounded iteration always pays the static capacity.",
+  "target": "language",
+  "title": "Bounded iteration always pays the static capacity",
+  "version": "1"
+}

@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0005",
+  "contentDigest": "sha256:85dc083860e7c1afe6d9520b555dd9fec2a91c5bccbb69f8b1a6a5e61b999f94",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-6AA9F9765B5B",
+  "identity": {
+    "capability": "legacy.cp-0005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0005",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open, re-confirmed (2026-09-12). Category: tooling,",
+    "legacyId": "CP-0005",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:dbaeb16b3a11b840abb621ec392ec335916c48d8424259b2cca5a3b0d25382fa",
+    "sourcePath": "mncs-compiler:0005-test-transport.md",
+    "sourceText": "# CP-0005 — Bootstrap differential tests need a host test transport\n\nStatus: open, re-confirmed (2026-09-12). Category: tooling,\ncompiler-architecture. Severity: medium. Frequency: every evidence run.\nUpstream tracking: none; probe gained `MNCS_PROBE_MODULES` narrowing\n(this campaign) but the transport shape is unchanged.\n\nThe compiler workload is comparing many MNCS token/parse requests with pinned\nRust `mncs-syntax` results. The pinned CLI exposes one-request `execute`, but\n`compare-execution` compares execution subjects rather than exposing raw Rust\nlexer results for successful source inputs; successful `source-study` reports\ncompilation study output. Repeated per-token CLI elaboration is unnecessarily\nexpensive. The initial per-request reference `execute` harness also rebuilt a\n`BodyExecutionSession` each time; using the existing session API avoids this\navoidable test cost. This is primarily a tooling boundary, not a proved MNCS\nprocess API deficiency.\n\nTemporary workaround: `tools/stage0-probe` only loads repository modules through\nStage-0, calls Stage-0 `parse`, and executes MNCS requests through cached reference\nexecution sessions. `tools/test_frontend.py` supplies fixtures, compares values,\nand hashes test evidence. Neither implements production compiler semantics.\nRun `tools/bootstrap.sh && python3 tools/test_frontend.py`.\n\nThis transport is explicitly not the standalone compiler driver. It requires\nRust/Python during bootstrap tests; it must be replaced by MNCS-native test\ntransport or a standard Harness/Stage-0 raw-fact interface when available.\nNo hard dependency on Harness or any other MNCS ecosystem repository is added.\n\nCorrectness: independent lexical expectations come from Rust, not a duplicate\nPython lexer; MNCS and Rust still share the Stage-0 executor/toolchain trust base.\nSafety: local test files and stdio only. Performance/memory: the test process\nholds compiled reference programs and sessions; reported wall time is not pure\nkernel timing. Determinism: compare normalized values and step counts twice;\nwall time is excluded. Complexity: a small removable adapter and JSON transport.\nDesired capability: reusable raw syntax-fact and MNCS test execution interfaces.\nLikely ownership: tooling and compiler test architecture.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0005",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "python",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0005-test-transport.md"
+  },
+  "summary": "Imported legacy pressure CP-0005: Bootstrap differential tests need a host test transport.",
+  "target": "compiler",
+  "title": "Bootstrap differential tests need a host test transport",
+  "version": "1"
+}

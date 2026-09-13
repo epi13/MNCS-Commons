@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-015",
+  "contentDigest": "sha256:098a09377156ff3f7716cfb674ef7caf0775cdebddfa6da0d7508e27f1e5db34",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-CB736AB5B3F0",
+  "identity": {
+    "capability": "legacy.doc-p-015",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-015",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-015",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:bdae1f523ab891787c41f2ec73f36894b20a6b54063c65e07b2331c0a8a6a5ce",
+    "sourcePath": "mncs-doctor:DOC-P-015.md",
+    "sourceText": "# DOC-P-015 — No CLI argv / stdin / stdout program interface\n\nStatus: open\n\nCategory: language + tooling\n\nSeverity: medium (caps the thin-launcher goal)\n\nFrequency: structural (one decision: can the launcher be MNCS?)\n\n## Doctor workload\n\n`main.rs` should ideally shrink to argv acquisition, capability setup,\ncore invocation, and exit-status return. That requires MNCS programs to\nreceive arguments and emit bytes/status.\n\n## Current behavior (verified 2026-09-12)\n\nInputs cross only as `ExecutionRequest.arguments` + grants (≤64 bytes\nper grant blob); there is no argv/stdin surface and no stdout/exit-code\nsurface — observation is `ExecutionResult` consumed by the host. A\nstandalone `mncs-doctor` binary whose `main` is MNCS is therefore not\nexpressible; the host shell is load-bearing, not incidental.\n\n## Workaround\n\nThin Rust launcher (D) invoking library logic; all four production\ncommands now call MNCS policy through the retained runtime. The launcher\nstill owns argv, stdout/JSON, and process exit because those surfaces are\nnot language effects.\n\n## Removal condition\n\nA program-entry effect (granted argv ingress, byte-stream egress, exit\nstatus) lands; then re-evaluate the launcher split with a `main.mncs`\nwitness.\n\n## Evidence\n\n`crates/mncs-embed/src/lib.rs` (`call_json`, grants ≤64B);\n`docs/RUST-BOUNDARY-AUDIT.md` (main.rs verdict).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-015"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-015",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-015.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-015: No CLI argv / stdin / stdout program interface.",
+  "target": "tooling",
+  "title": "No CLI argv / stdin / stdout program interface",
+  "version": "1"
+}

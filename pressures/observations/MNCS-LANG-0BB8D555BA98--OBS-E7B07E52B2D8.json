@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:91a423627b93107be3597afb2b43ed41954f7fa0eb3ca809f420fab77b5ba3e2",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-003",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-0BB8D555BA98--OBS-E7B07E52B2D8",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-003",
+    "sourceEntry": 2,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-0BB8D555BA98",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "`vocab.mncs::is_entity_word` accepts bytes `>= 128` opaquely; the host\nvalidates UTF-8 first (`tests/adapters.rs::\nunicode_entities_pass_through_all_adapters`). Stdlib deals only in\nproducer-attested `utf8_valid` flags (`text_view`), never validation.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

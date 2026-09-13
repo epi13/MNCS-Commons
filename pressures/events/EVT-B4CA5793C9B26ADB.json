@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-numerics",
+  "contentDigest": "sha256:ae3a0eb9bd3366a7fec92bca83d95e0bf5017d89a7843b46c03fe9167dde6ffc",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-B4CA5793C9B26ADB",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:04Z",
+  "pressureId": "MNCS-LANG-A14DAEC8E40F",
+  "previousEvent": "EVT-73B3CDC1C50EC3EA",
+  "reason": "Verify the original Numerics reproducer after the upstream capability landed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

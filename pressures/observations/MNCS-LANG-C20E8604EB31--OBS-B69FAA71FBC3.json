@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:7521e2882088e66025e2c99c0235ce6e0b406cc6b5715dbe2118389da1aa6335",
+  "evidence": [
+    {
+      "id": "mncs-numerics:P-018:activation-suite",
+      "kind": "consumer-retest",
+      "ref": "mncs-numerics:target/evidence-20260913T054330Z.json",
+      "status": "PASS",
+      "summary": "418 research-bytecode cases passed with zero failures."
+    }
+  ],
+  "id": "MNCS-LANG-C20E8604EB31--OBS-B69FAA71FBC3",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "historicalFullMatrix": "all-five-executable-backends at a7a8c054015971c148d1bbaa797c64362c4073e2",
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "suiteResult": "418 passed, 0 failed"
+  },
+  "observedAt": "2026-09-13T06:11:03Z",
+  "pressureId": "MNCS-LANG-C20E8604EB31",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "run the P-018 reproducer and Numerics suite",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "fb98af770c4361f3d3ae37d662b86a8a78cf90a2",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "repros/P-018-*/README.md",
+    "repository": "mncs-numerics",
+    "suite": "scripts/run_tests.py --backends mncs-research-bytecode"
+  },
+  "summary": "Numerics reconciled this pressure against the current campaign checkout; the 418-case research-bytecode suite passes. The reproducer remains an actionable partial or open capability gap.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The checked-in Numerics report remains the detailed reproducer and workaround record.",
+    "removed": false
+  }
+}

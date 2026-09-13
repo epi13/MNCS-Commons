@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-001",
+  "contentDigest": "sha256:03ed4f6562a6b41b4ac307eb033a36bd62e71713512473758109d68e4b52a83e",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-0973D3173B88",
+  "identity": {
+    "capability": "legacy.press-001",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-001",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:a45e1b9b31f09e4fc722b94414ee512a2a7c0b989d8b2b13032785fa509091ef",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-001 — No concurrency primitives (P0, concurrency, runtime)\n\n- Observed: `mncs-language` RFC 0010 implementation status is `NONE`.\n  Source Profiles 0.1–0.10 offer pure bounded computation only: no\n  thread, pool, scoped-task, join, yield, or scheduler control syntax\n  exists to attempt (verified by profile docs and\n  `spec/source-representations.md` open-requirements list, which names\n  \"concurrency syntax\" as unresolved). Nuance: `library/std/task.mncs`\n  (`mncs.std.task.v1`) defines a cooperative single-task *lifecycle\n  vocabulary* (`spawn`/`begin`/`advance`/`finish`, cancellation flag,\n  step budget) that is explicitly not threads/channels/preemption/fan-out.\n  It is the natural foundation for future structured concurrency, but\n  expresses no parallel execution today.\n- Desired: task spawning with structured lifetime (join/cancel/failure\n  propagation) sufficient to express discovery → bounded queue →\n  workers → deterministic merge.\n- Why needed: the entire pipeline fan-out/fan-in, backpressure, and\n  graceful shutdown currently live in `runner/mncs_index/pipeline.py`.\n- Slice-4 verdict 2026-09-07 (`index/phase2-pressure`): **confirmed\n  still missing; lifecycle vocabulary refined as available.**\n  `pressure/reproducers/probe-task-lifecycle.mncs` (`mncs 0.10`,\n  `use mncs.std.task.v1 as task`) drives `candidate_lifecycle(8)` to a\n  terminal DONE task (`true`, 321 steps), `candidate_cancel(8)` to a\n  terminal CANCELLED task (`was_cancelled == true`, 142 steps), and\n  `candidate_invalid()` to packed flags `0` (all three invalid\n  transitions rejected, 64 steps) — all through the fast `execute`\n  path with zero `MNE`/`MNB`/`MNP` errors and no grants. This is a\n  cooperative single-task state machine only: no spawnable threads,\n  pools, join, preemption, or fan-out exists to express discovery →\n  queue → workers → merge. Note: `import` aliases require profile\n  ≥0.9 (`MNP181` under 0.8), and a stdlib-importing `execute` costs\n  ~0.43 s/call versus ~10 ms for the dependency-free `src/*.mncs`\n  kernels — one reason kernels stay import-free.\n  Regression: `tests/test_language_probes.py` (task execute + elaboration tests).\n- Workaround: host `ThreadPoolExecutor` read/kernel pools with a bounded\n  `queue.Queue`. Cost: the concurrency architecture — the heart of this\n  project — is not MNCS-expressible; all scheduling evidence is host-side.\n- Correctness impact: none observed (determinism enforced at the merge),\n  but language coverage of the project is capped at the kernel level.\n- Classification: runtime/stdlib (missing), language semantics (missing).\n- Evidence: `runner/mncs_index/pipeline.py`; determinism matrix\n  `tests/test_determinism.py`.\n- Slice-7 verdict 2026-09-08: **confirmed still missing.**\n  mncs-language RFC 0010 implementation status is still `NONE`; the\n  lifecycle probe reran green with identical verdicts (DONE `true`\n  321 steps, CANCELLED 142 steps, invalid flags 0), i.e. vocabulary\n  only, still no spawnable threads/pools/join/fan-out.\n- Acceptance-test-after-language-fix: `mncs execute` a program that\n  spawns two tasks each returning a distinct value and joins both;\n  assert both values return and `tests/test_determinism.py` worker\n  matrix still converges with the pipeline fan-out expressed in MNCS\n  (`bridge.py` subprocess-driver call count drops to ~0 for fan-out)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-001",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-001: No concurrency primitives (P0, concurrency, runtime).",
+  "target": "language",
+  "title": "No concurrency primitives (P0, concurrency, runtime)",
+  "version": "1"
+}

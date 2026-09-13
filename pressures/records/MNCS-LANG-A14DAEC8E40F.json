@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-001",
+  "contentDigest": "sha256:960473aa2379485b2b0fdd50464fd552b3281ace5f68cb65704b87e28c7a327e",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-A14DAEC8E40F",
+  "identity": {
+    "capability": "legacy.p-001",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-001",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:72885ca8b58dfb64a7de2f1085e4753e01b315e03f3add261b4b561ff6a67489",
+    "sourcePath": "mncs-numerics:P-001-float-replace/README.md",
+    "sourceText": "# P-001 — Float `SequenceReplace` miscompiled on LLVM, refused on WASM\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-001`.\n\n`repro.mncs` scales `[1.0, 2.0, 3.0, 4.0]` by 2.0 with `replace` in a\ntraversal; `corpus.json` expects `20.0` back from `demo`.\n\n```bash\nexport MNCS_LIBRARY_PATH=$PWD/src   # run from the repo root, CLI in mncs-language/\ncargo run -q -p mncs-cli -- experiment run repros/P-001-float-replace/repro.mncs \\\n  --backend mncs-llvm-ir --corpus repros/P-001-float-replace/corpus.json\n```\n\n**RESOLVED (2026-09-12): all five backends return `20.0` bit-exact.**\nWas:\n\n- bytecode / C11 / Cranelift: `returned`, expectation met.\n- WASM: per-entrypoint `CGN302` refusal (`float sequences are not supported`).\n- LLVM: `clang failed: ... '%relem35_v9' defined with type 'double' but\n  expected 'i64'`; the whole artifact (including unrelated entrypoints) is poisoned.\n\nLLVM now bitcasts the replacement lane to the raw slot word; WASM\nmoves float lanes as 8-byte I64 words. Kept as a reproducer.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-001",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-001-float-replace/README.md"
+  },
+  "summary": "Imported legacy pressure P-001: Float `SequenceReplace` miscompiled on LLVM, refused on WASM.",
+  "target": "language",
+  "title": "Float `SequenceReplace` miscompiled on LLVM, refused on WASM",
+  "version": "1"
+}

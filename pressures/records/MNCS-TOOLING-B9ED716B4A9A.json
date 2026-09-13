@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-009",
+  "contentDigest": "sha256:427d76acf0cf22679e2e1a3ee1c79b6d162139010036e9f32da789690091db11",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "io.filesystem",
+  "id": "MNCS-TOOLING-B9ED716B4A9A",
+  "identity": {
+    "capability": "legacy.doc-p-009",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-009",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-009",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:f18c9c34534a9dd9fad98be0328fdca714030f4125096b13f70d82d679d5acaf",
+    "sourcePath": "mncs-doctor:DOC-P-009.md",
+    "sourceText": "# DOC-P-009 — No file metadata (size/mtime/mode)\n\nStatus: open\n\nCategory: language (stdlib/runtime surface)\n\nSeverity: medium\n\nFrequency: common (inventory + transaction safety)\n\n## Doctor workload\n\nInventory records byte length, permission bits, and symlink identity;\nthe transaction executor preserves permission bits and refuses symlink\ntargets. Change detection and preservation both need metadata.\n\n## Current behavior (verified 2026-09-12)\n\nNo `stat`-family intrinsic exists in the 0.16 scope doc or the profile\nregistry. Length is derivable by chunked reads (wasteful but possible);\nmtime/mode bits are not observable at all.\n\n## Workaround\n\nMetadata stays in the Rust substrate (`discovery.rs`, `transaction.rs`).\n\n## Removal condition\n\nGranted metadata observation (at least kind+size+mode, ideally mtime)\nunder the `fs_root` authority model.\n\n## Evidence\n\nRegistry + `docs/source-profile-0.16.md` enumeration (see DOC-P-008\nfor method); `transaction.rs` permission-preservation tests pin the\nbehavior that must one day be reproducible in MNCS.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-009",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-009.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-009: No file metadata (size/mtime/mode).",
+  "target": "tooling",
+  "title": "No file metadata (size/mtime/mode)",
+  "version": "1"
+}

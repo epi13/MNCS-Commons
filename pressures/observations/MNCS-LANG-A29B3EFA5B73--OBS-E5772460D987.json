@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:1677cd9c17b9e3f8fd7fd348227a5bceb419a7576bac48227a613d932769efec",
+  "evidence": [
+    {
+      "id": "mncs-store:closure:P1-009",
+      "kind": "consumer-verification",
+      "ref": "mncs-store:tests/test_mncs_corpora.py",
+      "status": "PASS",
+      "summary": "Originating Store behavior passes after workaround removal."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-E5772460D987",
+  "kind": "verification",
+  "languageProfile": "0.13",
+  "metadata": {
+    "backendScope": "mncs-research-bytecode",
+    "consumerSuite": "22 passed, 1 skipped",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "observedAt": "2026-09-13T05:50:38Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "backend": "mncs-research-bytecode",
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "tests/test_mncs_corpora.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Current Store corpus passes under mncs-language 30054cfd0b469bb326c21df3cd24e756741d7a9b; the documented workaround is removed or no longer needed.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

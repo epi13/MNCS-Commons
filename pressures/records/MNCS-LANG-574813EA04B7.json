@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-010",
+  "contentDigest": "sha256:3b18354b3554cbe2f8342ca2d20ab1e8e4b2e683bcf53c7a3e26bda75911cfe6",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-574813EA04B7",
+  "identity": {
+    "capability": "legacy.press-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-010",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:1b6c936536fc83168c0bb057e040d6d086450e1f15cda56db414c801bd935e7a",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-010 — Per-call process invocation cost (P2, performance/tooling)\n\n- Observed: each MNCS kernel call is a subprocess (`mncs execute`,\n  ~10 ms idle, 200+ ms under load) including full source elaboration.\n  Measured: fixture build = 231 calls; stress build ≈ 1.6k calls;\n  megabyte file = 16k calls (16k subprocesses for 1 MB at 64 B/window).\n- Desired: in-process invocation, persistent sessions, or a batch-call API\n  (many requests per process) so systems workloads are economical.\n- Workaround: pure-function caches (byte classes, kinds, token\n  vocabularies), term-identity redesign (content tag instead of\n  per-term combine), `mncs_digest` flag so sweeps compare bytes while\n  dedicated tests carry the fingerprint claim, and parallel tree\n  reduction (`tree_combine`/`tree_digest_windows`: levels sequential,\n  pairs concurrent) so large files and canonical bytes no longer reduce\n  serially in the host thread.\n- Cost: stress economics; CI minutes; temptation to shrink coverage.\n- Classification: tooling/runtime. Evidence: `tests/test_stress.py`\n  timing print; `bridge.py` instrumentation (`calls`, `max_in_flight`).\n- Slice-7 verdict 2026-09-08: **confirmed still missing and still the\n  binding constraint.** `bridge.call` is still a synchronous local\n  `mncs execute` subprocess driver (read 2026-09-08); no batch or\n  in-process API appeared upstream. Ordering dependency for PRESS-019\n  stands.\n- Acceptance-test-after-language-fix: one session/batch handle\n  executes the full fixture build with per-call overhead <1 ms\n  (vs ~10 ms idle today); assert `tests/test_stress.py` wall time\n  drops ≥5x at equal call counts with identical canonical hashes\n  (per-call `subprocess.run` in `bridge.py` deleted).\n- Update 2026-09-07 (`index/phase2-pressure`, slice 1): hint-hit paths in\n  `incremental_snapshot` (`runner/mncs_index/indexer.py`) are now\n  authoritatively validated — size/CRC32 no longer reuse records without\n  a recomputed MNCS digest — which prices a no-op incremental at ~1 full\n  build on the fixture corpus: 150 vs 142 kernel calls, 28.6 s vs\n  25.6 s wall (`BuildConfig(workers=4, mncs_digest=False)`, fresh kernel\n  caches; the +8 calls are the per-file `classify_change` verdicts on\n  the fresh digests). Correctness demands it — a hint cannot prove\n  sameness — but the incremental fast path for unchanged files is gone;\n  a content-defined strong hint (stored digest/byte-identity) is future\n  work. Regression tests:\n  `tests/test_incremental.py::test_same_size_change_detected`,\n  `test_simulated_crc32_collision_detected` (simulated same-size CRC32\n  collision -> verdict 3 + fresh digest, never stale reuse).\n- Update (gap review): two more prices measured. (1) Watch-level\n  authoritative validation costs one full incremental transaction per\n  validation window even when nothing changed — correctness over\n  benchmark numbers. (2) Multi-repo ecosystem evidence\n  (`scripts/run_ecosystem.py`, `evidence/ecosystem-mncs-repos.json`):\n  real sibling-repository corpora indexed at multiple worker counts with\n  converging canonical hashes; call counts and wall time scale with the\n  subprocess-per-call model, which is now the binding constraint on\n  corpus size, not kernel expressiveness.\n- Update (phase-3 gap review): call counts are now reproducible, not\n  just convergent. Producer memo reads take the kernel lock\n  (`pipeline.py`), closing the torn-read duplicate-submission race\n  that made `Bridge.stats.calls` run-dependent under concurrency —\n  pinned by `tests/test_determinism.py::\n  test_kernel_call_counts_reproducible` (two cold-cache workers=8\n  builds, identical hashes AND identical counts). Economics numbers\n  are therefore measurements, not samples.\n- Update 2026-09-08 (`index/phase3-systems`, slice 5): scale campaign\n  (`tests/test_scale.py`, `runner/mncs_index/ecosystem.py`,\n  `evidence/ecosystem-mncs-family.json`). Hermetic proof (own 6-file\n  `*.mncs` corpus, 9868 B): workers 4 vs 1 converge\n  (`98621db5…`; cold w=4 build 1811 calls / 308 s wall, 187.9\n  calls/KB). Family tier (18 files / 14166 B across 13 sibling repos;\n  census 554 files / 2.07 MB inventoried, 536 exclusions recorded with\n  reasons): workers 1 vs 2 converge (`2c901b07…`; cold 2502 calls /\n  1065 s, warm-cache second config 784 calls / 82 s). Five-class\n  mutation batch (change/add/remove/rename/RFC+pressure): per-path\n  verdicts exact, all six tables canonically equal\n  (docs 20, terms 903, syms 90, headings 1, rels 115, press 3),\n  traversal/invalidation agree under both the MNCS verdict and the host\n  mirror on 10 roots. Campaign total 5488 calls / 1466 s wall;\n  measured 396.7 calls/KB projects the census at ~804k calls — so the\n  census stays inventoried, not executed. Contention note: on a loaded\n  box (load ~10) workers=1 beat workers=4 wall-clock (103 s vs 308 s on\n  the hermetic corpus) — the subprocess storm is the bottleneck, wider\n  fan-out only deepens it. No meaning moved out of MNCS: every verdict\n  counted is a kernel subprocess call, caches are pure-function\n  memoization, and traversal checks run the MNCS verdict with the host\n  mirror cross-checked, never substituted."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-010",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-010: Per-call process invocation cost (P2, performance/tooling).",
+  "target": "language",
+  "title": "Per-call process invocation cost (P2, performance/tooling)",
+  "version": "1"
+}

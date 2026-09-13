@@ -425,8 +425,41 @@ def _load_legacy_sections(text: str) -> dict[str, str]:
     return sections
 
 
+_LEGACY_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d+\b", re.IGNORECASE)
+
+
+def _legacy_entries(text: str) -> list[tuple[str, str, str]]:
+    """Return pressure entries from a file without interpreting their prose.
+
+    Older family ledgers use both one-file-per-pressure documents and a single
+    Markdown ledger containing one ``## PRESSURE-ID`` section per finding.  The
+    importer recognizes identifiers only in headings, so an identifier in a
+    code block or historical paragraph cannot accidentally create a record.
+    """
+
+    headings: list[tuple[str, str, int, int]] = []
+    for match in re.finditer(r"(?im)^(?:#{1,3})\s+(.+?)\s*$", text):
+        heading = match.group(1).strip()
+        identifier = _LEGACY_ID_RE.search(heading)
+        if identifier is not None and identifier.group(0).lower() not in {"stage-0", "stage-1"}:
+            headings.append((identifier.group(0), heading, match.start(), match.end()))
+    entries: list[tuple[str, str, str]] = []
+    for index, (legacy_id, heading, start, _end) in enumerate(headings):
+        next_start = headings[index + 1][2] if index + 1 < len(headings) else len(text)
+        entry_text = text[start:next_start].strip()
+        title = re.sub(
+            rf"(?i)^(?:pressure\s+finding\s+)?{re.escape(legacy_id)}\s*[—:-]?\s*",
+            "",
+            heading,
+        ).strip()
+        if title == heading:
+            title = re.sub(rf"(?i)\b{re.escape(legacy_id)}\b\s*[—:-]?\s*", "", heading).strip()
+        entries.append((legacy_id, title or legacy_id, entry_text))
+    return entries
+
+
 def _legacy_status(text: str) -> str | None:
-    match = re.search(r"(?im)^status\s*:\s*(.+?)\s*$", text)
+    match = re.search(r"(?im)^\s*(?:[-*]\s*)?status\s*:\s*(.+?)\s*$", text)
     return match.group(1).strip() if match else None
 
 
@@ -445,9 +478,9 @@ def _legacy_labeled(text: str, label: str) -> str:
 
 
 def _legacy_title(text: str, fallback: str) -> str:
-    match = re.search(r"(?m)^#\s+(.+?)\s*$", text)
-    if match:
-        return re.sub(r"^P[0-9A-Z-]+\s*[—:-]\s*", "", match.group(1)).strip()
+    entries = _legacy_entries(text)
+    if entries:
+        return entries[0][1]
     return fallback
 
 
@@ -478,6 +511,36 @@ def _legacy_capability(legacy_id: str, title: str) -> str:
     return f"legacy.{_slug(legacy_id)}"
 
 
+def _legacy_severity(text: str) -> str:
+    match = re.search(r"(?im)^\s*(?:[-*]\s*)?severity\s*:\s*([^\s#(]+)", text)
+    value = match.group(1).lower() if match else ""
+    if value in {"blocker", "blocking", "critical"}:
+        return value
+    if value in {"major", "high"}:
+        return "major"
+    if value in {"moderate", "medium"}:
+        return "moderate"
+    if value in {"minor", "low"}:
+        return "minor"
+    return "blocker" if re.search(r"(?i)\bblocker\b", text) else "major"
+
+
+def _legacy_fallback_language(text: str) -> str | None:
+    """Extract an explicit host fallback without treating arbitrary prose as code."""
+
+    relevant = re.findall(
+        r"(?is)(?:workaround|fallback|host[- ](?:side|language)|implemented outside|implemented in)"
+        r".{0,500}",
+        text,
+    )
+    joined = "\n".join(relevant).lower()
+    if re.search(r"\bpython\b", joined):
+        return "python"
+    if re.search(r"\brust\b", joined):
+        return "rust"
+    return None
+
+
 def _validate_transition_shape(current: str, target: str) -> str | None:
     allowed = {
         "discovered": {"confirmed", "rejected", "duplicate", "deferred", "obsolete"},
@@ -502,6 +565,52 @@ def _resolution_ready(affected: int, passed: int, failed: int, unknown: int, rem
     return (
         affected > 0 and passed == affected and failed == 0 and unknown == 0 and removed == affected
     )
+
+
+def _verification_state(affected: int, passed: int, failed: int, unknown: int, removed: int) -> str:
+    """Classify verification without collapsing evidence into confidence."""
+
+    if affected <= 0:
+        return "unknown"
+    if failed > 0:
+        return "failed"
+    if unknown > 0:
+        return "unknown"
+    if passed == affected and removed == affected:
+        return "ready"
+    return "incomplete"
+
+
+def _requires_revalidation(unresolved: bool, current_validation: bool) -> bool:
+    """Identify an unresolved record without a current-language validation."""
+
+    return unresolved and not current_validation
+
+
+def _is_current_validation(observation: Mapping[str, Any]) -> bool:
+    metadata = observation.get("metadata")
+    return isinstance(metadata, Mapping) and metadata.get("currentValidation") is True
+
+
+def _fallback_languages(projection: "PressureProjection") -> set[str]:
+    languages: set[str] = set()
+    signals = projection.data.get("signals")
+    if isinstance(signals, Mapping):
+        language = signals.get("fallbackLanguage")
+        if isinstance(language, str) and language.strip():
+            languages.add(language.lower().strip())
+    for observation in projection.observations:
+        workaround = observation.get("workaround")
+        if not isinstance(workaround, Mapping):
+            continue
+        language = workaround.get("fallbackLanguage")
+        if isinstance(language, str) and language.strip():
+            languages.add(language.lower().strip())
+        description = str(workaround.get("description", "")).lower()
+        for candidate in ("python", "rust"):
+            if re.search(rf"\b{candidate}\b", description):
+                languages.add(candidate)
+    return languages
 
 
 class PressureRegistry:
@@ -721,6 +830,7 @@ class PressureRegistry:
         language_profile: str | None = None,
         compiler: Mapping[str, Any] | None = None,
         observed_at: str | None = None,
+        metadata: Mapping[str, Any] | None = None,
     ) -> dict[str, Any]:
         if status not in EVIDENCE_STATUSES:
             raise PressureError("verification status must be PASS, FAIL, or UNKNOWN")
@@ -742,6 +852,7 @@ class PressureRegistry:
                 },
                 "evidence": list(evidence),
                 "workaround": {"removed": workaround_removed},
+                "metadata": dict(metadata or {}),
             },
         )
 
@@ -1571,6 +1682,8 @@ class PressureRegistry:
         workaround_active: bool = False,
         language_profile: str | None = None,
         rust_fallback: bool = False,
+        python_fallback: bool = False,
+        needs_revalidation: bool = False,
     ) -> list[dict[str, Any]]:
         result: list[dict[str, Any]] = []
         for projection in self.projections():
@@ -1608,9 +1721,27 @@ class PressureRegistry:
                 )
             ):
                 continue
-            if rust_fallback and not any(
-                "rust" in str(item.get("workaround", {}).get("description", "")).lower()
-                for item in data.get("workarounds", [])
+            fallback_languages = _fallback_languages(projection)
+            if rust_fallback and "rust" not in fallback_languages:
+                continue
+            if python_fallback and "python" not in fallback_languages:
+                continue
+            current_validation = any(
+                _is_current_validation(item) for item in projection.observations
+            )
+            verification_summary = data["verificationSummary"]
+            verification_state = _verification_state(
+                int(verification_summary["affected"]),
+                int(verification_summary["pass"]),
+                int(verification_summary["fail"]),
+                int(verification_summary["unknown"]),
+                sum(
+                    item.get("workaround", {}).get("removed", "not_needed") in {True, "not_needed"}
+                    for item in data.get("verification", [])
+                ),
+            )
+            if needs_revalidation and not _requires_revalidation(
+                bool(data.get("unresolved")), current_validation
             ):
                 continue
             result.append(
@@ -1624,8 +1755,14 @@ class PressureRegistry:
                     "status": data["status"],
                     "affectedRepositories": data["affectedRepositories"],
                     "reporters": data["reporters"],
-                    "verificationSummary": data["verificationSummary"],
+                    "verificationSummary": verification_summary,
+                    "verificationState": verification_state,
                     "unresolved": data["unresolved"],
+                    "fallbackLanguages": sorted(fallback_languages),
+                    "currentValidation": current_validation,
+                    "revalidationRequired": _requires_revalidation(
+                        bool(data.get("unresolved")), current_validation
+                    ),
                     "valid": projection.valid,
                 }
             )
@@ -1675,6 +1812,8 @@ class PressureRegistry:
             "recently-resolved": {"status": "resolved"},
             "multi-repository": {"multi_repository": True},
             "rust-fallback": {"rust_fallback": True},
+            "python-fallback": {"python_fallback": True},
+            "needs-revalidation": {"needs_revalidation": True},
         }
         for name, selector in selectors.items():
             payload = {
@@ -1723,131 +1862,175 @@ class PressureRegistry:
         repository: str,
         source: str | Path,
         *,
+        target: str = "language",
         dry_run: bool = False,
         limit: int | None = None,
         refresh: bool = False,
     ) -> dict[str, Any]:
         repo = _require_repository(repository)
+        if target not in TARGETS:
+            raise PressureError(f"target must be one of {sorted(TARGETS)}")
         source_root = Path(source)
-        files = sorted(source_root.glob("*.md")) if source_root.is_dir() else [source_root]
+        files = sorted(source_root.rglob("*.md")) if source_root.is_dir() else [source_root]
         if limit is not None:
             files = files[:limit]
         imported: list[dict[str, Any]] = []
         skipped: list[str] = []
         for path in files:
             text = path.read_text(encoding="utf-8")
-            legacy_id_match = re.search(r"(?m)^#\s+(P[0-9A-Z-]+)\s*[—:-]", text)
-            if legacy_id_match is None:
+            entries = _legacy_entries(text)
+            if not entries:
                 skipped.append(f"ignored:{path.name}")
                 continue
-            legacy_id = legacy_id_match.group(1)
-            title = _legacy_title(text, path.stem)
-            sections = _load_legacy_sections(text)
-            reproducer = (
-                sections.get("minimal reproducer", "")
-                or sections.get("reproducer", "")
-                or _legacy_labeled(text, "Minimal reproducer")
-            )
-            required = (
-                sections.get("required semantics", "")
-                or sections.get(
-                    "what the language/stdlib/runtime/compiler should ideally provide", ""
+            for entry_index, (legacy_id, title, entry_text) in enumerate(entries):
+                sections = _load_legacy_sections(entry_text)
+                reproducer = (
+                    sections.get("minimal reproducer", "")
+                    or sections.get("reproducer", "")
+                    or _legacy_labeled(entry_text, "Minimal reproducer")
                 )
-                or _legacy_labeled(text, "Required semantics")
-                or _legacy_labeled(
-                    text, "What the language/stdlib/runtime/compiler should ideally provide"
+                required = (
+                    sections.get("required semantics", "")
+                    or sections.get("desired behavior", "")
+                    or sections.get("desired semantics", "")
+                    or sections.get(
+                        "what the language/stdlib/runtime/compiler should ideally provide", ""
+                    )
+                    or _legacy_labeled(entry_text, "Required semantics")
+                    or _legacy_labeled(entry_text, "Desired behavior")
+                    or _legacy_labeled(
+                        entry_text,
+                        "What the language/stdlib/runtime/compiler should ideally provide",
+                    )
+                    or "Legacy pressure imported; required behavior requires confirmation."
                 )
-                or "Legacy pressure imported; required behavior requires confirmation."
-            )
-            workaround_text = sections.get("workaround used", "") or _legacy_labeled(
-                text, "Workaround used"
-            )
-            identity_signature = f"legacy:{repo}:{legacy_id}"
-            generated = pressure_id(
-                "language",
-                _legacy_domain(title, path.name),
-                _legacy_capability(legacy_id, title),
-                identity_signature,
-            )
-            # Earlier importer versions included the title in the capability
-            # slug. Reuse an existing scoped legacy alias so wording changes
-            # never fork the canonical pressure or erase its history.
-            for existing_path in self._files(self.records_dir):
-                existing = _read_json(existing_path)
-                if f"{repo}:{legacy_id}" in existing.get("legacyIds", []):
-                    generated = str(existing.get("id"))
-                    break
-            if (self.records_dir / f"{generated}.json").exists():
-                skipped.append(
-                    f"{generated} (already imported; refresh never rewrites append-only history)"
+                workaround_text = (
+                    sections.get("workaround used", "")
+                    or sections.get("current workaround", "")
+                    or _legacy_labeled(entry_text, "Workaround used")
+                    or _legacy_labeled(entry_text, "Current workaround")
                 )
-                continue
-            spec = {
-                "id": generated,
-                "allowCustomId": True,
-                "target": "language",
-                "domain": _legacy_domain(title, path.name),
-                "capability": _legacy_capability(legacy_id, title),
-                "reproducerSignature": identity_signature,
-                "title": title,
-                "severity": "blocker" if re.search(r"(?i)blocker", text) else "major",
-                "discoveredBy": repo,
-                "discoveredAt": None,
-                "summary": f"Imported legacy pressure {legacy_id}: {title}.",
-                "requiredBehavior": required[:4000],
-                "reproducer": {"signature": identity_signature, "text": reproducer[:4000]},
-                "legacyIds": [f"{repo}:{legacy_id}", legacy_id],
-                "sourceRef": {"path": f"{repo}:{path.name}", "kind": "legacy-markdown"},
-                "legacy": {
+                identity_signature = f"legacy:{repo}:{legacy_id}"
+                domain = _legacy_domain(title, path.name)
+                capability = _legacy_capability(legacy_id, title)
+                generated = pressure_id(target, domain, capability, identity_signature)
+                # Earlier importer versions included the title in the capability
+                # slug. Reuse an existing scoped legacy alias so wording changes
+                # never fork the canonical pressure or erase its history.
+                for existing_path in self._files(self.records_dir):
+                    existing = _read_json(existing_path)
+                    if f"{repo}:{legacy_id}" in existing.get("legacyIds", []):
+                        generated = str(existing.get("id"))
+                        break
+                if (self.records_dir / f"{generated}.json").exists():
+                    skipped.append(
+                        f"{generated} (already imported; refresh never rewrites "
+                        "append-only history)"
+                    )
+                    continue
+                source_path = (
+                    path.name if not source_root.is_dir() else str(path.relative_to(source_root))
+                )
+                source_ref = f"{repo}:{source_path}"
+                fallback = _legacy_fallback_language(entry_text)
+                source_digest = "sha256:" + hashlib.sha256(entry_text.encode("utf-8")).hexdigest()
+                ledger_digest = "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
+                legacy: dict[str, Any] = {
                     "repository": repo,
                     "legacyId": legacy_id,
-                    "sourcePath": f"{repo}:{path.name}",
-                    "historicalStatus": _legacy_status(text),
-                    "sourceText": text,
-                    "sourceDigest": "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                },
-                "observation": {
-                    "repository": repo,
-                    "observedAt": None,
-                    "summary": (
-                        "Legacy Markdown preserved verbatim; current lifecycle "
-                        "awaits Commons confirmation."
-                    ),
-                    "reproduction": {"status": "UNKNOWN", "instructions": reproducer[:4000]},
-                    "evidence": [
-                        {
-                            "id": f"legacy:{repo}:{legacy_id}",
-                            "kind": "legacy-markdown",
-                            "status": "UNKNOWN",
-                            "ref": f"{repo}:{path.name}",
-                            "summary": (
-                                "Original pressure wording and evidence are preserved "
-                                "in the legacy snapshot."
-                            ),
-                        }
-                    ],
-                    "workaround": {
-                        "description": workaround_text[:4000],
-                        "active": True,
-                        "legacyStatus": _legacy_status(text),
+                    "sourcePath": source_ref,
+                    "historicalStatus": _legacy_status(entry_text),
+                    "sourceText": entry_text if len(entries) > 1 else text,
+                    "sourceDigest": source_digest
+                    if len(entries) > 1
+                    else "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                }
+                if len(entries) > 1:
+                    legacy["sourceLedgerPath"] = source_ref
+                    legacy["sourceLedgerDigest"] = ledger_digest
+                workaround: dict[str, Any] = {
+                    "description": workaround_text[:4000],
+                    "active": True,
+                    "legacyStatus": _legacy_status(entry_text),
+                }
+                if fallback:
+                    workaround["fallbackLanguage"] = fallback
+                signals: dict[str, Any] = {"migration": "legacy-markdown"}
+                if fallback:
+                    signals["fallbackLanguage"] = fallback
+                spec = {
+                    "id": generated,
+                    "allowCustomId": True,
+                    "target": target,
+                    "domain": domain,
+                    "capability": capability,
+                    "reproducerSignature": identity_signature,
+                    "title": title,
+                    "severity": _legacy_severity(entry_text),
+                    "discoveredBy": repo,
+                    "discoveredAt": None,
+                    "summary": f"Imported legacy pressure {legacy_id}: {title}.",
+                    "requiredBehavior": required[:4000],
+                    "reproducer": {"signature": identity_signature, "text": reproducer[:4000]},
+                    # Scope local ids by repository. A bare P-001 is not a
+                    # family identity and would collide across ledgers.
+                    "legacyIds": [f"{repo}:{legacy_id}"],
+                    "sourceRef": {"path": source_ref, "kind": "legacy-markdown"},
+                    "signals": signals,
+                    "legacy": legacy,
+                    "observation": {
+                        "repository": repo,
+                        "observedAt": None,
+                        "sourceRef": {"path": source_ref, "kind": "legacy-markdown"},
+                        "summary": (
+                            "Legacy Markdown preserved verbatim; current lifecycle "
+                            "awaits Commons confirmation."
+                        ),
+                        "reproduction": {"status": "UNKNOWN", "instructions": reproducer[:4000]},
+                        "evidence": [
+                            {
+                                "id": f"legacy:{repo}:{legacy_id}",
+                                "kind": "legacy-markdown",
+                                "status": "UNKNOWN",
+                                "ref": source_ref,
+                                "summary": (
+                                    "Original pressure wording and evidence are preserved "
+                                    "in the legacy snapshot."
+                                ),
+                            }
+                        ],
+                        "workaround": workaround,
+                        "metadata": {
+                            "legacyId": legacy_id,
+                            "sourceEntry": entry_index,
+                            "sourceLedgerDigest": ledger_digest,
+                        },
                     },
-                },
-            }
-            if dry_run:
-                imported.append({"id": generated, "legacyId": legacy_id, "source": str(path)})
-            else:
-                result = self.add(spec)
-                imported.append(
-                    {
-                        "id": generated,
-                        "legacyId": legacy_id,
-                        "source": str(path),
-                        "observation": result["observation"]["id"],
-                    }
-                )
+                }
+                if dry_run:
+                    imported.append(
+                        {
+                            "id": generated,
+                            "legacyId": legacy_id,
+                            "source": source_ref,
+                            "target": target,
+                        }
+                    )
+                else:
+                    result = self.add(spec)
+                    imported.append(
+                        {
+                            "id": generated,
+                            "legacyId": legacy_id,
+                            "source": source_ref,
+                            "observation": result["observation"]["id"],
+                            "target": target,
+                        }
+                    )
         return {
             "repository": repo,
             "source": str(source_root),
+            "target": target,
             "dryRun": dry_run,
             "refresh": refresh,
             "imported": imported,

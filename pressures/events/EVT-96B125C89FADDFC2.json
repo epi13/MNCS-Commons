@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:74bbae9ac549d6bdd388d61c6ab684f9bdecd800fcc28ec991996d81c2f73a9a",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "accepted",
+  "id": "EVT-96B125C89FADDFC2",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:46Z",
+  "pressureId": "MNCS-LANG-EC8EB0FE5556",
+  "previousEvent": "EVT-3BABA96F996662D3",
+  "reason": "The language repair described by the Numerics pressure report is present in the current revision.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-005",
+  "contentDigest": "sha256:a3ef827636c6dfc0ded1de70443538b11d77bf1172d0995215525ebec2ceb45b",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-A246BB2BA905",
+  "identity": {
+    "capability": "legacy.press-005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-005",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:8b3ec2f7ce7d3bcb9541ded49bcd706c08a481eb314264e0b84fa4b2cc4dd1b3",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-005 — Traversal-domain and unbounded-data gaps (P2, stdlib)\n\n- Observed: `u64` (and view-of-`u64`) sequences are rejected as `iterate`\n  domains (`MNB101`); `i64`/`byte` are accepted. Reproducer:\n  `pressure/reproducers/traversal-u64-domain.mncs`. Separately, there are\n  no unbounded strings, string splitting, corpus-scale sorting, or\n  substring search in MNCS (MAX_SEQUENCE_BOUND is 64).\n- Desired: documented traversable element types (or `u64` support), plus a\n  story for unbounded text (streaming views, chunked cursors) that keeps\n  semantic decisions in-language.\n- Workaround: 64-byte windows; host applies MNCS-verdict tables\n  (`classify_byte` cache) and the MNCS-specified lexicographic rule at\n  corpus scale. Every mirrored rule is differentially tested against its\n  kernel on seeded random inputs (`tests/test_differential.py`); production\n  meaning still comes from MNCS calls.\n- Cost: ~8x call amplification vs word-oriented kernels; host scale-out\n  code must be maintained alongside kernel specs.\n- Classification: compiler (domain rule), stdlib (missing collections).\n- Slice-7 verdict 2026-09-08: **confirmed still missing.** Reran\n  `traversal-u64-domain.mncs`: still MNB101 with the same whole-file\n  span (start 0, end 615). No traversal-domain change in any new\n  profile (0.11 adds nesting + counted index only; 0.12 adds float).\n- Acceptance-test-after-language-fix: the unmodified reproducer\n  elaborates cleanly and `over_u64_4([1,2,3,4])` returns 10; assert\n  `tests/test_differential.py` passes with byte windows widened to a\n  word-oriented kernel (call amplification gone)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-005",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-005: Traversal-domain and unbounded-data gaps (P2, stdlib).",
+  "target": "language",
+  "title": "Traversal-domain and unbounded-data gaps (P2, stdlib)",
+  "version": "1"
+}

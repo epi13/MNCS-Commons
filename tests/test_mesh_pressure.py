@@ -5,7 +5,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from mncs_commons.pressure import _resolution_ready, _validate_transition_shape
+from mncs_commons.pressure import (
+    _requires_revalidation,
+    _resolution_ready,
+    _validate_transition_shape,
+    _verification_state,
+)
 
 CORPUS = (
     Path(__file__).resolve().parent.parent
@@ -16,6 +21,8 @@ CORPUS = (
     / "corpora"
     / "pressure-lifecycle-corpus.json"
 )
+
+PROJECTION_CORPUS = CORPUS.with_name("pressure-projection-corpus.json")
 
 
 def _integer(argument: dict) -> int:
@@ -80,4 +87,36 @@ def test_pressure_source_is_the_normative_kernel() -> None:
     assert "fn transition_allowed" in text
     assert "fn unresolved" in text
     assert "fn resolution_ready" in text
+    assert "fn verification_state" in text
+    assert "fn available_awaiting_consumer" in text
+    assert "fn requires_revalidation" in text
     assert "host owns JSON" in text
+
+
+def test_projection_corpus_is_complete_and_mirror_agrees() -> None:
+    corpus = json.loads(PROJECTION_CORPUS.read_text(encoding="utf-8"))
+    assert len(corpus["cases"]) == 11
+    seen: set[str] = set()
+    for case in corpus["cases"]:
+        assert case["id"] not in seen
+        seen.add(case["id"])
+        function = case["request"]["target"]["function"]
+        arguments = case["request"]["arguments"]
+        if function == "verification_state":
+            values = [int(argument["integer"]["value"]) for argument in arguments]
+            states_by_code = {"incomplete": 0, "ready": 1, "failed": 2, "unknown": 3}
+            expected = states_by_code[_verification_state(*values)]
+            assert int(case["expected"][0]["integer"]["value"]) == expected, case["id"]
+        elif function == "available_awaiting_consumer":
+            status = int(arguments[0]["integer"]["value"])
+            current = bool(arguments[1]["boolean"]["value"])
+            expected = status == 4 and not current
+            assert bool(case["expected"][0]["boolean"]["value"]) == expected, case["id"]
+        elif function == "requires_revalidation":
+            unresolved = bool(arguments[0]["boolean"]["value"])
+            current = bool(arguments[1]["boolean"]["value"])
+            assert bool(case["expected"][0]["boolean"]["value"]) == _requires_revalidation(
+                unresolved, current
+            ), case["id"]
+        else:
+            raise AssertionError(f"unknown pressure projection function: {function}")

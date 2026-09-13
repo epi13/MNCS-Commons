@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-016",
+  "contentDigest": "sha256:8b5ef6c618492d34da3d51ec8d23d0c853a1ceba8cd441efa5f1ecb68b8e72ac",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-38C5CB10CDBC",
+  "identity": {
+    "capability": "legacy.doc-p-016",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-016",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-016",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:8b69e7d3e00e7f4a9c8fa1a86bd5fca554208369525924acb1cdb6f66643f531",
+    "sourcePath": "mncs-doctor:DOC-P-016.md",
+    "sourceText": "# DOC-P-016 — No TOML / project-metadata parsing\n\nStatus: open\n\nCategory: stdlib\n\nSeverity: low\n\nFrequency: per workspace (`mncs-forge.toml`, manifests)\n\n## Doctor workload\n\nManifest health checks (`version` field presence) and future metadata\nupgrades need to read `mncs-forge.toml` and `.mncs.json` sidecars.\n\n## Current behavior (verified 2026-09-12)\n\nNo TOML primitive exists in the registry or stdlib; manifest checks\nstay host-side (`check_manifest_health`).\n\n## Workaround\n\nTOML stays Rust; JSON sidecars stay host-parsed (`serde_json`).\n\n## Removal condition\n\nGranted TOML read (or a manifest-schema host-call returning codes);\nthen move manifest-health policy into `mncs/doctor/` with fixture\nparity.\n\n## Evidence\n\n`src/health.rs::check_manifest_health`; registry grep (zero toml hits).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-016"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-016",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-016.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-016: No TOML / project-metadata parsing.",
+  "target": "tooling",
+  "title": "No TOML / project-metadata parsing",
+  "version": "1"
+}

@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "legacy.ls-p-004",
+  "contentDigest": "sha256:6022ba721d2d233ef03cc6ee18c5beca8467c7b77602d9a917c8af96d4bd0ba5",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-language-service",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-D4F5C2B7B4C7",
+  "identity": {
+    "capability": "legacy.ls-p-004",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-language-service:LS-P-004",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "CONFIRMED",
+    "legacyId": "LS-P-004",
+    "repository": "mncs-language-service",
+    "sourceDigest": "sha256:980f62bee5ba268dab1398107978ae2cbd132bef3af9f8475e104db06616284c",
+    "sourcePath": "mncs-language-service:LS-P-004.md",
+    "sourceText": "# LS-P-004 — No cancellation: analysis is synchronous and uninterruptible\n\nStatus: CONFIRMED\n\n## 1. Reasonable service requirement\n\nLSP clients cancel stale requests (`$/cancelRequest`) and mutate documents\nwhile analysis is in flight. The service must be able to abandon a\nsuperseded analysis instead of finishing work nobody will read.\n\n## 2. Natural MNCS expression\n\nN/A — this is a host-contract gap, not a language expression gap. The\nnatural shape would be a cancellation token or fuel-bounded frontend entry\npoint the service can poll or drop.\n\n## 3. What prevents it\n\n`ReferenceCompiler::front_end_with_resolver` runs to completion\nsynchronously with no cancellation hook. The service serializes duplicate\nwork with per-document mutexes and detects staleness only *after* analysis\npublishes (fingerprint comparison in `snapshot()`), so a superseded edit\nstill pays the full pipeline cost of the abandoned state.\n\n## 4. Minimal reproducer\n\nTwo rapid sequential edits: the first analysis runs to completion even\nthough its result is discarded unpublished when the second edit lands\nmid-flight (observable in `snapshot()`: the publish guard compares\nfingerprints after the frontend returns, never during).\n\n## 5. Expected behavior\n\nA cancelled request stops consuming CPU promptly (token,Generation check,\nor bounded-chunk API).\n\n## 6. Actual behavior\n\nCorrect but wasteful: results are never wrong (stale snapshots are never\npublished), but tail latency under fast typing is the full pipeline cost\nper keystroke with no way to shed load.\n\n## 7. Classification\n\nCompiler/service contract. Severity: low today (~16ms cold analyses fit\ninside human typing latency), high if files or elaboration costs grow.\n\n## 8. Workaround\n\nPost-hoc staleness guards (publish only when the fingerprint still\nmatches), per-document locks (no duplicate work for the same state),\ncheap resident queries (no re-analysis for navigation). No load-shedding.\n\n## 9. Cost of the workaround\n\nUnder sustained fast typing the server does strictly more work than\nnecessary; no architectural seam exists yet for cooperative cancellation.\nPairs with LS-P-001: incrementality reduces the need, cancellation bounds\nthe worst case.\n"
+  },
+  "legacyIds": [
+    "mncs-language-service:LS-P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-language-service:LS-P-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-004.md"
+  },
+  "summary": "Imported legacy pressure LS-P-004: No cancellation: analysis is synchronous and uninterruptible.",
+  "target": "tooling",
+  "title": "No cancellation: analysis is synchronous and uninterruptible",
+  "version": "1"
+}

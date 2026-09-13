@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:a497bee35fc321b14f59725ec9b8824060b61dabf46cf1bf16cb6562048c751a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-493C32111AA5--OBS-9997C6A0BA86"
+  ],
+  "from": "discovered",
+  "id": "EVT-657A4E6176EC2D09",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:41Z",
+  "pressureId": "MNCS-LANG-493C32111AA5",
+  "previousEvent": null,
+  "reason": "Current consumer evidence reproduces and characterizes the reconciled pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

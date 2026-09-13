@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:949c07d1998f933104f86ba598fb285ffcfcd79d48886bbadedaee6d366bf9c7",
+  "evidence": [],
+  "id": "MNCS-COMPILER-360418A1CF7A--OBS-93627B25D061",
+  "kind": "verification",
+  "languageProfile": "0.13",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": true,
+    "validationScope": "minimal-reproducer"
+  },
+  "observedAt": "2026-09-13T08:00:03.004000Z",
+  "pressureId": "MNCS-COMPILER-360418A1CF7A",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "path": "pressure/repro/keyword-field-next.mncs",
+    "repository": "mncs-compiler",
+    "verification": "minimal-reproducer"
+  },
+  "summary": "Compiler-side current probe passes at the declared modern profile; the historical workaround is not needed for this capability.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

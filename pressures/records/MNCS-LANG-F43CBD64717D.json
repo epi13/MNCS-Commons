@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-005",
+  "contentDigest": "sha256:7ac03947bc739d16b0bde02d1b94894af9c2acc08539d65cfa0c52d582d50e11",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-F43CBD64717D",
+  "identity": {
+    "capability": "legacy.web-p-005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (likely new; small, high-confidence)",
+    "legacyId": "WEB-P-005",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:223a27189c3f5eef4a0746c11b9f7a5f66ab5e4b22e42d8ca0db213520fdd0f9",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-005 — Integer literals coerce only on the right of binary ops\n\n- Status: open (likely new; small, high-confidence)\n- Severity: minor\n- Category: compiler diagnostics / ergonomics (type system)\n\nWhat mncs-web was trying to implement: `1000 +% (kind *% 10) +% err`\n(u64 arithmetic with literal magnitudes).\n\nMinimal reproducer: `repro/literal-left-coercion.mncs` (`right_*`\nelaborate; `left_*` fail).\n\nExpected behavior: symmetric literal adaptation (or a refusal in both\npositions with the same message).\n\nActual behavior: `MNE119` fires only when the literal is on the left;\nthe identical literal on the right coerces silently. The asymmetry is\nundocumented in the profile material and surprising: commutativity of\n`+%`/`*%` does not extend to elaboration.\n\nWhy this appears to be a compiler issue: the coercion rule is\npositional rather than type-directed; nothing in the spec justifies the\nleft/right difference.\n\nCurrent workaround: keep every literal on the right\n(`(kind *% 10) +% err +% 1000`). Three sites in\n`src/web/roundtrip.mncs`; one named binding (`let cap: u64 = 1024;`)\nin `src/web/transport.mncs`.\n\nCost of the workaround: trivial once known; a papercut for every new\ncontributor (the error message does not suggest commuting operands).\n\nDesired capability: symmetric literal coercion, or an MNE119 message\nthat suggests moving the literal to the right operand.\n\nOther projects likely affected: all MNCS application code doing\nmixed literal/variable arithmetic.\n\nEvidence/tests: `repro/literal-left-coercion.mncs` (MNE119 x2)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-005",
+    "text": "`repro/literal-left-coercion.mncs` (`right_*`\nelaborate; `left_*` fail)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-005: Integer literals coerce only on the right of binary ops.",
+  "target": "language",
+  "title": "Integer literals coerce only on the right of binary ops",
+  "version": "1"
+}

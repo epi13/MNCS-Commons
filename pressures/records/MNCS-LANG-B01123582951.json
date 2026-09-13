@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-011",
+  "contentDigest": "sha256:e94f88397c8b363a70d7fea34b260a999c55800b514faaf19ba2c5c75b671255",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-B01123582951",
+  "identity": {
+    "capability": "legacy.ingest-p-011",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-011",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-011",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:b302d03c76eb5098894f42e33be5a76b62edd56a187cbb5669325fbfe9cb42e8",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-011 — Stdlib scans/readers are width-monomorphic\n\n## Problem\nReuse `mncs.std.chunk` newline scans and `mncs.std.encoding` endian\nreaders at 256/392-byte stage widths instead of reimplementing the\nsame 5-line folds per width.\n\n## Reproducer\n`mncs.std.chunk.find_newline` takes `[byte; up_to 64]`; `encoding.\nread_u16_le` takes `[byte; up_to 64]`. A 256-byte chunk view or a\n392-byte frame stage cannot call them: narrowing a wider live span\ninto a 64-capacity view fails closed at runtime. `mncs.flow.lines`\nand `mncs.flow.frames` therefore reimplement both folds locally.\n\n## Expected semantics\nCapacity-generic views (`[byte; up_to N]` with `N: Nat`) so one scan\nserves every stage width, or widening conversions with explicit\nruntime span checks.\n\n## Current result\nReproduces at 0.14: generics cover exact sizes and needle widths\n(`text_scan.contains<N>`), but view capacities are fixed per\nsignature. (Note: exact→view `[0..n]` slicing exists; view→view\nsub-slicing does not — see INGEST-P-002.)\n\n## Architectural impact\nDuplicated folds per width in `lines.mncs`/`frames.mncs`; vendored\n`chunk`/`encoding` usable only where 64 bytes suffice.\n\n## Severity\nModerate.\n\n## Owning layer\nType system (capacity generics); standard library.\n\n## Acceptance test\n`lines.mncs` calls vendored `chunk.find_newline`-equivalent and\n`frames.mncs` calls vendored `encoding.read_u16_le` with zero local\nfolds; behavior and tests unchanged.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-011",
+    "text": "`mncs.std.chunk.find_newline` takes `[byte; up_to 64]`; `encoding.\nread_u16_le` takes `[byte; up_to 64]`. A 256-byte chunk view or a\n392-byte frame stage cannot call them: narrowing a wider live span\ninto a 64-capacity view fails closed at runtime. `mncs.flow.lines`\nand `mncs.flow.frames` therefore reimplement both folds locally."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-011: Stdlib scans/readers are width-monomorphic.",
+  "target": "language",
+  "title": "Stdlib scans/readers are width-monomorphic",
+  "version": "1"
+}

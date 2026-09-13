@@ -1,6 +1,820 @@
 {
   "generatedFrom": "commons.mncs.dev/family-pressure/v1",
-  "pressures": [],
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0006",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-COMPILER-38B9F401EC5C",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "compiler",
+      "title": "Stage-0 envelope inference disagrees with leading-comment syntax",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0005",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-COMPILER-6AA9F9765B5B",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "compiler",
+      "title": "Bootstrap differential tests need a host test transport",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0002",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-COMPILER-9E5BAB7F55A8",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "compiler",
+      "title": "Byte text helpers do not provide Stage-0 Unicode classification",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-ingest"
+      ],
+      "capability": "legacy.ingest-p-003",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-LANG-0BB8D555BA98",
+      "reporters": [
+        "mncs-ingest"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No UTF-8 scalar semantics in MNCS",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-ingest"
+      ],
+      "capability": "legacy.ingest-p-009",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-LANG-4ACDC59C3AD1",
+      "reporters": [
+        "mncs-ingest"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "Fixed windows + counts cross every boundary",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-ingest"
+      ],
+      "capability": "legacy.ingest-p-010",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-LANG-4E8D16B49738",
+      "reporters": [
+        "mncs-ingest"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "Reference-execution cost per call (partially relieved)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-index"
+      ],
+      "capability": "legacy.press-007",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-LANG-53E07BB00417",
+      "reporters": [
+        "mncs-index"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No watching or clocks (P1, watch/time, runtime)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-ingest"
+      ],
+      "capability": "legacy.ingest-p-001",
+      "currentValidation": false,
+      "domain": "identity",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-LANG-9DE65A412CF7",
+      "reporters": [
+        "mncs-ingest"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No string/text value: open-vocabulary identity cannot round-trip",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-010",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-146FB6F4BBC6",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No string-capable JSON encoding",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-013",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-2658866CECD9",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No temporary-file primitives",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "legacy.ls-p-001",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-2C138B2DFDA5",
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No incremental or recovery parsing; full frontend rerun per keystroke",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-006",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-2D28F38056A1",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "minor",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Study-JSON contract is useful but unversioned and file-local",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-016",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-38C5CB10CDBC",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "minor",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No TOML / project-metadata parsing",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "legacy.ls-p-003",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-4790E16F393E",
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Import-wrapped leaf diagnostics lack machine-readable provenance",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "legacy.ls-p-005",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-5A9222A18BA7",
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "rejected",
+      "target": "tooling",
+      "title": "JSON-RPC/LSP framing must remain a Rust boundary",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-020",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-71B72613B11B",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No Rust `Session` batch-call API",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-004",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-7A39DE2CEB8F",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "superseded",
+      "target": "tooling",
+      "title": "SUPERSEDED: split into scoped findings",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-014",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-9455B428D003",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No permission-bit access",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-019",
+      "currentValidation": false,
+      "domain": "type-system.records",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-992CEBD1BB97",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "minor",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Typed record/enum host-call ergonomics",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-011",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-B665F138D324",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No process spawning / capture / exit status",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-009",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-B9ED716B4A9A",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No file metadata (size/mtime/mode)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-008",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-C5FD211E05C1",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No recursive filesystem enumeration",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-015",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-CB736AB5B3F0",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No CLI argv / stdin / stdout program interface",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "legacy.ls-p-006",
+      "currentValidation": false,
+      "domain": "type-system.generics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-CBD9615A7A1A",
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Bounded symbol filtering via generic stdlib execution",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "legacy.ls-p-002",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-D66F67A67198",
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No string literals: native text queries inexpressible in MNCS",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-002",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-D695B014F6DB",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No shared structured fix/edit contract upstream",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-001",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-E920D54703E3",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No stable programmatic diagnostics API for tooling",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-012",
+      "currentValidation": false,
+      "domain": "identity",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-F648D3B062B3",
+      "reporters": [
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No symlink identity / target reads",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    }
+  ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "rust-fallback"
 }

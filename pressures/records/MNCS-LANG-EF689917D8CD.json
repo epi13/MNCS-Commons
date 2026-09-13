@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-004",
+  "contentDigest": "sha256:0a76037a64667237ea234ed5cc4aa7c3d515d3e0a18405097009cb59a058fa57",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-EF689917D8CD",
+  "identity": {
+    "capability": "legacy.ingest-p-004",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-004",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:285e6c23acf006fde4847ed20fad3d55d5601c4ae4ccd8f873bb88f9f0d6abbd",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-004 — No finite maps; keyword tables are linear chains (partially relieved)\n\n## Problem\nClassify ~25 keywords (verbs, number words, objects) — and, in\nTranche A, record keys and delimiters — through one deterministic\ntable instead of hand-written if-chains.\n\n## Reproducer\nPre-relief `classify_word_number`: eleven sequential `span_eq` calls\n(≈700 byte comparisons per word worst case).\n\n## Expected semantics\nA bounded, deterministic finite map (const keys, total lookup with an\nexplicit miss) with identical values on every backend.\n\n## Current result\nPartially relieved: `mncs.std.text_map.v1` provides exactly this\n(`lookup16/lookup32` over caller-owned tables, last-entry-wins). It is\nadopted via vendoring (`language/vendor/`); keys must still be staged\ninto exact `[byte; 16]` buffers first (needs INGEST-P-002 fully solved\nto be zero-copy).\n\n## Architectural impact\nLinear chains retained in the transfer slice (stable, tested);\n`text_map` adopted for new record-key classification in Tranche A.\nVendoring is the INGEST-P-008 workaround.\n\n## Severity\nModerate.\n\n## Owning layer\nStandard library (exists); distribution (INGEST-P-008).\n\n## Acceptance test\n`classify_word_number` is one table lookup with a proven miss case at\nequal or better step cost, importing the table from a pinned stdlib\nidentity with no vendored copy.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-004",
+    "text": "Pre-relief `classify_word_number`: eleven sequential `span_eq` calls\n(≈700 byte comparisons per word worst case)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-004: No finite maps; keyword tables are linear chains (partially relieved).",
+  "target": "language",
+  "title": "No finite maps; keyword tables are linear chains (partially relieved)",
+  "version": "1"
+}

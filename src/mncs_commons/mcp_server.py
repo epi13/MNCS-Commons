@@ -11,7 +11,7 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 from . import __version__
 from .application import CommonsApplication
@@ -383,16 +383,22 @@ def build_server(
 
     resources = [
         Resource(  # type: ignore[call-arg]
-            name="protocol", uri="mncs-commons://protocol", mimeType="application/json"
+            name="protocol", uri=cast(Any, "mncs-commons://protocol"), mimeType="application/json"
         ),
         Resource(  # type: ignore[call-arg]
-            name="exchange", uri="mncs-commons://schema/exchange", mimeType="application/json"
+            name="exchange",
+            uri=cast(Any, "mncs-commons://schema/exchange"),
+            mimeType="application/json",
         ),
         Resource(  # type: ignore[call-arg]
-            name="vocabulary", uri="mncs-commons://vocabulary", mimeType="application/json"
+            name="vocabulary",
+            uri=cast(Any, "mncs-commons://vocabulary"),
+            mimeType="application/json",
         ),
         Resource(  # type: ignore[call-arg]
-            name="capabilities", uri="mncs-commons://capabilities", mimeType="application/json"
+            name="capabilities",
+            uri=cast(Any, "mncs-commons://capabilities"),
+            mimeType="application/json",
         ),
     ]
 
@@ -449,13 +455,13 @@ def build_server(
         return ReadResourceResult(
             contents=[
                 TextResourceContents(  # type: ignore[call-arg]
-                    uri=uri, mimeType=item.mime_type, text=item.content
+                    uri=cast(Any, uri), mimeType=item.mime_type, text=item.content
                 )
                 for item in contents
             ]
         )
 
-    server = Server(
+    server = Server(  # type: ignore[call-arg]
         "mncs-commons",
         version=__version__,
         instructions=instructions,

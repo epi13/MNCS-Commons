@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:fb8698647d72ed3ea35bf1d2fc6585fd93a31e23ad0f5d0e6e8f8219a64e55dc",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-004",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-EF689917D8CD--OBS-25C130310CA5",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-004",
+    "sourceEntry": 3,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-EF689917D8CD",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "Pre-relief `classify_word_number`: eleven sequential `span_eq` calls\n(≈700 byte comparisons per word worst case).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

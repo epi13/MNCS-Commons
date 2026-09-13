@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-004",
+  "contentDigest": "sha256:57cd81879c237c393187b331ebecf0a523db96a10d494da6614a49c7161a8ce6",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-337C9F6113E9",
+  "identity": {
+    "capability": "legacy.press-004",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-004",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:0f69483127215d45c008a0730dc8da4171384a659613c5d8576394f65a72df5b",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-004 — Integer bitwise operators missing (P2, semantics, compiler)\n\n- Observed: `byte` supports `& | ^`; the same operators on `u64` fail\n  elaboration (`MNE103`, return-type mismatch). Reproducer:\n  `pressure/reproducers/int-bitwise-xor.mncs`.\n- Desired: integer `& | ^` (wrapping/total, like shifts) or a documented\n  reason for their absence.\n- Why needed: standard content folds (FNV-1a xor-fold, splitmix-style\n  mixers, hash combining) are inexpressible; `src/digest.mncs` defines an\n  explicitly xor-free multiply-add/shift fold instead. The algorithm is\n  deterministic and order-sensitive (pinned by\n  `tests/test_differential.py`), but it is not the standard, well-studied\n  function and cannot cite its analysis.\n- Cost: algorithm substitution in a hashing core; mild avalanche loss.\n- Classification: compiler/frontend (operator typing).\n- Slice-7 verdict 2026-09-08 (`index/phase3-systems`): **RESOLVED\n  upstream — no longer pressure.** mncs-language `stage-b1`\n  (`64ad113`) made `^ & |` total over all eight integer widths\n  (wrapping intent; 341-case matrix, independent Python oracle,\n  341/341 on all five backends). Reran against the current binary\n  (`mncs 0.1.0`): `xor_u64(12,10)` returns 6, `and_u64` returns 8,\n  `or_u64` returns 14 (`steps: 2`, `status: returned`). The\n  reproducer keeps its 0.8 header — the fix applies to existing\n  profiles, not a new one. mncs-index keeps the xor-free fold in\n  `src/digest.mncs` (pinned by `tests/test_differential.py`; no\n  behavior change needed), but FNV-1a-style folds are now expressible.\n- Acceptance-test-after-language-fix (executable):\n  `tests/test_language_probes.py::test_int_bitwise_u64_fixed_slice7`\n  (all three ops, exact values)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-004: Integer bitwise operators missing (P2, semantics, compiler).",
+  "target": "language",
+  "title": "Integer bitwise operators missing (P2, semantics, compiler)",
+  "version": "1"
+}

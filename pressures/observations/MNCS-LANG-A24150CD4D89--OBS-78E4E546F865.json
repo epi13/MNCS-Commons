@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e62658b4df8a3bfbd6193be62dcc605bcdf0a2fcd27018a055aba31ab41bcc43",
+  "evidence": [
+    {
+      "id": "legacy:mncs-web:WEB-P-006",
+      "kind": "legacy-markdown",
+      "ref": "mncs-web:LANGUAGE_PRESSURES.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-A24150CD4D89--OBS-78E4E546F865",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "WEB-P-006",
+    "sourceEntry": 5,
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-A24150CD4D89",
+  "repository": "mncs-web",
+  "reproduction": {
+    "instructions": "`repro/view-narrow.mncs` (MNE188/MNE133); the\npositive control (same-capacity slice) elaborates.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "uniform-1024 convention (documented in\nARCHITECTURE.md). No per-site hacks; the cost is convention overhead\nand repeated window checks.",
+    "legacyStatus": "known (Profile 0.7 documents view-to-view relaxation as future"
+  }
+}

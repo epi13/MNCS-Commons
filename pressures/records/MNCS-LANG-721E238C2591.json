@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-008",
+  "contentDigest": "sha256:4dde0658ae74954e65ce18f1f4c43722bdd6e777e1ca185eacfa404a0627d713",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-721E238C2591",
+  "identity": {
+    "capability": "legacy.ingest-p-008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-008",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:9646440ce24a54b9ecebcb2ffafdc425dd7c9dd0d1ad28ca261a71b2b4fe29bf",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-008 — No stdlib distribution for downstream crates\n\n## Problem\nReuse bounded byte/sort/stream primitives (`chunk`, `json_stream`,\n`encoding`, `sha256`, `text_map`) instead of reimplementing them per\ncrate.\n\n## Reproducer\n`mncs.std.*` resolves in the CLI only through `MNCS_LIBRARY_PATH`; an\nin-process consumer must vendor sources or point a resolver at another\nrepository's working tree. `language/vendor/` + `VENDORING.md` in this\nrepo is the workaround that proves the gap.\n\n## Expected semantics\nA versioned stdlib artifact (content-addressed bundle or registry pin)\nthat `ReferenceCompiler` consumers resolve without filesystem coupling\nto the language checkout.\n\n## Current result\nStill reproduces; need grew (this run vendors six modules).\n\n## Architectural impact\nVendored copies must be re-pinned by hand; duplicated primitives risk\ndrift (byte-identical + noted, but manual).\n\n## Severity\nModerate (ecosystem).\n\n## Owning layer\nDistribution/packaging; compiler (resolver).\n\n## Acceptance test\nA module imports `mncs.std.chunk.v1` from a pinned stdlib identity and\nthe ingest build touches no vendored copies.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-008",
+    "text": "`mncs.std.*` resolves in the CLI only through `MNCS_LIBRARY_PATH`; an\nin-process consumer must vendor sources or point a resolver at another\nrepository's working tree. `language/vendor/` + `VENDORING.md` in this\nrepo is the workaround that proves the gap."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-008: No stdlib distribution for downstream crates.",
+  "target": "language",
+  "title": "No stdlib distribution for downstream crates",
+  "version": "1"
+}

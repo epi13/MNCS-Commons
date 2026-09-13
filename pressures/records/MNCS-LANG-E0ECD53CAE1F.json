@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-002",
+  "contentDigest": "sha256:4bf761b71696de2b604d3502c8b6c826a459161487ee6cd02dc87e239cdd0887",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "type-system.records",
+  "id": "MNCS-LANG-E0ECD53CAE1F",
+  "identity": {
+    "capability": "legacy.web-p-002",
+    "domain": "type-system.records",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (likely new; the Profile 0.7 borrow rule lists value",
+    "legacyId": "WEB-P-002",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:d3c517f654854511a3ce5e5bbfcfb5cbc03b7e127b694a1db666176faede8a85",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-002 — Exact-array record fields cannot borrow as bounded views\n\n- Status: open (likely new; the Profile 0.7 borrow rule lists value\n  positions but not field projections)\n- Severity: major\n- Category: type system / ownership-lifetime-adjacent (borrow rules)\n\nWhat mncs-web was trying to implement: passing `parser.staged`\n(`[byte; 1024]` field of the `Parser`/`StageAcc` record) directly to\n`run_parse(buf: [byte; up_to 1024], ...)`.\n\nMinimal reproducer: `repro/borrow-field-view.mncs` (`via_field` fails;\n`via_direct` with the identical type elaborates).\n\nExpected behavior: the exact-to-view borrow (`N <= M`, no copy, alias\nsemantics per Profile 0.7) fires for a field projection exactly as it\ndoes for a named value, call result, or argument.\n\nActual behavior: `MNE163` (projected field does not have the required\nexpression type) on the field-to-view coercion in argument, annotated\n`let`, and return positions (all three probed).\n\nWhy this appears to be a language/compiler issue: the borrow is\nsemantically identical (immutable alias, bound preserved); only the\nprojection path refuses it. The 0.7 rule enumerates positions but never\nexcludes projections, so this reads as an implementation gap, not a\ndesigned restriction.\n\nCurrent workaround: rebind through a same-type local first\n(`let staged_view: [byte; 1024] = grown.staged;`), then borrow from the\nlocal. Three sites in `src/web/parser.mncs` (`parser_feed`,\n`feed_flat`, `feed_pattern`), each citing WEB-P-002.\n\nCost of the workaround: one nominal 1024-byte copy per incremental feed\n(semantically; backends may alias immutables), plus a non-obvious rule\nevery contributor must learn. The workaround is small and grep-able.\n\nDesired capability: extend the exact-to-view borrow to field (and\nideally chained) projections, or document the exclusion with a dedicated\ndiagnostic suggesting the rebind.\n\nOther projects likely affected: mncs-store (chunk framing over record\nfields), mncs-crypto (state records), any parser holding buffers in\nrecords — i.e. all three confirmed parser-like workloads.\n\nEvidence/tests: `repro/borrow-field-view.mncs` (1 error, MNE163);\nworkaround sites pass the full suite (`tests/test_fragmentation.py`)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-002",
+    "text": "`repro/borrow-field-view.mncs` (`via_field` fails;\n`via_direct` with the identical type elaborates)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-002: Exact-array record fields cannot borrow as bounded views.",
+  "target": "language",
+  "title": "Exact-array record fields cannot borrow as bounded views",
+  "version": "1"
+}

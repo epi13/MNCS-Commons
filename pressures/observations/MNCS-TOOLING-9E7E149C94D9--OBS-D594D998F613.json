@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:5479c09c13f7917adb082397fa9eabb68fcd31e978acb0304a20986dd07d22fe",
+  "evidence": [
+    {
+      "id": "legacy:mncs-forge-mcp:FORGE-P-0001",
+      "kind": "legacy-markdown",
+      "ref": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-D594D998F613",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "FORGE-P-0001",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:07da5a8977721a48787ba715a1adb9270b76f6ca16bb2a18f1eb86e1552559c7"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "With a release binary older than the checkout's library sources:\n\n```bash\nMNCS_LIBRARY_PATH=\"<lang>/library:<forge>/src/mncs_forge/resources/native/forge\" \\\n  <lang>/target/release/mncs abi <forge>/src/mncs_forge/resources/native/forge/core.mncs\n```\n\nexits nonzero with elaboration error `MNE172` (`mncs.std.encoding` fails to\nparse under the old compiler) while the same invocation through a freshly\nbuilt `target/debug/mncs` exits zero with the expected ABI document. Observed\n2026-09-12 with a 2026-09-06 release binary against a 2026-09-12 checkout.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge selects the most recently built binary by modification time\n(`tests/test_toolchain_selection.py`) and reports the selected `binary` path\nplus `binary_modified_at` in the native status surface. An explicit `MNCS_CLI`\npath still wins.",
+    "legacyStatus": "open."
+  }
+}

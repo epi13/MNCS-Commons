@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-004",
+  "contentDigest": "sha256:f36e0894618edcec75fc96a6f76dd66eb0c9b135f37b969134ed27dbfbf9093a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-7A39DE2CEB8F",
+  "identity": {
+    "capability": "legacy.doc-p-004",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-004",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "superseded (2026-09-12)",
+    "legacyId": "DOC-P-004",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:ebdadcd1b4c61fb57a1efa42e85f0163aaae31d224527e9517e33ed087d86ee0",
+    "sourcePath": "mncs-doctor:DOC-P-004.md",
+    "sourceText": "# DOC-P-004 — SUPERSEDED: split into scoped findings\n\nStatus: superseded (2026-09-12)\n\nThis omnibus entry grouped unrelated host-operation concerns and is\npartly stale: Profile 0.16 demonstrably provides bounded file creation,\npositioned writes, appends, mkdir, same-dir atomic rename, sync barriers,\nsingle-level listing, and chunked reads (see `docs/source-profile-0.16.md`\nand `spec/source-profile-registry.json` in `mncs-language`).\n\nIt is replaced by:\n\n| ID | Capability | Status vs 0.16 |\n|----|-----------|----------------|\n| DOC-P-008 | recursive filesystem enumeration | absent |\n| DOC-P-009 | file metadata (size/mtime/mode) | absent |\n| DOC-P-010 | string-capable JSON encoding | absent (stdlib ints-only) |\n| DOC-P-011 | process spawning / capture / exit status | absent |\n| DOC-P-012 | symlink identity / target reads | absent beyond `other` kind |\n| DOC-P-013 | temporary-file primitives | absent |\n| DOC-P-014 | permission-bit access / manipulation | absent |\n| DOC-P-015 | CLI argv / stdin / stdout program interface | absent |\n| DOC-P-016 | TOML / project-metadata parsing | absent |\n| DOC-P-019 | typed record/enum host-call ergonomics | present but rough |\n\nCovered by 0.16 (no longer pressure): file creation, byte writes,\nmkdir, same-dir atomic rename (stage-then-rename, P2-005), sync, listing,\nchunked reads — all bytecode-backend-only (see backend finding in\n`docs/RUST-BOUNDARY-AUDIT.md`).\n\nNot pressure (deliberate design, reused or worked around by convention):\ncontent hashing (stdlib `sha256.mncs` exists; byte ingress is the seam,\nnot the hash), sorting/bounded order statistics (stdlib `sort.mncs`;\ntoken_set pattern adopted by `mncs/doctor/`), maps/sets (the profile\nchain is linear — arithmetic suffices; no map needed), path type\n(acknowledged upstream Tranche E work, not duplicated here).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-004.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-004: SUPERSEDED: split into scoped findings.",
+  "target": "tooling",
+  "title": "SUPERSEDED: split into scoped findings",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-013",
+  "contentDigest": "sha256:6d53f0332bb9784c4afd1d867103885dd800c9bfe9a75a52b28d58aafb9badce",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-5C6229CA836E",
+  "identity": {
+    "capability": "legacy.press-013",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-013",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-013",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:db44e260eeeb97469c5dd751a1de7c6baf36255c428912d80af09f9466f1d6ce",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-013 — No durable compare-and-swap for publication (P1, synchronization/persistence, runtime)\n\n- Observed: generational HEAD publication must be atomic across\n  overlapping writers, including separate processes (two indexers racing\n  on one store directory). `mncs-language` RFC 0010 implementation\n  status is `NONE` (no threads, locks, atomics, or CAS even in-memory —\n  PRESS-001/PRESS-002) and RFC 0026 (persistence) is `NONE`, so there is\n  no language-level durable transaction, check-and-set, or file-lock\n  effect to express \"publish generation N iff HEAD is still M\".\n- Desired: an effect-gated durable compare-and-swap (or minimal\n  transaction: compare HEAD, materialize generation file, swap HEAD as\n  one atomic step) callable from MNCS, so publication safety is a\n  language-level contract rather than host filesystem code.\n- Workaround: host-side CAS in `Store.publish`\n  (`runner/mncs_index/store.py`): the base re-read, the\n  `expected_base` comparison (`StaleGenerationError` on mismatch), the\n  generation-file materialization, and the HEAD swap run as one critical\n  section under an exclusive `flock` on `.HEAD.lock`. Every writer must\n  pass its build base explicitly — there is no blind-publish path — and\n  candidate generation numbers must advance by exactly one. Readers need\n  no lock: the generation file is `os.replace`d before the HEAD swap,\n  and the HEAD swap itself is atomic, so `load_head` only ever observes\n  complete, hash-validated snapshots.\n- Cost (measured 2026-09-07, `index/phase2-pressure`, slice 2):\n  uncontended CAS publish of a small snapshot costs p50 0.78 ms /\n  p95 1.14 ms / max 2.66 ms (n=100 sequential publishes) — the lock and\n  the extra HEAD re-read are noise next to one MNCS kernel subprocess\n  call (~10 ms idle). Contended outcome is exact, not statistical:\n  3-thread overlap yields 1 winner + 2 `StaleGenerationError`, and a\n  fork-based two-process race yields 1 winner + 1 stale rejection, with\n  HEAD always holding the winner's hash-validated content.\n- Why the workaround is insufficient: mutual exclusion across processes\n  lives in a host `fcntl` lock MNCS cannot name, audit, or test; a stale\n  loser's only signal is a host exception type, not a language-level\n  transaction verdict; lock-holding a filesystem path cannot compose\n  with future MNCS task structure.\n- Evidence: `tests/test_publish.py` (reversed completion, three-way\n  thread overlap, cross-process fork race, failure/cancellation overlap,\n  readers-during-publish); mutation probe (CAS check disabled ->\n  reversed/overlap/contract tests fail: stale generation becomes HEAD).\n- Reproducer status: no `.mncs` program can demonstrate this gap —\n  Profile 0.8 source has no effects at all (no files, no locks, no\n  processes), so a storage/sync capability is inexpressible by\n  construction, not merely unattempted. The downstream test files\n  above ARE the reproducers: each fails if the host workaround is\n  removed, and each names the language effect that would replace it.\n- Classification: runtime/stdlib (missing durable sync), language\n  semantics (no transaction effects).\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0026\n  still `NONE`, RFC 0010 still `NONE`). Store code read 2026-09-08:\n  CAS still runs under a host `flock` (fcntl/msvcrt platform guard)\n  with a host `StaleGenerationError` — no language transaction\n  effect appeared.\n- Acceptance-test-after-language-fix: an effect-gated durable CAS\n  publishes generation N iff HEAD is still M across two racing\n  processes with exactly one winner; assert `tests/test_publish.py`\n  passes with the `flock` critical section replaced by the language\n  transaction (`.HEAD.lock` deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-013"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-013",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-013: No durable compare-and-swap for publication (P1, synchronization/persistence, runtime).",
+  "target": "language",
+  "title": "No durable compare-and-swap for publication (P1, synchronization/persistence, runtime)",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-007",
+  "contentDigest": "sha256:c94c42124b8f4f1d259d52a298de79846abd1e0adfd6a55e09f83b24348b878f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-3E1FBC01A96F",
+  "identity": {
+    "capability": "legacy.ingest-p-007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-007",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:24406e37fb2f8c4c1e905870826bc92e2a154a867d50d76dda90cb9195a201a6",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-007 — Nested module failures hide inner diagnostics\n\n## Problem\nCompile a multi-module program and fix errors in leaf modules without\nmanual bisection.\n\n## Reproducer\nRe-probed 2026-09-11 on the current pin: a leaf field named `over`\nyields only `MNE172 Error line 13 col 5: imported module\n'mncs.ingest.parse' failed to parse [MNP127, MNP007]` on the root —\ncodes without positions or messages. Locating it required recompiling\neach leaf as its own root (`LanguageRuntime::diagnose_root`).\n\n## Expected semantics\nPropagate the first inner diagnostic (module path, span, message) with\nthe `MNE172` wrapper instead of bare codes.\n\n## Current result\nStill reproduces exactly.\n\n## Architectural impact\n`diagnose_root` helper kept in-tree; multi-module development pays a\nbisection loop per leaf error, discouraging the recommended shape.\n\n## Severity\nModerate (diagnostic/tooling).\n\n## Owning layer\nCompiler (frontend); tooling.\n\n## Acceptance test\nThe `over`-field program reports `MNP127` with leaf path and line\nthrough the root compile, with no extra host code.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-007",
+    "text": "Re-probed 2026-09-11 on the current pin: a leaf field named `over`\nyields only `MNE172 Error line 13 col 5: imported module\n'mncs.ingest.parse' failed to parse [MNP127, MNP007]` on the root —\ncodes without positions or messages. Locating it required recompiling\neach leaf as its own root (`LanguageRuntime::diagnose_root`)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-007: Nested module failures hide inner diagnostics.",
+  "target": "language",
+  "title": "Nested module failures hide inner diagnostics",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:ef9367b95b3736102424fd8394a7f3e642254590c1bd6dca6150d745d333d984",
+  "evidence": [
+    {
+      "id": "mncs-store:current-corpus:P1-009",
+      "kind": "consumer-retest",
+      "ref": "mncs-store:tests/test_mncs_corpora.py",
+      "status": "PASS",
+      "summary": "The current Store corpus completed with expected values under the current language revision."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-7287C926BB6D",
+  "kind": "observation",
+  "languageProfile": "0.13",
+  "metadata": {
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "suiteResult": "22 passed, 1 skipped"
+  },
+  "observedAt": "2026-09-13T05:50:24Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "run the Store corpus against the pinned current mncs-language binary",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "case": "identity-corpus:all",
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "corpus": "tests/test_mncs_corpora.py",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "pressure/P1-009-no-bool-equality.md",
+    "repository": "mncs-store"
+  },
+  "summary": "Store identity ordering passes after removing the i64 boolean-state workaround.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "removed": true
+  }
+}

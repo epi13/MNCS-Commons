@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:956b81bbe191eb6bd1608b2b1b1e5cfb7f948a10daf2342ab622f48482120691",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "discovered",
+  "id": "EVT-583F195FC4CC49CC",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:21Z",
+  "pressureId": "MNCS-COMPILER-3BE4C277C596",
+  "previousEvent": null,
+  "reason": "CP-0004 is the compiler-side observation of canonical Store bool-comparison pressure P1-009.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "duplicate",
+  "version": "1"
+}

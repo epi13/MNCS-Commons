@@ -106,6 +106,21 @@ mncs-commons pressure show pressures MNCS-LANG-<id>
 The machine-readable `list` result is deterministic and suitable for an agent
 or CI. Add `--format text` for a compact human view.
 
+Useful backlog selectors include:
+
+```bash
+mncs-commons pressure list pressures --target language --unresolved \
+  --needs-revalidation --format json
+mncs-commons pressure list pressures --python-fallback --format json
+mncs-commons pressure list pressures --status available --format json
+```
+
+Each result includes `verificationState` (`incomplete`, `ready`, `failed`, or
+`unknown`), `currentValidation`, and `revalidationRequired`. A current
+language probe is not consumer verification: an `available` record still
+belongs in the awaiting-verification view until affected consumers rerun their
+own reproducer and account for the workaround.
+
 ## Reporting, evidence and verification
 
 Create a declaration from a JSON object or file:
@@ -192,6 +207,14 @@ reproduction. It never infers that a local word such as “resolved” is curren
 consumer verification. A later reconciliation can add explicit evidence,
 aliases and typed relationships. A full multi-repository migration should be a
 separate campaign so unreviewed local claims are not silently merged.
+Directories are scanned recursively. A Markdown ledger may contain multiple
+pressure sections; each section becomes a separate declaration while the
+ledger digest, section heading, source path, and complete source snapshot are
+preserved. Imported aliases are scoped as `<repository>:<local-id>` so two
+repositories using `P1-001` cannot collide. Use `--target compiler`,
+`--target tooling`, or another declared target when importing non-language
+findings. `--dry-run` is safe for discovery and `--limit` bounds a staged
+campaign.
 The compatibility `--refresh` flag never deletes or rewrites an existing
 record; changed source material must be attached as a new observation by an
 authorized migration rather than erasing the original snapshot.
@@ -213,7 +236,17 @@ conversion blockage, correctness/performance impact—without treating an
 automated score as truth. `pressures/views/unresolved-language.json` is the
 generated checked-in projection for review and CI. The generated set also
 includes blocking, by-repository, by-domain, multi-repository,
-awaiting-verification, recently-resolved, and rust-fallback views.
+awaiting-verification, recently-resolved, rust-fallback, python-fallback, and
+needs-revalidation views. The latter deliberately retains old evidence while
+making stale language/profile claims visible to the next campaign.
+
+The checked-in lifecycle kernel at
+`src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs` owns the closed
+transition, resolution, verification-classification, available-consumer, and
+revalidation laws. Python remains the filesystem/JSON/Git adapter and folds
+unbounded documents; the law is mirrored by executable corpora and both MNCS
+backends in CI. See [`docs/MNCS_NATIVE_BOUNDARY.md`](MNCS_NATIVE_BOUNDARY.md)
+for the deliberate boundary and its linked pressure.
 
 ## Git and schema discipline
 

@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-forge-mcp"
+  ],
+  "capability": "legacy.forge-p-0001",
+  "contentDigest": "sha256:ec997ba0949e390399be44164c0bb1e9f9e4d93f3438414d10a86d91f9b806df",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-forge-mcp",
+  "domain": "identity",
+  "id": "MNCS-TOOLING-9E7E149C94D9",
+  "identity": {
+    "capability": "legacy.forge-p-0001",
+    "domain": "identity",
+    "reproducerSignature": "legacy:mncs-forge-mcp:FORGE-P-0001",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open.",
+    "legacyId": "FORGE-P-0001",
+    "repository": "mncs-forge-mcp",
+    "sourceDigest": "sha256:07da5a8977721a48787ba715a1adb9270b76f6ca16bb2a18f1eb86e1552559c7",
+    "sourcePath": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md",
+    "sourceText": "# FORGE-P-0001 — toolchain build identity for stale-binary detection\n\n- Status: open.\n- Severity: medium. A stale prebuilt compiler is silently selected, then every\n  native projection fails; nothing is mis-recorded, but local `prefer`/`required`\n  lanes go red with a misleading `NATIVE_ABI_UNKNOWN` until the operator finds\n  the old binary.\n- Forge use case: `NativeForgeAdapter` must choose between\n  `target/release/mncs` and `target/debug/mncs` in a sibling `mncs-language`\n  checkout. `mncs --version` reports only `mncs 0.1.0` for both, so Forge\n  cannot tell which build matches the checkout.\n\n## Reproducer\n\nWith a release binary older than the checkout's library sources:\n\n```bash\nMNCS_LIBRARY_PATH=\"<lang>/library:<forge>/src/mncs_forge/resources/native/forge\" \\\n  <lang>/target/release/mncs abi <forge>/src/mncs_forge/resources/native/forge/core.mncs\n```\n\nexits nonzero with elaboration error `MNE172` (`mncs.std.encoding` fails to\nparse under the old compiler) while the same invocation through a freshly\nbuilt `target/debug/mncs` exits zero with the expected ABI document. Observed\n2026-09-12 with a 2026-09-06 release binary against a 2026-09-12 checkout.\n\n## Current workaround\n\nForge selects the most recently built binary by modification time\n(`tests/test_toolchain_selection.py`) and reports the selected `binary` path\nplus `binary_modified_at` in the native status surface. An explicit `MNCS_CLI`\npath still wins.\n\n## Why the workaround is deficient\n\nModification time is a heuristic, not an identity: a binary rebuilt from a\ndifferent worktree, a touched-but-identical binary, or a clock skew can all\ndefeat it. Content hashing (already in Forge's cache keys) detects *change*\nbut cannot answer \"was this built from this checkout at this revision?\".\n\n## Desired semantics\n\nA cheap, machine-readable compiler identity query — for example a\n`mncs compiler-identity` document or `--version` fields carrying the source\nrevision, profile range, and build time — so a host can fail closed (or pin\n`UNKNOWN`) before running a mismatched compiler against newer sources.\n\n## Acceptance test\n\nForge can assert, without invoking a full compilation, that the selected\nbinary was built from a revision compatible with the checkout's library\nsources, and `project.doctor` can surface that decision deterministically.\n"
+  },
+  "legacyIds": [
+    "mncs-forge-mcp:FORGE-P-0001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-forge-mcp:FORGE-P-0001",
+    "text": "With a release binary older than the checkout's library sources:\n\n```bash\nMNCS_LIBRARY_PATH=\"<lang>/library:<forge>/src/mncs_forge/resources/native/forge\" \\\n  <lang>/target/release/mncs abi <forge>/src/mncs_forge/resources/native/forge/core.mncs\n```\n\nexits nonzero with elaboration error `MNE172` (`mncs.std.encoding` fails to\nparse under the old compiler) while the same invocation through a freshly\nbuilt `target/debug/mncs` exits zero with the expected ABI document. Observed\n2026-09-12 with a 2026-09-06 release binary against a 2026-09-12 checkout."
+  },
+  "requiredBehavior": "A cheap, machine-readable compiler identity query — for example a\n`mncs compiler-identity` document or `--version` fields carrying the source\nrevision, profile range, and build time — so a host can fail closed (or pin\n`UNKNOWN`) before running a mismatched compiler against newer sources.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-forge-mcp:forge-p-0001-toolchain-identity.md"
+  },
+  "summary": "Imported legacy pressure FORGE-P-0001: toolchain build identity for stale-binary detection.",
+  "target": "tooling",
+  "title": "toolchain build identity for stale-binary detection",
+  "version": "1"
+}

@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-017",
+  "contentDigest": "sha256:55d96cd4fe6f624ae3d33d675e1bd3ccd38b6e49d95a8fe664d23d3c27a9ef39",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "backend",
+  "id": "MNCS-TOOLING-F20E1933C004",
+  "identity": {
+    "capability": "legacy.doc-p-017",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-017",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "fixed-upstream",
+    "legacyId": "DOC-P-017",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:5de039127f949b54c21a5af40bb70086e5bf58d0f4cf2294698c28185ac31fe2",
+    "sourcePath": "mncs-doctor:DOC-P-017.md",
+    "sourceText": "# DOC-P-017 — No source-level multi-backend value-I/O harness\n\nStatus: fixed-upstream\n\nCategory: tooling (compiler/backend verification)\n\nSeverity: low (execution is correct on the sanctioned backend)\n\nFrequency: structural (portability claims for `mncs/doctor/`)\n\n## Doctor workload\n\nThe MNCS core (pure policy, no effects) should eventually be portable\nbeyond the research interpreter — or the boundary of that claim should\nbe explicit per backend.\n\n## Current behavior (verified 2026-09-12)\n\nThe upstream `experiment run` command now supplies the missing source-level\nvalue harness: it takes an `.mncs` source, a corpus of entrypoint requests,\nand a backend, then records returned values and expectation matches. Doctor\nran all ten pure policy modules against their checked-in corpora on five\nbackends (fifty value cases total). Every expected value matched.\n\nSix modules (`version`, `health`, `migration`, `edits`, `fix`, `scanner`)\nstill carry a separate compiler `UNKNOWN` status because unresolved\nobligations remain; that is recorded as DOC-P-021, not hidden here.\n\n## Resolution\n\nDoctor keeps production on the research bytecode backend until DOC-P-021 is\nresolved, but portability is now executable and auditable. The ten corpora\nunder `fixtures/backend/` and the matrix transcript in\n`docs/BACKEND-MATRIX-2026-09.md` are the regression evidence.\n\n## Closure condition\n\nThis record is closed by the upstream value runner. Remaining backend\nevidence quality is tracked by DOC-P-021.\n\n## Evidence\n\n`docs/BACKEND-MATRIX-2026-09.md`; `fixtures/backend/`; and\n`tests/mncs_parity.rs` (the production embed session still pins\n`mncs-research-bytecode`).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-017"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-017",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-017.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-017: No source-level multi-backend value-I/O harness.",
+  "target": "tooling",
+  "title": "No source-level multi-backend value-I/O harness",
+  "version": "1"
+}

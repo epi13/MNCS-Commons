@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0013",
+  "contentDigest": "sha256:307ea436d2fe9b4bf56c223d0f40924df21dd086db7fca4ee2fb3af1f339c0db",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-360418A1CF7A",
+  "identity": {
+    "capability": "legacy.cp-0013",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0013",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "resolved (2026-09-12)",
+    "legacyId": "CP-0013",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:93b86bdd06e1ab5f916aebf3edf654ca76358fdbd39e8da0bac948e795a23038",
+    "sourcePath": "mncs-compiler:0013-keyword-field-next.md",
+    "sourceText": "# Pressure Finding CP-0013\n\nID: CP-0013\n\nStatus: resolved (2026-09-12)\n\nCategory: language\n\nSeverity: low\n\nFrequency: rare\n\n## `next` was unusable as a record field name (resolved)\n\nUpstream: profile 0.13 contextual `next` fields. Proven in real\ncompiler code: `StmtFrame.after` renamed back to `StmtFrame.next`\n(`record`, two constructions, one projection) in the 0.13 migration;\nparse-checked with elaboration proof staged after CP-0014. The 0.10\n`repro/keyword-field-next.mncs` still fails exactly as documented\n(MNP127/128/007), so old-profile behavior is preserved. History\npreserved below.\n\n`next` is the iterate-step keyword, and the parser reserves it in field\nposition: `record R { next: u64 }` fails with MNP127 (`expected '}' after\nrecord fields`) at the `next` token, followed by MNP128/MNP007 cascades.\nRenaming the field (e.g. to `after`) elaborates cleanly, so the only cost\nis the rename — but a compiler that models control flow (frames, work\nlists, resumable walks) naturally reaches for `next`/`after` vocabulary,\nand only one of the two survives parsing.\n\n## Compiler workload\n\nThe self-hosted statement prover threads suspended statement lists\nthrough `StmtFrame`; the first field name tried was `next`, which the\nself-hosted `decl.mncs` itself could not contain — the failure appeared\nwhile elaborating the compiler, not a test. Minimized repro:\n`pressure/repro/keyword-field-next.mncs`.\n\n## Reproduce\n\n```sh\nMNCS_LIBRARY_PATH=src .bootstrap/target/debug/mncs abi pressure/repro/keyword-field-next.mncs\n```\n\n## Observed behavior\n\nDiagnostics on the 0.10 profile Stage-0 (`mncs-language.lock.json`\nrevision `6906d0b1eee7`):\n\n- MNP127 32 36 `expected '}' after record fields`\n- MNP128 32 36 `record requires at least one field`\n- MNP007 32 36 `unexpected token after the final function`\n\n## Workaround\n\nRename the field. No semantic consequence; recorded because keyword\nreservation in nominal (non-expression) positions is invisible until a\nreal program trips over it.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0013"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0013",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0013-keyword-field-next.md"
+  },
+  "summary": "Imported legacy pressure CP-0013: CP-0013.",
+  "target": "compiler",
+  "title": "CP-0013",
+  "version": "1"
+}

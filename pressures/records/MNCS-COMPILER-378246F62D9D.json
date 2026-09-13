@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0001",
+  "contentDigest": "sha256:fc944368eeabb42ba47759534337fa3d579e99dd763b48bf09b8f463345b9bb7",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-378246F62D9D",
+  "identity": {
+    "capability": "legacy.cp-0001",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0001",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "partially resolved (2026-09-12). Category: language,",
+    "legacyId": "CP-0001",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:4ddbbc63d5966403b4e4a4533abf6df718b1665f35ef5960b63f7096c04e261c",
+    "sourcePath": "mncs-compiler:0001-bounded-source-storage.md",
+    "sourceText": "# CP-0001 — Whole compiler sources exceed bounded sequence capacity\n\nStatus: partially resolved (2026-09-12). Category: language,\nstdlib-runtime, tooling. Severity: high for whole-module compilation\n(was blocking at 64 bytes). Frequency: pervasive. Upstream tracking:\nprofile 0.13 raised ceilings (see re-evaluation); no dedicated storage\nAPI yet.\n\n## Workload and reproduction\n\nAn immutable compiler source snapshot must retain arbitrary module bytes and\nsupport stable byte indexing. The first lexer uses `[byte; up_to 64]`.\n`repro/source-65.mncs` changes only the capacity to 65. Run\n`python3 tools/test_pressure.py` after bootstrap: Stage-0 emits MNE105 (a generic\nsupported-types message, not a direct capacity diagnostic). The executable\nfrontend tests also pass 65 bytes to the 64-byte API and require\n`invalid_request`, proving that oversized input is not silently truncated.\nThe pinned `mncs-model/src/body.rs` sets `MAX_SEQUENCE_BOUND` to 64.\n\n## Workaround and desired capability\n\nThe kernel accepts exact, immutable, at-most-64-byte sources. The caller iterates\n`next_token` results; no host language implements storage or scanning for a\nproduction compiler. This cannot read even this compiler's own source modules.\nChunking is possible but requires token continuation across arbitrary boundaries,\nshared backing storage, and bounded-resource policies; it is deliberately not\npretended to be equivalent to a whole-module source API.\n\nThe desired capability is explicit owned/shared source storage with byte views,\ndeterministic indexing, and resource limits independent of one tiny static\nsequence ceiling. Investigate existing nested sequences and runtime facilities\nbefore prescribing a new language feature. Record sequences *do* elaborate:\n`tests/fixtures/token-sequence.mncs` is a positive control, not a missing-feature\nreport. Growable token/AST arenas, allocation, hashing, and stable persistent\nidentity remain unimplemented and unmeasured; this report does not establish\nthat all of them are absent.\n\n## Impact and ownership\n\n- Correctness/safety: oversized input is rejected at the ABI; no truncation.\n- Runtime/memory: current working source is bounded; larger-source cost unknown.\n- Compiler performance: no large-source benchmark is possible through this API.\n- Determinism: exact byte values are reproducible, but are not content hashes.\n- Complexity: chunked ownership, continuation, and indexing would spread through\n  lexer, parser, diagnostics, and snapshots.\n- Likely owners: language/resource model and stdlib/runtime storage; tooling for\n  a precise capacity diagnostic. Compiler architecture must choose storage units.\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): partially resolved\n\nProbed on the current pin (`mncs abi`, profile 0.13): `[byte; up_to 65]`\nand `[byte; up_to 1024]` elaborate; `[byte; up_to 1025]` is refused\n(MNE105, then MNE161 cascades). Counted_iteration bounds rose the same\nway (1..=1024, MNE142 past it). The ceiling is now 16x higher, and the\n0.10-profile `repro/source-65.mncs` still yields MNE105\n(`tools/test_pressure.py` green), so old-profile behavior is preserved.\n\nWhat remains: 1024 bytes still cannot hold real modules\n(`decl.mncs` is ~267KB); there is still no owned/shared source storage\nwith views, no growable arenas, no stable content identity. The\nfour-chunk laboratory interface (256B units) is unchanged. Severity\ndrops from blocking to high: chunked compilation can now span 4KB per\nunit-shape change, but whole-module compilation still needs the storage\nAPI this pressure originally asked for.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0001",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0001-bounded-source-storage.md"
+  },
+  "summary": "Imported legacy pressure CP-0001: Whole compiler sources exceed bounded sequence capacity.",
+  "target": "compiler",
+  "title": "Whole compiler sources exceed bounded sequence capacity",
+  "version": "1"
+}

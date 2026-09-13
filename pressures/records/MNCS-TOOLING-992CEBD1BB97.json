@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-019",
+  "contentDigest": "sha256:04ad1d11ecc3a559c79cc786006b35cdbdc8c8e4080eb193360c33201710bb80",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "type-system.records",
+  "id": "MNCS-TOOLING-992CEBD1BB97",
+  "identity": {
+    "capability": "legacy.doc-p-019",
+    "domain": "type-system.records",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-019",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround",
+    "legacyId": "DOC-P-019",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:0b4311822944d5a7a2fc04916b03fe6eaa0b651a39a317dc1d86e9191d284a61",
+    "sourcePath": "mncs-doctor:DOC-P-019.md",
+    "sourceText": "# DOC-P-019 — Typed record/enum host-call ergonomics\n\nStatus: workaround\n\nCategory: tooling (embedding DX)\n\nSeverity: low\n\nFrequency: per entrypoint using composite values\n\n## Doctor workload\n\nCalling MNCS entrypoints that take record/enum arguments from the Rust\nhost with canonical ABI JSON.\n\n## Current behavior (verified 2026-09-12 by direct attempt)\n\nComposite values cross with exact canonical identities\n(`record:mncs:0.2:record-type:<module>::<Name>::<fields…>`); anything\nelse fails closed as `invalid_request` with an `MNCS_VALUE_CONTRACT`\nmessage. The failure text names the expected identity, which made the\nrule discoverable — good fail-closed behavior, rough ergonomics. A direct\ncompiler-produced typed-record artifact also round-tripped through the\nembed boundary, proving the representation is usable when the caller has\nthe canonical schema. There is still no host-side helper to construct or\npre-validate typed composite values (no\n`ExecutionValue::record(module, name, fields)` constructor resolving\nidentities, no dry-run check).\n\n## Workaround (adopted)\n\nScalar-only boundary for current Doctor calls: records/enums live inside\nMNCS, codes cross (token_set pattern, stdlib precedent). Composite input\nand output transport is covered by a fail-closed parity probe and is\navailable for a future schema where scalar codes become less readable.\n\n## Removal condition\n\nA host-side typed-value builder (or identity-discovery query against a\ncompiled artifact) lands in `mncs-embed`; then re-evaluate composite\narguments for entrypoints where codes get unwieldy (e.g. transaction\nop windows).\n\n## Evidence\n\n`tests/mncs_parity.rs::transport_mismatches_refuse_fail_closed` and the\ntyped-record round-trip test pin both the refusal and successful canonical\ntransport; `src/mncs_runtime.rs` deliberately uses scalar contracts today.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-019"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-019",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-019.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-019: Typed record/enum host-call ergonomics.",
+  "target": "tooling",
+  "title": "Typed record/enum host-call ergonomics",
+  "version": "1"
+}

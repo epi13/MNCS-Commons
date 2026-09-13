@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-009",
+  "contentDigest": "sha256:173741aa4898f05690d1db5d4d0fefc7070b1665ce93be0fecae60f09d530e47",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-5A94DFD0A049",
+  "identity": {
+    "capability": "legacy.web-p-009",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-009",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:c7ec450365af5c9a332efc450c00eee13046e3286de4f7abaddc4d057fdd4295",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-009 — Bounds obligations stay UNKNOWN (proof/contracts ceiling)\n\n- Status: open\n- Severity: minor (honesty preserved; automation missing)\n- Category: proofs/contracts\n\nWhat mncs-web was trying to implement: discharging \"cursor never\nexceeds input bounds\" statically for the guarded-projection discipline\n(`slot` clamped to a valid index before every dynamic projection), so\nthe parser's hot loop carries no residual runtime checks.\n\nExpected behavior: the obligation system discharges checks the\nprogrammer has made statically redundant (clamped index, capacity\nproof), or names the exact missing lemma.\n\nActual behavior: every dynamic projection retains a RuntimeChecked\nobligation in UNKNOWN state (visible as CMP301 notes); the code is\ncorrect by construction plus runtime checks, but the proof system\ncontributes no discharge and no check can be removed. The\nclamp-then-project pattern (borrowed from `mncs.std.text_scan.v1`) is\nprovably safe by inspection yet indistinguishable from unguarded\nindexing in the obligation ledger.\n\nCurrent workaround: none needed for soundness (runtime checks hold);\nthe pressure is the absence of proof leverage, not a workaround.\n\nCost: defense-in-depth checks that a stronger system could erase;\nno machine-checked connection between the clamp and the projection.\n\nDesired capability: bound-clamp discharge rules (or an explicit\n\"checked-index\" form whose obligation the kernel closes by\nconstruction).\n\nOther projects likely affected: every bounds-sensitive MNCS program.\n\nEvidence/tests: CMP301 notes on every `source-study` run; the guarded\nprojection discipline documented in `src/web/method.mncs`\n(`token_valid`) and ARCHITECTURE.md."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-009",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-009: Bounds obligations stay UNKNOWN (proof/contracts ceiling).",
+  "target": "language",
+  "title": "Bounds obligations stay UNKNOWN (proof/contracts ceiling)",
+  "version": "1"
+}

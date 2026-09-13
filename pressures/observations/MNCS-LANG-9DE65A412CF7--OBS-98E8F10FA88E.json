@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e993f08d58904f9ec220dd9249f1a7fd94299a738c9625eddf3aa86c17459f04",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-001",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-9DE65A412CF7--OBS-98E8F10FA88E",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-001",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-9DE65A412CF7",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "`language/mncs/ingest/parse.mncs::parse_transfer` returns\n`source_start/source_length` integer spans instead of the spelling, and\n`src/canonical.rs::object_label` mirrors `vocab.mncs` in Rust:\n\n```mncs\n// There is no expression of \"return the matched word\": the classifier\n// can only return THAT it matched (a code), never WHAT matched.\nfn classify_object(text: [byte; up_to 64], start: u64, length: u64) -> (result: i64)\n```\n\nExecutable: `tests/adapters.rs::vocabulary_codes_match_host_rendering`\npins both sides of the duplication.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "fallbackLanguage": "rust",
+    "legacyStatus": null
+  }
+}

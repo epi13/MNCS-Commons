@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:d648ce127d94e7ba9a72801865695f29307f0a9bd1b8b321394fdde975eaca31",
+  "details": {
+    "reason": "Both require arbitrary runtime view narrowing/selection beyond fixed-shape signatures.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-2415D208D93FF9B7",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:13:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-438BF5EE1996",
+  "targetPressure": "MNCS-LANG-A24150CD4D89",
+  "version": "1"
+}

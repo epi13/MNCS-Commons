@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0009",
+  "contentDigest": "sha256:f19d186534a381d236194243b82b8b2fab8ff9ad958c535d03dd1fb0d9fd01af",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-COMPILER-4EEFAEBA916A",
+  "identity": {
+    "capability": "legacy.cp-0009",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0009",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "partially resolved (2026-09-12)",
+    "legacyId": "CP-0009",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:ad74f88e3f2db05faa240bc4ee13f7ba37db4df4e82d403d6e4fcd06e0b24c8e",
+    "sourcePath": "mncs-compiler:0009-iteration-fuel-chaining.md",
+    "sourceText": "# Pressure Finding CP-0009\n\nID: CP-0009\n\nStatus: partially resolved (2026-09-12)\n\nCategory: language | compiler-architecture\n\nSeverity: medium (was high)\n\nFrequency: pervasive\n\n## Bounded-iteration fuel must be chained by hand\n\nTwo small rules combine to force an awkward looping idiom everywhere a\ncompiler pass needs more than a trivial bound:\n\n1. Counted iteration `iterate k up_to N` requires a literal `1 <= N <= 32`\n   (MNE142), even in profile 0.10.\n2. Every `iterate` in one function needs a distinct iteration identity\n   (MNE146); reusing `i` across sequential loops is an error.\n\nTraversal iteration `iterate i over seq` is bounded by the sequence's\nruntime length (up to 64 for the bounded source chunks), so any pass that\nmust advance up to 256 logical bytes — let alone drain an operator stack\nwhile consuming tokens — chains four to eight traversals with distinct\nnames (`bi0..bi7`, `ex0..ex7` plus a counted `up_to 32` supplement),\nthreading state through fresh bindings at each link. The declaration\ncore contains dozens of such chains.\n\n## Compiler workload\n\nLexing a 256-byte logical source, shunting-yard expression parsing (each\nstep shifts one token or reduces one operator, so steps can exceed the\nbyte count), block parsing with frame pops that consume no input, and\nevery list reversal all need fuel beyond any single loop form.\n\n## Minimal MNCS reproduction\n\n`pressure/repro/counted-bound-256.mncs` (`up_to 256` rejected with\nMNE142) and `pressure/repro/iteration-identity-dup.mncs` (two sequential\n`iterate i` loops rejected with MNE146).\n\n## Current behavior\n\nThe limits are presumably deliberate (termination Stratification), but\nthey interact poorly: the only way to spell \"repeat up to N<=256 times\"\nis to chain traversals over the input chunks, coupling every loop's fuel\nto the physical chunking of its input. A pass over derived data (an\noperator stack, a worklist) with no chunk sequence to iterate must borrow\nfuel from an unrelated sequence or split its bound into `up_to 32`\nslices. Fuel accounting (proving `2 * total + 1` steps fit in eight\nchunk links plus a counted supplement) is done by hand in comments and\nre-verified by nothing.\n\n## Current workaround\n\nChained traversal links with distinct identities per function, recorded\nas an explicit fuel argument in each loop's header comment:\n`src/compiler/segment.mncs` (`scan_fuel`, `significant`), expression\nparsing (eight links plus a counted link), block parsing (eight links).\n\n## Why the workaround is insufficient\n\n- Every loop pays its full bound in interpreter steps even when it stops\n  early (see CP-0003): a 256-byte source costs ~256 no-op iterations per\n  token request, dominating execution-step budgets.\n- Chaining couples loop fuel to input chunking: eight links over four\n  chunks is correct only because each link iterates runtime length and\n  the sum covers the byte count. A refactor that changes chunking must\n  re-audit every chain by hand.\n- Distinct identities per link (`bi0..bi7`, `qi0..qi35`) are pure\n  bookkeeping with no semantic content; a single slip duplicates an\n  identity and fails elaboration far from the logic error.\n\n## Desired behavior\n\nWithout prescribing syntax: some way to spell \"repeat this total step at\nmost K times\" for K in the low hundreds with one loop and one identity,\nor loop combinators whose fuel is derived from a declared numeric bound\nrather than borrowed from an input sequence's length — while keeping the\ntermination guarantees the current rules protect.\n\n## Likely ownership\n\nlanguage\n\n## Impact\n\n- Correctness: chains are correct but fragile; fuel insufficiency fails\n  silently (fuel exhaustion looks like end-of-input).\n- Safety: none.\n- Runtime performance: no-op iterations dominate reference-interpreter\n  step counts (measured per-request maxima in `evidence/`).\n- Compiler performance: more interpreter steps per compile request;\n  larger generated semantic artifacts per loop.\n- Memory: carried state is copied per link; no aliasing.\n- Determinism: deterministic.\n- Implementation complexity: high — fuel arithmetic pervades every pass.\n\n## Evidence / reproduction\n\n```text\nmncs abi pressure/repro/counted-bound-256.mncs     # MNE142\nmncs abi pressure/repro/iteration-identity-dup.mncs # MNE146\n```\n\nStep counts: `evidence/decl-results.json` records per-request maxima for\nthe chained passes.\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision: profile 0.13 (sequential reuse, 1..=1024 bounds, 2-level nesting)\n- Follow-up evidence in this repository:\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): partially resolved\n\nProbed on the current pin: `iterate k up_to 256` elaborates at 0.13;\n`up_to 1025` is refused (MNE142, ceiling now 1024); two sequential\n`iterate i` loops elaborate (MNE146 now scope-based with hygienic\n`name#2` recording). The 0.10 controls still fail exactly as documented,\nso old-profile behavior is preserved.\n\nProven in real compiler code: the 0.13 migration renamed every\nfuel-chain group in `segment.mncs` (ai/si/gi families) and all ~70\ngroups in `decl.mncs` (ex/vi/ni/hi/ti/fi/ri/pi/qi/bi/ci/ui/si/ei/ki/di/\nwi/ai/li/gi/mi/oi/oj/ok/sl/el/dg/rd/ed/pm/rs/cp/fx/nc/rl/fd/fo/rc/sw/tl/\nta/sg/fk/pb/kk/fh/ec/vx/pf/gs/ty/tr/sm/tv/tc/tq/tp/us/kc/…) to a single\n`i` per function — 317 sites in `decl.mncs` alone, plus the carried-`i`\ncollision (`fin`) and the position-index group (`int_value`) handled\nexplicitly. `segment.mncs` links are proven by the new\n`tools/test_segment.py` differential (pending final run); `decl.mncs`\nis parse-checked with elaboration proof staged after CP-0014.\n\nWhat remains: fuel is still borrowed from input chunking for bounds\npast 1024 and for derived-data passes (operator stacks, worklists);\nfuel-sufficiency arguments still live in comments; silent exhaustion\nstill looks like end-of-input; no-op iterations still cost full steps\n(see CP-0003). The pressure is now about *large* bounds and *derived*\nfuel, not everyday loop naming.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0009",
+    "text": ""
+  },
+  "requiredBehavior": "Without prescribing syntax: some way to spell \"repeat this total step at\nmost K times\" for K in the low hundreds with one loop and one identity,\nor loop combinators whose fuel is derived from a declared numeric bound\nrather than borrowed from an input sequence's length — while keeping the\ntermination guarantees the current rules protect.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0009-iteration-fuel-chaining.md"
+  },
+  "summary": "Imported legacy pressure CP-0009: CP-0009.",
+  "target": "compiler",
+  "title": "CP-0009",
+  "version": "1"
+}

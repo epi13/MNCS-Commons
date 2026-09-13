@@ -1,0 +1,26 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:794284082c36935794afbe0c38ef2bd5e9a172822461df1e08053d4dc4deddea",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4EBBF1137974--OBS-6E6CA8B6DAD1"
+  ],
+  "from": "implementing",
+  "id": "EVT-D4B41142432CD02F",
+  "implementation": {
+    "availableSince": "0.13",
+    "backend": "mncs-research-bytecode",
+    "capability": "numerics-p-002",
+    "profile": "0.13",
+    "ref": "mncs-language:30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "verifiedAgainstProfile": "0.16"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:11Z",
+  "pressureId": "MNCS-LANG-4EBBF1137974",
+  "previousEvent": "EVT-E668C54E865CC196",
+  "reason": "The upstream capability is available; closure is based on consumer verification below.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

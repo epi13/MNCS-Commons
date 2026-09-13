@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-005",
+  "contentDigest": "sha256:7837607d30ab5ff0cee57c7288cea18facbd40cc98c3efbb8f77772b9d0ec4a6",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-E86F0E121743",
+  "identity": {
+    "capability": "legacy.p-005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-005",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:92af58b6716e576ff54c107e4e60211bebedd1aa81f3fc4803d27fb896ef9b16",
+    "sourcePath": "mncs-numerics:P-005-dimension-constraints/README.md",
+    "sourceText": "# P-005 — No dimension-equality constraints → RESOLVED (structural)\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-005`.\n\n`repro.mncs` calls the library's `trace_g<2, 3>` on a 2x3 matrix.\nBefore the fix this elaborated and silently returned the partial\ndiagonal `6.0` (= m[0][0] + m[1][1]). `trace_g` now takes a single\nNat parameter `N` naming both dimensions, so the seed is refused at\nelaboration:\n\n```bash\nexport MNCS_LIBRARY_PATH=$PWD/src\ncargo run -q -p mncs-cli -- source-study repros/P-005-dimension-constraints/repro.mncs\n# MNE221 | generic argument count mismatch for 'trace_g': expected 1, got 2\n```\n\nThe stale `corpus.json` (which pinned the silent `6.0`) was removed;\na compile refusal has no experiment-run status vocabulary. The\npositive path is pinned by the `g-trace-2x2`/`g-trace-3x3` cases in\n`tests/corpora/mat_float.json` (single-argument seeds, green on all\nfive backends), and the arity refusal itself is pinned in the\nlanguage repo by `crates/mncs-compiler/tests/module_imports.rs`\n(`count` → MNE221).\n\nGeneral dimension-arithmetic constraints (`M == N` as a bound) remain\nopen language design; this pressure is closed for `trace_g` by\nmaking squareness structural.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-005",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-005-dimension-constraints/README.md"
+  },
+  "summary": "Imported legacy pressure P-005: No dimension-equality constraints → RESOLVED (structural).",
+  "target": "language",
+  "title": "No dimension-equality constraints → RESOLVED (structural)",
+  "version": "1"
+}

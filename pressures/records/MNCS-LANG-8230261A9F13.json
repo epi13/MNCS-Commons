@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-015",
+  "contentDigest": "sha256:3eb680b4369965aa39c07ef2c9758a9eadd5f568f35bbdc0f8425ed6fa6a53d0",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-8230261A9F13",
+  "identity": {
+    "capability": "legacy.p-015",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-015",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-015",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:f1c7039174ba6d90c8104513c6f01c2888cb03d86f1a8801fce89928c0272ead",
+    "sourcePath": "mncs-numerics:P-015-generic-span-copy/README.md",
+    "sourceText": "# P-015 — `copy_span` refuses symbolic-bound destinations\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-015`.\n\n`repro.mncs` rotates `[1.0, 2.0, 3.0, 4.0]` left by one with two\nchained `copy_span` calls; `corpus.json` expects `[2.0, 3.0, 4.0,\n1.0]` back from `rot_sym<4>`.\n\n```bash\nexport MNCS_LIBRARY_PATH=$PWD/src   # run from the repo root, CLI in mncs-language/\ncargo run -q -p mncs-cli -- experiment run repros/P-015-generic-span-copy/repro.mncs \\\n  --backend mncs-research-bytecode --corpus repros/P-015-generic-span-copy/corpus.json\n```\n\nElaboration fails with `MNB142: functional span copy requires an\nexact-bound destination; views refuse` (plus `MNB146`/`MNB147`/\n`MNB148` on the instantiation): the `[f64; N]` destination counts as\na view while `N` is symbolic, even though the identical value accepts\n`replace` in the identical position. The concrete-bound spelling\n(`[f64; 4]`, same positions, same self-copy shape) compiles and runs\nbit-exact on all five backends — verified during reduction.\n\nLibrary workaround: `rotate_left` in\n`src/numerics/vec_float_build.mncs` spells the rotation as a\nper-lane `replace` traversal with modular index arithmetic\n(committed, all backends). Cost: the bulk move stays a lane loop;\nonly the slow path is open in generic code.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-015"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-015",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-015-generic-span-copy/README.md"
+  },
+  "summary": "Imported legacy pressure P-015: `copy_span` refuses symbolic-bound destinations.",
+  "target": "language",
+  "title": "`copy_span` refuses symbolic-bound destinations",
+  "version": "1"
+}

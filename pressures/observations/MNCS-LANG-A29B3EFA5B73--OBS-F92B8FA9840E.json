@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "all-five-executable-backends",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:91a0d6f14d98a9eadeac60af01a78e078c52d369b27824a58625b0d296979d8b",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0004:closure",
+      "kind": "consumer-verification",
+      "ref": "mncs-compiler:pressure/0004-boolean-comparison.md",
+      "status": "PASS",
+      "summary": "Compiler-side bool comparison use is clean."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-F92B8FA9840E",
+  "kind": "verification",
+  "languageProfile": "0.13",
+  "metadata": {
+    "backendScope": "all-five-executable-backends",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "observedAt": "2026-09-13T05:50:39Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "pressure/0004-boolean-comparison.md",
+    "repository": "mncs-compiler"
+  },
+  "summary": "Compiler CP-0004 acceptance evidence confirms bool equality is available on the current language revision.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

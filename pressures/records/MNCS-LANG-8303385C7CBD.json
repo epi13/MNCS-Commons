@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-016",
+  "contentDigest": "sha256:252a551e2b2123a1dcb502d36a0b38b4ec834eb799934b0cd42e93743e4f6f2d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "effects",
+  "id": "MNCS-LANG-8303385C7CBD",
+  "identity": {
+    "capability": "legacy.press-016",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-index:PRESS-016",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-016",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:b0f5180114beef9f78adbf6761c9c6d5df22fb11bf251c9c9fec577b4b08481a",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-016 — No durable-commit effects (P1, persistence, runtime)\n\n- Observed: the RFC 0008 commit protocol (file `fsync` before each\n  rename, directory `fsync` after each rename, post-commit\n  verification re-read, crash-recovery `check`) is host-OS effects\n  code in `runner/mncs_index/store.py`. `mncs-language` RFC 0026\n  (persistence) implementation status is `NONE`, and no\n  durability/flush/sync effect exists to express \"make this file and\n  its directory entry survive an OS crash\".\n- Desired: effect-gated durable-commit primitives (file sync,\n  directory sync, or a single durable-commit effect) callable from\n  MNCS, so the L0–L3 levels are language-level guarantees rather than\n  host `os.fsync` calls.\n- Workaround: explicit `DURABILITY_LEVELS` with per-level barrier\n  counts pinned by `tests/test_durability.py::test_fsync_barriers_per_level`;\n  POSIX directory sync with a documented Windows best-effort\n  degradation (RFC 0008 portability).\n- Why the workaround is insufficient: durability lives outside the\n  language's effect system, so MNCS cannot name, audit, or test the\n  guarantee; a future `mncs-store` backend would re-implement rather\n  than reuse a language contract.\n- Evidence: `tests/test_durability.py` (barriers, real-death crash\n  matrix, corruption fail-closed, `check` command).\n- Reproducer status: no `.mncs` program can demonstrate this gap\n  (Profile 0.8 source has no file/durability effects to attempt).\n  The downstream tests are the reproducers: journal-forgery reports\n  `GEN_GAP`, `.reclaimed.tmp`/manifest corruption is reported, L0\n  barrier-freedom is counted, Windows no-op/lock branches are stubbed\n  (`test_forged_reclaimed_journal_reports_gap`,\n  `test_l0_gc_issues_no_barriers`,\n  `test_windows_dirsync_noop_and_msvcrt_lock`). Gap-review note:\n  OS-crash survival itself is protocol-construction, not test-proven —\n  stated in `store.py` and RFC 0008, not hidden.\n- Classification: runtime (missing persistence effects).\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0026\n  still `NONE`; durability still lives in `os.fsync`/dir-sync calls\n  in `store.py`, read 2026-09-08).\n- Acceptance-test-after-language-fix: an effect-gated durable commit\n  over a fixture generation survives a crash-injection at each of\n  the three windows with post-crash state old-complete OR\n  new-complete; assert `tests/test_durability.py` passes with the\n  `DURABILITY_LEVELS` barrier code replaced by the language effect\n  (host `os.fsync` deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-016"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-016",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-016: No durable-commit effects (P1, persistence, runtime).",
+  "target": "language",
+  "title": "No durable-commit effects (P1, persistence, runtime)",
+  "version": "1"
+}

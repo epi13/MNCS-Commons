@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:9a35ac31eace7c1704d2f94103ab73d57bdb98fef2180b501c81b9702fbd756b",
+  "evidence": [
+    {
+      "id": "legacy:mncs-numerics:P-017",
+      "kind": "legacy-markdown",
+      "ref": "mncs-numerics:P-017-exp-log-absence/README.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-BA0CEB347965--OBS-D7115E64519F",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "P-017",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:805b865a400ee2e57e2131b2598d8fa78d73b6d2f62eaa2a7bf4016050319258"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-BA0CEB347965",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-017-exp-log-absence/README.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

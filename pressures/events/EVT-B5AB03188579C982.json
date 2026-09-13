@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:53031e0422d1a8c8f625b992818fe37b156a02348357e6573cf2cdd2ee3eda8a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-360418A1CF7A--OBS-93627B25D061"
+  ],
+  "from": "available",
+  "id": "EVT-B5AB03188579C982",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:00:03.005000Z",
+  "pressureId": "MNCS-COMPILER-360418A1CF7A",
+  "previousEvent": "EVT-718EB008A1725D90",
+  "reason": "Compiler-side reproducer passes against the current language; verification evidence is attached before closure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:b1e25819a033afc22b23a64b280882391f7251c371408c455defeafef6e1d7b6",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-019204D482CB--OBS-0F12A44FB068"
+  ],
+  "from": "discovered",
+  "id": "EVT-BF254B54E15C09B7",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:18Z",
+  "pressureId": "MNCS-LANG-019204D482CB",
+  "previousEvent": null,
+  "reason": "The current Numerics consumer run provides a bounded PASS observation for this pressure record.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

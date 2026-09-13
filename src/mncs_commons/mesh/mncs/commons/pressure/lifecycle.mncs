@@ -60,3 +60,45 @@ fn resolution_ready(affected: i64, passed: i64, failed: i64, unknown: i64, remov
     }
     return removed == affected;
 }
+
+// Projection classifications used by agent-facing views. These are not
+// confidence scores: incomplete, failed, and unknown evidence stay distinct.
+// verification_state: 0=incomplete, 1=ready, 2=failed, 3=unknown.
+fn verification_state(affected: i64, passed: i64, failed: i64, unknown: i64, removed: i64) -> (result: i64) {
+    if affected <= 0 {
+        return 3;
+    }
+    if failed > 0 {
+        return 2;
+    }
+    if unknown > 0 {
+        return 3;
+    }
+    if passed == affected && removed == affected {
+        return 1;
+    }
+    return 0;
+}
+
+fn available_awaiting_consumer(status: i64, current_validation: bool) -> (result: bool) {
+    if status != 4 {
+        return false;
+    }
+    if current_validation {
+        return false;
+    }
+    return true;
+}
+
+fn requires_revalidation(unresolved: bool, current_validation: bool) -> (result: bool) {
+    if unresolved {
+        if current_validation {
+            return false;
+        }
+        return true;
+    }
+    if current_validation {
+        return false;
+    }
+    return false;
+}

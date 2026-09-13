@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:056e9a34d42e34af0e88c7a63a654e1f7459db4eabfa555124d325a19827ae34",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-6643CDECCFEC--OBS-332A80F41753"
+  ],
+  "from": "discovered",
+  "id": "EVT-39E31139412FBF15",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:30:02Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": null,
+  "reason": "The current-language boundary review reproduced the missing native dynamic projection capability; the closed decision laws have been isolated in the MNCS kernel.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

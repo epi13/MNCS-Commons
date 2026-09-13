@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:2675e98afb05f6aabbdaf2e5ea0f2e1abd2ed81221040edfa57a1ee0c9ede185",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0011",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0011-acyclic-calls-machines.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-33EBFEFE9064--OBS-DE4ECEA87AF7",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0011",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:1902c5791a31670fa39d9ec3b923b98f8a1b6448f658162a891f9a69915bfe16"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-33EBFEFE9064",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0011-acyclic-calls-machines.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Three machine patterns, each documented at its definition site:\n\n1. Shunting-yard with marker-carrying operator stack (expressions).\n2. Frame-stack block machine with await-else states (statements).\n3. Accumulator fuel loops over cons-lists (reversals, flattening).",
+    "legacyStatus": "partially resolved (2026-09-12)"
+  }
+}

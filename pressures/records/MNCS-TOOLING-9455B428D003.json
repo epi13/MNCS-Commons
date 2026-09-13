@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-014",
+  "contentDigest": "sha256:669cf5c9fc905ff0e9c1dad19025db26fa3fe732430f831049ca10665bea1359",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-9455B428D003",
+  "identity": {
+    "capability": "legacy.doc-p-014",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-014",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-014",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:dc21c8d60f64a321669411dcdc5caab34c80efaa2f67e9992322582350cfbdb3",
+    "sourcePath": "mncs-doctor:DOC-P-014.md",
+    "sourceText": "# DOC-P-014 — No permission-bit access\n\nStatus: open\n\nCategory: language (stdlib/runtime surface)\n\nSeverity: medium\n\nFrequency: per mutated file (mode preservation)\n\n## Doctor workload\n\nThe transaction executor records Unix mode bits and restores them on\nthe replacement file (and on rollback), so repair never loosens or\ntightens file permissions as a side effect.\n\n## Current behavior (verified 2026-09-12)\n\nNo mode/ownership primitive exists; 0.16 non-goals explicitly exclude a\nquota/ownership model beyond host policy.\n\n## Workaround\n\nMode preservation stays Rust (`file_mode`, pre-rename chmod, rollback\nchmod), pinned by `preserves_permissions_and_refuses_symlinks`.\n\n## Removal condition\n\nGranted mode observation + set (or creation that inherits source mode\nby default); then reproduce the preservation test under MNCS-driven\nmutation.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-014",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-014.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-014: No permission-bit access.",
+  "target": "tooling",
+  "title": "No permission-bit access",
+  "version": "1"
+}

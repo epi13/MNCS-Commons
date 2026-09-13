@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-store",
+  "contentDigest": "sha256:ed16ba375f8829ccd353d3e6d5de5229216eef7a95fc501f2c0eee208285cf74",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-493C32111AA5--OBS-9997C6A0BA86"
+  ],
+  "from": "confirmed",
+  "id": "EVT-FFB4215B9002E2E1",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:42Z",
+  "pressureId": "MNCS-LANG-493C32111AA5",
+  "previousEvent": "EVT-657A4E6176EC2D09",
+  "reason": "Store accepts the current language capability and its consumer migration boundary.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

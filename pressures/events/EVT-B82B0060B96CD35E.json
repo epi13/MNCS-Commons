@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-numerics",
+  "contentDigest": "sha256:c07b4e77f592c1449f457f526c85d42c72999aef93986dde74a03e53a885ead7",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-E86F0E121743--OBS-D38BEC20600F"
+  ],
+  "from": "verifying",
+  "id": "EVT-B82B0060B96CD35E",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:26Z",
+  "pressureId": "MNCS-LANG-E86F0E121743",
+  "previousEvent": "EVT-DAFE080D6831BB7B",
+  "reason": "The originating Numerics consumer reports PASS with the workaround removed or no longer needed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

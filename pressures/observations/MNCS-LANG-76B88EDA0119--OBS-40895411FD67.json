@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:fd608dbfb5d9b2f93a42693eded0ae2b3b3e2dd3ebc0452c40d265b5fe486315",
+  "evidence": [
+    {
+      "id": "mncs-numerics:P-006:activation-suite",
+      "kind": "consumer-retest",
+      "ref": "mncs-numerics:target/evidence-20260913T054330Z.json",
+      "status": "PASS",
+      "summary": "418 research-bytecode cases passed with zero failures."
+    }
+  ],
+  "id": "MNCS-LANG-76B88EDA0119--OBS-40895411FD67",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "historicalFullMatrix": "all-five-executable-backends at a7a8c054015971c148d1bbaa797c64362c4073e2",
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "suiteResult": "418 passed, 0 failed"
+  },
+  "observedAt": "2026-09-13T06:10:27Z",
+  "pressureId": "MNCS-LANG-76B88EDA0119",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "run the P-006 reproducer and Numerics suite",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "fb98af770c4361f3d3ae37d662b86a8a78cf90a2",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "repros/P-006-*/README.md",
+    "repository": "mncs-numerics",
+    "suite": "scripts/run_tests.py --backends mncs-research-bytecode"
+  },
+  "summary": "Numerics reconciled this pressure against the current campaign checkout; the 418-case research-bytecode suite passes. The checked-in report records the complete capability as resolved.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The checked-in Numerics report remains the detailed reproducer and workaround record.",
+    "removed": "not_needed"
+  }
+}

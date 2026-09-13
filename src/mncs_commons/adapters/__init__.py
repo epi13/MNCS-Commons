@@ -36,4 +36,6 @@ __all__ = [
     "from_mnel_observation",
     "from_provider_study_record",
     "from_verifier_artifact",
+    "conformance_report_summary",
+    "from_conformance_report",
 ]

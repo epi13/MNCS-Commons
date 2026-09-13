@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-005",
+  "contentDigest": "sha256:b13151a9dd61a45d6040523a5f095112e73ed378b41091299ad21b5236bb32ad",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "io.filesystem",
+  "id": "MNCS-TOOLING-3E59A6102945",
+  "identity": {
+    "capability": "legacy.doc-p-005",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-005",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround",
+    "legacyId": "DOC-P-005",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:dfed9f42772f765a7bea6c597b3bbac6f78bcea1ae4d356ae6b866ac2439a616",
+    "sourcePath": "mncs-doctor:DOC-P-005.md",
+    "sourceText": "# DOC-P-005 — Header/profile inference is not reusable\n\nStatus: workaround\n\nCategory: tooling\n\nSeverity: medium\n\nFrequency: occasional\n\n## Doctor workload\n\n`scan_header` (first non-blank/non-comment `mncs X.Y;`) mirrors upstream\n`infer_source_profile`. Any divergence silently misclassifies versions and\npoisons migration plans.\n\n## Minimal reproducer\n\nLeading-comment headers (`/* c */ mncs 0.10; …`) already disagree between\nupstream layers (see `CP-0006`); Doctor's mirror adds a third\nimplementation of the same rule.\n\n## Current behavior\n\nDoctor reimplements the documented rule (~40 lines) with a regression test\npinning comment/whitespace tolerance. Divergence risk is acknowledged in\n`src/diagnostics.rs` module docs.\n\n## Desired behavior\n\nExpose the inference as a tiny reusable unit (function over source text →\nheader facts) that Doctor, stage-0 tooling, and the service can share, so\n`CP-0006`-class disagreements become impossible by construction.\n\n## Likely ownership\n\nlanguage (extract + publish); tooling adopts.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-005",
+    "text": "Leading-comment headers (`/* c */ mncs 0.10; …`) already disagree between\nupstream layers (see `CP-0006`); Doctor's mirror adds a third\nimplementation of the same rule."
+  },
+  "requiredBehavior": "Expose the inference as a tiny reusable unit (function over source text →\nheader facts) that Doctor, stage-0 tooling, and the service can share, so\n`CP-0006`-class disagreements become impossible by construction.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-005.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-005: Header/profile inference is not reusable.",
+  "target": "tooling",
+  "title": "Header/profile inference is not reusable",
+  "version": "1"
+}

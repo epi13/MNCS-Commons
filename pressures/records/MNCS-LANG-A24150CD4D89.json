@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-006",
+  "contentDigest": "sha256:83121802de15c64a99fcc743d7ff43bc6df729ce50047bb243709bc4d12de737",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-A24150CD4D89",
+  "identity": {
+    "capability": "legacy.web-p-006",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "known (Profile 0.7 documents view-to-view relaxation as future",
+    "legacyId": "WEB-P-006",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:c75657c1c74b1451cbafa847cad7663b43c1709d30294a1b63087191d03f662b",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-006 — Bounded views cannot be narrowed (known; new cost evidence)\n\n- Status: known (Profile 0.7 documents view-to-view relaxation as future\n  work) — this entry adds mncs-web cost evidence, not a new claim.\n- Severity: minor (architecture-wide convention, locally cheap)\n- Category: type system (buffers/slices)\n\nWhat mncs-web was trying to implement: narrow helpers, e.g. a header\nname matcher taking `[byte; up_to 64]` over the shared wire buffer, or\nslicing a query window out of the request buffer at a smaller bound.\n\nMinimal reproducer: `repro/view-narrow.mncs` (MNE188/MNE133); the\npositive control (same-capacity slice) elaborates.\n\nExpected behavior (long term): a total narrowing borrow with an\nexplicit runtime range check, per the 0.7 future-work note.\n\nActual behavior: any capacity change on slicing/borrowing is refused;\nall 15 mncs-web modules take the single widest capacity\n(`[byte; up_to 1024]`) plus explicit spans, and every length is\nre-validated per helper instead of once at the narrowing point.\n\nCurrent workaround: uniform-1024 convention (documented in\nARCHITECTURE.md). No per-site hacks; the cost is convention overhead\nand repeated window checks.\n\nCost of the workaround: helper signatures are wider than their true\ndomains; each helper re-derives `hlen`; a future narrowing primitive\nwill simplify ~40 signatures at once (mechanical migration).\n\nDesired capability: whatever the 0.7 future-work item tracks; mncs-web\nis a ready-made migration corpus and conformance suite for it.\n\nOther projects likely affected: mncs-store, mncs-doc, any multi-layer\nbyte pipeline.\n\nEvidence/tests: `repro/view-narrow.mncs`; the uniform-1024 convention\nacross `src/web/*.mncs`."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-006",
+    "text": "`repro/view-narrow.mncs` (MNE188/MNE133); the\npositive control (same-capacity slice) elaborates."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-006: Bounded views cannot be narrowed (known; new cost evidence).",
+  "target": "language",
+  "title": "Bounded views cannot be narrowed (known; new cost evidence)",
+  "version": "1"
+}

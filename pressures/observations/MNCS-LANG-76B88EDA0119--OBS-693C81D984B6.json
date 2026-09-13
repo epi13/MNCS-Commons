@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4ecc0328d0af1b4b2bd6ecebfa49b5fedde9ffb130b34f42b2c837617631aa73",
+  "evidence": [
+    {
+      "id": "legacy:mncs-numerics:P-006",
+      "kind": "legacy-markdown",
+      "ref": "mncs-numerics:P-006-cranelift-arity-crash/README.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-76B88EDA0119--OBS-693C81D984B6",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "P-006",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:ecfb1825a942fd1cbf5db976842460c45d2e79fdddab556d320a34dc8985a491"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-76B88EDA0119",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-006-cranelift-arity-crash/README.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:24c547b13eea33201e549d8e0003d79ea86de13d44d9285f12096da972ee96ab",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "confirmed",
+  "id": "EVT-FA1EFFABA422AAE2",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:45:00Z",
+  "pressureId": "MNCS-TOOLING-5A9222A18BA7",
+  "previousEvent": "EVT-B9E4294311E859CF",
+  "reason": "The originating language-service ledger explicitly classifies JSON-RPC framing as a deliberate Rust transport boundary, not an MNCS language pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "rejected",
+  "version": "1"
+}

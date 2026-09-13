@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:f21f7d3a7de52575082e8210ff5855d64c87df4b5254b1436cbece37bbf915f9",
+  "details": {
+    "reason": "Doctor migration probes also need a stable in-process or host-call boundary, but the repair workflow is distinct from Store persistence.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-B0B9E1F0295EA5BC",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:16:00Z",
+  "relation": "related_to",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-TOOLING-B665F138D324",
+  "targetPressure": "MNCS-LANG-52A5E0C72A39",
+  "version": "1"
+}

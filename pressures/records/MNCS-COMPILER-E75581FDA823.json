@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0012",
+  "contentDigest": "sha256:4e5e34eb08ceac3fe254f883b5ebbf93a4b3a1b30a106a2efc18f37fff01de35",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-E75581FDA823",
+  "identity": {
+    "capability": "legacy.cp-0012",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0012",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "resolved (2026-09-12)",
+    "legacyId": "CP-0012",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:d1aced97d1441b2bccd9c792007055ab20bf7680516f0bb2d88c46cfd3d6f280",
+    "sourcePath": "mncs-compiler:0012-payload-sequence-ban.md",
+    "sourceText": "# Pressure Finding CP-0012\n\nID: CP-0012\n\nStatus: resolved (2026-09-12)\n\nCategory: language | compiler-architecture\n\nSeverity: medium (capability available; cons-lists retained by design)\n\nFrequency: occasional\n\n## Finite payloads cannot be sequences; variable-arity nodes need cons-lists\n\nA finite-variant payload field must name \"a supported scalar, finite, or\ndeclared record type\" (MNE171). Bounded sequences — the natural spelling\nfor call arguments, parameter lists, statement blocks, match arms — are\nrejected as payloads even though records *can* hold sequence fields and\nsequences elaborate fine elsewhere.\n\n## Compiler workload\n\nEvery variable-arity compiler list (arguments, parameters, results,\nfields, variants, statements, clauses, declaration sequences) needed a\nrepresentation inside enum payloads.\n\n## Minimal MNCS reproduction\n\n`pressure/repro/enum-sequence-payload.mncs`:\n\n```text\nmncs 0.10;\nmodule probe.rec3;\nenum E { A { xs: [u64; 2] }, B }\nfn f(e: E) -> (result: u64) { return 0; }\n```\n\nStage-0 reports MNE171 on the `[u64; 2]` payload field.\n\n## Current behavior\n\nPayloads accept scalars, finite types, and records (which themselves may\ncontain sequences, as `record R { xs: [u64; 2], n: u64 }` elaborates).\nOnly *direct* sequence payloads are refused, so `[u64; 2]` must be\nwrapped in a record to travel inside a variant — or, as here, replaced\nby a cons-list enum (`ECons { head, tail }`), which is what the compiler\nuses for all nine of its list types.\n\n## Current workaround\n\nOne cons-list enum per element type (`ExprList`, `FieldList`,\n`VariantList`, `StmtList`, `ClauseList`, `EffectList`, `CapList`,\n`UseList`, `RecordList`, `EnumList`, `FnList`), each with its own\nfuel-loop reversal. Prepend-then-reverse keeps every accumulation O(1)\nper element at the cost of one reversal pass per list.\n\n## Why the workaround is insufficient\n\nCons-lists are a good fit for compiler trees (and would likely be used\nanyway), but the workaround has two costs:\n\n- Eleven near-identical list/reverse/fuel-loop triples (~20 lines each)\n  that function-level generics cannot abstract over, because the element\n  types are distinct enums rather than instances of one `List<T>`.\n- Reversal passes are pure overhead forced by prepend accumulation;\n  append accumulation would need the same traversal anyway, so the net\n  cost is one O(n) pass per list per parse — small but ubiquitous.\n\nThe positive side is recorded too: recursive enums *with* scalar/finite/\nrecord payloads elaborate, construct, match, and compile with no\npractical limit encountered (25 variants and 6-field payloads verified),\nso trees themselves are first-class values. Only direct sequence\npayloads are missing.\n\n## Desired behavior\n\nEither accept bounded-sequence payloads (the bound is statically known,\nso the termination story is unchanged), or document the intended\ncollection idiom for variant payloads so compiler code standardizes on\ncons-lists versus boxed records deliberately rather than by discovery.\n\n## Likely ownership\n\nlanguage\n\n## Impact\n\n- Correctness: none (workaround is exact).\n- Safety: none.\n- Runtime performance: one O(n) reversal per list; cons allocation per\n  element (value copies, no sharing — see the ownership notes).\n- Compiler performance: eleven list-type declarations plus reversals add\n  measurable semantic surface (counted in the per-module evidence).\n- Memory: spine nodes per element; no sharing between parent/child views.\n- Determinism: deterministic.\n- Implementation complexity: medium — boilerplate, not subtlety.\n\n## Evidence / reproduction\n\n```text\nmncs abi pressure/repro/enum-sequence-payload.mncs  # MNE171\n```\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision: fixed by `a7a8c05` (bounded-sequence payloads admitted; MNE171 message now lists them)\n- Follow-up evidence in this repository:\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): resolved\n\nProbed on the current pin: `enum E { A { xs: [u64; 2] }, B }`\nelaborates at 0.13 (exit 0) — and so does the full use-shape:\nconstruction (`E.A { xs: [a, b] }`), payload binding with indexing\n(`A { xs: v } => v[0] + v[1]`), and a `main` round-trip, with zero\ndiagnostics including backend-check codes. The MNE171 gate that forced\ncons-lists is lifted.\n\nThe compiler nevertheless *keeps* its eleven cons-list types, by\ndesign rather than necessity: prepend-then-reverse is O(1) per element\nwith one O(n) reversal, while sequence payloads would need exact-size\npre-knowledge at each accumulation site; the report itself noted\ncons-lists \"would likely be used anyway\". History preserved above:\nthe MNE171 refusal, the eleven list/reverse/fuel-loop triples, and the\nverified upside (recursive enums with scalar/finite/record payloads\nwere always first-class). If a future tree node wants inline sequences,\nthe capability is now available — no pressure remains.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0012",
+    "text": ""
+  },
+  "requiredBehavior": "Either accept bounded-sequence payloads (the bound is statically known,\nso the termination story is unchanged), or document the intended\ncollection idiom for variant payloads so compiler code standardizes on\ncons-lists versus boxed records deliberately rather than by discovery.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0012-payload-sequence-ban.md"
+  },
+  "summary": "Imported legacy pressure CP-0012: CP-0012.",
+  "target": "compiler",
+  "title": "CP-0012",
+  "version": "1"
+}

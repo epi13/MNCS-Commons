@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1b13dd107eb726a06497038ce32663295259b20606d7b6c5158415e76d5bc7c7",
+  "evidence": [
+    {
+      "id": "legacy:mncs-language-service:LS-P-003",
+      "kind": "legacy-markdown",
+      "ref": "mncs-language-service:LS-P-003.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-4790E16F393E--OBS-6396CAFC4E87",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "LS-P-003",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:e797bdf37dde1b6b25d82b998cdb01f0504bf647b2975051a0bf3ee43736a8b7"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-4790E16F393E",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-003.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "CONFIRMED"
+  }
+}

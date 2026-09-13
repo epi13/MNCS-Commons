@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-005",
+  "contentDigest": "sha256:d2b5d01af0accdbb650a56056f5cc26b272bbd8d76e0882842a4963a8c765ae0",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-LANG-88C97B4EEEB1",
+  "identity": {
+    "capability": "legacy.ingest-p-005",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-005",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:99c7f4eb13ea0139e44ae258a9cb79712e649fb818faca78d3a596605281e758",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-005 — Folds have no dead-iteration protection\n\n## Problem\nFold over fixed storage while only some lanes are live (word classes,\ndigit accumulation, field staging). Dead lanes still execute `next`.\n\n## Reproducer\nTwo genuine transfer-slice bugs, both caught by\n`tests/convergence.rs`, not the compiler: dead lanes overwrote\n`classes[0]` with `-1` (source entity lost, every sentence failed);\ndigit accumulation multiplied by 10 on dead lanes (quantity garbage\n`5594136148269072384` for input `3`).\n\n## Expected semantics\nLiveness-gated writes (a `where`-style fold guard the compiler\nunderstands) or checked indexing that makes dead-lane writes\nimpossible rather than discouraged.\n\n## Current result\nStill reproduces at 0.14: eleven folds carry hand-written\nkeep-patterns (`select(live, new, keep)`); `ingest_debug` exposes\n`[count, verb_idx, verb_count, classes]` so tests pin each stage.\n\n## Architectural impact\nEvery new fold (Tranche A/B/C add many) must be audited for the same\npattern; the compiler cannot distinguish a live write from a dead\nclobber.\n\n## Severity\nMajor (most bug-dense surface encountered).\n\n## Owning layer\nLanguage design (iteration); compiler (liveness analysis or guarded\nfold form).\n\n## Acceptance test\nDeleting the `keep_class` guard in `classify_all` is a compile error\n(or provably identity); the convergence suite still passes.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-005",
+    "text": "Two genuine transfer-slice bugs, both caught by\n`tests/convergence.rs`, not the compiler: dead lanes overwrote\n`classes[0]` with `-1` (source entity lost, every sentence failed);\ndigit accumulation multiplied by 10 on dead lanes (quantity garbage\n`5594136148269072384` for input `3`)."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-005: Folds have no dead-iteration protection.",
+  "target": "language",
+  "title": "Folds have no dead-iteration protection",
+  "version": "1"
+}

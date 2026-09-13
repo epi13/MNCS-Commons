@@ -1,0 +1,25 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:8f4e38f3115f57edae96362af9fd794df6c1f3048474c6c13e8f39794045e70f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-E75581FDA823--OBS-465A5E2A76D8"
+  ],
+  "from": "implementing",
+  "id": "EVT-E6C7813AA8D8513F",
+  "implementation": {
+    "availableSince": "2026-09-13",
+    "backend": "mncs-research-bytecode",
+    "capabilityEvidence": "pressure/repro/enum-sequence-payload.mncs",
+    "profile": "0.10",
+    "ref": "mncs-language:30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:00:02.003000Z",
+  "pressureId": "MNCS-COMPILER-E75581FDA823",
+  "previousEvent": "EVT-23516C6FD78CF5F0",
+  "reason": "Current mncs-language contains the capability exercised by the minimal reproducer.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:fd57eb4f713c8498368f85f9353d5d40b1b3e087ca284b2ace84e8515b2f0fa4",
+  "evidence": [
+    {
+      "id": "legacy:mncs-doctor:DOC-P-003",
+      "kind": "legacy-markdown",
+      "ref": "mncs-doctor:DOC-P-003.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-C721900B9716--OBS-F8B19F8BB8C1",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "DOC-P-003",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:b94577ea918bbf525ec930c0bd97c4b08cab2cef40a81588933ad11135a578b1"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-C721900B9716",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "`mncs-doctor migrate --to latest --plan` on `fixtures/repos/outdated`\nreports every edge as `unknown` with provenance\n`doctor-seed: unrecorded upstream`, and `--apply` refuses (exit 4).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-003.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "workaround"
+  }
+}

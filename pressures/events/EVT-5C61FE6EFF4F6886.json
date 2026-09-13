@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:186e12771804305388b3da61958e1dc31389a5c7db3ddc2b7c3806fa452d69bb",
+  "details": {
+    "reason": "Both concern filesystem/read surface composition, but Index and Store require different native contracts.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-5C61FE6EFF4F6886",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:19:00Z",
+  "relation": "related_to",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-8303385C7CBD",
+  "targetPressure": "MNCS-LANG-973FAC2F4FBD",
+  "version": "1"
+}

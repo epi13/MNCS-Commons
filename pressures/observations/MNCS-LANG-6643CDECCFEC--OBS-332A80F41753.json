@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:bf8cbcdd6e9ec4ecb09c7dbf24a77427ee5e32ec8881bd9e2651b4a49afdb31c",
+  "evidence": [
+    {
+      "id": "commons-native-boundary-review",
+      "ref": "src/mncs_commons/pressure.py",
+      "status": "PASS",
+      "summary": "Current implementation contains substantial dynamic projection semantics at the host boundary; native kernel now covers the closed rules."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-332A80F41753",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": true,
+    "hostFallback": "semantic-adapter",
+    "validationScope": "native-boundary-review"
+  },
+  "observedAt": "2026-09-13T08:30:01Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "Review the inert attemptedProgram and hostLocus; no record-provided command is executed by Commons.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "89898f39ce49657523845d6790e08a1434b0b136",
+    "path": "src/mncs_commons/pressure.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "Current-language boundary review confirms that the lifecycle decision/classification kernel is native, while dynamic JSON/map/string projection remains in Python.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python owns dynamic JSON/collection projection and filesystem-backed append-only transport; MNCS owns lifecycle/classification rules.",
+    "fallbackLanguage": "python",
+    "locations": [
+      "src/mncs_commons/pressure.py",
+      "src/mncs_commons/cli.py"
+    ]
+  }
+}

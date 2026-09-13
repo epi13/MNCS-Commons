@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-006",
+  "contentDigest": "sha256:8d67fdba2269bf0fc37c8110d4e20e238192ececed9c54407204d7ff746b0fb5",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-2622C5BA89E5",
+  "identity": {
+    "capability": "legacy.ingest-p-006",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-006",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:5c13fe35fe6ba305002af619c12ff6c306653a9f443250cb0122d2fde3795c8c",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-006 — Strict `select` forces defensive clamping (partially relieved)\n\n## Problem\nIndex arrays with computed positions without doubling\nindex-expression noise or risking a trap on a guarded-away projection.\n\n## Reproducer\n`span_start`/`span_length` clamp twice (sentinel `-1` plus storage\nbound) because both `select` candidates evaluate — the established\n`text_scan` idiom.\n\n## Expected semantics\nA lazy conditional (evaluate only the taken side) where strictness buys\nnothing, keeping strict `select` where timing uniformity matters; plus\nthe 0.14 `checked_index` discharge form adopted where it fits.\n\n## Current result\nPartially relieved: `checked_index(sequence, index)` (0.14) retains one\ndominating bounds check per sequence and discharges projection\nobligations on all backends. Lazy conditionals still absent; `replace`\nand cross-sequence uses keep historical obligations.\n\n## Architectural impact\nClamp-then-project idiom retained; Tranche B adopts `checked_index`\nfor decoder hot paths and measures the difference.\n\n## Severity\nErgonomic (correctness-adjacent).\n\n## Owning layer\nLanguage design (evaluation order); compiler (discharge).\n\n## Acceptance test\n`span_start` expresses the `-1` case without evaluating the\nprojection; timing-sensitive stdlib behavior unchanged.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-006",
+    "text": "`span_start`/`span_length` clamp twice (sentinel `-1` plus storage\nbound) because both `select` candidates evaluate — the established\n`text_scan` idiom."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-006: Strict `select` forces defensive clamping (partially relieved).",
+  "target": "language",
+  "title": "Strict `select` forces defensive clamping (partially relieved)",
+  "version": "1"
+}

@@ -1,6 +1,360 @@
 {
   "generatedFrom": "commons.mncs.dev/family-pressure/v1",
-  "pressures": [],
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0013",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-360418A1CF7A",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "minor",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0013",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0008",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-48E3919FB30E",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocking",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0008",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0010",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-4924C0E45913",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "moderate",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0010",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0012",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-E75581FDA823",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "moderate",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0012",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-493C32111AA5",
+      "reporters": [
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-002",
+      "currentValidation": true,
+      "domain": "type-system.generics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4EBBF1137974",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Host seeding drops repeated generic spellings",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-006",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-76B88EDA0119",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Cranelift SIGSEGV on arity-mismatched execution request",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+      "currentValidation": true,
+      "domain": "control-flow.iteration",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-7BA2DA8A378E",
+      "reporters": [
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-007",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-817B22E99A6B",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "No exact negation",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-001",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-A14DAEC8E40F",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Float `SequenceReplace` miscompiled on LLVM, refused on WASM",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-009.no-over-bool-mne121",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-A29B3EFA5B73",
+      "reporters": [
+        "mncs-compiler",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "No `==` over `bool` (MNE121)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-005",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-E86F0E121743",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "No dimension-equality constraints → RESOLVED (structural)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-numerics"
+      ],
+      "capability": "legacy.p-008",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-EC8EB0FE5556",
+      "reporters": [
+        "mncs-numerics"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Integer literals do not adapt to `f64` → RESOLVED (migrated)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    }
+  ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"
 }

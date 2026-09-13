@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "validation": "historical-ledger-review"
+  },
+  "contentDigest": "sha256:ea1145f5c781787ecf38f8bbdc93056117ea704d96352a435abd8413bd6b4c13",
+  "evidence": [
+    {
+      "id": "mncs-doctor:DOC-P-005-ledger-review",
+      "ref": "mncs-doctor:DOC-P-005.md",
+      "status": "PASS",
+      "summary": "Repository source explicitly records this pressure and its local behavior/workaround."
+    }
+  ],
+  "id": "MNCS-TOOLING-3E59A6102945--OBS-2380B9B53DE2",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": false,
+    "legacyId": "mncs-doctor:DOC-P-005",
+    "reviewKind": "historical-ledger-confirmation"
+  },
+  "observedAt": "2026-09-13T06:31:04Z",
+  "pressureId": "MNCS-TOOLING-3E59A6102945",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Consult the inert source ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/production-mncs-runtime-2026-09",
+    "commit": "8968e695be488c518a6e57595b80768a2e57e26f",
+    "path": "mncs-doctor:DOC-P-005.md",
+    "repository": "mncs-doctor",
+    "workingTree": "dirty-at-inspection"
+  },
+  "summary": "Doctor pressure ledger reviewed at the repository pin; the local migration/tooling constraint is confirmed as an observed consumer constraint. This is historical ledger evidence, not a current-language rerun.",
+  "version": "1",
+  "workaround": {
+    "description": "Preserved from the imported repository observation; consumer-specific removal remains unverified.",
+    "fallbackLanguage": null
+  }
+}

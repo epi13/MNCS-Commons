@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-010",
+  "contentDigest": "sha256:b7470dc25e876f7d787a18e9bfbb3a38b863cc8ba072ec8fb086db3b85d65ab2",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-4E8D16B49738",
+  "identity": {
+    "capability": "legacy.ingest-p-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-010",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:5733615e4536c8ad6d85c4a6009b761b1ee0993c34d38c7eb5ee08272a4a9d3e",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-010 — Reference-execution cost per call (partially relieved)\n\n## Problem\nIngestion is a high-frequency boundary; per-observation verdicts must\nbe cheap. Prior measurement (old pin): ~140 ms floor per trivial call\nin release, ~6 s `parse_transfer` in debug.\n\n## Reproducer\n`cargo run --offline --example` timing probes (recorded in run notes);\nsuite wall time dominated by elaboration + per-call overhead.\n\n## Expected semantics\nA session/amortized execution handle paying program setup once, or a\nsupported backend-execution embedding keeping per-call cost near\ninterpretation cost.\n\n## Current result\nPartially relieved on the language side: `mncs-embed` provides retained\n`Session::open` + `call`/`call_batch` (Rust + C ABI). Ingest has NOT\nadopted it — current cost is ingest adoption debt until Tranche G\nmeasures embed vs `execute_with_policy`. True residual overhead TBD.\n\nRe-probed 2026-09-11 (debug host, contended laptop, serial tests):\nsingle reference calls land in the low seconds; the serial manifest\ntail (13 split widths + 60-case fuzz + golden + bounds + regression)\ntook 4779 s wall, the serial manifest depth check 1271 s. Four\norphaned pre-fix test binaries plus a peer `mncs-language` workspace\nrun visibly multiplied suite time (~6x on isolated CSV cases), so\nfuture runs should clear strays first — contention, not verdicts,\ndominates. No new language gap surfaced while taking the manifest\nscanner/extractor green: every failure root-caused above the language\nline (fold gating, expect-state overload, host error mapping).\n\n## Architectural impact\nReference execution everywhere; suites share one runtime per binary.\nTranche G adopts embed sessions and re-measures; do NOT file\n\"subprocess overhead\" (ingest never shelled out).\n\n## Severity\nPerformance.\n\n## Owning layer\nABI/embed (exists); ingest adoption (this run); runtime (residual).\n\n## Acceptance test\n`classify_event` sustains ≥100 calls/second in a release host while\nstill executing MNCS (any backend), with identical verdicts.\n\n---\n\n## New pressures from this run\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-010",
+    "text": "`cargo run --offline --example` timing probes (recorded in run notes);\nsuite wall time dominated by elaboration + per-call overhead."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-010: Reference-execution cost per call (partially relieved).",
+  "target": "language",
+  "title": "Reference-execution cost per call (partially relieved)",
+  "version": "1"
+}

@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:2bdb476df16b16a5e78c3decd7307b7acc054db9653f0e9b9e632f38f6bfe069",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0012",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0012-payload-sequence-ban.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-E75581FDA823--OBS-7651F5CBF2C4",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0012",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:d1aced97d1441b2bccd9c792007055ab20bf7680516f0bb2d88c46cfd3d6f280"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-E75581FDA823",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0012-payload-sequence-ban.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "One cons-list enum per element type (`ExprList`, `FieldList`,\n`VariantList`, `StmtList`, `ClauseList`, `EffectList`, `CapList`,\n`UseList`, `RecordList`, `EnumList`, `FnList`), each with its own\nfuel-loop reversal. Prepend-then-reverse keeps every accumulation O(1)\nper element at the cost of one reversal pass per list.",
+    "legacyStatus": "resolved (2026-09-12)"
+  }
+}

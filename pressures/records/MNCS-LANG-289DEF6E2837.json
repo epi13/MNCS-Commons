@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-014",
+  "contentDigest": "sha256:2a3e492be4fbb410e2c1be7eb9d267d3c242d4885068d668aed88935115fe0b7",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-289DEF6E2837",
+  "identity": {
+    "capability": "legacy.p-014",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-014",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-014",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:385b173eab77d39274e00fd76520110f59b3a6e32475fac8bedcc4499523cd04",
+    "sourcePath": "mncs-numerics:P-014-loop-lowering/README.md",
+    "sourceText": "# P-014 — Loop lowering is vectorization-hostile\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-014`.\n\n`repro.mncs` is a 4-lane float dot product. The exhibits are the\ncompiler's own artifacts for it (regenerate with `experiment run\n--output-dir`, any empty corpus):\n\n- `dot4.c11.c` — the C11 translation unit: the traversal becomes a\n  `for (;;) switch (mncs_pc)` state machine with per-lane opaque\n  `mncs_slot_load64` calls and per-operand finite checks. No C\n  compiler auto-vectorizes a switch-dispatched loop with opaque calls\n  in the lane body.\n- `dot4.module.ll` — the LLVM IR: a real CFG with plain GEP lane\n  loads (better), but each lane still carries two arena-guard fail\n  branches plus six `fsub`-self/`fcmp`-to-fail finite checks, and\n  every value round-trips through `alloca` slots. Per-lane fail\n  edges block loop vectorization absent predication support the\n  vectorizer will not invent from this shape.\n\nThe finite checks are the documented trap-rule cost (correctness, not\nwaste); the report is about the SHAPE around them. Whether an\noptimization pipeline canonicalizes any of this is untested (one\ncompiler profile in this run).\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-014",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-014-loop-lowering/README.md"
+  },
+  "summary": "Imported legacy pressure P-014: Loop lowering is vectorization-hostile.",
+  "target": "language",
+  "title": "Loop lowering is vectorization-hostile",
+  "version": "1"
+}

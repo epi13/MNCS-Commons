@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "tool": "target/debug/mncs"
+  },
+  "contentDigest": "sha256:f004e75ae2e13afe2dc6b30faa8a036c4789e1a06d2430ab3c9ee6c3302b6778",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0014-current-source-study",
+      "ref": "pressure/repro/bool-payload.mncs",
+      "status": "PASS",
+      "summary": "Current source-study accepts the bool finite-payload reproducer that was rejected at the prior compiler pin."
+    }
+  ],
+  "id": "MNCS-COMPILER-BABFB889D075--OBS-308CAEA0EC68",
+  "kind": "observation",
+  "languageProfile": "0.10",
+  "metadata": {
+    "activationCurrentProbe": "mncs-compiler:CP-0014",
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": true,
+    "validationScope": "minimal-reproducer"
+  },
+  "observedAt": "2026-09-13T08:00:04Z",
+  "pressureId": "MNCS-COMPILER-BABFB889D075",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the cited inert source-study fixture; this record does not execute repository-provided text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "command": "mncs source-study <probe>",
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "path": "pressure/repro/bool-payload.mncs",
+    "repository": "mncs-compiler",
+    "temporaryProfileVariant": null
+  },
+  "summary": "Current source-study accepts the bool finite-payload reproducer that was rejected at the prior compiler pin.",
+  "version": "1",
+  "workaround": {
+    "description": "Historical compiler workaround is no longer needed for this minimal capability probe.",
+    "removed": false
+  }
+}

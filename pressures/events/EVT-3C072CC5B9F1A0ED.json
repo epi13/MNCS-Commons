@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:9ecfd68a523c2f3a52e00c2eeccb3ffe77998be55867ce31b53352c0b3da0f87",
+  "details": {
+    "reason": "Both expose missing native filesystem mutation effects; Index focuses on directory/index publication while Store records the broader write lifecycle.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-3C072CC5B9F1A0ED",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:10:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-270D33E72EA5",
+  "targetPressure": "MNCS-LANG-8AF4BC50DDB4",
+  "version": "1"
+}

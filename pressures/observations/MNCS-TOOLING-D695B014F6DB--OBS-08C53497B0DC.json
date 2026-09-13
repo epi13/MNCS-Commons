@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:97dbd5688458a61484d844973203c288fbccf604d283dc23fbb3505d90d64de5",
+  "evidence": [
+    {
+      "id": "legacy:mncs-doctor:DOC-P-002",
+      "kind": "legacy-markdown",
+      "ref": "mncs-doctor:DOC-P-002.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-D695B014F6DB--OBS-08C53497B0DC",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "DOC-P-002",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:d23c61091f7c6f48df82ab74b7cc53d80cf0d84e9b5f68bb357507df52ad7a77"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-D695B014F6DB",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Upstream search: `autofix|auto_fix|apply_fix|CodeAction|remediation`\nacross `mncs-language` yields nothing; the language service offers exactly\none fix family (MNE131 missing-import `use` insertion) plus compute-only\nrename. There is no upstream edit representation (spans, conflict rules,\nordering, stale-base handling).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-002.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "workaround"
+  }
+}

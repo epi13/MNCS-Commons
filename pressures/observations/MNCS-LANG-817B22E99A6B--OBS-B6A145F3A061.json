@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:2ac84cfe6cc5654256358865c9843b4c1081da2ea05196505732260085cded5a",
+  "evidence": [
+    {
+      "id": "mncs-numerics:P-007:activation-closure",
+      "kind": "consumer-verification",
+      "ref": "mncs-numerics:repros/P-007-*/README.md",
+      "status": "PASS",
+      "summary": "Original consumer report and current bounded suite agree."
+    }
+  ],
+  "id": "MNCS-LANG-817B22E99A6B--OBS-B6A145F3A061",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "historicalFullMatrix": "all-five-executable-backends at a7a8c054015971c148d1bbaa797c64362c4073e2",
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "suiteResult": "418 passed, 0 failed"
+  },
+  "observedAt": "2026-09-13T06:10:41Z",
+  "pressureId": "MNCS-LANG-817B22E99A6B",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "backend": "mncs-research-bytecode",
+    "commit": "fb98af770c4361f3d3ae37d662b86a8a78cf90a2",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "repros/P-007-*/README.md",
+    "repository": "mncs-numerics"
+  },
+  "summary": "Numerics P-007 consumer verification passes under current mncs-language 30054cfd0b469bb326c21df3cd24e756741d7a9b; 418-case research-bytecode suite has zero failures.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

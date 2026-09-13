@@ -1,0 +1,39 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:74dfd24c3741a438763ed235d734c0563a664043dd5646c6cae13cca5f546394",
+  "details": {
+    "legacyOmnibusReplacement": true,
+    "reason": "DOC-P-004 is an explicitly superseded omnibus ledger entry; its narrower child findings remain canonical.",
+    "replacementIds": [
+      "MNCS-TOOLING-01C791D9EFF4",
+      "MNCS-TOOLING-146FB6F4BBC6",
+      "MNCS-TOOLING-2658866CECD9",
+      "MNCS-TOOLING-2D28F38056A1",
+      "MNCS-TOOLING-38C5CB10CDBC",
+      "MNCS-TOOLING-3E59A6102945",
+      "MNCS-TOOLING-71B72613B11B",
+      "MNCS-TOOLING-9455B428D003",
+      "MNCS-TOOLING-97037103B424",
+      "MNCS-TOOLING-992CEBD1BB97",
+      "MNCS-TOOLING-ACA9EC3DC6D6",
+      "MNCS-TOOLING-B665F138D324",
+      "MNCS-TOOLING-B9ED716B4A9A",
+      "MNCS-TOOLING-C5FD211E05C1",
+      "MNCS-TOOLING-C721900B9716",
+      "MNCS-TOOLING-CB736AB5B3F0",
+      "MNCS-TOOLING-D695B014F6DB",
+      "MNCS-TOOLING-E920D54703E3",
+      "MNCS-TOOLING-F20E1933C004",
+      "MNCS-TOOLING-F648D3B062B3"
+    ]
+  },
+  "evidenceRefs": [],
+  "id": "EVT-7CD372388087CEFA",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T06:46:00Z",
+  "relation": "supersedes",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-TOOLING-7A39DE2CEB8F",
+  "targetPressure": "MNCS-TOOLING-C5FD211E05C1",
+  "version": "1"
+}
