@@ -77,7 +77,7 @@
       ],
       "revalidationRequired": false,
       "severity": "major",
-      "status": "discovered",
+      "status": "verifying",
       "target": "language",
       "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip",
       "unresolved": true,

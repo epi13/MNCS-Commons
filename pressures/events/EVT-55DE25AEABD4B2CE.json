@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:b8bf3ae2237bf790236b3796b2d24b5a63ead52ab8ecb9efbc567a4252657e25",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-52A5E0C72A39--OBS-C2417F1CBF4A"
+  ],
+  "from": "confirmed",
+  "id": "EVT-55DE25AEABD4B2CE",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T21:34:07Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "previousEvent": "EVT-EFFA6B3AE50ECD68",
+  "reason": "The family accepts this as a language/runtime capability gap now addressed by the retained embedding boundary.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-test",
+  "contentDigest": "sha256:3b6723a13ed75649b8717bef07f710f3dc7ca7354dee1571a9b77423214b0fa7",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-52A5E0C72A39--OBS-120B0AED4AF2"
+  ],
+  "from": "available",
+  "id": "EVT-064DFF63227B412B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T21:34:08Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "previousEvent": "EVT-0901ED842AFE769F",
+  "reason": "mncs-test has rerun the originating consumer and retained the explicit fallback until all affected consumers migrate.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

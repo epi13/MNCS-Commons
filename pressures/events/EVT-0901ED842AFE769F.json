@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:eb02659b3d2a60d6bf2179f51dcde252403c2c034cf58816cec01cd403d6f6c3",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-52A5E0C72A39--OBS-120B0AED4AF2"
+  ],
+  "from": "implementing",
+  "id": "EVT-0901ED842AFE769F",
+  "implementation": {
+    "api": "Artifact/Session and mncs_session_call_batch",
+    "profile": "0.17",
+    "ref": "mncs-language:commit:ac66693"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T21:34:08Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "previousEvent": "EVT-113EC71F68507804",
+  "reason": "The retained embedded execution capability is available to consumers.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

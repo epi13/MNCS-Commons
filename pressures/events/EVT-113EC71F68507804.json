@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:496f872c4053cf5dd93f50814403cc3c82c6bdb7154b1db7ca43d4e92d9320fd",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "accepted",
+  "id": "EVT-113EC71F68507804",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T21:34:07Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "previousEvent": "EVT-55DE25AEABD4B2CE",
+  "reason": "Integrate Artifact/Session and batch execution into the canonical mncs-test provider while preserving per-test observations.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}
