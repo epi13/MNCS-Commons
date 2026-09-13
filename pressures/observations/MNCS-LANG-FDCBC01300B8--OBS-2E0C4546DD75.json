@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e2e5e280fe1b6471133464796b16878513f865aeff9efc7e78f09181b50e6345",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-002",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-002-no-durable-sync-barrier.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-FDCBC01300B8--OBS-2E0C4546DD75",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-FDCBC01300B8",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "any program requiring post-commit crash survival —\ne.g. write chunk bytes, issue a (nonexistent) sync barrier, acknowledge\ndurability. The barrier step has no expression; see P1-001 reproducer.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "host driver calls `os.fsync` after every file write and\ndirectory mutation, and documents the exact barrier order in\n`store_phase1a.py` (`_write_sync`, `_write_create_exclusive`,\n`_fsync_dir`). Durability claims in this run cover the host driver only.",
+    "legacyStatus": "blocked"
+  }
+}

@@ -350,6 +350,7 @@ KERNEL_CASES = {
     ],
     "commons/mesh/lattice_check.mncs": [("commons-lattice-corpus.json", "pass")],
     "commons/mesh/lifecycle.mncs": [("commons-lifecycle-corpus.json", "pass")],
+    "commons/pressure/lifecycle.mncs": [("pressure-lifecycle-corpus.json", "pass")],
 }
 
 

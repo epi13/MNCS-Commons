@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:ae82574a47b94f00f34828106b8ee59ff35ec2afab1cba6f1a3ca075bffce501",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-012",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-012-no-view-width-subsumption.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-8D86843C5F1C--OBS-79DFC8CD83E2",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-8D86843C5F1C",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "```mncs\nfn check(view: [byte; up_to 64]) -> (result: u64) {\n    return view.len;\n}\nfn use8(x: [byte; 8]) -> (result: u64) {\n    let v: [byte; up_to 8] = x[0..8];\n    return check(v);  // MNE133\n}\n```",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "(1) exact-array callers inline their type-known width\nchecks; (2) shared validators take the concrete widest view\n(`[byte; up_to 64]`); (3) generic view params used only where host\ncallers never invoke them directly.",
+    "legacyStatus": "workaround (inline checks + widest-view signatures)"
+  }
+}

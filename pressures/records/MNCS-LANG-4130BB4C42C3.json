@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-001.single-shot-digest-realization-bound-64-b-with-no-incremental-api",
+  "contentDigest": "sha256:7e41f2524e7e0f081bce835eaa43b829e5add3cfd04d747ca81e6495f8b85f9e",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-4130BB4C42C3",
+  "identity": {
+    "capability": "legacy.p2-001.single-shot-digest-realization-bound-64-b-with-no-incremental-api",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P2-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (chained roots to 992 B; arbitrary sizes deferred)",
+    "legacyId": "P2-001",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:377194136f13545cabb2d4c66d222b5a2504124a971e8c37ec3b67b8f65fb531",
+    "sourcePath": "mncs-store:P2-001-digest-realization-bound-64.md",
+    "sourceText": "# P2-001 — Single-shot digest realization bound (64 B) with no incremental API\n\nContinues P1-004 (reframed 2026-09-10; do not treat the old report as\ncurrent truth — the bound moved layers).\n\nStorage feature being implemented: content identity for multi-chunk\nobjects and manifest roots larger than one 64-byte view (RFC 0004\ncontent IDs, RFC 0017 manifest v2).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13, research-bytecode): `sha256_digest` elaborates over\nany byte-view width (a 128-byte view passes elaboration with only the\nstandard CMP301 view-range note), but realization caps operands at\n`HOST_GRANT_MAX_BYTES = 64` (`host_view_bytes` in\n`crates/mncs-model/src/execution.rs`). Digesting a 128-byte view fails\nat execution with InvalidRequest (\"sha256_digest requires one byte-view\noperand\", reproduced 2026-09-10). There is still no\ninit/update/finalize streaming shape and no bounded multi-view digest.\n\nMinimal reproducer (mncs-language, elaborates, fails at execution):\n\n```mncs\nmncs 0.13;\nmodule probe.hash2;\nfn digest128(payload: [byte; 128]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    let view: [byte; up_to 128] = payload[0..128];\n    return sha256_digest(view);\n}\n```\n\nwith a 128-byte sequence argument: status invalid_request at step 4.\n\nRequired semantics: an incremental digest (opaque state + update +\nfinalize) or a bounded multi-view digest, so content identity scales\npast 64 bytes without weakening domain separation.\n\nWhy the current behavior/API is insufficient: any root binding more\nthan 64 bytes of structure (multi-chunk references, provenance binding,\ngeneration links) has no sound single-shot construction. The store\nanswers with a Merkle chain of <= 64-byte steps (RFC 0017): H0 over the\n28-byte header, then H_{i+1} = SHA-256(H_i || chunk_digest_i). The chain\nis sound but costs one effect invocation per chunk plus init, and chain\ndepth scales with object size.\n\nSafety/correctness implications: MEDIUM. The chain is designed\ncryptography (domain-separated header binding + ordered steps), not an\nimprovised truncation — but every hand-rolled composition is a new\nsecurity argument the language should ideally provide once.\n\nPerformance implications: chain depth = effect invocations (P2-008);\nobjects past 992 bytes need deeper or wider compositions that do not\nexist yet.\n\nWorkaround used: manifest-v2 chained root (`chain_init`/`chain_step` in\n`src/store/manifest.mncs`), pinned by chain corpora with hashlib\noracles including order-sensitivity pairs. Semantically exact for the\nbounded domain (0..992 B, 1..31 chunks), a bootstrap substitute for\narbitrary sizes.\n\nWhat the language/stdlib/runtime should ideally provide: a streaming\ndigest capability (`digest_init/update/finalize` over opaque state, or a\nbounded `digest_concat` over <= K views) with the same verify-only,\nno-secrets authority model as `sha256_digest`.\n\nAffected backend(s): all (intrinsic-shape absence at realization;\nelaboration already widened).\n\nSeverity: major.\n\nStatus: workaround (chained roots to 992 B; arbitrary sizes deferred)\n\nAcceptance test for the future fix: the `digest128` reproducer above\nreturns `hashlib.sha256(bytes(range(128)))` on research-bytecode, and a\nstreaming construction hashes a 1024-byte view identically to the\nsingle-shot oracle.\n"
+  },
+  "legacyIds": [
+    "P2-001",
+    "mncs-store:P2-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-001",
+    "text": "```mncs\nmncs 0.13;\nmodule probe.hash2;\nfn digest128(payload: [byte; 128]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    let view: [byte; up_to 128] = payload[0..128];\n    return sha256_digest(view);\n}\n```\n\nwith a 128-byte sequence argument: status invalid_request at step 4."
+  },
+  "requiredBehavior": "an incremental digest (opaque state + update +\nfinalize) or a bounded multi-view digest, so content identity scales\npast 64 bytes without weakening domain separation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-001-digest-realization-bound-64.md"
+  },
+  "summary": "Imported legacy pressure P2-001: Single-shot digest realization bound (64 B) with no incremental API.",
+  "target": "language",
+  "title": "Single-shot digest realization bound (64 B) with no incremental API",
+  "version": "1"
+}

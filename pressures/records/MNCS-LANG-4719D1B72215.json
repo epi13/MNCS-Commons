@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
+  "contentDigest": "sha256:43ec7b7e926bcf817a6882186b8499e2d6ed3f02dbca10c6f27b6c482d89af9b",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "backend",
+  "id": "MNCS-LANG-4719D1B72215",
+  "identity": {
+    "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-store:P1-B01",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (wrapping discipline) + pinned (canary + allowlist)",
+    "legacyId": "P1-B01",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:f744f4ee99acf7cf52b0740c3478ed32923ec2ea2c0077b038c50abf3de94e59",
+    "sourcePath": "mncs-store:P1-B01-c11-checked-arith-divergence.md",
+    "sourceText": "# P1-B01 — C11 backend traps on large-but-valid u32 checked products (backend divergence)\n\nStorage feature being implemented: big-endian u32 decoders\n(`object_namespace` pre-fix formulation; canary\n`decode_u32_plain(255,255,255,254)`).\n\nObserved language/runtime/compiler behavior: the plain-checked form\n\n```mncs\nlet high: u32 = ((b0 as u32) * 16777216) + ((b1 as u32) * 65536) + ((b2 as u32) * 256);\nreturn high + (b3 as u32);\n```\n\nreturns exact values on research-bytecode, portable-WASM, LLVM-IR, and\nCranelift for ALL inputs including `(255,255,255,254)` → `4294967294`,\nbut the C11 backend reports `runtime_failure` for any input whose\nintermediate products exceed INT32_MAX — including `(255,255,255,254)`\nand even namespace-only decodes — while small inputs (e.g. `(0,0,0,7)`)\npass. u64 paths using explicit wrapping operators (`*%`/`+%`) pass on C11,\nand pure u32 literal comparison (`x == 4294967295`) passes, isolating the\nfault to checked `*`/`+` lowering with large-but-valid u32 products\n(consistent with a SIGNED-32 overflow check applied to UNSIGNED-32\noperands, i.e. a false-positive trap at 255×16777216 = 4278190080).\n\nMinimal reproducer: `tests/fixtures/checked_arith_canary.mncs` +\n`tests/corpora/canary-corpus.json` (`decode-plain-max` case). Run on\n`mncs-c11` vs any other executable backend.\n\nRequired semantics: backend-uniform checked arithmetic — identical inputs\nproduce identical values-or-traps on every backend, per the declared\nfallback of the obligation system.\n\nWhy the current behavior/API is insufficient: a storage decoder that is\ncorrect on four backends corrupts (traps) on the fifth for common inputs\n(any namespace/object with high bytes set — i.e. most real identities).\nChecked-arithmetic portability is load-bearing for a store that must read\nadversarial bytes deterministically everywhere.\n\nSafety/correctness implications: HIGH for affected configurations.\nFail-closed (trap) rather than wrong-value, but a trap on valid data is a\ncorrectness failure for a decoder, and the divergence is SILENT (no\ndiagnostic names the lowering difference).\n\nPerformance implications: none (correctness issue).\n\nWorkaround used: store decoders use wrapping operators where the true\nvalue provably fits u32 (exact, not approximate); the canary stays in the\nsuite with a `KNOWN_DIVERGENCES` allowlist entry so the divergence is\npinned, not hidden — if C11 starts passing, the suite fails loudly\ndemanding allowlist removal.\n\nWhat the language/stdlib/runtime should ideally provide: fix the C11\nunsigned-checked lowering (or declare the divergence + refuse the\naffected shapes at compile time instead of trapping at runtime), plus a\ncross-backend checked-arithmetic conformance corpus covering u32/u64\nboundary products.\n\nAffected backend(s) / target(s), if known: `mncs-c11` only (of the five\nexecutable backends, on x86_64 Linux, clang toolchain).\n\nSeverity: major (backend-specific correctness divergence)\n\nStatus: workaround (wrapping discipline) + pinned (canary + allowlist)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nCompiler: mncs-language 890a653, Source Profile 0.13, x86_64 Linux.\n\n`decode-plain-max` (255,255,255,254 -> 4294967294) still returns exact\nvalues on bytecode/wasm/llvm/cranelift and still reports runtime_failure\non mncs-c11 (reproduced 2026-09-10 via the checked-in canary corpus).\nThe KNOWN_DIVERGENCES allowlist entry stays with stale-entry discipline.\nAll store decoders (old and new, including v2 length fields) keep the\nwrapping formulation, so no store path executes the divergent shape.\n\nSeverity: major backend correctness divergence (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-B01",
+    "mncs-store:P1-B01"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-B01",
+    "text": "`tests/fixtures/checked_arith_canary.mncs` +\n`tests/corpora/canary-corpus.json` (`decode-plain-max` case). Run on\n`mncs-c11` vs any other executable backend."
+  },
+  "requiredBehavior": "backend-uniform checked arithmetic — identical inputs\nproduce identical values-or-traps on every backend, per the declared\nfallback of the obligation system.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-B01-c11-checked-arith-divergence.md"
+  },
+  "summary": "Imported legacy pressure P1-B01: C11 backend traps on large-but-valid u32 checked products (backend divergence).",
+  "target": "language",
+  "title": "C11 backend traps on large-but-valid u32 checked products (backend divergence)",
+  "version": "1"
+}

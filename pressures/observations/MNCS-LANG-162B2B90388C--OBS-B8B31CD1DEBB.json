@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:0b40f67e8b9c7bd9e92bdea0fc129237634ab01e9123119a9c02e88b1ca2f8cc",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-004",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-004-no-streaming-hash.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-162B2B90388C--OBS-B8B31CD1DEBB",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-162B2B90388C",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "hash the concatenation of two\n32-byte chunk digests `a` and `b`:\n\n```mncs\nfn root_of_two(a: [byte; 32], b: [byte; 32]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    // No expression builds the 64-byte concatenation as a view:\n    // views cannot be concatenated, and [byte; 64] literals over two\n    // 32-byte inputs require 64 explicit element expressions.\n    // A 68+ byte manifest has NO hashing path at all.\n    return sha256_digest(a); // wrong: covers only half the identity\n}\n```",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Phase 1a commits single-chunk objects only; the manifest\nreserves `chunk_count` for the future and validators reject count != 1\n(code 5). Per-chunk SHA-256 integrity is full-strength; root-level\nmulti-chunk identity is deferred, explicitly.",
+    "legacyStatus": "partially implemented (single-chunk path complete; multi-chunk deferred)"
+  }
+}

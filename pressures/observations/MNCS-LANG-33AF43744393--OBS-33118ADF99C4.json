@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:f22ac933ff213bef3f25ed02e5da8e0673e76c3ffda4c57f7cbb0bf73a072fa4",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-019",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-019-host-read-grant-shape.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-33AF43744393--OBS-33118ADF99C4",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-33AF43744393",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "verify two chunk files in one MNCS call. Each needs\nits own `host_read()` under its own capability, i.e. two grants and —\nsince authority is per-function — awkward plumbing that scales with the\nnumber of files, not the logic.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "lifecycle verification passes file bytes as corpus\narguments to pure MNCS validators (one batched invocation for N files);\n`read_verify` covers the single-file in-language path as proof, tested\nin `test_in_language_chunk_file_verification` (skips honestly if combined\nread+crypto grants are refused).",
+    "legacyStatus": "workaround (argument-passed bytes for bulk; single-file proof kept)"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-003.no-generic-boundary-functions-forces-per-width-tail-families",
+  "contentDigest": "sha256:b438f0da31fe5dba14a6c937734110e215dec015936c436eb0f98c4397068217",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.generics",
+  "id": "MNCS-LANG-ECDA8EDB6183",
+  "identity": {
+    "capability": "legacy.p2-003.no-generic-boundary-functions-forces-per-width-tail-families",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-store:P2-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (four monomorphic tail families + pinned host mirror)",
+    "legacyId": "P2-003",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:42da9e975fd8b546377bacc0f3feaf2f12abaa2e9ab59bbede00b77a70b5fee8",
+    "sourcePath": "mncs-store:P2-003-no-generic-boundary-functions.md",
+    "sourceText": "# P2-003 — No generic boundary functions forces per-width tail families\n\nContinues P1-013 (host cannot invoke generics; Source Profile 0.13 adds\nsource-level inference but no type-argument channel on execution\nrequests). This is the Phase-2 instantiation of that gap.\n\nStorage feature being implemented: canonical tail framing across the\nfour frozen widths {4, 8, 16, 32} (RFC 0017: every tail frame reuses a\nv1 width and its single-shot identity).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13, research-bytecode): execution requests still carry\n(module, function, arguments) with no type-argument channel, so a\nwidth-parameterized tail handler cannot sit on the boundary. Phase 2\nneeds five operations per width — frame, digest, verify, tail_ok\n(canonical-padding predicate), payload projection — and gets them as\nFOUR monomorphic families, twenty concrete boundary functions:\n\n- `frame4/8/16/32`, `digest4/8/16/32`, `verify_frame4/8/16/32`,\n  `tail_ok4/8/16/32`, `payload4/8/16/32` in `src/store/chunk.mncs`.\n\nThe host carries the dispatch mirror: `_tail_width` (remainder ->\nwidth) plus the `TAIL_FNS` table in `tests/store_phase2.py`, and\n`test_tail_width_host_mirror_matches_mncs` pins the host mirror to\nMNCS `tail_width_for` over remainders 0..33 on every run.\n\nRequired semantics: either host-nameable type arguments on execution\nrequests (invoke `tail_ok<16>` as source does) or argument-driven\ninstantiation, so one polymorphic tail family serves all widths.\n\nWhy the current behavior/API is insufficient: adding a fifth width\nmeans five new boundary functions plus host-table rows plus mirror\ntests; the dispatch table is orchestration the language should own.\nThe twenty functions are thin (each delegates to its width's frozen\nv1 identity), but the family must be maintained per width and the\nmirror kept in agreement by a dedicated test.\n\nSafety/correctness implications: LOW. The mirror test fails loudly on\nany disagreement, and the MNCS predicate (`tail_okW`) is the authority\non every put AND every read — a wrong host dispatch produces bytes\nthe predicate rejects, never bytes it accepts.\n\nPerformance implications: none (dispatch is host-side selection among\nalready-batched calls).\n\nWorkaround used: `TAIL_FNS` width-family table + `_tail_width` host\nmirror; `chain_step` stays monomorphic over 32-byte digests (no\ngenerics needed there by construction).\n\nWhat the language/stdlib/runtime should ideally provide: the P1-013\nask — a `type_arguments` field on execution-request targets with\nelaboration-time checking — at which point the four tail families\ncollapse to one generic family and `TAIL_FNS` shrinks to a width\nargument.\n\nAffected backend(s): all (execution-request shape).\n\nSeverity: moderate.\n\nStatus: workaround (four monomorphic tail families + pinned host mirror)\n\nAcceptance test for the future fix: one generic tail family\n(`frame<W>`, `digest<W>`, `tail_ok<W>`, …) invoked from a corpus with\nexplicit or inferred width arguments; `TAIL_FNS` deleted and the\nmirror test removed with nothing else changing.\n"
+  },
+  "legacyIds": [
+    "P2-003",
+    "mncs-store:P2-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-003",
+    "text": ""
+  },
+  "requiredBehavior": "either host-nameable type arguments on execution\nrequests (invoke `tail_ok<16>` as source does) or argument-driven\ninstantiation, so one polymorphic tail family serves all widths.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-003-no-generic-boundary-functions.md"
+  },
+  "summary": "Imported legacy pressure P2-003: No generic boundary functions forces per-width tail families.",
+  "target": "language",
+  "title": "No generic boundary functions forces per-width tail families",
+  "version": "1"
+}

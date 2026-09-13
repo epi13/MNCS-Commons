@@ -28,5 +28,6 @@ jobs:
       - run: mypy src
       - run: pytest -q
       - run: python scripts/validate_examples.py
+      - run: python scripts/validate_pressures.py
       - run: python scripts/validate_compat.py
       - run: python -m mncs_commons.cli --help

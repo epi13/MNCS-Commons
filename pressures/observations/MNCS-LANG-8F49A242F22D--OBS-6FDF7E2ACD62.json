@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:dced424aa1a9a29b4b19b17e3b08e831e96cb3043b8c66e55174d0c3617707fc",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P2-008",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P2-008-step-and-boundary-costs.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-6FDF7E2ACD62",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "`table_contains` over a 1024-byte table at the\ndefault 32768-step budget -> budget_exhausted at 32768 steps; returns\nthe correct verdict at 65536 (33808 steps used). Bisectors in\n`probe.cost` (`plain1024` 9223 steps, `replace1024` 11272 steps)\nisolate the callee-call constant.\n\nRequired semantics (tooling/runtime, not storage): cheaper calls or an\nin-process execution boundary (P1-016), short-circuiting `&&` over\neffect-free callees, and binary (non-JSON) value transport — any one of\nwhich collapses the constant by an order of magnitude.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "maximal batching, explicit scan budgets, Engine\ninvocation/byte counters for honest reporting, `MNCS_BACKENDS`\nnarrowing for iteration speed. No semantic content.",
+    "legacyStatus": "measured (batching + counters; no semantic workaround needed)"
+  }
+}

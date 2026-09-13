@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-005.max-sequence-bound-64-caps-value-chunk-and-manifest-sizes",
+  "contentDigest": "sha256:695fa7266b6eeaa34ee62d41679c9b19647ce4ae3b7aed4f1285b15b90f45281",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-4EC58934F8DB",
+  "identity": {
+    "capability": "legacy.p1-005.max-sequence-bound-64-caps-value-chunk-and-manifest-sizes",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (exact-width classes; arbitrary sizes deferred)",
+    "legacyId": "P1-005",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:4fe9cc6efa0f2a926a6382955da029b6cd4cc79ea9a923dd6a098f999e4fc87c",
+    "sourcePath": "mncs-store:P1-005-sequence-bound-64.md",
+    "sourceText": "# P1-005 — MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes\n\nStorage feature being implemented: chunk payload widths, manifest layout,\nand the value classes a Phase-1a object can carry (RFC 0003/0004/0016).\n\nObserved language/runtime/compiler behavior:\n`crates/mncs-model/src/body.rs:16: pub const MAX_SEQUENCE_BOUND: u32 = 64;`\nExact sequences `[T; N]` and views `[T; up_to N]` cannot exceed 64\nelements. Consequences hit in three places: (1) chunk payloads are capped\n(60 bytes framable after a 4-byte header, 32 bytes supported); (2) the\nmanifest had to fit 64 bytes TOTAL to stay hashable in one `sha256_digest`\ncall (see P1-004); (3) `iterate` bounds (1..=32, MNE142) further restrict\nsingle-level scans to half a view (see P1-008).\n\nMinimal reproducer (mncs-language):\n\n```mncs\nfn wide() -> (result: [byte; 65]) {\n    return [0, 0, /* ... 65 elements ... */];\n}\n```\n\nElaboration rejects the 65-element sequence (bound exceeded). Likewise a\n`[byte; up_to 128]` parameter is unspellable.\n\nRequired semantics: bounded-but-larger sequences/views (storage needs at\nleast low-KB chunks to amortize per-chunk file and hash overhead), with\nthe bound remaining explicit and backend-declared.\n\nWhy the current behavior/API is insufficient: 32-byte payloads make every\nvalue above trivial size multi-chunk, but multi-chunk roots are blocked\nby P1-004 — so the two bounds multiply: values are capped at 32 bytes not\nby architecture but by interacting language ceilings. A storage engine\nwith 32-byte-maximum values is a proof vehicle, not a substrate.\n\nSafety/correctness implications: LOW (bounds are explicit and fail\nclosed). The cost is expressive range, not soundness.\n\nPerformance implications: HIGH. 4–36-byte chunk files turn every value\ninto a file-descriptor + hash + directory-entry event; real chunking\n(4–64 KiB) would amortize this by ~1000x. Current per-object file counts\nand hash calls are an artifact of the bound.\n\nWorkaround used: exact-width value classes (4/8/16/32-byte payloads);\narbitrary-length byte strings deferred; manifest squeezed to 64 bytes;\n`frame_valid` code 5 (`UNSUPPORTED_WIDTH`) marks the boundary explicitly.\n\nWhat the language/stdlib/runtime should ideally provide: raise (or\nparameterize) the sequence bound toward low-KB views with backend\ncapability declarations, plus the streaming hash of P1-004 so larger\nviews remain hashable.\n\nAffected backend(s) / target(s), if known: all (shared model constant);\nindividual backends may need their own lower caps declared honestly.\n\nSeverity: major\n\nStatus: workaround (exact-width classes; arbitrary sizes deferred)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nCeiling moved 64 -> 1024: `[byte; 65]` and `[0; 65]` elaborate and run;\n`[byte; 1025]` refused (MNE105). Manifest views to 1024 bytes, 1024-wide\ntraversals, and 992-byte objects now execute (Phase-2 path). The store no\nlonger limits values to 32 bytes.\n\nRemaining: the bound moved, it did not disappear. Arbitrary-sized\nobjects are still inexpressible; storage past 1024-byte views needs\nchunked observation loops plus the missing streaming hash (P2-001).\nReframed as bounded-storage pressure: every bound (views 1024, digest\noperands 64, iterations 1024/level, work envelope 1M) is explicit and\nfail-closed, but their interaction caps objects at 992 bytes.\n\nSeverity now: moderate (was major; 32-byte proof vehicle -> 992-byte\nbounded store).\n"
+  },
+  "legacyIds": [
+    "P1-005",
+    "mncs-store:P1-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-005",
+    "text": "```mncs\nfn wide() -> (result: [byte; 65]) {\n    return [0, 0, /* ... 65 elements ... */];\n}\n```\n\nElaboration rejects the 65-element sequence (bound exceeded). Likewise a\n`[byte; up_to 128]` parameter is unspellable."
+  },
+  "requiredBehavior": "bounded-but-larger sequences/views (storage needs at\nleast low-KB chunks to amortize per-chunk file and hash overhead), with\nthe bound remaining explicit and backend-declared.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-005-sequence-bound-64.md"
+  },
+  "summary": "Imported legacy pressure P1-005: MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes.",
+  "target": "language",
+  "title": "MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes",
+  "version": "1"
+}

@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e86ae25e55b2fd33a920cef222cd386131116dbe71a2c03e8c1b74c1b3c44527",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P2-007",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P2-007-observation-granularity.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-7181F1DBC345--OBS-F44B195E0ED3",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-7181F1DBC345",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "observe a 1020-byte manifest file and its 31 chunk\ndigests in ONE MNCS call — impossible; the widest single observation is\n64 bytes per effect call.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "arg-passed bytes for bulk verification (batched, one\ninvocation per N files); fs_* chunked reads kept for recovery scans and\nsingle-file proofs. Semantically exact (MNCS decides every verdict);\nbootstrap substitute for observation geometry.",
+    "legacyStatus": "workaround (arg-passed batch verification + fs_* proofs)"
+  }
+}

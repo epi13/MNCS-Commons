@@ -36,6 +36,22 @@ from .models import (
     WorkCoordinationState,
     WorkRequestState,
 )
+from .pressure import (
+    EVIDENCE_STATUSES,
+    RELATIONS,
+    SEVERITIES,
+    STATUSES,
+    TARGETS,
+    PressureError,
+    PressureProjection,
+    PressureRegistry,
+    PressureValidationReport,
+    extract_pressure_markers,
+    known_repositories,
+    normalize_repository,
+    pressure_id,
+    source_marker,
+)
 from .query import ScopeAssessment, assess_scope, unresolved_relationships
 from .remote import RemoteClient
 from .store import CommonsStore
@@ -92,4 +108,18 @@ __all__ = [
     "make_development_record_record",
     "make_failure_classification_record",
     "make_replication_record",
+    "PressureError",
+    "PressureProjection",
+    "PressureRegistry",
+    "PressureValidationReport",
+    "pressure_id",
+    "normalize_repository",
+    "known_repositories",
+    "source_marker",
+    "extract_pressure_markers",
+    "TARGETS",
+    "SEVERITIES",
+    "STATUSES",
+    "RELATIONS",
+    "EVIDENCE_STATUSES",
 ]

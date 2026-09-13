@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
+  "contentDigest": "sha256:4cfe2a833015192ba3cae63d1c3659278215809e5e3aa8606b3af90753973e58",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-0EEA4F938BAB",
+  "identity": {
+    "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-store:P1-018",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "design pressure only",
+    "legacyId": "P1-018",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:9106d5d43726c855af27e4360841b5b899a745b0ee328761e32c8baea081e3dd",
+    "sourcePath": "mncs-store:P1-018-no-zero-copy-views.md",
+    "sourceText": "# P1-018 — No memory-mapped / zero-copy view primitive (RFC 0009 design pressure)\n\nStorage feature being implemented: future direct typed views over stored\nbytes (Phase 3 exit proof); Phase 1a notes the gap so the manifest and\ndescriptor designs do not preclude it.\n\nObserved language/runtime/compiler behavior: views (`[T; up_to N]`) are\nborrowed spans in the LANGUAGE's memory model (host-provided inputs,\nslices of exact arrays), but there is no mapping of FILE bytes into that\nmodel — no mmap intrinsic, no view-over-placement, no lifetime-bound\nlease type. `host_read` COPIES granted file bytes (≤64) into a value.\nEvery stored byte is therefore copied at least twice (disk → grant\nbuffer → MNCS value) with no path to do otherwise.\n\nMinimal reproducer: express \"a `[u32; 8]` view over bytes [16..48) of the\ngranted chunk file, valid for the read lease, invalidating on close\".\nNo type names a file-backed view, a lease, or placement residency.\n\nRequired semantics (Phase 3): file/placement-backed views with\nlifetime, bounds, alignment, endianness, and mutability checking;\nexplicit incompatibility (transform instead of view); copy/allocation\ninstrumentation so zero-copy claims are evidence-based (RFC 0009\nmeasurement).\n\nWhy the current behavior/API is insufficient: Phase-1a values are tiny,\nso copies are harmless NOW — but the descriptor/manifest formats must be\nmmap-eligible LATER (alignment fields, BE canonical layout, no\npointerful structures). This report records the forward constraint and\nthe missing primitive together.\n\nSafety/correctness implications (future): HIGH when views land —\nuse-after-close, truncation races, and writable-aliasing of immutable\ncontent are the classic mmap hazards; the language should type them\n(leases/capabilities), not document them.\n\nPerformance implications (future): copies dominate at scale; zero-copy\nis the difference between a store and a deserializer.\n\nWorkaround used: none needed in Phase 1a (copies fit the proof scale);\nformats designed mmap-eligible (fixed offsets, explicit alignment,\nbig-endian, no interior pointers) per RFC 0016 §6.\n\nWhat the language/stdlib/runtime should ideally provide: leased,\nfile-backed typed views with compiler-checked lifetimes and placement\nawareness (RAM/NVMe/accelerator), arriving with Phase 3.\n\nAffected backend(s) / target(s), if known: all (surface absence);\naccelerator-backed views are additionally hardware-gated.\n\nSeverity: moderate (design pressure only; Phase 3 scope)\n\nStatus: design pressure only\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nNo mmap/file-backed view, lease, or placement-residency type in any 0.13\nfeature list. `host_read`/`fs_read_bytes_at` copy (<= 64 B per call);\nevery stored byte is still copied disk -> grant buffer -> MNCS value.\nAt the 992-byte object scale copies remain harmless; formats stay\nmmap-eligible (fixed offsets, explicit alignment, BE, no interior\npointers). Correctly sequenced after the core; still Phase-3 scope.\n\nSeverity: moderate design pressure (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-018",
+    "mncs-store:P1-018"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-018",
+    "text": "express \"a `[u32; 8]` view over bytes [16..48) of the\ngranted chunk file, valid for the read lease, invalidating on close\".\nNo type names a file-backed view, a lease, or placement residency."
+  },
+  "requiredBehavior": "file/placement-backed views with\nlifetime, bounds, alignment, endianness, and mutability checking;\nexplicit incompatibility (transform instead of view); copy/allocation\ninstrumentation so zero-copy claims are evidence-based (RFC 0009\nmeasurement).",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-018-no-zero-copy-views.md"
+  },
+  "summary": "Imported legacy pressure P1-018: No memory-mapped / zero-copy view primitive (RFC 0009 design pressure).",
+  "target": "language",
+  "title": "No memory-mapped / zero-copy view primitive (RFC 0009 design pressure)",
+  "version": "1"
+}

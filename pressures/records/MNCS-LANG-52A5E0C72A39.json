@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
+  "contentDigest": "sha256:9237cbf2522fa5e39e15ad636da9ae8cf82bc482e28940141b1bc146f0f99554",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-52A5E0C72A39",
+  "identity": {
+    "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-016",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (batched subprocess orchestration + instrumentation)",
+    "legacyId": "P1-016",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:b4a01f962e8b7e1360209b1ea9005b5499a7b2343fd8d94c111aecd60fd823fe",
+    "sourcePath": "mncs-store:P1-016-no-in-process-call-boundary.md",
+    "sourceText": "# P1-016 — No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip\n\nStorage feature being implemented: the typed put/get path and all\nverification (test/lifecycle orchestration cost).\n\nObserved language/runtime/compiler behavior: the only way for host\ntooling to execute an MNCS function is the `mncs experiment run`\nsubprocess (full compile + realize + execute per invocation) with JSON\ncorpora in and JSON results out. There is no embedded/FFI API, no\npersistent compiler session, no binary value ABI callable from a host\nprocess. Every byte crossing the boundary is decimal-encoded in JSON\n(`{\"byte\": {\"value\": 12}}` ≈ 25 bytes on the wire per stored byte).\n\nMinimal reproducer: time N single-case invocations vs one N-case batch —\nper-invocation cost is dominated by process start + compilation (seconds),\nnot execution (milliseconds). The Phase-1a driver batches aggressively\nfor exactly this reason (see measurements below).\n\nRequired semantics: an in-process execution handle (load module once,\ninvoke functions with binary buffers, receive binary results) so storage\norchestration does not pay compile + JSON costs per operation.\n\nWhy the current behavior/API is insufficient: it dictates the driver's\nbatching architecture (6 batched invocations per put-phase regardless of\nobject count; 4 per verify-phase) and makes interactive/small-operation\nuse absurdly expensive. It also forces the JSON transport, which is fine\nfor tests but would be unacceptable as a storage data path (see\ninvariants: JSON must not become canonical — here it is transport\noverhead, kept strictly outside canonical state).\n\nSafety/correctness implications: LOW (transport, not semantics). One\nreal hazard: JSON number precision for u64 maxima (handled correctly —\n`18446744073709551615` round-trips exactly in our corpora — but any host\nJSON layer that parses into float64 would corrupt identities silently;\nharness authors beware).\n\nPerformance implications: HIGH (dominant cost of the whole test suite).\nMeasured on this host (x86_64 Linux, debug CLI build): a single batched\ninvocation costs ~4–30 s wall (compile-dominated; C11/LLVM slower),\nwhile the MNCS execution inside is millisecond-scale (e.g. 129 steps for\na 12-byte round trip). Per-byte JSON expansion ≈ 25x. A full lifecycle\ntest performs ~15–40 invocations; the suite's runtime is ~95% subprocess\nand JSON overhead. Per-operation latency without batching would be\nminutes per object — batching is not an optimization here, it is what\nmakes the suite runnable at all.\n\nWorkaround used: maximal batching (one corpus per operation-kind per\ntest phase), `Engine` invocation/byte counters for honest reporting,\n`MNCS_BACKENDS` narrowing for iteration speed.\n\nWhat the language/stdlib/runtime should ideally provide: a stable C ABI\n(or equivalent) for load-once/call-many execution with binary\n(cell/descriptor) arguments, plus a persistent daemon/session mode for\nthe CLI.\n\nAffected backend(s) / target(s), if known: all (tooling-shape absence).\n\nSeverity: moderate (test-time only; not a storage-semantics gap)\n\nStatus: workaround (batched subprocess orchestration + instrumentation)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nEvery MNCS invocation in this run remained a subprocess + JSON round\ntrip. Measured Phase-2 costs: a 40-byte blob put takes ~10 batched\ninvocations; a 1024-byte table_contains argument costs ~25x JSON\nexpansion (~50 KB on the wire); reclamation scans pass explicit 64k\nstep budgets. Batching discipline stays (plan/depth-batched chains,\nbatched verifications). Unchanged.\n\nSeverity: moderate test-time pressure (unchanged; dominates suite cost).\n"
+  },
+  "legacyIds": [
+    "P1-016",
+    "mncs-store:P1-016"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-016",
+    "text": "time N single-case invocations vs one N-case batch —\nper-invocation cost is dominated by process start + compilation (seconds),\nnot execution (milliseconds). The Phase-1a driver batches aggressively\nfor exactly this reason (see measurements below)."
+  },
+  "requiredBehavior": "an in-process execution handle (load module once,\ninvoke functions with binary buffers, receive binary results) so storage\norchestration does not pay compile + JSON costs per operation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-016-no-in-process-call-boundary.md"
+  },
+  "summary": "Imported legacy pressure P1-016: No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip.",
+  "target": "language",
+  "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip",
+  "version": "1"
+}

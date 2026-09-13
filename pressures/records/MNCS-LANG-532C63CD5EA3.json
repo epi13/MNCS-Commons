@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+  "contentDigest": "sha256:0a0c70884fe5de497697259aebf774e49b82c57bb7b25d9058096b71e1353712",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.records",
+  "id": "MNCS-LANG-532C63CD5EA3",
+  "identity": {
+    "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+    "domain": "type-system.records",
+    "reproducerSignature": "legacy:mncs-store:P1-014",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (scalar boundary + round-trip laws)",
+    "legacyId": "P1-014",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:b68e9fe06f75dd75913f53bdeeb139ba49ab76ebe18b2e56b37ad955f329fd10",
+    "sourcePath": "mncs-store:P1-014-record-identities-at-boundary.md",
+    "sourceText": "# P1-014 — Record nominal identities are brittle at the process boundary\n\nStorage feature being implemented: nominal separation of ChunkId /\nContentId / RootId (all 32 bytes, must not interchange) across the\nMNCS/host test boundary.\n\nObserved language/runtime/compiler behavior: record values cross the\nprocess boundary with nominal `type_identity` strings such as\n`mncs:0.2:record-type:examples.abi.unsigned_records::WordPair::hi%3Au64%3Blo%3Au64%3B`\n— strings that embed the profile version, module path, field names, and\nfield-type spellings. A host constructing a record argument must emit\nexactly the compiler's current spelling; any drift (profile bump,\nfield reorder, backend-specific representation) breaks the call opaquely.\nThe `mncs abi` command can report the identities, but the harness would\nhave to query-and-splice per call.\n\nMinimal reproducer: call `store.identity.logical_equal` (takes two\n`LogicalId` records) from a corpus. The request must carry two\n`{\"record\": {\"type_identity\": \"...\", ...}}` arguments whose exact\nspelling is discoverable only by running `mncs abi` first — there is no\nstable, documented construction rule a host can implement once.\n\nRequired semantics: a stable value-level record encoding for the\nboundary (positional fields + a versioned type tag the host can\nconstruct), or record-param erasure to structural shape with nominal\nchecking done in-language.\n\nWhy the current behavior/API is insufficient: nominal typing is exactly\nwhat the store wants for ChunkId vs RootId — but it is unusable across\nthe boundary it must cross for testing. The store therefore keeps its\nharness boundary to scalars + byte sequences (which are stable) and\nproves the record layer only through scalar round-trip laws\n(`logical_roundtrip`, `content_roundtrip`, …).\n\nSafety/correctness implications: LOW-MEDIUM. The workaround preserves\nhonest coverage (records ARE constructed, projected, and compared\nin-language; corpora pin the scalar-visible behavior), but cross-type\nconfusion at the RECORD level has no executable negative test — only the\nwidth-level confusion does (`type_confusion.mncs` → MNE133).\n\nPerformance implications: none.\n\nWorkaround used: scalar/bytes harness boundary + in-language record\nround-trip laws + one width-level negative elaboration fixture.\n\nWhat the language/stdlib/runtime should ideally provide: a documented,\nstable record-argument encoding (or `mncs abi`-driven stub generation)\nso hosts can construct nominal values without reverse-engineering\nidentity strings.\n\nAffected backend(s) / target(s), if known: all (ABI-string format).\n\nSeverity: moderate\n\nStatus: workaround (scalar boundary + round-trip laws)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\n`mncs abi` still emits profile-versioned nominal strings hosts must\nreproduce exactly, e.g.\n`mncs:0.2:record-type:store.identity.v1::LogicalId::namespace%3Au32%3Bserial%3Au64%3B`.\nThe brittleness claim gained live evidence this run: modernizing\nOrderState fields (i64 -> bool) visibly changed its identity string\n(`before%3Abool%3Bdecided%3Abool%3B`). The store keeps the scalar/bytes\nboundary + in-language record round-trip laws; new nominal types\n(ScanState, tokens) follow the same pattern.\n\nSeverity: moderate (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-014",
+    "mncs-store:P1-014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-014",
+    "text": "call `store.identity.logical_equal` (takes two\n`LogicalId` records) from a corpus. The request must carry two\n`{\"record\": {\"type_identity\": \"...\", ...}}` arguments whose exact\nspelling is discoverable only by running `mncs abi` first — there is no\nstable, documented construction rule a host can implement once."
+  },
+  "requiredBehavior": "a stable value-level record encoding for the\nboundary (positional fields + a versioned type tag the host can\nconstruct), or record-param erasure to structural shape with nominal\nchecking done in-language.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-014-record-identities-at-boundary.md"
+  },
+  "summary": "Imported legacy pressure P1-014: Record nominal identities are brittle at the process boundary.",
+  "target": "language",
+  "title": "Record nominal identities are brittle at the process boundary",
+  "version": "1"
+}

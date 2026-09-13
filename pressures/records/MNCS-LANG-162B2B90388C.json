@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-004.no-streaming-or-incremental-hash-api-single-shot-digests-over-64-byte-views-only",
+  "contentDigest": "sha256:245b5d7e820d3460ab5d27933a9351595c38998b380f3e330911b881cf733afe",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-162B2B90388C",
+  "identity": {
+    "capability": "legacy.p1-004.no-streaming-or-incremental-hash-api-single-shot-digests-over-64-byte-views-only",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-store:P1-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "partially implemented (single-chunk path complete; multi-chunk deferred)",
+    "legacyId": "P1-004",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:63b23ea9ac0d5014798aec5260cd90570ce0dcd1df02967da1253a5557290ed2",
+    "sourcePath": "mncs-store:P1-004-no-streaming-hash.md",
+    "sourceText": "# P1-004 — No streaming or incremental hash API; single-shot digests over ≤64-byte views only\n\nStorage feature being implemented: content identity for multi-chunk\nobjects and manifest roots larger than one view (RFC 0004 content IDs,\nRFC 0016 multi-chunk reservation).\n\nObserved language/runtime/compiler behavior: `sha256_digest(view)` is\nsingle-shot over one view (`elaborate_sha256_digest` in\n`crates/mncs-compiler/src/frontend.rs`; the operand is any byte sequence\nbut bounded by `MAX_SEQUENCE_BOUND = 64`). There is no init/update/final\nstreaming shape, no multi-part digest, and no way to hash a value larger\nthan 64 bytes. A 64-byte manifest root fits exactly one view; anything\nlarger (two chunk digests = 64 bytes of digests alone, before any header)\ncannot be hashed in one call.\n\nMinimal reproducer (mncs-language): hash the concatenation of two\n32-byte chunk digests `a` and `b`:\n\n```mncs\nfn root_of_two(a: [byte; 32], b: [byte; 32]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    // No expression builds the 64-byte concatenation as a view:\n    // views cannot be concatenated, and [byte; 64] literals over two\n    // 32-byte inputs require 64 explicit element expressions.\n    // A 68+ byte manifest has NO hashing path at all.\n    return sha256_digest(a); // wrong: covers only half the identity\n}\n```\n\nRequired semantics: an incremental digest (state type + update + finalize)\nor a bounded multi-view digest, so content identity scales past one view\nwithout weakening domain separation.\n\nWhy the current behavior/API is insufficient: Phase-1a manifests were\ndesigned DOWN to 64 bytes specifically to fit one hash call. Any richer\nroot (multi-chunk references, provenance binding, generation links)\nexceeds the bound and has no sound identity construction. The 64-byte\nmanifest is a language-imposed ceiling, not an architectural choice.\n\nSafety/correctness implications: MEDIUM-HIGH. Workarounds (truncated\ndigests, ad-hoc chaining like `sha256(sha256(p1) || p2)`) change the\nsecurity argument of content addressing and must be designed by\ncryptographers, not improvised to fit a view bound. We refused to do\neither (RFC 0016 keeps multi-chunk roots unhashed-but-structural).\n\nPerformance implications: none (correctness-gated).\n\nWorkaround used: Phase 1a commits single-chunk objects only; the manifest\nreserves `chunk_count` for the future and validators reject count != 1\n(code 5). Per-chunk SHA-256 integrity is full-strength; root-level\nmulti-chunk identity is deferred, explicitly.\n\nWhat the language/stdlib/runtime should ideally provide: a streaming\ndigest capability (`digest_init/update/finalize` over an opaque state, or\na bounded `digest_concat` over ≤K views) with the same verify-only,\nno-secrets authority model as `sha256_digest`.\n\nAffected backend(s) / target(s), if known: all (intrinsic-shape absence).\n\nSeverity: major\n\nStatus: partially implemented (single-chunk path complete; multi-chunk deferred)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — REFRAMED (see P2-001)\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nElaboration widened: `sha256_digest` accepts any byte-view width (a\n128-byte view elaborates; only the standard CMP301 view-range note).\nRealization did NOT widen: `host_view_bytes` caps effect operands at\nHOST_GRANT_MAX_BYTES = 64, so digesting > 64 bytes fails at execution\nwith InvalidRequest (\"sha256_digest requires one byte-view operand\",\nreproduced 2026-09-10). Still no init/update/finalize streaming shape.\n\nThe store answers with a Merkle chain of <= 64-byte steps (manifest v2,\nRFC 0017) instead of single-shot roots. The pressure is reframed from\n\"single-shot over <= 64 B views only\" to \"single-shot realization bound\n64 B with no incremental API\" and continues as P2-001.\n\nSeverity now: major (bounded workaround complete; arbitrary sizes still\nimpossible).\n"
+  },
+  "legacyIds": [
+    "P1-004",
+    "mncs-store:P1-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-004",
+    "text": "hash the concatenation of two\n32-byte chunk digests `a` and `b`:\n\n```mncs\nfn root_of_two(a: [byte; 32], b: [byte; 32]) -> (result: [byte; up_to 64])\n    capability store_chunk\n    effect sha256_digest authorized_by store_chunk\n{\n    // No expression builds the 64-byte concatenation as a view:\n    // views cannot be concatenated, and [byte; 64] literals over two\n    // 32-byte inputs require 64 explicit element expressions.\n    // A 68+ byte manifest has NO hashing path at all.\n    return sha256_digest(a); // wrong: covers only half the identity\n}\n```"
+  },
+  "requiredBehavior": "an incremental digest (state type + update + finalize)\nor a bounded multi-view digest, so content identity scales past one view\nwithout weakening domain separation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-004-no-streaming-hash.md"
+  },
+  "summary": "Imported legacy pressure P1-004: No streaming or incremental hash API; single-shot digests over ≤64-byte views only.",
+  "target": "language",
+  "title": "No streaming or incremental hash API; single-shot digests over ≤64-byte views only",
+  "version": "1"
+}

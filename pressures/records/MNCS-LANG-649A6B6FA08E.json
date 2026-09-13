@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-020.no-typed-error-vocabulary-at-the-process-boundary-u64-status-codes-instead",
+  "contentDigest": "sha256:5598aef049b52474d8c3f409fde00cbff1d9854dc1e0490c06931c1fb21273fb",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-649A6B6FA08E",
+  "identity": {
+    "capability": "legacy.p1-020.no-typed-error-vocabulary-at-the-process-boundary-u64-status-codes-instead",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P1-020",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (code tables + corpus pins)",
+    "legacyId": "P1-020",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:329d57ef88df228e9d6e02aab29d59395590b53859ed88c6cd84c4fcab65c0f7",
+    "sourcePath": "mncs-store:P1-020-untyped-error-codes.md",
+    "sourceText": "# P1-020 — No typed-error vocabulary at the process boundary (u64 status codes instead)\n\nStorage feature being implemented: corruption-vs-absence-vs-unsupported\ndiscrimination across the MNCS/host boundary (RFC 0002/0015 failure\nbehavior: \"a content hash mismatch is an integrity failure, not 'object\nnot found'\").\n\nObserved language/runtime/compiler behavior: `mncs.core.result.v1`\ndefines a `Result` shape with reason payloads, and `fail` aborts with a\nfixed reason — but neither crosses the process boundary usefully for\nstorage: `Result`-with-payload is a RECORD (see nominal-identity friction\nP1-014), and `fail` carries no structured payload the harness can match\non. Validators therefore return `u64` status codes (0 = OK, 1..13 =\nspecific rejections), and the host maps codes to exception types. The\ncode tables live in MNCS comments, not in a shared machine-readable\ncontract.\n\nMinimal reproducer: return `Result`-with-`BadMagic`-reason from\n`descriptor.validate` and match on the reason in the host harness. The\nhost receives a record value with a nominal identity string (P1-014)\ninstead of a matchable error sum it can rely on.\n\nRequired semantics: sum-typed errors with stable, documented boundary\nencodings (discriminant + bounded payload), so corruption/missing/\nunsupported/unauthorized stay distinct by construction on both sides.\n\nWhy the current behavior/API is insufficient: the u64-code discipline\nworks (15 corruption tests assert exact codes end-to-end) but the\nmeaning of code 7 vs 8 vs 9 exists in two places (MNCS comments + host\n`if` chains) with no shared authority. A renumbering on either side\nsilently desynchronizes the other — exactly the stringly-typed failure\nmode the store architecture forbids for IDs.\n\nSafety/correctness implications: MEDIUM. Today the codes are pinned by\n169 corpus cases, so drift is caught — but the pinning is by value, not\nby type. A typed error sum would make unknown-code states\nunrepresentable instead of merely tested-against.\n\nPerformance implications: none.\n\nWorkaround used: documented u64 code tables per validator\n(`descriptor.validate` 0–13, `manifest.validate` 0–9, `frame_valid`\n0–5), each code pinned by ≥1 corpus case; host maps codes to\n`IntegrityError` subtypes by table.\n\nWhat the language/stdlib/runtime should ideally provide: boundary-stable\nerror sums (or enriched `fail` reasons) with a machine-readable contract\nemitted by `mncs abi`, so hosts match on meaning, not magic numbers.\n\nAffected backend(s) / target(s), if known: all (ABI-shape gap).\n\nSeverity: moderate\n\nStatus: workaround (code tables + corpus pins)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\n`mncs.core.result.v1` still shapes Result-with-payload as a nominal\nrecord (unconstructible across the boundary per P1-014) and `fail`\ncarries no structured payload the harness can match. The u64-code\ndiscipline grew as designed: validate_v2 (0-10), header_validate (0-5),\nconflict_validate (0-4), snap_validate (0-4), commit/recovery outcome\ncodes — each pinned by corpus cases. Two-sided tables (MNCS comments +\nhost mapping) remain the failure mode; no drift observed.\n\nSeverity: moderate (unchanged).\n"
+  },
+  "legacyIds": [
+    "P1-020",
+    "mncs-store:P1-020"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-020",
+    "text": "return `Result`-with-`BadMagic`-reason from\n`descriptor.validate` and match on the reason in the host harness. The\nhost receives a record value with a nominal identity string (P1-014)\ninstead of a matchable error sum it can rely on."
+  },
+  "requiredBehavior": "sum-typed errors with stable, documented boundary\nencodings (discriminant + bounded payload), so corruption/missing/\nunsupported/unauthorized stay distinct by construction on both sides.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-020-untyped-error-codes.md"
+  },
+  "summary": "Imported legacy pressure P1-020: No typed-error vocabulary at the process boundary (u64 status codes instead).",
+  "target": "language",
+  "title": "No typed-error vocabulary at the process boundary (u64 status codes instead)",
+  "version": "1"
+}

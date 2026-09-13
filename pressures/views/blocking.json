@@ -1,0 +1,124 @@
+{
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-71DAE5A34032",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No atomic publication, namespace mutation, or durability barrier",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-8AF4BC50DDB4",
+      "reporters": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-973FAC2F4FBD",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No atomic rename, directory creation/iteration, or file metadata",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+      "domain": "io.filesystem",
+      "id": "MNCS-LANG-A0C3744B0B9A",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "Append-only host_write cannot express store file semantics",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+      "domain": "language-semantics",
+      "id": "MNCS-LANG-FDCBC01300B8",
+      "reporters": [
+        "mncs-store"
+      ],
+      "severity": "blocker",
+      "status": "discovered",
+      "target": "language",
+      "title": "No durable-sync barrier distinct from userspace buffering",
+      "unresolved": true,
+      "valid": true,
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    }
+  ],
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "blocking"
+}

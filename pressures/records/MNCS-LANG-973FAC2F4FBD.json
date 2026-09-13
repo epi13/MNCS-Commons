@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+  "contentDigest": "sha256:4a602e869e4dca204bd074f4f3bc392936d96ffd93184752b9b0a68f19eaddb2",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-973FAC2F4FBD",
+  "identity": {
+    "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-store:P1-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (host-owned namespace mechanics)",
+    "legacyId": "P1-003",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:c0076ea4bb0b935628006dad94b28b82b778519073db8d125a2aeb6380f55c99",
+    "sourcePath": "mncs-store:P1-003-no-atomic-rename-or-dir-ops.md",
+    "sourceText": "# P1-003 — No atomic rename, directory creation/iteration, or file metadata\n\nStorage feature being implemented: generation commit protocol (stage in\n`temp/`, atomically publish via rename), store layout bootstrap\n(`chunks/`, `objects/`, `generations/`, `temp/`), crash-recovery scans\n(listing `objects/` to heal the serial counter), existence checks.\n\nObserved language/runtime/compiler behavior: no filesystem-namespace\nprimitive exists — no mkdir, no readdir/iteration, no rename, no stat, no\nexistence probe, no exclusive-create. `host_read` consumes a single\noperator-granted file as an opaque byte source; it cannot name, list, or\ninspect the namespace. Path/path-component values have no type at all\n(see P1-017).\n\nMinimal reproducer: any program that creates a directory, lists it, or\natomically renames a staged file — e.g. the Phase-1a commit step\n`os.replace(temp, generations/<gen>)`. No effect, intrinsic, or stdlib\nfunction names these operations.\n\nRequired semantics: capability-authorized namespace operations with\nexplicit outcomes: create-dir (exists/absent/denied), iterate-dir\n(bounded entries), atomic rename (same-filesystem replace with\nall-or-nothing visibility), stat (size/kind), exclusive-create.\n\nWhy the current behavior/API is insufficient: atomic publication is THE\ncommit mechanism of RFC 0005 (\"readers never observe an invented mixture\nof two generations\"). Without atomic rename, generation commits cannot be\nmade atomic in-language; without directory iteration, recovery scans\n(RFC 0015) cannot enumerate candidate state.\n\nSafety/correctness implications: HIGH for Phase 2 (crash-consistent\ngeneration protocol is inexpressible). Phase 1a works around it in the\nhost driver with `os.replace` + fsync ordering.\n\nPerformance implications: none observed yet (namespace ops are rare).\n\nWorkaround used: `store_phase1a.py` owns `makedirs`, `os.replace`,\n`os.listdir` (recovery scan only), `O_EXCL` creation. Each maps 1:1 to a\nmissing language capability noted in method docstrings.\n\nWhat the language/stdlib/runtime should ideally provide: a bounded\nnamespace effect family (`dir_create`, `dir_read`, `file_rename`,\n`file_stat`, `file_create_exclusive`) behind a namespace capability, with\nbounded iteration over entries and explicit error values.\n\nAffected backend(s) / target(s), if known: all (frontend-level absence).\n\nSeverity: major (blocker for Phase 2 commit protocol; worked around in 1a)\n\nStatus: workaround (host-owned namespace mechanics)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — PARTIALLY_RESOLVED\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nObservation half resolved: `fs_list_count`, `fs_generation`,\n`fs_entry_name_at`, `fs_entry_kind_at` (effect `fs_list`) and\n`fs_read_bytes_at(entry, offset, length)` (effect `fs_read`) elaborate\nand execute on research-bytecode via `--grant-fs capability=root`.\nVerified: 3-entry listing, generation counter, indexed names/kinds,\n16-byte positioned read, short-read EOF (offset 10 + len 64 over 16\nbytes returned 6 bytes), wild index 99 fails closed InvalidRequest.\nRecovery scans and chunked file reads are now expressible in-language.\n\nMutation half still absent: no rename, mkdir, exclusive-create, stat,\ndelete, or sync. Atomic publication stays host `os.replace`; the Phase-2\ncommit protocol stages content in-language but publishes via the host.\n\nSeverity now: major for commit atomicity (was blocker for Phase 2\nprotocol; observation resolved, publication still host-owned).\n"
+  },
+  "legacyIds": [
+    "P1-003",
+    "mncs-store:P1-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-003",
+    "text": "any program that creates a directory, lists it, or\natomically renames a staged file — e.g. the Phase-1a commit step\n`os.replace(temp, generations/<gen>)`. No effect, intrinsic, or stdlib\nfunction names these operations."
+  },
+  "requiredBehavior": "capability-authorized namespace operations with\nexplicit outcomes: create-dir (exists/absent/denied), iterate-dir\n(bounded entries), atomic rename (same-filesystem replace with\nall-or-nothing visibility), stat (size/kind), exclusive-create.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-003-no-atomic-rename-or-dir-ops.md"
+  },
+  "summary": "Imported legacy pressure P1-003: No atomic rename, directory creation/iteration, or file metadata.",
+  "target": "language",
+  "title": "No atomic rename, directory creation/iteration, or file metadata",
+  "version": "1"
+}

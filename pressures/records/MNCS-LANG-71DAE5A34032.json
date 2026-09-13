@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+  "contentDigest": "sha256:6989f64dd90cd51549b4d95b0def0fe3d3bb9d59751c221bda4a0ed1b3d1ba4f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-71DAE5A34032",
+  "identity": {
+    "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P2-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (host publication mechanics; transitions/decisions",
+    "legacyId": "P2-005",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:15cfb053a9be28362560ae2ce57c9d07259134799bb04d35d1ceaf2c55e39501",
+    "sourcePath": "mncs-store:P2-005-no-atomic-publication.md",
+    "sourceText": "# P2-005 — No atomic publication, namespace mutation, or durability barrier\n\nNarrows P1-002/P1-003 (2026-09-10): observation resolved, publication\nand durability still absent, with Phase-2 commit-protocol evidence.\n\nStorage feature being implemented: the generation commit protocol\n(stage candidate -> publish atomically), crash recovery over torn\npublication, reclamation deletes, serial-counter durability (RFC 0005,\nRFC 0015, RFC 0017 commit states).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13): no rename, mkdir, delete, stat, exclusive-create,\nfsync, or flush primitive exists (source grep, 2026-09-10). The commit\nstate machine (`commit_next`: PREPARING -> CONTENT_READY -> CANDIDATE ->\nDURABLE_PREREQ -> PUBLISHED) runs its TRANSITIONS in-language, but every\nstate's host step — chunk writes, candidate staging, meta/current\npointer moves, directory fsyncs — executes in Python. Recovery\n(`recover_decide`: STAY/PROMOTE/REFUSE) decides in-language, but the\nPROMOTE pointer move is host `os.replace`.\n\nMinimal reproducer: any program that atomically renames a staged\ngeneration file onto its committed name, fsyncs a directory, or deletes\na pruned chunk — e.g. the Phase-2 publish step. No effect, intrinsic, or\nstdlib function names these operations.\n\nRequired semantics: capability-authorized namespace mutation\n(`file_rename` with same-filesystem all-or-nothing visibility,\n`dir_create`, `file_delete`), a durability barrier (`sync` scoped to\nfile + directory, completing into the promised durability domain), and\nexclusive creation — each with explicit error values, composed with the\nfs_* root-grant model.\n\nWhy the current behavior/API is insufficient: atomic publication IS the\ncommit mechanism of RFC 0005 (\"readers never observe an invented mixture\nof two generations\"). The driver proves the SEMANTICS (fault injection\nat all 7 commit boundaries; readers see old-or-new, never mixed) but the\nATOMICITY itself is a host promise (`_write_sync`: tmp + fsync +\n`os.replace` + dir fsync), invisible to MNCS verification. Durability\nclaims cover the host driver only (invariant 11).\n\nSafety/correctness implications: HIGH for crash consistency. A host bug\nin barrier ordering can publish a partially durable generation with no\nlanguage-level tripwire; the fault-injection suite pins the ORDER but\nnot the mechanism.\n\nPerformance implications: barrier batching/group-commit cannot be\nexpressed or tuned from MNCS.\n\nWorkaround used: host `_write_sync`, `_write_create_exclusive`,\n`_fsync_dir`, `os.replace`, `os.listdir` (candidate scan only),\n`os.remove` (reclamation only after MNCS membership verdicts). Each maps\n1:1 to a missing capability in method docstrings. Semantically a\nbootstrap substitute; the commit TRANSITIONS and recovery SELECTION are\nexactly in-language.\n\nWhat the language/stdlib/runtime should ideally provide: the namespace\n+ barrier effect family above, shipped with the P2-004 write shapes and\nper-backend capability declarations (some targets can only offer\n\"process-visible\" — declared, not silent).\n\nAffected backend(s): all (frontend-level absence).\n\nSeverity: major (blocker for the in-language commit protocol; the\nsemantic protocol itself is complete and tested).\n\nStatus: workaround (host publication mechanics; transitions/decisions\nin-language)\n\nAcceptance test: an MNCS commit program drives all five commit states\nthrough granted file effects (no host file calls), survives a\nfault-injection matrix identical to `test_phase2.py`'s 7 boundaries,\nand replays byte-identical store layouts to today's host path.\n"
+  },
+  "legacyIds": [
+    "P2-005",
+    "mncs-store:P2-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-005",
+    "text": "any program that atomically renames a staged\ngeneration file onto its committed name, fsyncs a directory, or deletes\na pruned chunk — e.g. the Phase-2 publish step. No effect, intrinsic, or\nstdlib function names these operations."
+  },
+  "requiredBehavior": "capability-authorized namespace mutation\n(`file_rename` with same-filesystem all-or-nothing visibility,\n`dir_create`, `file_delete`), a durability barrier (`sync` scoped to\nfile + directory, completing into the promised durability domain), and\nexclusive creation — each with explicit error values, composed with the\nfs_* root-grant model.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-005-no-atomic-publication.md"
+  },
+  "summary": "Imported legacy pressure P2-005: No atomic publication, namespace mutation, or durability barrier.",
+  "target": "language",
+  "title": "No atomic publication, namespace mutation, or durability barrier",
+  "version": "1"
+}

@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:41ba06765cb5e1c9c4fd4c29eaf64130537d8ce9938b607010a9db92466376d8",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-021",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-021-overflow-obligation-debt.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-AED76C32EC2E--OBS-05F223A4FAC5",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-AED76C32EC2E",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "`object_namespace` over `[byte; 12]` — all four\nproducts are byte×constant, the sum is ≤ 0xFFFFFFFF by construction, yet\nfour CMP301 obligations persist with no source annotation that discharges\nthem.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "wrapping operators (`*%`/`+%`) everywhere exactness is\nprovable by construction, with comments citing P1-B01; plain operators\nkept only where smallness is trivially visible (≤ 16-bit intermediates).\nPlus the `checked_arith_canary` fixture pinning the divergence.",
+    "legacyStatus": "workaround (wrapping discipline + canary)"
+  }
+}

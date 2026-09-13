@@ -1,0 +1,56 @@
+{
+  "domains": {
+    "backend": [
+      "MNCS-LANG-4719D1B72215"
+    ],
+    "control-flow.iteration": [
+      "MNCS-LANG-7BA2DA8A378E"
+    ],
+    "effects": [
+      "MNCS-LANG-A89E82F1C80D"
+    ],
+    "identity": [
+      "MNCS-LANG-CD0DEF98FD10"
+    ],
+    "io.filesystem": [
+      "MNCS-LANG-33AF43744393",
+      "MNCS-LANG-8AF4BC50DDB4",
+      "MNCS-LANG-973FAC2F4FBD",
+      "MNCS-LANG-A0C3744B0B9A"
+    ],
+    "language-semantics": [
+      "MNCS-LANG-4130BB4C42C3",
+      "MNCS-LANG-493C32111AA5",
+      "MNCS-LANG-4EC58934F8DB",
+      "MNCS-LANG-52A5E0C72A39",
+      "MNCS-LANG-649A6B6FA08E",
+      "MNCS-LANG-7181F1DBC345",
+      "MNCS-LANG-71DAE5A34032",
+      "MNCS-LANG-8F49A242F22D",
+      "MNCS-LANG-98891488DFA6",
+      "MNCS-LANG-A29B3EFA5B73",
+      "MNCS-LANG-AED76C32EC2E",
+      "MNCS-LANG-D1947FFBA6D9",
+      "MNCS-LANG-E06C0D4EC0D1",
+      "MNCS-LANG-FDCBC01300B8",
+      "MNCS-LANG-FF5CADADD439"
+    ],
+    "type-system.generics": [
+      "MNCS-LANG-5B2AD8F659B6",
+      "MNCS-LANG-ECDA8EDB6183"
+    ],
+    "type-system.records": [
+      "MNCS-LANG-532C63CD5EA3",
+      "MNCS-LANG-9EFB17CE75B3"
+    ],
+    "type-system.views": [
+      "MNCS-LANG-0EEA4F938BAB",
+      "MNCS-LANG-162B2B90388C",
+      "MNCS-LANG-3214070482A7",
+      "MNCS-LANG-8D86843C5F1C"
+    ]
+  },
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "by-domain"
+}

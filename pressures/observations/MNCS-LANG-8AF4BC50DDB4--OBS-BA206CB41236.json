@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language"
+  },
+  "contentDigest": "sha256:6a286aaf5d70cd4ffed9f7a94e97374fa0fa9674e04bb756bb2e17d95b7abb42",
+  "evidence": [
+    {
+      "id": "mncs-commons:campaign:file-write-boundary",
+      "kind": "implementation-observation",
+      "ref": "src/mncs_commons/pressure.py",
+      "status": "PASS",
+      "summary": "Registry declarations, observations, events, and generated views must be persisted by the Python host."
+    }
+  ],
+  "id": "MNCS-LANG-8AF4BC50DDB4--OBS-BA206CB41236",
+  "kind": "observation",
+  "languageProfile": "0.13",
+  "metadata": {
+    "discoveredDuring": "family-pressure-registry-campaign",
+    "nativeKernel": "src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-LANG-8AF4BC50DDB4",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "Attempt the minimal host_write/file-effect reproducer preserved in the originating pressure record.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "campaign-working-tree",
+    "path": "src/mncs_commons/pressure.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "Implementing the canonical exchange required durable JSON files, append-only Git-friendly directories, timestamps, and digest-preserving filesystem writes; the current MNCS profile has no expressible file-write effect for this boundary.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep transport, filesystem, Git, timestamp, and JSON persistence in the Python host while retaining the pure lifecycle law in MNCS source.",
+    "locations": [
+      "src/mncs_commons/pressure.py",
+      "src/mncs_commons/cli.py"
+    ],
+    "pressureId": "MNCS-LANG-8AF4BC50DDB4"
+  }
+}

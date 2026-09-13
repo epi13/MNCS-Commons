@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e40afa7fee59b51e93fdb22cfc0b6789312b1750eb405e22adc9938f096ea28d",
+  "evidence": [
+    {
+      "id": "legacy:mncs-store:P1-016",
+      "kind": "legacy-markdown",
+      "ref": "mncs-store:P1-016-no-in-process-call-boundary.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-68E27D0FFC38",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "time N single-case invocations vs one N-case batch —\nper-invocation cost is dominated by process start + compilation (seconds),\nnot execution (milliseconds). The Phase-1a driver batches aggressively\nfor exactly this reason (see measurements below).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "maximal batching (one corpus per operation-kind per\ntest phase), `Engine` invocation/byte counters for honest reporting,\n`MNCS_BACKENDS` narrowing for iteration speed.",
+    "legacyStatus": "workaround (batched subprocess orchestration + instrumentation)"
+  }
+}

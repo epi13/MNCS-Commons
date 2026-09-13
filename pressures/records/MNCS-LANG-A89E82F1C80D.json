@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-b02.host-effects-realized-only-by-research-bytecode-compiled-backends-refuse-silentl",
+  "contentDigest": "sha256:780b8db0f18c73d071eea4b7db3dd2a31807600c7d3e2d29d7c89a546af1fb7c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "effects",
+  "id": "MNCS-LANG-A89E82F1C80D",
+  "identity": {
+    "capability": "legacy.p1-b02.host-effects-realized-only-by-research-bytecode-compiled-backends-refuse-silentl",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-store:P1-B02",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (bytecode-scoped crypto suites) + pinned (probe +",
+    "legacyId": "P1-B02",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:40c642e417c9ad8cc56a77afe37cbc596ff6a243dced695d321559feabf001a8",
+    "sourcePath": "mncs-store:P1-B02-effects-bytecode-only.md",
+    "sourceText": "# P1-B02 — Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted)\n\nStorage feature being implemented: every hash-dependent proof —\ncontent identity, chunk verification, root identity (i.e. the store's\nentire integrity core).\n\nObserved language/runtime/compiler behavior: of the five executable\nbackends, ONLY `mncs-research-bytecode` (the interpreter) realizes host\neffects (`sha256_digest`, `host_read`). The four compiled backends\n(portable-WASM, C11, LLVM-IR, Cranelift) refuse ANY effect-bearing\nprogram with exit code 1, a compilation-result JSON body (has\n\"emissions\", no \"cases\"), and EMPTY stderr. Probed 2026-09-08 with\n`tests/fixtures/effects_probe.mncs` (one `sha256_digest` case, two\n`host_read` cases): bytecode executes all three; all four compiled\nbackends emit the refusal shape — even for `host_read`, the simplest\neffect. The language's own suites confirm the boundary: `crypto_verify.rs`\nand `host_effects.rs` run ONLY on research-bytecode.\n\nThree compounding gaps:\n\n1. No backend advertises effect support. `mncs experiment matrix` lists\n   `supported_machine_intents` per backend, but NO backend — bytecode\n   included — lists any crypto/host/effect intent. Support is\n   undiscoverable except by attempting execution.\n2. The refusal is a silent shape-shift. Same command, same flags: success\n   yields `experiment-result` JSON with \"cases\"; refusal yields a ~9 MB\n   `compilation-result` JSON with no \"cases\" and no stderr text. A\n   harness must sniff the SHAPE to distinguish \"backend cannot do this\"\n   from \"backend is broken\". There is no machine-readable refusal code\n   (searched the 9 MB body for refus*/cannot realize/unsupported effect:\n   zero hits).\n3. Effect refusal is whole-program. One `host_read` in an otherwise pure\n   program poisons the entire run on compiled backends — there is no\n   partial execution of the pure cases in the same corpus.\n\nMinimal reproducer: `tests/fixtures/effects_probe.mncs` +\n`tests/corpora/effects-corpus.json`, run with `--grant-crypto\nprobe_crypto --grant-read probe_reader=tests/fixtures/read_grant.bin`\non any compiled backend. Pinned in-suite by\n`test_effects_probe_per_backend` with EXPECTED_REFUSALS allowlist\n(stale-entry discipline: a backend that starts executing effects fails\nloudly, forcing suite widening).\n\nRequired semantics: per-backend effect-capability declarations in the\nexperiment matrix (or capability manifest), a machine-readable refusal\n(status/code, not shape-sniffing), and — for storage credibility —\neffect realization on at least the natively-executed backends\n(LLVM/Cranelift/C11), so integrity proofs are not interpreter-only.\n\nWhy the current behavior/API is insufficient: the store's content-\nidentity story (SHA-256 over canonical frames, cross-checked against\nhashlib) executes on exactly ONE backend. Cross-backend agreement — the\nmechanism that would catch lowering bugs like P1-B01 in hash paths — is\nimpossible for every hash-dependent case. A lowering bug in a compiled\nbackend's (future) effect path would have no cross-check.\n\nSafety/correctness implications: MEDIUM-HIGH. Interpreter-only integrity\nmeans production-shaped backends never verify a digest in this run; any\nfuture effect lowering there ships without differential coverage unless\nthis probe forces it.\n\nPerformance implications: none (capability gap, not speed).\n\nWorkaround used: crypto suites scoped to `EFFECT_BACKENDS =\n[\"mncs-research-bytecode\"]`; per-backend support pinned cheaply by the\ntiny probe program (fast compile) instead of recompiling full store\nmodules per backend per run; lifecycle driver runs on bytecode.\n\nWhat the language/stdlib/runtime should ideally provide: (1) declared\neffect support per backend in `experiment matrix`; (2) a coded refusal\n(`EFFECT_UNSUPPORTED` with backend/effect names, nonzero exit, stderr\nline); (3) effect realization on LLVM/Cranelift/C11 (host calls from\ncompiled code with the same grant model); (4) per-case partial execution\nor per-case refusal reporting instead of whole-run shape-shift.\n\nAffected backend(s) / target(s), if known: portable-WASM, C11, LLVM-IR,\nCranelift refuse; research-bytecode realizes. (x86_64 Linux; other hosts\nunprobed.)\n\nSeverity: major (backend-specific capability gap)\n\nStatus: workaround (bytecode-scoped crypto suites) + pinned (probe +\nEXPECTED_REFUSALS allowlist)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — REFRAMED (core still live)\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\nTwo of three compounding gaps improved:\n1. Backend capability declarations EXIST now: `experiment matrix` lists\n   `effects`/`host_effects` under per-backend `unsupported_operations`\n   (all compiled backends; bytecode omits them). Support is discoverable\n   without attempting execution.\n2. The refusal is now MACHINE-READABLE at the diagnostics layer: each\n   backend reports an envelope diagnostic (CGC301/CGN301/CGL301/CGF301)\n   plus per-function host-call diagnostics in its own CG?302 family\n   (CGC302 on C11, CGN302 on wasm-MVP, CGL302 on LLVM-IR, CGF302 on\n   Cranelift), all reading \"host calls are unsupported on ...; run on\n   the research bytecode backend with an explicit grant\". The old \"zero\n   hits for refus*\" claim is stale; harnesses should key on the CG?302\n   family, not body shape (the suite pins this).\n3. Effect refusal is STILL whole-program and compiled backends still\n   realize NO host effects (sha256/host_read/host_write/fs_* all refuse).\n   Exit 1 with a compilation-result body and empty stderr is unchanged.\n\nThe store therefore still executes all integrity paths on\nresearch-bytecode only; cross-backend agreement for hash-dependent cases\nremains impossible. Reframed from \"silent refusal shape-shift\" to\n\"declared refusal, interpreter-only realization\". The suite keeps\nEXPECTED_REFUSALS and additionally pins CGC302 presence in refusals.\n\nSeverity: major backend capability gap (unchanged in substance,\nimproved in failure semantics).\n"
+  },
+  "legacyIds": [
+    "P1-B02",
+    "mncs-store:P1-B02"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-B02",
+    "text": "`tests/fixtures/effects_probe.mncs` +\n`tests/corpora/effects-corpus.json`, run with `--grant-crypto\nprobe_crypto --grant-read probe_reader=tests/fixtures/read_grant.bin`\non any compiled backend. Pinned in-suite by\n`test_effects_probe_per_backend` with EXPECTED_REFUSALS allowlist\n(stale-entry discipline: a backend that starts executing effects fails\nloudly, forcing suite widening)."
+  },
+  "requiredBehavior": "per-backend effect-capability declarations in the\nexperiment matrix (or capability manifest), a machine-readable refusal\n(status/code, not shape-sniffing), and — for storage credibility —\neffect realization on at least the natively-executed backends\n(LLVM/Cranelift/C11), so integrity proofs are not interpreter-only.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-B02-effects-bytecode-only.md"
+  },
+  "summary": "Imported legacy pressure P1-B02: Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted).",
+  "target": "language",
+  "title": "Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted)",
+  "version": "1"
+}

@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p1-012.no-view-width-subsumption-byte-up-to-8-is-not-a-byte-up-to-64",
+  "contentDigest": "sha256:73453b227d09afacf21572632184fd71c6372ff6718602a24a407fb2269c1e44",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-8D86843C5F1C",
+  "identity": {
+    "capability": "legacy.p1-012.no-view-width-subsumption-byte-up-to-8-is-not-a-byte-up-to-64",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-store:P1-012",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (inline checks + widest-view signatures)",
+    "legacyId": "P1-012",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:b3335c88ff9b32127482f7c777fa6db60ecb44bff02e70e9183e24c0a1cd5a5f",
+    "sourcePath": "mncs-store:P1-012-no-view-width-subsumption.md",
+    "sourceText": "# P1-012 — No view-width subsumption: `[byte; up_to 8]` is not a `[byte; up_to 64]`\n\nStorage feature being implemented: whole-frame verification\n(`verify_frame*` calling the shared `frame_valid` view validator).\n\nObserved language/runtime/compiler behavior: passing a `[byte; up_to 8]`\nvalue to a `[byte; up_to 64]` parameter is rejected (MNE133 \"call argument\ntype does not match the callee parameter\"; hit in-session at\n`src/store/chunk.mncs` before the fix). View bounds are invariant: a\nnarrower view is not usable where a wider view is expected, even though\nevery `[byte; up_to 8]` value IS a valid `[byte; up_to 64]` value by\nconstruction. (The `sha256_digest` INTRINSIC accepts any byte-sequence\nwidth — only user functions are invariant.)\n\nMinimal reproducer (mncs-language):\n\n```mncs\nfn check(view: [byte; up_to 64]) -> (result: u64) {\n    return view.len;\n}\nfn use8(x: [byte; 8]) -> (result: u64) {\n    let v: [byte; up_to 8] = x[0..8];\n    return check(v);  // MNE133\n}\n```\n\nRequired semantics: width subsumption for views (a view with bound M\ncoerces to bound N >= M), or an explicit `widen_view` conversion, so\nshared validators can be written once.\n\nWhy the current behavior/API is insufficient: without subsumption, every\nshared view-validator is either generic over `N: Nat` (but host corpora\ncannot name type arguments — see P1-013 — so generic validators are\nuntestable from the harness) or monomorphized per width. `store.chunk`\ndoes the latter by avoidance: `verify_frame*` inlines tag checks instead\nof calling `frame_valid`.\n\nSafety/correctness implications: LOW-MEDIUM. Duplicated validation logic\nacross widths must be kept in sync by discipline + tests (the manifest\nvalidator duplicates descriptor checks for the related reason P1-E04;\nboth are pinned by corpora, but two copies of one rule is two chances to\ndrift).\n\nPerformance implications: none.\n\nWorkaround used: (1) exact-array callers inline their type-known width\nchecks; (2) shared validators take the concrete widest view\n(`[byte; up_to 64]`); (3) generic view params used only where host\ncallers never invoke them directly.\n\nWhat the language/stdlib/runtime should ideally provide: view-bound\nsubsumption (covariant width), or host-nameable type arguments (P1-013),\neither of which collapses the duplication.\n\nAffected backend(s) / target(s), if known: all (type-system rule).\n\nSeverity: moderate\n\nStatus: workaround (inline checks + widest-view signatures)\n\n## Re-baseline 2026-09-10 (Source Profile 0.13) — STILL_REPRODUCES\n\nCompiler: mncs-language 890a653, Source Profile 0.13.\n\n`[byte; up_to 8]` into a `[byte; up_to 64]` parameter still fails\n(MNE117 + MNE133, reproduced 2026-09-10). Hit live during this run: the\nplanned in-language generation-header round trip was removed because an\n8-byte header view cannot feed `header_validate`'s up_to-1024 view; the\ncorpus pins the round trip across the harness boundary instead.\nWidest-view signatures stay (validate_v2 takes up_to 1024; narrow\ncallers go through the host).\n\nSeverity: moderate (unchanged; interacts with every new validator).\n"
+  },
+  "legacyIds": [
+    "P1-012",
+    "mncs-store:P1-012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P1-012",
+    "text": "```mncs\nfn check(view: [byte; up_to 64]) -> (result: u64) {\n    return view.len;\n}\nfn use8(x: [byte; 8]) -> (result: u64) {\n    let v: [byte; up_to 8] = x[0..8];\n    return check(v);  // MNE133\n}\n```"
+  },
+  "requiredBehavior": "width subsumption for views (a view with bound M\ncoerces to bound N >= M), or an explicit `widen_view` conversion, so\nshared validators can be written once.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P1-012-no-view-width-subsumption.md"
+  },
+  "summary": "Imported legacy pressure P1-012: No view-width subsumption: `[byte; up_to 8]` is not a `[byte; up_to 64]`.",
+  "target": "language",
+  "title": "No view-width subsumption: `[byte; up_to 8]` is not a `[byte; up_to 64]`",
+  "version": "1"
+}

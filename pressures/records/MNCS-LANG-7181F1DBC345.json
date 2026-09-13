@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "legacy.p2-007.observation-granularity-64-b-reads-one-root-per-capability",
+  "contentDigest": "sha256:f42caa4880140dea21e1e8265e0b089ed00e3f7a39686ed4fe94ca574f1e5680",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-store",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-7181F1DBC345",
+  "identity": {
+    "capability": "legacy.p2-007.observation-granularity-64-b-reads-one-root-per-capability",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-store:P2-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround (arg-passed batch verification + fs_* proofs)",
+    "legacyId": "P2-007",
+    "repository": "mncs-store",
+    "sourceDigest": "sha256:e85ed645919fe6856fdbd36330ee3e48c204123d3335f403d2829daf8c521d9c",
+    "sourcePath": "mncs-store:P2-007-observation-granularity.md",
+    "sourceText": "# P2-007 — Observation granularity: 64 B reads, one root per capability\n\nNew Phase-2 pressure (discovered 2026-09-10 building lifecycle\nverification and reclamation over fs_*/host_read).\n\nStorage feature being implemented: bulk verification (N chunk files per\nread path) and retained-root assembly for reclamation (RFC 0015\ntransitive checking; RFC 0004 reachability).\n\nObserved language/runtime/compiler behavior (mncs-language 890a653,\nSource Profile 0.13): `host_read` grants bind one capability to one\nwhole file (<= 64 B, loaded once at realization); `fs_read_bytes_at`\nreads <= 64 B per call from one granted root; `host_write` appends have\nno read-back. Consequences measured this run:\n\n- Verifying a 92-byte v2 manifest in-language needs 2+ chunked reads\n  plus host-side reassembly decisions (or one arg-passed view, which\n  costs JSON transport instead).\n- A 1020-byte manifest needs 16 sequential `fs_read_bytes_at` calls to\n  observe fully; each call is a separate effect invocation with its own\n  steps.\n- Assembling a retained-roots table (N x 32 B) in-language is possible\n  only through repeated chunked reads plus host concatenation; the\n  membership verdict (`table_contains`) is in-language but its INPUT\n  assembly is host-side byte shuffling.\n\nMinimal reproducer: observe a 1020-byte manifest file and its 31 chunk\ndigests in ONE MNCS call — impossible; the widest single observation is\n64 bytes per effect call.\n\nRequired semantics: parameterized multi-granularity observation —\nbounded scatter-gather reads (one call, K disjoint ranges), table\nassembly primitives (bounded concat of observed chunks into a view), and\nread-back of own-grant appends — so bulk verification is one function\nover many files instead of N calls plus host reassembly.\n\nWhy the current behavior/API is insufficient: the SHAPE is proven\n(in-language file -> digest verification works; fs_* chunking works),\nbut granularity forces the driver to choose between per-file\ncapabilities that do not scale (P1-019 pattern) and arg-passed bytes\nthat cost 25x JSON expansion per byte (P1-016 compounding). The\nlifecycle driver verifies through arg-passed bytes in one batched\ninvocation per N files; the decision stays MNCS, the batching geometry\nstays host.\n\nSafety/correctness implications: LOW (transport geometry, not\nsemantics). One real hazard: host-side reassembly order must match\nmanifest order — enforced because MNCS chain verification fails closed\non any reorder, so a host shuffle cannot pass silently.\n\nPerformance implications: MEDIUM (multiplies invocations and bytes;\nsee P2-008 measurements).\n\nWorkaround used: arg-passed bytes for bulk verification (batched, one\ninvocation per N files); fs_* chunked reads kept for recovery scans and\nsingle-file proofs. Semantically exact (MNCS decides every verdict);\nbootstrap substitute for observation geometry.\n\nWhat the language/stdlib/runtime should ideally provide: root-scoped\nread capabilities with bounded multi-range reads and in-language table\nassembly (bounded concat/materialize), with documented oversize and\ntruncation semantics.\n\nAffected backend(s): all for geometry; bytecode-only for realization\n(P1-B02).\n\nSeverity: moderate (scale/ergonomics with measured costs).\n\nStatus: workaround (arg-passed batch verification + fs_* proofs)\n\nAcceptance test: one MNCS call observes a 1020-byte manifest plus all\n31 referenced chunk headers through granted reads alone (no byte\narguments), returning the same chain verdict as the arg-passed path.\n"
+  },
+  "legacyIds": [
+    "P2-007",
+    "mncs-store:P2-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-store:P2-007",
+    "text": "observe a 1020-byte manifest file and its 31 chunk\ndigests in ONE MNCS call — impossible; the widest single observation is\n64 bytes per effect call."
+  },
+  "requiredBehavior": "parameterized multi-granularity observation —\nbounded scatter-gather reads (one call, K disjoint ranges), table\nassembly primitives (bounded concat of observed chunks into a view), and\nread-back of own-grant appends — so bulk verification is one function\nover many files instead of N calls plus host reassembly.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-store:P2-007-observation-granularity.md"
+  },
+  "summary": "Imported legacy pressure P2-007: Observation granularity: 64 B reads, one root per capability.",
+  "target": "language",
+  "title": "Observation granularity: 64 B reads, one root per capability",
+  "version": "1"
+}
