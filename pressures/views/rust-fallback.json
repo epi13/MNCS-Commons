@@ -236,17 +236,20 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "capability": "legacy.doc-p-010",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-TOOLING-146FB6F4BBC6",
       "reporters": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "revalidationRequired": true,
       "severity": "moderate",
@@ -257,7 +260,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -555,17 +558,20 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "capability": "legacy.doc-p-011",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-TOOLING-B665F138D324",
       "reporters": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "revalidationRequired": true,
       "severity": "moderate",
@@ -576,7 +582,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -613,17 +619,20 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "capability": "legacy.doc-p-008",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-TOOLING-C5FD211E05C1",
       "reporters": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -634,7 +643,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -758,17 +767,20 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "capability": "legacy.doc-p-001",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-TOOLING-E920D54703E3",
       "reporters": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "mncs-test"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -779,7 +791,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

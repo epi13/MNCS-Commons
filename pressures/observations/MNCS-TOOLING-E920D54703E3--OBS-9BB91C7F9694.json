@@ -1,0 +1,50 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "compile-fail fixture validated against current diagnostic JSON"
+  },
+  "contentDigest": "sha256:bcd28d51824b49bb511d92387339c90fc4c9ce27c06cddee3840de42470f3c56",
+  "evidence": [
+    {
+      "id": "mncs-test-compile-fail",
+      "kind": "diagnostic-test",
+      "ref": "tests/fixtures/compile_fail.mncs",
+      "status": "PASS",
+      "summary": "Expected compiler rejection and diagnostic prefix matching work through the current CLI boundary."
+    }
+  ],
+  "id": "MNCS-TOOLING-E920D54703E3--OBS-9BB91C7F9694",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "worked_around",
+    "localPressureId": "MNCS-TEST-P-003",
+    "targetLayer": "compiler/tooling"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-E920D54703E3",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the compile-fail fixture and inspect its diagnostics array plus preserved stdout artifact.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-003.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "Compile-fail tests can consume current JSON diagnostics, but diagnostics are not yet native typed values available inside an MNCS test program.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The Python adapter consumes structured validate JSON and stores all diagnostics; it does not scrape human stderr prose.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

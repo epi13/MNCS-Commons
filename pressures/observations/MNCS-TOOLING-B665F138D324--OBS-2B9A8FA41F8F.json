@@ -1,0 +1,57 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "native modules and self-suite validated with current mncs CLI"
+  },
+  "contentDigest": "sha256:e2fcfb1a7d6be704369c0134758fb91a79147e3c2b8fe5bdd8e039a74cdf798c",
+  "evidence": [
+    {
+      "id": "mncs-test-self-suite",
+      "kind": "native-execution",
+      "ref": "tests/self_suite.mncs",
+      "status": "PASS",
+      "summary": "Native suite executes through the current external mncs CLI."
+    },
+    {
+      "id": "mncs-test-action-pass",
+      "kind": "action-integration",
+      "ref": "mncs-actions/actions/mncs-test/test.sh",
+      "status": "PASS",
+      "summary": "Action path captures the provider result and packages evidence."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-2B9A8FA41F8F",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "worked_around",
+    "localPressureId": "MNCS-TEST-P-001",
+    "targetLayer": "runtime/tooling"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run mncs-test/tools/mncs_test.py and inspect run_process; the self-suite preserves commands, stdout, stderr, and request artifacts.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-001.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "mncs-test requires a host process boundary to launch mncs, capture stdout/stderr, and enforce an operating-system timeout.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python stdlib subprocess.run is a narrow process/capture/timeout adapter; it does not implement test semantics.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

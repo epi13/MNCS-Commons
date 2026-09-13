@@ -156,6 +156,12 @@
     },
     {
       "authority": "descriptive-only",
+      "id": "mncs-test",
+      "repository": "epi13/mncs-test",
+      "role": "native testing and conformance framework"
+    },
+    {
+      "authority": "descriptive-only",
       "id": "mncs-tui",
       "repository": "epi13/mncs-tui",
       "role": "family participant"

@@ -819,15 +819,19 @@
     },
     {
       "affectedRepositories": [
-        "mncs-store"
+        "mncs-store",
+        "mncs-test"
       ],
       "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
       "currentValidation": false,
       "domain": "language-semantics",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-52A5E0C72A39",
       "reporters": [
-        "mncs-store"
+        "mncs-store",
+        "mncs-test"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -838,7 +842,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1284,6 +1288,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-test",
         "mncs-web"
       ],
       "capability": "legacy.web-p-007",
@@ -1292,6 +1297,7 @@
       "fallbackLanguages": [],
       "id": "MNCS-LANG-770B42F56E6C",
       "reporters": [
+        "mncs-test",
         "mncs-web"
       ],
       "revalidationRequired": true,
@@ -1303,7 +1309,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

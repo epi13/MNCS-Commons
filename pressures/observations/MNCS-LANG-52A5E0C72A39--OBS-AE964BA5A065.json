@@ -1,0 +1,50 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "self-suite command artifact count inspected"
+  },
+  "contentDigest": "sha256:374c2619f2304be7db433cbf65273d3e63d231515a3559dbd02916efe416c230",
+  "evidence": [
+    {
+      "id": "mncs-test-command-artifacts",
+      "kind": "provenance",
+      "ref": "tests/test_runner.py",
+      "status": "PASS",
+      "summary": "Every request boundary is preserved as an artifact."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-AE964BA5A065",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "worked_around",
+    "localPressureId": "MNCS-TEST-P-004",
+    "targetLayer": "runtime/tooling"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the self-suite and inspect .mncs/mncs-test-artifacts/commands for suite.json plus one command document per runtime entry.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-004.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "The current external ABI requires one mncs process for the suite and one fresh process for each declared runtime entry.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The adapter uses explicit one-shot requests and retains deterministic command/response evidence; no native session semantics are faked.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

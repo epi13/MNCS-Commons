@@ -1,0 +1,50 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "test-result/check-result schemas validated"
+  },
+  "contentDigest": "sha256:c5b5cf16c688af49a95292a21039df984990cfaaed6590e8065cf03a698a89c6",
+  "evidence": [
+    {
+      "id": "mncs-test-result-protocol",
+      "kind": "protocol",
+      "ref": "schemas/test-result.schema.json",
+      "status": "PASS",
+      "summary": "The adapter preserves typed native fields while emitting a stable action-facing envelope."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-4F19097B5A90",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "worked_around",
+    "localPressureId": "MNCS-TEST-P-006",
+    "targetLayer": "stdlib/tooling"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the self-suite with --check-result and inspect the native result plus the mncs.check-result/1 wrapper.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-006.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "Typed native results cross the current process boundary as host JSON before mncs-actions can consume the check-result contract.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python JSON serialization is transport-only; native assertions and suite aggregation remain MNCS records.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}
