@@ -1,0 +1,50 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "controlled manifest discovery validated"
+  },
+  "contentDigest": "sha256:3a3b8fe42335edba0d770444459d4a9b59bf6f8936e65cb365eb9ad8a598ae96",
+  "evidence": [
+    {
+      "id": "mncs-test-discovery",
+      "kind": "discovery",
+      "ref": "tools/mncs_test.py",
+      "status": "PASS",
+      "summary": "Discovery is deterministic and explicit by default."
+    }
+  ],
+  "id": "MNCS-TOOLING-C5FD211E05C1--OBS-8AF8511663BD",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "contained",
+    "localPressureId": "MNCS-TEST-P-002",
+    "targetLayer": "tooling/filesystem"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-C5FD211E05C1",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run mncs-test discover with and without --recursive; the default is the explicit root manifest plus direct tests/*.toml, while recursive traversal is opt-in and sorted.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-002.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "mncs-test cannot make recursive filesystem discovery a native operation, so normal execution uses explicit manifests and direct test entries.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The runner requires an explicit manifest for run; sorted os.walk/rglob is only used by opt-in discovery/provenance adapter code.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

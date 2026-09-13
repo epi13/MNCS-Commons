@@ -1,0 +1,50 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "campaign/ravel-witness-2026-09",
+    "validation": "self-suite validated with static native entry sequence"
+  },
+  "contentDigest": "sha256:3474cad05304600f4eddcf3bcf62bc6e6e2ba4a23559d8d9438232aa277fb36f",
+  "evidence": [
+    {
+      "id": "mncs-test-native-registry",
+      "kind": "language-pressure",
+      "ref": "tests/self_suite.mncs",
+      "status": "PASS",
+      "summary": "The static sequence executes successfully without a host callback registry."
+    }
+  ],
+  "id": "MNCS-LANG-770B42F56E6C--OBS-3FA64B8381FC",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "disposition": "contained",
+    "localPressureId": "MNCS-TEST-P-005",
+    "targetLayer": "language semantics"
+  },
+  "observedAt": "2026-09-12T00:00:00Z",
+  "pressureId": "MNCS-LANG-770B42F56E6C",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Inspect mncs-test.toml and tests/self_suite.mncs; the manifest names each function and summarize<6> calls each function explicitly.",
+    "status": "PASS"
+  },
+  "runId": "mncs-test-native-framework-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/native-framework-2026-09",
+    "commit": "pending-delivery",
+    "path": "pressures/MNCS-TEST-P-005.json",
+    "repository": "mncs-test",
+    "workingTree": true
+  },
+  "summary": "The current profile has no first-class test declaration or callable value, so entry identities and suite membership are represented by a manifest and a bounded native sequence.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Manifest identities and explicit MNCS calls keep registration inspectable and bounded.",
+    "fallbackLanguage": null,
+    "removed": false
+  }
+}

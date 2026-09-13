@@ -33,6 +33,37 @@
     },
     {
       "affectedRepositories": [
+        "mncs-store",
+        "mncs-test"
+      ],
+      "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-52A5E0C72A39",
+      "reporters": [
+        "mncs-store",
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-commons"
       ],
       "capability": "dynamic_query_projection",
@@ -88,6 +119,134 @@
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "capability": "legacy.doc-p-010",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-146FB6F4BBC6",
+      "reporters": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No string-capable JSON encoding",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "capability": "legacy.doc-p-011",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-B665F138D324",
+      "reporters": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No process spawning / capture / exit status",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "capability": "legacy.doc-p-008",
+      "currentValidation": false,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-C5FD211E05C1",
+      "reporters": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No recursive filesystem enumeration",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "capability": "legacy.doc-p-001",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-E920D54703E3",
+      "reporters": [
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "No stable programmatic diagnostics API for tooling",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

@@ -27,6 +27,7 @@
     {"id": "mncs-rights-provenance", "repository": "epi13/mncs-rights-provenance", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-signal", "repository": "epi13/mncs-signal", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-store", "repository": "epi13/mncs-store", "role": "storage consumer", "authority": "descriptive-only"},
+    {"id": "mncs-test", "repository": "epi13/mncs-test", "role": "native testing and conformance framework", "authority": "descriptive-only"},
     {"id": "mncs-tui", "repository": "epi13/mncs-tui", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-validator-rs", "repository": "epi13/mncs-validator-rs", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-web", "repository": "epi13/mncs-web", "role": "family participant", "authority": "descriptive-only"},
