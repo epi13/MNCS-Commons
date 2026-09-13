@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-store",
+  "contentDigest": "sha256:5c742b0bc69feebdac5640fa220d48a0c13b257bf79b93b80ccb19b03f69d943",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-4CF1F5077338D386",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:45Z",
+  "pressureId": "MNCS-LANG-493C32111AA5",
+  "previousEvent": "EVT-71A8CBE978563D54",
+  "reason": "Run the originating Store consumer verification before closing the pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

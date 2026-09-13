@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0004",
+  "contentDigest": "sha256:a7864400ef9d5bc439c66d30887beef85f40072e47bb2ff528cd892e55737555",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-3BE4C277C596",
+  "identity": {
+    "capability": "legacy.cp-0004",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0004",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "resolved (2026-09-12). Category: language, tooling. Severity:",
+    "legacyId": "CP-0004",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:42bc61aee31b0dc285084f586564cf4a1c7aedbe32a55ef18324f49e0e8f0650",
+    "sourcePath": "mncs-compiler:0004-boolean-comparison.md",
+    "sourceText": "# CP-0004 — Boolean equality is rejected in scanner state updates\n\nStatus: resolved (2026-09-12). Category: language, tooling. Severity:\nlow. Frequency: common. Upstream tracking: profile 0.13\n(`BooleanNot`/`BooleanCompare`, MNE119/MNE121 refinement).\n\n`repro/bool-equality.mncs` is the minimal reproduction: `a == b` for two booleans\nemits MNE121, “comparison operands must have an integer type”. Run\n`python3 tools/test_pressure.py`. Encountered while expressing `done = advance ==\nfalse` in `lexer.scan_step`.\n\nWorkaround: `select(advance, false, true)`; logical predicates otherwise use\n`&&`/`||`. This is correct and sufficient to continue, but makes commonplace\nstate predicates less direct. No measured runtime or memory penalty is claimed.\nCompiler cost is not separately measured. Safety and determinism are unchanged;\nimplementation complexity is a small recurring readability cost.\n\nDesired behavior: a documented, consistent boolean equality/negation idiom;\npossibly stdlib helpers rather than a language change. Likely ownership:\nlanguage semantics and documentation/tooling. Do not prioritize this above\nwhole-source storage or Unicode parity.\n\n## Update (declaration-vertical pass)\n\nThe family is larger than equality: there is no logical-negation operator\nat all. `!x` lexes as MNL002 (unsupported character); only `!=` exists.\nEvery predicate in the declaration core negates through a local\n`fn not(value: bool) -> (result: bool) { return select(value, false, true); }`\n(duplicated per module since leaf helpers are not shared). Related:\n`match` accepts no integer patterns (see CP-0010), so scalar dispatch and\nnegation both route around the same missing boolean/scalar operator\nsurface. Workaround remains sufficient; severity stays low.\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): resolved\n\nProbed on the current pin: `a == b` and `!a` over bools elaborate at\nprofile 0.13 (exit 0, zero diagnostics); the 0.10 control still yields\nMNE121, so old-profile behavior is preserved. Mixed-type operands keep\nMNE119 and bool ordering keeps MNE121 — the refinement is exactly\nscoped. Proven in real compiler code: the 0.13 migration uses native\n`!` in `lexer.mncs` (`done: !advance`), `segment.mncs` (same),\n`kernel.mncs` (`!source.span_valid(...)`), and 134 sites in `decl.mncs`\nwith the `not()` helper deleted. The three frontend modules are\ndifferentially proven (`tools/test_frontend.py` green, 3435 requests);\n`decl.mncs` is parse-checked with elaboration proof staged after\nCP-0014. History preserved above: the original MNE121 limitation, the\n`select` workaround, and the missing-negation family note.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0004",
+    "text": ""
+  },
+  "requiredBehavior": "a documented, consistent boolean equality/negation idiom;\npossibly stdlib helpers rather than a language change. Likely ownership:\nlanguage semantics and documentation/tooling. Do not prioritize this above\nwhole-source storage or Unicode parity.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0004-boolean-comparison.md"
+  },
+  "summary": "Imported legacy pressure CP-0004: Boolean equality is rejected in scanner state updates.",
+  "target": "compiler",
+  "title": "Boolean equality is rejected in scanner state updates",
+  "version": "1"
+}

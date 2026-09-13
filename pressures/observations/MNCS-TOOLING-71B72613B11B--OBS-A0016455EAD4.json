@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8c616f0e44ef37e2af1b425426b38cb0da9a0139cbb04c9407898cb506e1d262",
+  "evidence": [
+    {
+      "id": "legacy:mncs-doctor:DOC-P-020",
+      "kind": "legacy-markdown",
+      "ref": "mncs-doctor:DOC-P-020.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-71B72613B11B--OBS-A0016455EAD4",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "DOC-P-020",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:372e82615f42ffefe771b261843ef61de338904318cf9ba1af491132019646db"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "At `mncs-language` `a0255f8`, `mncs-embed::Session` exposes `call` and\n`call_json`. The same crate exports `mncs_session_call_batch` only through its\nunsafe C ABI. Doctor's safe Rust runtime cannot use that ABI without creating\na second handle/lifetime/serialization boundary.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-020.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "fallbackLanguage": "rust",
+    "legacyStatus": "open"
+  }
+}

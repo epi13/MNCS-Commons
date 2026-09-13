@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-021",
+  "contentDigest": "sha256:1f058a33fcb02a008a33b9d5db85d2aead8670ba0daa182acfa0523d29e08752",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "backend",
+  "id": "MNCS-TOOLING-01C791D9EFF4",
+  "identity": {
+    "capability": "legacy.doc-p-021",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-021",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-021",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:9adf9d78ef69bdb413f0effe41ec5f0e949e3be43d353ff2fc0f7c8caecdcdc4",
+    "sourcePath": "mncs-doctor:DOC-P-021.md",
+    "sourceText": "# DOC-P-021 — Pure backend values pass with unresolved obligations\n\nStatus: open\n\nCategory: compiler | backend | tooling\n\nSeverity: medium\n\nFrequency: compiled-backend portability evidence\n\n## Doctor workload\n\nDoctor needs executable value evidence for pure policy modules on every\nsupported backend before changing its production backend or claiming\nportable artifacts.\n\n## Reproducer\n\nUsing `mncs experiment run` at `mncs-language` `a0255f8`, each of the ten\nDoctor policy sources was run against its checked-in value corpus on:\n\n```text\nmncs-research-bytecode\nmncs-portable-wasm-mvp\nmncs-c11\nmncs-llvm-ir\nmncs-cranelift\n```\n\nAll expected values were returned for all fifty module/backend runs. Six\nmodules nevertheless reported compiler `status: UNKNOWN` with\n`unresolved_reasons: [\"compilation retained required unresolved obligations\"]`:\n`version`, `health`, `migration`, `edits`, `fix`, and `scanner`. The returned\nvalues were correct, but the evidence status cannot be recorded as an\nunqualified backend PASS.\n\n## Observed impact\n\nDoctor can safely run pure policy on the research bytecode backend, where\nvalue execution is proven. Compiled-backend adoption would either reject\nthese artifacts or require a documented policy for value-correct but\nobligation-unknown results. Treating `UNKNOWN` as `PASS` would weaken the\nfail-closed portability claim.\n\n## Workaround\n\nProduction pins `mncs-research-bytecode`. The matrix is retained as returned\nvalue evidence, with `UNKNOWN` preserved as the compiler result rather than\nhidden by the harness. The ten corpora under `fixtures/backend/` and\n`docs/BACKEND-MATRIX-2026-09.md` reproduce the run.\n\n## Removal condition\n\nThe compiler/backend pipeline either discharges the obligations for these\nbounded pure modules or emits a stable distinction between executable value\nevidence and unresolved proof obligations. Re-run the complete matrix and\nrequire identical values plus an explicit non-UNKNOWN evidence status.\n\n## Evidence\n\n- `fixtures/backend/*.json` — value-level source corpora.\n- `docs/BACKEND-MATRIX-2026-09.md` — fifty executed matrix cases and\n  classification.\n- `mncs-language` `experiment run` output at `a0255f8`.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-021"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-021",
+    "text": "Using `mncs experiment run` at `mncs-language` `a0255f8`, each of the ten\nDoctor policy sources was run against its checked-in value corpus on:\n\n```text\nmncs-research-bytecode\nmncs-portable-wasm-mvp\nmncs-c11\nmncs-llvm-ir\nmncs-cranelift\n```\n\nAll expected values were returned for all fifty module/backend runs. Six\nmodules nevertheless reported compiler `status: UNKNOWN` with\n`unresolved_reasons: [\"compilation retained required unresolved obligations\"]`:\n`version`, `health`, `migration`, `edits`, `fix`, and `scanner`. The returned\nvalues were correct, but the evidence status cannot be recorded as an\nunqualified backend PASS."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-021.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-021: Pure backend values pass with unresolved obligations.",
+  "target": "tooling",
+  "title": "Pure backend values pass with unresolved obligations",
+  "version": "1"
+}

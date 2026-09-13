@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:76ab0a9a8b9dbe399108cb4b75f1a7451c537f358fb2e965b13f63722608178c",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0003",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0003-scan-traversal-cost.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-0D3D67141BA4--OBS-4D56532E1D30",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0003",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:c83f76ce614ed8dc03a39910f4062cbbf6f6d03f5151ba5b715d545fd66ec79f"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-0D3D67141BA4",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0003-scan-traversal-cost.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "open, re-confirmed (2026-09-12). Category: language,"
+  }
+}

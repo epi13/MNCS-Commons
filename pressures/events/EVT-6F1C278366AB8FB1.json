@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-store",
+  "contentDigest": "sha256:cfb36dd522198980d787b14ac58bb5afe7c52f2ee6d8cca2513e1152c074ada5",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "accepted",
+  "id": "EVT-6F1C278366AB8FB1",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:28Z",
+  "pressureId": "MNCS-LANG-7BA2DA8A378E",
+  "previousEvent": "EVT-31E4B79E9F929427",
+  "reason": "Store migrated the affected semantic implementation and removed the old workaround.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

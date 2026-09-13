@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-017",
+  "contentDigest": "sha256:7acfb78bdc1424681f1cad92ff6da10495f736a516be0d7e88e825831b7a0712",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-D8D0F1F3CF2F",
+  "identity": {
+    "capability": "legacy.press-017",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-017",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-017",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:8b9506c9917672783f252674663a2d2c5a014fa3bbe594c4eb71f97002cf88d3",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-017 — No snapshot-handle / lease / epoch primitives (P1, synchronization/persistence)\n\n- Observed: the RFC 0009 MVCC protocol (explicit `PinnedSnapshot`\n  handles, `.pins/` generation pins, stale-pin reaping, unpinned-only\n  `reclaim`) is host-filesystem effects code in\n  `runner/mncs_index/store.py`. MNCS offers no handle, lease, epoch,\n  reference-count, or pin primitive to express \"this generation must\n  survive while a reader holds it\" — `mncs-language` RFC 0010\n  (concurrency) status `NONE`, RFC 0026 (persistence) `NONE` — so\n  cross-process reader protection, orphan-pin reclamation, and the\n  reclaimed-vs-lost distinction (`.reclaimed` record) cannot be\n  named, audited, or tested in-language.\n- Desired: effect-gated snapshot handles with scoped lifetime\n  (acquire/release as a language contract), plus a lease or epoch\n  primitive so dead-reader protection expires without PID probing.\n- Workaround: pin files named `gen-NNNNNN.<pid>.<unique>.pin` with\n  file fsync + best-effort dir sync; liveness by `os.kill(pid, 0)`\n  probe, conservative toward alive; `reclaim` reaps stale pins first\n  under the exclusive `.HEAD.lock`. Pinned by\n  `tests/test_mvcc.py` (orphan-pin reap after real fork +\n  `os._exit` death, 1-writer + 4-reader and 3-writer + 2-reader\n  process races, readers across crash/recovery).\n- Why the workaround is insufficient: PID liveness has a known\n  PID-reuse hole (a dead pin can look live until the pid is\n  recycled past — worst case is delayed reclamation, never a\n  deleted live generation, since pins only protect); pin-dir sync\n  is best-effort rather than a durable-commit effect; none of the\n  guarantee is expressible as an MNCS effect, so a future\n  `mncs-store` backend would re-implement rather than reuse a\n  language contract.\n- Evidence: `tests/test_mvcc.py`; `rfcs/0009-multiprocess-mvcc.md`.\n- Reproducer status: no `.mncs` program can demonstrate this gap (no\n  handle/lease/process effects in source). The downstream tests are\n  the reproducers, including the injected-probe PID-reuse directions\n  (`test_pid_reuse_delays_but_never_deletes`) and the typed retry\n  contract (`test_open_retry_contract_is_typed`).\n- Classification: runtime (missing synchronization/persistence\n  effects), language semantics (no handle/lease vocabulary).\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0010\n  and RFC 0026 still `NONE`; `.pins/` files + PID-liveness reaping\n  still the mechanism, read 2026-09-08).\n- Acceptance-test-after-language-fix: a scoped snapshot handle pins\n  generation N across a writer publishing N+1 in another process,\n  and the reader still reads N; assert `tests/test_mvcc.py` passes\n  with pin files replaced by language handles (`.pins/` directory\n  and `os.kill(pid, 0)` probing deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-017"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-017",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-017: No snapshot-handle / lease / epoch primitives (P1, synchronization/persistence).",
+  "target": "language",
+  "title": "No snapshot-handle / lease / epoch primitives (P1, synchronization/persistence)",
+  "version": "1"
+}

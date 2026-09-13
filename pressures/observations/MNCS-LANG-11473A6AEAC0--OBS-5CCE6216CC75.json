@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:3dd92fd36e61322f8e3489ea2ec419f86cc2d41dc5d9e41fb8045c31badf24ae",
+  "evidence": [
+    {
+      "id": "legacy:mncs-web:WEB-P-001",
+      "kind": "legacy-markdown",
+      "ref": "mncs-web:LANGUAGE_PRESSURES.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-11473A6AEAC0--OBS-5CCE6216CC75",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "WEB-P-001",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-11473A6AEAC0",
+  "repository": "mncs-web",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "`web.transport.v1` is a memory-backed `Pipe` with\nbackpressure-as-data; all integration tests run through pipes and the\n`serve_bytes` boundary. Transport dependencies are isolated behind the\nPipe shape so a future socket host can slot in.",
+    "legacyStatus": "open"
+  }
+}

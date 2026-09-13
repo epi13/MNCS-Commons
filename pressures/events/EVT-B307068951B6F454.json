@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:edd4afa21ccd0438aa532fba1a3170459739f13a5201e8c8e442e92ae59a8964",
+  "details": {
+    "reason": "Both cross a process/host boundary; Ingest measures per-call ingestion cost while Store needs an in-process call boundary.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-B307068951B6F454",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:14:00Z",
+  "relation": "related_to",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-4E8D16B49738",
+  "targetPressure": "MNCS-LANG-52A5E0C72A39",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "legacy.ls-p-006",
+  "contentDigest": "sha256:b9130b5b24a3ca3cb2e66ee351f9740f9dc8d93e210344ee3884207c10513894",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-language-service",
+  "domain": "type-system.generics",
+  "id": "MNCS-TOOLING-CBD9615A7A1A",
+  "identity": {
+    "capability": "legacy.ls-p-006",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-language-service:LS-P-006",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "VERIFIED",
+    "legacyId": "LS-P-006",
+    "repository": "mncs-language-service",
+    "sourceDigest": "sha256:aa2b9f438402136be30b839017be4034f9acf635c1b55695fe88f662b48ea6f2",
+    "sourceLedgerDigest": "sha256:a6484c11e5e8de28a920707b80fb20aa46aaac78be97d52d458f48379744cdde",
+    "sourceLedgerPath": "mncs-language-service:LS-P-006.md",
+    "sourcePath": "mncs-language-service:LS-P-006.md",
+    "sourceText": "# LS-P-006 — Bounded symbol filtering via generic stdlib execution\n\nStatus: VERIFIED\n\n## Original pressure (roadmap item (a))\n\nThe ROADMAP's next evidence-led pressure point was \"bounded symbol\nfiltering\": can MNCS express a service-style filter over a bounded\ncollection through the authoritative standard library, executed on a real\nbackend, with the result trusted differentially?\n\n## Resolution\n\nYes. `mncs/filter_query.mncs` adapts the authoritative generic\n`mncs.core.sequences.v1::count<N: Nat>` to a fixed 8-slot service\nenvelope with explicit instantiation (`count<8>(tags, wanted)`), and\n`crates/service-core/src/native_filter.rs` executes it on the\n`mncs-research-bytecode` backend with fail-closed differential comparison\nagainst the Rust control.\n\n## Verification\n\n- `crates/service-core/tests/native_filter.rs`: differential agreement on\n  a multi-kind probe document plus kernel-artifact reuse across calls.\n- `crates/mcp/tests/mcp_protocol.rs::native_kind_count_executes_through_the_real_tool_surface`:\n  end-to-end through the agent tool surface, including fail-closed\n  behavior on unknown kind names.\n- No `mncs-language` change was required: explicit generic instantiation,\n  bounded `[i64; N]` sequences, cross-module `use` resolution, and\n  research-bytecode execution of generic stdlib functions all worked as\n  specified on the first attempt."
+  },
+  "legacyIds": [
+    "mncs-language-service:LS-P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-language-service:LS-P-006",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-006.md"
+  },
+  "summary": "Imported legacy pressure LS-P-006: Bounded symbol filtering via generic stdlib execution.",
+  "target": "tooling",
+  "title": "Bounded symbol filtering via generic stdlib execution",
+  "version": "1"
+}

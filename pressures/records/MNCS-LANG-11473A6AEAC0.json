@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-001",
+  "contentDigest": "sha256:cab8f08ae5c3d3678af8b68ae83943c456d10e40f023118590da23fb7002a626",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-11473A6AEAC0",
+  "identity": {
+    "capability": "legacy.web-p-001",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-001",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:fb17ee147afa5be7e199300245006f3cac687cb1ea03b04b94a5ae4f930629f5",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-001 — No socket/network capability in the language\n\n- Status: open\n- Severity: blocker (for real networking; the rest of the stack proceeds\n  without it)\n- Category: OS/runtime\n\nWhat mncs-web was trying to implement: a TCP listener/connection backing\nfor `web.transport` (`Listener`, `Connection`), and the\nclient -> TCP -> mncs-web server integration milestone from the mission.\n\nExpected behavior: an explicit capability-gated socket interface\n(connect/listen/accept/read/write with HIPAA-style effect declarations),\nor at minimum a documented refusal roadmap.\n\nActual behavior: no socket, TCP, UDP, DNS, or generic network handle\nexists in any profile (0.1-0.13), the standard library, or the effects\nspec beyond a SHOULD-level statement that network authority must be\nexplicit (`spec/effects-and-capabilities.md`). Searched\n`library/`, `spec/`, and all source profiles for\nsocket/tcp/network/http: no hits in the language surface.\n\nWhy this is a language/runtime issue: networking is a runtime/host\ncapability, not something an application repo can soundly invent (effect\nmodel, authority, backend portability all belong to the language).\n\nCurrent workaround: `web.transport.v1` is a memory-backed `Pipe` with\nbackpressure-as-data; all integration tests run through pipes and the\n`serve_bytes` boundary. Transport dependencies are isolated behind the\nPipe shape so a future socket host can slot in.\n\nCost of the workaround: no real network I/O is possible; the\nclient/server milestone stops at the process boundary; every framing\ndecision must be re-validated once a real transport exists.\n\nDesired capability: capability-gated byte-stream connect/listen/accept\nwith explicit effects, or a tracked RFC with milestones.\n\nOther projects likely affected: mncs-service, mncs-fabric, mncs-engine,\nany distributed MNCS system.\n\nEvidence/tests: `src/web/transport.mncs`, `tests/test_transport.py`\n(pipe loopback stands in for the socket test)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-001",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-001: No socket/network capability in the language.",
+  "target": "language",
+  "title": "No socket/network capability in the language",
+  "version": "1"
+}

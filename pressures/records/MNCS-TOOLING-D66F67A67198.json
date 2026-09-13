@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "legacy.ls-p-002",
+  "contentDigest": "sha256:14e9295c40818f903df02abb46eb4005c659d400f5e4cd3078c80bb0ce6e36d4",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-language-service",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-D66F67A67198",
+  "identity": {
+    "capability": "legacy.ls-p-002",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-language-service:LS-P-002",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "CONFIRMED",
+    "legacyId": "LS-P-002",
+    "repository": "mncs-language-service",
+    "sourceDigest": "sha256:5bb519677f07cde5fbc7f66fa5a0027640c5b61b25f7e1af0cfd58944f415be4",
+    "sourcePath": "mncs-language-service:LS-P-002.md",
+    "sourceText": "# LS-P-002 — No string literals: native text queries inexpressible in MNCS\n\nStatus: CONFIRMED\n\n## 1. Reasonable service requirement\n\nA native (MNCS-implemented) query layer should be able to filter symbols by\nname, match completion prefixes, and model LSP/JSON string fields — all\nordinary developer-tooling work over text.\n\n## 2. Natural MNCS expression\n\n```mncs\nfn name_matches(candidate: string, prefix: string) -> (result: bool)\n```\n\nThere is no such expression: the authoritative lexer produces no\nstring-literal token (`TokenKind` has `Identifier`, numeric literals, and\npunctuation only), and the language has no string type in any source\nprofile through 0.16.\n\n## 3. What prevents it\n\nLanguage surface (`mncs-syntax` lexer/parser) plus standard-library\nsubstrate: no string type, no string literals, no text operations. Byte\nviews (`[byte; up_to 64]`) exist for host I/O but are not general strings\nand cannot be written as literals in service query sources.\n\n## 4. Minimal reproducer\n\n`mncs/filter_query.mncs` (this repository): bounded symbol filtering had\nto be projected to integer kind-tags on the Rust side because symbol names\ncannot cross into MNCS at all:\n\n```mncs\n// What the service can express: counting integer tags.\nfn count_matching(tags: [i64; 8], wanted: i64) -> (matches: i64) {\n    return count<8>(tags, wanted);\n}\n// What it cannot express: fn filter_by_prefix(names, prefix) — no strings.\n```\n\n## 5. Expected behavior\n\nSome general string/text facility (literals, comparison, prefix matching)\nsufficient for tooling queries, or an explicit language decision that\ntext processing stays host-side with a documented rationale.\n\n## 6. Actual behavior\n\nNative kernels are restricted to numeric/structural queries (status\naggregation, kind-tag counting). Every name-dependent operation\n(completion filtering, workspace symbol search, rename validation) stays\nin Rust permanently.\n\n## 7. Classification\n\nLanguage (`mncs-syntax` surface) with standard-library follow-on. Severity:\nmedium — it caps how much of the service can ever dogfood MNCS, but the\nnumeric kernel path is genuinely useful.\n\n## 8. Workaround\n\nInteger-tag projection with a documented stable mapping\n(`native_filter.rs::symbol_kind_tag`, padding tag `-1`) plus differential\ncomparison against the Rust control. The mapping is service-owned and must\nbe re-validated if renumbered.\n\n## 9. Cost of the workaround\n\nA parallel vocabulary (tags) that must be kept in sync by tests rather\nthan by construction; whole query families (prefix search, fuzzy match,\nJSON modeling) cannot move into MNCS at any cost.\n"
+  },
+  "legacyIds": [
+    "mncs-language-service:LS-P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-language-service:LS-P-002",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-002.md"
+  },
+  "summary": "Imported legacy pressure LS-P-002: No string literals: native text queries inexpressible in MNCS.",
+  "target": "tooling",
+  "title": "No string literals: native text queries inexpressible in MNCS",
+  "version": "1"
+}

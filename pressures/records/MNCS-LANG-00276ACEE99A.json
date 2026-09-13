@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-003",
+  "contentDigest": "sha256:3501625c639b9e0f37e1907f8fdfec6bf63f7fb25b2e475daf37a5aa246c4d7f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-00276ACEE99A",
+  "identity": {
+    "capability": "legacy.web-p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "WEB-P-003",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:cd3d6ea454857a9634c24211c0c09b586bbb589289f707e562bb2c5ae688d3cb",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-003 — No bulk span-copy primitive (replace-per-byte emission)\n\n- Status: open\n- Severity: minor (correctness unaffected; performance and step budgets)\n- Category: stdlib / optimizer / memory (buffers/slices)\n\nWhat mncs-web was trying to implement: `emit_span` (copy a parsed span\ninto the encoder output) and `stage_append` (stage a feed chunk) as\nsingle bounded operations.\n\nExpected behavior: a total `copy_span(dst, dst_at, src, src_at, len)`\nwith explicit bounds failure, compiling to a memmove-like backend op.\n\nActual behavior: no such primitive exists in `mncs.core`/`mncs.std`;\nevery byte is placed with one `replace` (each `replace` rebuilds the\n1024-byte value semantically). `feed_pattern` with 1-byte chunks over a\n37-byte message needs a ~1M step budget; the same logic with bulk copies\nwould be ~2 orders of magnitude cheaper in steps.\n\nWhy this is a language/stdlib issue: only the compiler can provide a\nbounds-checked bulk op that lowers efficiently on all five backends;\nuser code cannot beat per-element `replace` in step cost.\n\nCurrent workaround: per-byte `replace` loops with strict-`select`\ngating (total, no traps). Budgets sized accordingly\n(`feed_pattern` cases run at 1M steps).\n\nCost of the workaround: step-budget inflation for all chunked paths;\nhost-side O(n*m) byte movement in tests; future throughput work will\nhit this wall first.\n\nDesired capability: `mncs.core`/`mncs.std` bounded `copy_span` (or\n`blit`) with identical semantics on all backends.\n\nOther projects likely affected: mncs-store (frame building),\nmncs-media, mncs-crypto (block ops).\n\nEvidence/tests: `src/web/encode.mncs` (`emit_span`), step-budget data\nin `tests/test_fragmentation.py` (1M budget for 1-byte feeds)."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-003",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-003: No bulk span-copy primitive (replace-per-byte emission).",
+  "target": "language",
+  "title": "No bulk span-copy primitive (replace-per-byte emission)",
+  "version": "1"
+}

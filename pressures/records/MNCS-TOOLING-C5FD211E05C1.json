@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-008",
+  "contentDigest": "sha256:bf98d4a49b89bac248f8adafa69f68b6f8fb2d1448bfcf035d8c59faef75cb5c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "io.filesystem",
+  "id": "MNCS-TOOLING-C5FD211E05C1",
+  "identity": {
+    "capability": "legacy.doc-p-008",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-008",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-008",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:b8b69f623bf23f33f280b8a9e11bedeaf6e418d04e895eb6658fc868195e3116",
+    "sourcePath": "mncs-doctor:DOC-P-008.md",
+    "sourceText": "# DOC-P-008 — No recursive filesystem enumeration\n\nStatus: open\n\nCategory: language (stdlib/runtime surface)\n\nSeverity: high (blocks MNCS-native discovery)\n\nFrequency: pervasive (every repository walk)\n\n## Doctor workload\n\n`discovery.rs` walks the workspace tree: multi-level descent, exclusion\nmatching per directory, symlink-directory policy, deterministic ordering.\n\n## Desired natural MNCS expression\n\n```mncs\neffect fs_list authorized_by cap;\n// list roots, then descend into subdirectories of interest —\n// needs per-directory listing handles across levels.\n```\n\n## Current behavior (verified 2026-09-12 against `mncs-language` main)\n\n`fs_list_count()`, `fs_entry_name_at(i)`, `fs_entry_kind_at(i)`\n(0=file, 1=dir, 2=other), `fs_generation()` cover a **single level**\n(`docs/fs-resource-effects.md:37-40`). No recursive primitive exists;\nthe 0.16 scope doc lists recursive delete among explicit non-goals.\nMulti-level navigation (open a listing for a subdirectory entry, with\ncontainment kept) is not exposed, so a bounded worklist walker cannot be\nassembled from documented parts. Attempt status: capability analysis\nagainst the scope doc + registry (no recursion intrinsic present). The\nmulti-module freeze prerequisite is no longer the blocker (DOC-P-018 is\nfixed-upstream); the missing listing-handle/recursive surface is the\nremaining reason the walker stays host-side.\n\n## Workaround\n\nDiscovery mechanism stays Rust (`discovery.rs`); only the *policy*\n(exclusions, classification, ordering) is slated for MNCS windows.\n\n## Why insufficient\n\nThe largest remaining Rust module cannot move until enumeration exists.\n\n## Removal condition\n\nA bounded multi-level enumeration primitive (or per-directory listing\nhandles composable under the `fs_root` grant) lands with bytecode\nrealization; then build the MNCS walker with differential tests.\n\n## Evidence\n\n- Registry: `fs_list*` only; no walk/recursion feature\n  (`spec/source-profile-registry.json`).\n- `docs/RUST-BOUNDARY-AUDIT.md` (discovery verdict: E-policy / B-mechanism).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-008",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-008.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-008: No recursive filesystem enumeration.",
+  "target": "tooling",
+  "title": "No recursive filesystem enumeration",
+  "version": "1"
+}

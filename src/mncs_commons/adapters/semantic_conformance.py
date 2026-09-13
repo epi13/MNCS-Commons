@@ -67,7 +67,9 @@ def conformance_report_summary(value: Mapping[str, Any]) -> dict[str, int]:
     counts = {}
     for key in ("pass", "fail", "unknown", "unsupported"):
         count = summary.get(key)
-        counts[key] = count if isinstance(count, int) and not isinstance(count, bool) and count >= 0 else 0
+        counts[key] = (
+            count if isinstance(count, int) and not isinstance(count, bool) and count >= 0 else 0
+        )
     return counts
 
 
@@ -82,10 +84,13 @@ def from_conformance_report(
                 Diagnostic(
                     "UNKNOWN_CONFORMANCE_SCHEMA_VERSION",
                     "schema_version",
-                    "conformance report schema is not mncs.conformance-report/1; no verdict was inferred",
+                    "conformance report schema is not mncs.conformance-report/1; "
+                    "no verdict was inferred",
                 ),
             ),
-            str(value.get("schema_version")) if isinstance(value, Mapping) and value.get("schema_version") else None,
+            str(value.get("schema_version"))
+            if isinstance(value, Mapping) and value.get("schema_version")
+            else None,
             recognized=True,
             unresolved_fields=("schema_version",),
         )
@@ -106,19 +111,25 @@ def from_conformance_report(
             unresolved_fields=("summary", "predicates"),
         )
     counts = conformance_report_summary(value)
-    tested = sum(1 for entry in predicates if isinstance(entry, Mapping) and entry.get("status") == "tested")
-    backends = sorted(
-        {
-            observation.get("backend")
-            for entry in predicates
-            if isinstance(entry, Mapping)
-            for case in (entry.get("cases") or [])
-            if isinstance(case, Mapping)
-            for observation in (case.get("backends") or [])
-            if isinstance(observation, Mapping) and observation.get("backend")
-        }
+    tested = sum(
+        1 for entry in predicates if isinstance(entry, Mapping) and entry.get("status") == "tested"
     )
-    worker = value.get("worker") if isinstance(value.get("worker"), Mapping) else {}
+    backends: set[str] = set()
+    for entry in predicates:
+        if not isinstance(entry, Mapping):
+            continue
+        for case in entry.get("cases") or []:
+            if not isinstance(case, Mapping):
+                continue
+            for observation in case.get("backends") or []:
+                if not isinstance(observation, Mapping):
+                    continue
+                backend = observation.get("backend")
+                if isinstance(backend, str) and backend:
+                    backends.add(backend)
+    backend_names = sorted(backends)
+    worker_value = value.get("worker")
+    worker: Mapping[str, Any] = worker_value if isinstance(worker_value, Mapping) else {}
     predicate_identities = [
         entry.get("predicate_identity")
         for entry in predicates
@@ -131,7 +142,8 @@ def from_conformance_report(
         outcome = ResultStatus.FAIL.value
         summary_text = (
             f"Conformance observed contract violations: fail={counts['fail']} "
-            f"pass={counts['pass']} unknown={counts['unknown']} unsupported={counts['unsupported']}."
+            f"pass={counts['pass']} unknown={counts['unknown']} "
+            f"unsupported={counts['unsupported']}."
         )
     elif counts["unknown"] > 0:
         outcome = ResultStatus.UNKNOWN.value
@@ -156,7 +168,7 @@ def from_conformance_report(
         details={
             "conformanceSummary": counts,
             "testedPredicates": tested,
-            "backendsExercised": backends,
+            "backendsExercised": backend_names,
             "worker": dict(worker),
             "seed": value.get("seed"),
             "subjectModule": value.get("subject_module"),

@@ -1,0 +1,25 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:c2ce36f45d9ba2d233017ef98028993eaac9ba52ae403a2934af607b9af34c3b",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-48E3919FB30E--OBS-959847DE5B4E"
+  ],
+  "from": "implementing",
+  "id": "EVT-1D361C4B20632BD1",
+  "implementation": {
+    "availableSince": "2026-09-13",
+    "backend": "mncs-research-bytecode",
+    "capabilityEvidence": "pressure/repro/finite-payload-home.mncs + finite-payload-consumer.mncs",
+    "profile": "0.10",
+    "ref": "mncs-language:30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:00:00.003000Z",
+  "pressureId": "MNCS-COMPILER-48E3919FB30E",
+  "previousEvent": "EVT-B6C922097139CEB5",
+  "reason": "Current mncs-language contains the capability exercised by the minimal reproducer.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

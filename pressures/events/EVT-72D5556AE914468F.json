@@ -1,0 +1,18 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:2ffab121736c847cd2ae2078bf18b008c896a56937a2af1dc1d0a5fa33e6117f",
+  "details": {
+    "basis": "same bool==bool frontend capability and same MNE121 boundary",
+    "canonicalConsumer": "mncs-store",
+    "legacyAlias": "mncs-compiler:CP-0004"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-72D5556AE914468F",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T05:50:20Z",
+  "relation": "duplicate_of",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-COMPILER-3BE4C277C596",
+  "targetPressure": "MNCS-LANG-A29B3EFA5B73",
+  "version": "1"
+}

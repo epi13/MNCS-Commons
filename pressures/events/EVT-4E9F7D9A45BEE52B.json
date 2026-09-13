@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:8015ddf72c3c49400d0363cff22c9cf7d2af142557a60cadc9ea5d24f321c033",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-71B72613B11B--OBS-E2395FE51C84"
+  ],
+  "from": "discovered",
+  "id": "EVT-4E9F7D9A45BEE52B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:31:07.001000Z",
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "previousEvent": null,
+  "reason": "Repository ledger and its concrete reproducer were reviewed during family activation; modern rerun remains separately tracked.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

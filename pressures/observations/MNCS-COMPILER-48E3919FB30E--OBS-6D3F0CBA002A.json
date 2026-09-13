@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:9797c8b53613d8e190559753fbb2fc5246863656a3c5688d4da874e5a1fa4d5a",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0008",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0008-finite-payload-visibility.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-48E3919FB30E--OBS-6D3F0CBA002A",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0008",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:d4cd7d13ded10db1d466c4248d02582efa8fba6dd52e034b4cdf7916250c2dd6"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-48E3919FB30E",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0008-finite-payload-visibility.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "All tree types (`Expr`, `Stmt`, declarations, clause/effect facts, and\nevery list) plus all tree-walking stages (expression parsing, declaration\nparsing, and later resolution/checking/lowering) live in one module,\n`mncs.compiler.decl.v1`. The module header documents this homing rule.\nByte/token/record-only layers (`source`, `lexer`, `segment`) stay\nseparate because records cross module boundaries without restriction.\nConsumer modules may only pass trees opaquely.",
+    "legacyStatus": "resolved (2026-09-12)"
+  }
+}

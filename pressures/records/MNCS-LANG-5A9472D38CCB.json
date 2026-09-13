@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-010",
+  "contentDigest": "sha256:107770c4426a8ec5e57a9541fd6bb4142908e265139ae8dd54343873238e0b57",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-5A9472D38CCB",
+  "identity": {
+    "capability": "legacy.p-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-010",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:64c80bd5b137e09964461bc29d4f1a179669c46ac795b0ce772e51f222a6be6e",
+    "sourcePath": "mncs-numerics:P-010-float-vectors/README.md",
+    "sourceText": "# P-010 — No float vectors\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-010`.\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-010-float-vectors/repro.mncs --node-id repro\n```\n\nA `vec<f64, 4>` parameter fails with `MNE105` (integer lanes only)\nplus downstream `MNE206`. There is no float lane type, no float lane\nconstruction, and no float lane arithmetic/mask vocabulary anywhere.\nLibrary workaround: `[f64; N]` sequences + `select` (all of\n`src/numerics/vec_float_*.mncs`).\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-010",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-010-float-vectors/README.md"
+  },
+  "summary": "Imported legacy pressure P-010: No float vectors.",
+  "target": "language",
+  "title": "No float vectors",
+  "version": "1"
+}

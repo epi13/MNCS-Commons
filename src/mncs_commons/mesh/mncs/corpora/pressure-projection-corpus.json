@@ -1,0 +1,165 @@
+{
+  "schema_version": "0.1",
+  "name": "commons-pressure-projection",
+  "cases": [
+    {
+      "id": "verification-ready",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "verification_state"},
+        "arguments": [
+          {"integer": {"value": 3, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 3, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 3, "type": {"bits": 64, "signed": true}}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"integer": {"value": 1, "type": {"bits": 64, "signed": true}}}]
+    },
+    {
+      "id": "verification-incomplete",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "verification_state"},
+        "arguments": [
+          {"integer": {"value": 3, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 2, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 2, "type": {"bits": 64, "signed": true}}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"integer": {"value": 0, "type": {"bits": 64, "signed": true}}}]
+    },
+    {
+      "id": "verification-failed",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "verification_state"},
+        "arguments": [
+          {"integer": {"value": 2, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 2, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"integer": {"value": 2, "type": {"bits": 64, "signed": true}}}]
+    },
+    {
+      "id": "verification-unknown",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "verification_state"},
+        "arguments": [
+          {"integer": {"value": 2, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"integer": {"value": 3, "type": {"bits": 64, "signed": true}}}]
+    },
+    {
+      "id": "verification-no-consumers",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "verification_state"},
+        "arguments": [
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}},
+          {"integer": {"value": 0, "type": {"bits": 64, "signed": true}}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"integer": {"value": 3, "type": {"bits": 64, "signed": true}}}]
+    },
+    {
+      "id": "available-awaits-consumer",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "available_awaiting_consumer"},
+        "arguments": [
+          {"integer": {"value": 4, "type": {"bits": 64, "signed": true}}},
+          {"boolean": {"value": false}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": true}}]
+    },
+    {
+      "id": "available-current-probe-not-consumer",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "available_awaiting_consumer"},
+        "arguments": [
+          {"integer": {"value": 4, "type": {"bits": 64, "signed": true}}},
+          {"boolean": {"value": true}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": false}}]
+    },
+    {
+      "id": "confirmed-not-awaiting-consumer",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "available_awaiting_consumer"},
+        "arguments": [
+          {"integer": {"value": 1, "type": {"bits": 64, "signed": true}}},
+          {"boolean": {"value": false}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": false}}]
+    },
+    {
+      "id": "unresolved-needs-revalidation",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "requires_revalidation"},
+        "arguments": [
+          {"boolean": {"value": true}},
+          {"boolean": {"value": false}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": true}}]
+    },
+    {
+      "id": "unresolved-currently-validated",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "requires_revalidation"},
+        "arguments": [
+          {"boolean": {"value": true}},
+          {"boolean": {"value": true}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": false}}]
+    },
+    {
+      "id": "resolved-does-not-need-revalidation",
+      "request": {
+        "schema_version": "0.1",
+        "target": {"module": "commons.pressure.lifecycle", "function": "requires_revalidation"},
+        "arguments": [
+          {"boolean": {"value": false}},
+          {"boolean": {"value": false}}
+        ],
+        "step_budget": 64
+      },
+      "expected": [{"boolean": {"value": false}}]
+    }
+  ],
+  "properties": []
+}

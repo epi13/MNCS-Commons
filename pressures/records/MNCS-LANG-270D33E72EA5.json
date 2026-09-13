@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-003",
+  "contentDigest": "sha256:493468245a419ae53e0ff22a40b3bb25d5f25217ef92524722f8a9d2fc2adda8",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-270D33E72EA5",
+  "identity": {
+    "capability": "legacy.press-003",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-index:PRESS-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-003",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:847c91e50cdbfa6d46270c63eac6bc67cff150d59a4fbeb1e8075d097271376c",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-003 — No filesystem effects (P0, filesystem, language/runtime)\n\n- Observed: RFC 0008 (I/O) is `DRAFT`/`PARTIAL`; effects-and-capabilities\n  prototypes treat `read filesystem:/config` as string-typed doc text, not\n  an executable capability. No traversal, read, metadata, or watch API is\n  callable from MNCS source.\n- Desired: effect-gated directory traversal and file reads with explicit\n  authority, so discovery snapshots are MNCS values.\n- Workaround: host `discover.py` (walk/read/normalize) + polling watcher.\n  Cost: provenance roots in host code; path normalization policy is\n  host-written (differentially untestable against MNCS — there is no MNCS\n  string type to compare with).\n- Update 2026-09-07 (`index/phase2-pressure`, slice 3): the read half is\n  now genuinely concurrent (bounded read queue + parallel `mncs-reader`\n  threads; enumeration stays single-threaded so admission/skipped\n  accounting is unchanged). Reader overlap is measured, not assumed\n  (`ReadStats.max_in_flight >= 2` under a 4-way barrier in\n  `tests/test_concurrent_read.py::test_slow_readers_overlap`).\n- Slice-4 verdict 2026-09-07 (`index/phase2-pressure`): **partially\n  available — bounded single-blob read confirmed at source level.**\n  Smallest legal program `pressure/reproducers/probe-host-read.mncs`\n  (`mncs 0.10`, `capability probe_reader`,\n  `effect host_read authorized_by probe_reader`,\n  `let blob: [byte; up_to 64] = host_read(); return blob.len;`)\n  elaborates with zero `MNE`/`MNB`/`MNP` errors and, under\n  `experiment run --backend mncs-research-bytecode\n  --grant-read probe_reader=probe-host-read-grant.txt`, returns 17 for\n  the 17-byte grant with effect\n  `{kind: host_read, target: blob_read, capability: probe_reader,\n  provenance: grant:<path> sha256:5311ca79…}` (`steps: 3`,\n  `expectation_met` + `effects_met`). Fail-closed: no grant ->\n  `unsupported`; wrong capability -> `invalid_request`; 65-byte grant\n  file -> refused before execution (exit 2). Cost: ~0.13 s per minimal\n  invocation (per-invocation backend compile) versus ~10 ms per\n  dependency-free `execute` kernel call — unusable per file/kernel\n  call, and there is still no directory traversal, metadata, or watch\n  surface at all, so enumeration/admission stays host-side.\n  Runner: `pressure/reproducers/run-language-probes.sh`;\n  regression: `tests/test_language_probes.py` (granted + fail-closed).\n- Classification: language semantics (effects), runtime, stdlib.\n- Slice-7 verdict 2026-09-08: **confirmed still partial** (RFC 0008\n  still `PARTIAL`). Reran `run-language-probes.sh`: ALL PROBES GREEN\n  with identical verdicts (blob-len 17, `steps: 3`; fail-closed on\n  all three negatives). Still single-blob ≤64 B only; no traversal,\n  metadata, or watch surface.\n- Acceptance-test-after-language-fix: an MNCS program enumerates a\n  fixture directory under an explicit traversal grant and returns the\n  exact sorted entry list matching `discover.py`; assert\n  `tests/test_determinism.py` discovery snapshot comes from the\n  language call (host walk deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-003",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-003: No filesystem effects (P0, filesystem, language/runtime).",
+  "target": "language",
+  "title": "No filesystem effects (P0, filesystem, language/runtime)",
+  "version": "1"
+}

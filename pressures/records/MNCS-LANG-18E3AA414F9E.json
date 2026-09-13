@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-003",
+  "contentDigest": "sha256:95a8100632a0ae940eef2e17888af3254ed52941e25c1b0c49a638e470c4e887",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-18E3AA414F9E",
+  "identity": {
+    "capability": "legacy.p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-003",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:e5376d18b10b5496e872f3df79c74ec39e8c0c2fc6bc607a541dfb01e2dfc438",
+    "sourcePath": "mncs-numerics:P-003-symbolic-fill/README.md",
+    "sourceText": "# P-003 — No fill for symbolic bounds (diagnostic half resolved)\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-003`.\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-003-symbolic-fill/repro.mncs --node-id repro\n```\n\n`return [x; N];` for symbolic `N` is refused with a single precise\ndiagnostic (language repair 2026-09-12):\n\n```text\nMNE256 | symbolic repeat count `N` is not supported; repeat counts must be Nat literals\n```\n\nBefore the repair this was a parse refusal (`MNP203: expected\nrepeat count after ';'`) plus an MNP016/MNP017/MNP006/MNP007 cascade\nthat named everything except the real rule. The parser now carries a\nbare-identifier count through (so the `]` still parses, no cascade)\nand elaboration checks the count text before the expected-type check,\nnaming the Nat-literal rule once. The fill feature itself (symbolic\n`[x; N]` materialization) remains open language design — it needs\nruntime dynamic fill on every construction-capable backend.\n\nLibrary workaround (unchanged): seeded construction (`*_into`,\n`broadcast_like`, `zeros_like` in `src/numerics/vec_float_build.mncs`\nand `mat_float_build.mncs`).\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-003",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-003-symbolic-fill/README.md"
+  },
+  "summary": "Imported legacy pressure P-003: No fill for symbolic bounds (diagnostic half resolved).",
+  "target": "language",
+  "title": "No fill for symbolic bounds (diagnostic half resolved)",
+  "version": "1"
+}

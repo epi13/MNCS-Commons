@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0007",
+  "contentDigest": "sha256:36c2e1662e6c0f5d3943248419a5261221f05919463bfae363029f82360c9292",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-2EA21F85084E",
+  "identity": {
+    "capability": "legacy.cp-0007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0007",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open, re-confirmed (2026-09-12). Category: tooling,",
+    "legacyId": "CP-0007",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:9d40ee951208ecc04041097114ec44b15a60e05e62b0146a075059567467f2a1",
+    "sourcePath": "mncs-compiler:0007-bootstrap-evidence-cost.md",
+    "sourceText": "# CP-0007 — Small frontend emits substantial Stage-0 IR/evidence\n\nStatus: open, re-confirmed (2026-09-12). Category: tooling,\ncompiler-architecture. Severity: medium. Frequency: each bootstrap\ncompilation. Upstream tracking: none; re-measurement staged after\nCP-0014 (the migrated tree is larger and must recompile clean first).\n\nThe implemented four-module frontend is 342 MNCS lines. Compiling the linked\nkernel with the pinned CLI and `--emit semantic,hir,ssa` completes with 242\nCMP301 unresolved-obligation diagnostics and conservative fallbacks. Serialized\nartifacts are 1,932,169 semantic bytes, 10,279,372 HIR bytes, and 8,613,578 SSA bytes.\n`evidence/compile-results.json` records sizes, hashes and two identical runs.\nReproduction is its recorded compile command; this whole linked request is the\nsmallest currently measured workload, not a minimized attribution experiment.\n\nThe code uses checked arithmetic for source offsets/depth/counts. Its normal\nentry paths keep values within the 64-byte resource envelope; Stage-0 does not\nfully discharge the resulting obligations. No checks were removed or switched\nto wrapping arithmetic merely to make compilation appear fully verified.\n\nWorkaround: preserve fallback obligations, test execution and record hashes/size\nsummaries rather than committing ~20 MB of generated JSON. Desired behavior:\nmeasure linked IR duplication, serialization overhead and repeated bounds facts\nbefore deciding whether compiler proofs, factoring, or representation changes\nare warranted. These sizes are **not peak memory** and are not proof of an\noptimizer bug or native performance problem.\n\nCorrectness/safety: conservative checks remain; compilation is explicitly\nqualified as `completed_with_unresolved_obligations`. Determinism: complete\ncompile reports and emitted bytes agree across repeats. Runtime and peak-memory\nimpact: unmeasured. Tooling cost: substantial serialization/storage relative to\nthe source slice. Complexity: evidence must distinguish successful compilation\nfrom fully discharged verification. Likely owners: Stage-0 tooling and compiler\narchitecture; no language feature is justified by these measurements alone.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0007",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0007-bootstrap-evidence-cost.md"
+  },
+  "summary": "Imported legacy pressure CP-0007: Small frontend emits substantial Stage-0 IR/evidence.",
+  "target": "compiler",
+  "title": "Small frontend emits substantial Stage-0 IR/evidence",
+  "version": "1"
+}

@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "all-five-executable-backends",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:544b032111b64a16d13c3d1d97eda6ee7a3297d77996a006b820bc8be37a5dbe",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0004:reconciliation",
+      "kind": "compiler-consumer-retest",
+      "ref": "pressure/0004-boolean-comparison.md",
+      "status": "PASS",
+      "summary": "The old MNE121 reproducer is clean in the reconciled language revision."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-1C51E6B76425",
+  "kind": "observation",
+  "languageProfile": "0.13",
+  "metadata": {
+    "backendScope": "all-five-executable-backends",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "legacyId": "CP-0004"
+  },
+  "observedAt": "2026-09-13T05:50:22Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "run the CP-0004 bool comparison acceptance corpus",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "languageCommit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "languageRepository": "mncs-language",
+    "path": "pressure/0004-boolean-comparison.md",
+    "repository": "mncs-compiler"
+  },
+  "summary": "Compiler reconciliation reports bool equality, negation, and byte ordering now elaborate and run on the full backend matrix.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "removed": true
+  }
+}

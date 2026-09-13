@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:126de369071624a570beeabd86ce2d57b68ea9370e89c45ff0c9bbbefba98f5f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-48E3919FB30E--OBS-959847DE5B4E"
+  ],
+  "from": "confirmed",
+  "id": "EVT-B7BB15859B202ECC",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:00:00.001000Z",
+  "pressureId": "MNCS-COMPILER-48E3919FB30E",
+  "previousEvent": "EVT-F9E46887AC0DE867",
+  "reason": "Current language probe confirms the capability is available enough to plan consumer/compiler adoption.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

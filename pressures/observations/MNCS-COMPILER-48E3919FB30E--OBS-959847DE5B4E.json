@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "tool": "target/debug/mncs"
+  },
+  "contentDigest": "sha256:68a694a4511d797fccbaa7dfcbbc9108aab28a0508a214d84ca15e2dc73821e5",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0008-current-source-study",
+      "ref": "pressure/repro/finite-payload-home.mncs + finite-payload-consumer.mncs",
+      "status": "PASS",
+      "summary": "Two-module temporary fixture compiled through current source-study; imported finite payload is now visible across the module boundary."
+    }
+  ],
+  "id": "MNCS-COMPILER-48E3919FB30E--OBS-959847DE5B4E",
+  "kind": "observation",
+  "languageProfile": "0.10",
+  "metadata": {
+    "activationCurrentProbe": "mncs-compiler:CP-0008",
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": true,
+    "validationScope": "minimal-reproducer"
+  },
+  "observedAt": "2026-09-13T08:00:00Z",
+  "pressureId": "MNCS-COMPILER-48E3919FB30E",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the cited inert source-study fixture; this record does not execute repository-provided text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "command": "mncs source-study <probe>",
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "path": "pressure/repro/finite-payload-home.mncs + finite-payload-consumer.mncs",
+    "repository": "mncs-compiler",
+    "temporaryProfileVariant": null
+  },
+  "summary": "Two-module temporary fixture compiled through current source-study; imported finite payload is now visible across the module boundary.",
+  "version": "1",
+  "workaround": {
+    "description": "Historical compiler workaround is no longer needed for this minimal capability probe.",
+    "removed": true
+  }
+}

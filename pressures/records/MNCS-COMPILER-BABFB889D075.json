@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0014",
+  "contentDigest": "sha256:60a39df44139a48ad8c403e039ba744cada1b4608763655d467c50b59859aca5",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-BABFB889D075",
+  "identity": {
+    "capability": "legacy.cp-0014",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0014",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "CP-0014",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:dca051686624ac56bea98204adceb6be11f0ff75b4ca7da7122c9dcb55a5cc8d",
+    "sourcePath": "mncs-compiler:0014-bool-payload-regression.md",
+    "sourceText": "# Pressure Finding CP-0014\n\nID: CP-0014\n\nStatus: open\n\nCategory: language\n\nSeverity: blocking\n\nFrequency: pervasive (every elaboration of the declaration core)\n\n## `bool` finite-payload fields regressed from accepted to MNE171\n\nA finite-variant payload field typed `bool` elaborated under the previous\nStage-0 pin (`6906d0b1eee7a03f808aff4ab12eb3d2338ff6b4`, profile 0.10) and\nis rejected under the current pin (`a7a8c054015971c148d1bbaa797c64362c4073e2`)\nat every profile (verified 0.10 and 0.13):\n\n```text\nMNE171 variant payload field type does not name a supported scalar, finite,\n       record, or bounded-sequence type   (at the `bool` spelling)\n```\n\nThe single MNE171 cascades into MNE177 (payload binding) and MNE172\n(constructor) at every use site, so one root cause reads as dozens of\ndiagnostics on real code.\n\n## Compiler workload\n\n`src/compiler/decl.mncs` uses `bool` payloads pervasively for exact\ncompiler state: `Expr.Integer.overflow`, `Expr.Boolean.value`,\n`Expr.Project.path`, `FnBody.has_ret`, plus `ok` flags threaded through\nevery declaration/parse record consumed by payload-bearing variants.\nThe whole declaration and semantic verticals (parsing, symbol facts,\nresolve/span walks, stack-IR lowering, bidirectional proof, typed IR)\nare unreachable: the test-transport probe elaborates `decl.mncs` at\nstartup and fails closed before any request runs.\n\n## Minimal MNCS reproduction\n\n`pressure/repro/bool-payload.mncs` (profile 0.10, no imports):\n\n```text\nmncs 0.10;\nmodule probe.bool_payload;\nenum Flag { Yes { set: bool }, No }\nfn is_set(f: Flag) -> (result: bool) {\n    return match f {\n        Yes { set: s } => s,\n        No => false\n    };\n}\nfn make(s: bool) -> (result: Flag) {\n    return Flag.Yes { set: s };\n}\n```\n\n```sh\n.bootstrap/target/debug/mncs abi pressure/repro/bool-payload.mncs\n# MNE171 at the `bool` field type (span 61 65), then MNE177 at the\n# match binding and MNE172 at the constructor — both cascades of the\n# dropped field, not independent errors.\n```\n\n`u64` and `byte` payloads elaborate in the same positions on the same\npin; only `bool` is refused.\n\n## Current behavior\n\nThe payload gate in `mncs-compiler/src/frontend.rs` (current pin)\nresolves the field type with `profile_type(...)` and accepts it only\nwhen no MNE105 probe diagnostic fires **and** the resolved type is not\n`BodyType::Named(_)`:\n\n```text\nlet supported = probe_diagnostics.iter().all(|d| d.code != \"MNE105\")\n    && !matches!(payload_ty, BodyType::Named(_));\n```\n\n`bool` is the one scalar whose resolved type is `BodyType::Named(\"bool\")`\n(`profile_scalar_supported` explicitly admits it), so the `Named`\nexclusion — introduced with the bounded-sequence/canonicalization\nrefactor — rejects exactly `bool` while admitting every other scalar.\nAt the previous pin the gate was `profile_scalar_supported(...).is_none()\n&& !finite && !record`, which admits `bool`.\n\nNo profile document announces the removal: profiles 0.1–0.16 retain\n`bool` as a core scalar, the 0.6 payload-sums section gives no\nbool exclusion, and RFC 0036 promises older profiles keep their\nhistorical semantics. The language's own suites pin bool *record*\nfields (e.g. `module_imports.rs`) but contain no bool *payload* case,\nwhich is how the regression shipped green.\n\n## Current workaround\n\nNone viable in-compiler. Replacing every `bool` payload with a `u64`\n0/1 code (or a two-variant finite boolean) would touch every tree type\nand every construction/match site in `decl.mncs` (~100 sites), destroy\nthe readability of predicates the 0.13 migration is about to simplify\nwith `!`/`==`, and enshrine a workaround for what the previous pin\naccepted. The declaration/semantic suites stay red until upstream\nresolves this; the frontend suite runs on the five unaffected modules\n(see the probe's module allowlist below).\n\n## Why the workaround is insufficient\n\n- Any in-compiler rewrite is pure churn against a regression: the\n  previous pin proves the language can and did support this.\n- The failure is silent at the design stage (bool *record* fields,\n  bool locals, bool returns all still work) and appears only when a\n  payload names `bool` — exactly the modeling a compiler needs for\n  flags carried inside tree nodes.\n- Cascades (MNE177/MNE172) misdirect diagnosis toward match/constructor\n  spellings that are correct.\n\n## Desired behavior\n\nOne of: `bool` payload fields elaborate again on all profiles that\nadmitted them (the `Named` exclusion exempts the scalar `bool`, matching\n`profile_scalar_supported`); or a profile document explicitly removes\n`bool` from the payload universe with a migration rule and a compat pin\nproving old profiles keep it; or a dedicated diagnostic that names the\nexclusion instead of the generic supported-type list. The first option\nrestores the documented contract with the smallest change.\n\n## Likely ownership\n\nlanguage\n\n## Impact\n\n- Correctness: valid programs (including this compiler's own core)\n  are rejected; no unsoundness observed.\n- Safety: none (rejection, not miscompilation).\n- Runtime performance: none.\n- Compiler performance: blocks all declaration-scale validation on the\n  current pin; frontend-only validation proceeds on five modules.\n- Memory: none measurable.\n- Determinism: deterministic rejection.\n- Implementation complexity: total blockage of the decl/sem verticals,\n  zero workaround cost accepted.\n\n## Evidence / reproduction\n\n- Root-plus-cascade triple on the current pin: command above.\n- Previous-pin acceptance: `evidence/decl-results.json` and\n  `evidence/sem-results.json` at revision `6906d0b1...` elaborate the\n  same `bool`-payload `decl.mncs` (e.g. `overflow: bool`,\n  `value: bool`, `path: bool`); the gate change arrived with the\n  bounded-sequence/canonicalization refactor (language history:\n  `git log -S 'matches!(payload_ty' -- crates/mncs-compiler/src/frontend.rs`).\n- Regression scope probe: `u64`/`byte` payloads pass, `bool` fails, at\n  both 0.10 and 0.13 on the current pin.\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision:\n- Follow-up evidence in this repository:\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0014",
+    "text": ""
+  },
+  "requiredBehavior": "One of: `bool` payload fields elaborate again on all profiles that\nadmitted them (the `Named` exclusion exempts the scalar `bool`, matching\n`profile_scalar_supported`); or a profile document explicitly removes\n`bool` from the payload universe with a migration rule and a compat pin\nproving old profiles keep it; or a dedicated diagnostic that names the\nexclusion instead of the generic supported-type list. The first option\nrestores the documented contract with the smallest change.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0014-bool-payload-regression.md"
+  },
+  "summary": "Imported legacy pressure CP-0014: CP-0014.",
+  "target": "compiler",
+  "title": "CP-0014",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-011",
+  "contentDigest": "sha256:fa90b376b1ee31cee0fec983392e9ea1904932ae4c609a279523a4c49084c5ae",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-2585924D3133",
+  "identity": {
+    "capability": "legacy.press-011",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-011",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-011",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:8c11529fa661b24dd0225baac6763446fb39cc97002b5344290f7c847682e36e",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-011 — Coarse traversal diagnostics (P3, diagnostics, compiler)\n\n- Observed: `MNB101` span covers the entire file (start 0, end N) rather\n  than the offending `iterate`; no documented list of traversable element\n  types exists, so discovery was trial-and-error (`i64` ok, `u64` no).\n- Desired: precise spans and a documented domain-eligibility rule.\n- Reproducer: `pressure/reproducers/traversal-u64-domain.mncs` (also the\n  PRESS-005 reproducer) — the `[u64; 4]` variants fail MNB101 with a\n  whole-file span while `[i64; 4]`/`[byte; 4]` elaborate cleanly.\n- Cost: ergonomic; slowed kernel development by ~30 minutes.\n- Classification: compiler diagnostics.\n- Slice-7 verdict 2026-09-08: **confirmed still coarse.** Reran\n  `traversal-u64-domain.mncs`: MNB101 span is still the whole file\n  (start 0, end 615), and no traversable-type list is documented.\n  (Contrast: MNE147 now points at the inner `iterate`, lines\n  12/column 9 — nesting diagnostics are precise; domain diagnostics\n  are not.)\n- Acceptance-test-after-language-fix: the unmodified reproducer\n  reports MNB101 with a span covering only the offending `iterate`\n  domain expression, and a documented domain-eligibility rule lists\n  exactly which element types traverse; assert by running the\n  reproducer and checking the span bounds."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-011",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-011: Coarse traversal diagnostics (P3, diagnostics, compiler).",
+  "target": "language",
+  "title": "Coarse traversal diagnostics (P3, diagnostics, compiler)",
+  "version": "1"
+}

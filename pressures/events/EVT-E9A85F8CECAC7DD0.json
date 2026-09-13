@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:41a21def41d8194bf4fb56e150c07d6331e6a471254963cc415cb50a13871e6e",
+  "details": {
+    "reason": "Both expose missing first-class text/string value handling, with repository-specific parsing and tooling reproductions.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-E9A85F8CECAC7DD0",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:12:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-9DE65A412CF7",
+  "targetPressure": "MNCS-TOOLING-D66F67A67198",
+  "version": "1"
+}

@@ -229,6 +229,8 @@ def build_parser() -> argparse.ArgumentParser:
     pressure_list.add_argument("--workaround-active", action="store_true")
     pressure_list.add_argument("--language-profile")
     pressure_list.add_argument("--rust-fallback", action="store_true")
+    pressure_list.add_argument("--python-fallback", action="store_true")
+    pressure_list.add_argument("--needs-revalidation", action="store_true")
     pressure_list.add_argument("--format", choices=("json", "text"), default="json")
     pressure_show = pressure_commands.add_parser("show")
     pressure_show.add_argument("root")
@@ -260,6 +262,11 @@ def build_parser() -> argparse.ArgumentParser:
     pressure_verify.add_argument("--compiler")
     pressure_verify.add_argument("--evidence", action="append", default=[])
     pressure_verify.add_argument("--observed-at")
+    pressure_verify.add_argument(
+        "--current-validation",
+        action="store_true",
+        help="mark this verification as run against the current language/toolchain",
+    )
     pressure_transition = pressure_commands.add_parser("transition")
     pressure_transition.add_argument("root")
     pressure_transition.add_argument("id")
@@ -285,6 +292,7 @@ def build_parser() -> argparse.ArgumentParser:
     pressure_migrate = pressure_commands.add_parser("migrate")
     pressure_migrate.add_argument("root")
     pressure_migrate.add_argument("--repository", required=True)
+    pressure_migrate.add_argument("--target", choices=sorted(TARGETS), default="language")
     pressure_migrate.add_argument("source")
     pressure_migrate.add_argument("--dry-run", action="store_true")
     pressure_migrate.add_argument("--refresh", action="store_true")
@@ -491,6 +499,8 @@ def main(argv: list[str] | None = None) -> int:
                     workaround_active=args.workaround_active,
                     language_profile=args.language_profile,
                     rust_fallback=args.rust_fallback,
+                    python_fallback=args.python_fallback,
+                    needs_revalidation=args.needs_revalidation,
                 )
                 if args.format == "text":
                     print(_pressure_text(values))
@@ -550,6 +560,7 @@ def main(argv: list[str] | None = None) -> int:
                         language_profile=args.language_profile,
                         compiler=compiler,
                         observed_at=args.observed_at,
+                        metadata={"currentValidation": True} if args.current_validation else None,
                     )
                 )
                 return 0
@@ -599,6 +610,7 @@ def main(argv: list[str] | None = None) -> int:
                 registry.migrate_legacy(
                     args.repository,
                     args.source,
+                    target=args.target,
                     dry_run=args.dry_run,
                     limit=args.limit,
                     refresh=args.refresh,

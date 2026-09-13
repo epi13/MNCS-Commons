@@ -3,20 +3,51 @@
   "pressures": [
     {
       "affectedRepositories": [
-        "mncs-store"
+        "mncs-compiler"
       ],
-      "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+      "capability": "legacy.cp-0008",
+      "currentValidation": true,
       "domain": "language-semantics",
-      "id": "MNCS-LANG-71DAE5A34032",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-48E3919FB30E",
       "reporters": [
-        "mncs-store"
+        "mncs-compiler"
       ],
-      "severity": "blocker",
-      "status": "discovered",
-      "target": "language",
-      "title": "No atomic publication, namespace mutation, or durability barrier",
+      "revalidationRequired": false,
+      "severity": "blocking",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0008",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0014",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-BABFB889D075",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocking",
+      "status": "available",
+      "target": "compiler",
+      "title": "CP-0014",
       "unresolved": true,
       "valid": true,
+      "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
@@ -26,22 +57,142 @@
     },
     {
       "affectedRepositories": [
+        "mncs-web"
+      ],
+      "capability": "legacy.web-p-001",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-11473A6AEAC0",
+      "reporters": [
+        "mncs-web"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocker",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No socket/network capability in the language",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-ingest"
+      ],
+      "capability": "legacy.ingest-p-002",
+      "currentValidation": false,
+      "domain": "type-system.views",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-438BF5EE1996",
+      "reporters": [
+        "mncs-ingest"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocker",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No arbitrary view sub-slicing (partially relieved by 0.14)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-71DAE5A34032",
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocker",
+      "status": "available",
+      "target": "language",
+      "title": "No atomic publication, namespace mutation, or durability barrier",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-commons",
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "currentValidation": true,
       "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-8AF4BC50DDB4",
       "reporters": [
         "mncs-commons",
+        "mncs-language",
         "mncs-store"
       ],
+      "revalidationRequired": false,
       "severity": "blocker",
-      "status": "discovered",
+      "status": "available",
       "target": "language",
       "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
       "unresolved": true,
       "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+      "currentValidation": true,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-973FAC2F4FBD",
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocker",
+      "status": "available",
+      "target": "language",
+      "title": "No atomic rename, directory creation/iteration, or file metadata",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
@@ -53,41 +204,22 @@
       "affectedRepositories": [
         "mncs-store"
       ],
-      "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
-      "domain": "io.filesystem",
-      "id": "MNCS-LANG-973FAC2F4FBD",
-      "reporters": [
-        "mncs-store"
-      ],
-      "severity": "blocker",
-      "status": "discovered",
-      "target": "language",
-      "title": "No atomic rename, directory creation/iteration, or file metadata",
-      "unresolved": true,
-      "valid": true,
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-store"
-      ],
       "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+      "currentValidation": false,
       "domain": "io.filesystem",
+      "fallbackLanguages": [],
       "id": "MNCS-LANG-A0C3744B0B9A",
       "reporters": [
         "mncs-store"
       ],
+      "revalidationRequired": true,
       "severity": "blocker",
       "status": "discovered",
       "target": "language",
       "title": "Append-only host_write cannot express store file semantics",
       "unresolved": true,
       "valid": true,
+      "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
@@ -97,22 +229,28 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+      "currentValidation": true,
       "domain": "language-semantics",
+      "fallbackLanguages": [],
       "id": "MNCS-LANG-FDCBC01300B8",
       "reporters": [
+        "mncs-language",
         "mncs-store"
       ],
+      "revalidationRequired": false,
       "severity": "blocker",
-      "status": "discovered",
+      "status": "available",
       "target": "language",
       "title": "No durable-sync barrier distinct from userspace buffering",
       "unresolved": true,
       "valid": true,
+      "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

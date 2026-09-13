@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:d4adb936dd444c615928b533d97718b9e46070b6bfc2c2241f1b831ae0a4f2d5",
+  "evidence": [
+    {
+      "id": "legacy:mncs-numerics:P-004",
+      "kind": "legacy-markdown",
+      "ref": "mncs-numerics:P-004-generic-records/README.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-019204D482CB--OBS-7C2736DBC747",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "P-004",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:f22617d99c5b2828a7942fa5f371ab3685de120ba90b0db6c1ee6ec1d3bd1a5c"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-019204D482CB",
+  "repository": "mncs-numerics",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-004-generic-records/README.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

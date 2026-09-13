@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0008",
+  "contentDigest": "sha256:ca83c74e3759021fd6bace794e3a20fb43d47fbcb3d2d3a6de95ebe07f7e12a1",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-48E3919FB30E",
+  "identity": {
+    "capability": "legacy.cp-0008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0008",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "resolved (2026-09-12)",
+    "legacyId": "CP-0008",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:d4cd7d13ded10db1d466c4248d02582efa8fba6dd52e034b4cdf7916250c2dd6",
+    "sourcePath": "mncs-compiler:0008-finite-payload-visibility.md",
+    "sourceText": "# Pressure Finding CP-0008\n\nID: CP-0008\n\nStatus: resolved (2026-09-12)\n\nCategory: language | backend | compiler-architecture\n\nSeverity: blocking\n\nFrequency: pervasive\n\n## Finite payloads do not cross module boundaries\n\nA `record` value travels freely between modules: foreign records can appear\nin signatures, be constructed (`alias.Type { ... }`), projected (`v.field`),\nand matched. A `finite` (enum) value does not:\n\n1. Foreign payload-variant *construction* (`alias.Type.Variant { ... }`)\n   parses as a record literal and fails elaboration with MNE154\n   (\"record literal names an unknown record type\"). Only same-module\n   `Type.Variant { ... }` (two segments) constructs payload variants, and\n   only payload-free `alias.Type.VARIANT` reinterprets through elaboration.\n2. A *locally defined* finite variant whose payload field type names a\n   *foreign* finite type elaborates (no MNE diagnostic) but fails the\n   backend check: construction reports MNB063 (\"payload operand type does\n   not match the declared payload field type\") and payload projection\n   inside `match` reports MNB066 (\"payload projection result type does not\n   match the declared field type\"), even when the operand type is exactly\n   the declared field type.\n\nNet rule: a finite payload can only be built and destructured in the\nmodule that homes the payload's type. Cross-module tree code can pass\ntrees opaquely and test variant tags, but cannot look inside.\n\n## Compiler workload\n\nThe declaration core needs one recursive syntax tree (`Expr` inside\n`Stmt`, `Call` arguments, binary operands) shared by parsing, name\nresolution, type checking, and lowering. The natural design homes `Expr`\nin an expression module and `Stmt` in a declaration module. Five\nfunctions constructing `Stmt.Let`/`Return`/`If` with `expr.Expr`\npayloads failed with MNB063 despite exact types; investigation showed any\nlocal finite with a foreign finite payload field is affected.\n\n## Minimal MNCS reproduction\n\n`pressure/repro/finite-payload-home.mncs` (homes `E`) and\n`pressure/repro/finite-payload-consumer.mncs` (defines `S` with a `t.E`\npayload, constructs it, and matches on it):\n\n```text\nmncs 0.10;\nmodule probe.u2;\nuse probe.u1 as t;\nenum S { W { v: t.E }, Z }\nfn build(s: u64) -> (result: S) {\n    let e: t.E = t.mk(s, s);\n    return S.W { v: e };\n}\nfn read(x: S) -> (result: u64) {\n    return match x { W { v: e } => 1, Z => 0 };\n}\n```\n\nStage-0 reports MNB063 on `build` (construction) and MNB066 on `read`\n(projection while binding `v`, even though the binding is unused).\nReplacing the payload construction with a same-module constructor call\nand dropping the payload binding removes both diagnostics, proving the\npayload use, not the surrounding code, is the trigger.\n\n## Current behavior\n\nElaboration accepts the definition and the construction (types line up),\nthen the backend rejects both directions of payload use. Record payloads\nof foreign finite type work in the same positions (`Frame { cond: Expr }`\nelaborates and lowers), so the failure is specific to *finite*\nconstruction/projection with foreign *finite* operand types — most likely\na nominal-identity mismatch between the imported payload identity and the\ndeclared field identity at lowering time.\n\n## Current workaround\n\nAll tree types (`Expr`, `Stmt`, declarations, clause/effect facts, and\nevery list) plus all tree-walking stages (expression parsing, declaration\nparsing, and later resolution/checking/lowering) live in one module,\n`mncs.compiler.decl.v1`. The module header documents this homing rule.\nByte/token/record-only layers (`source`, `lexer`, `segment`) stay\nseparate because records cross module boundaries without restriction.\nConsumer modules may only pass trees opaquely.\n\n## Why the workaround is insufficient\n\n- The core module grows without bound: parser plus upcoming resolution,\n  checking, and lowering stages share one compilation unit, concentrating\n  checked-obligation and semantic/HIR/SSA cost (see CP-0007) instead of\n  distributing it across separately attributable modules.\n- Separate compilation and per-stage cost attribution, both needed for\n  the long-term fact-graph direction (RFC 0002), are unavailable for the\n  most important compiler data: the trees themselves.\n- The failure is silent at elaboration time (MNE-clean) and appears only\n  as a backend diagnostic, so module decomposition looks viable until\n  lowering — exactly the wrong stage to discover an architectural\n  constraint.\n\n## Desired behavior\n\nOne of: finite construction and payload projection work across module\nboundaries for identical nominal types (import identity equals home\nidentity at lowering); or the grammar/elaboration rejects foreign finite\npayload types early (at definition or first use) with a dedicated\ndiagnostic instead of passing elaboration and failing at lowering; or\nexplicit documentation of the intended module-visibility rule for finite\npayloads so compiler architecture can rely on it.\n\n## Likely ownership\n\nlanguage | backend\n\n## Impact\n\n- Correctness: no unsoundness observed; valid programs are rejected.\n- Safety: none (rejection, not miscompilation).\n- Runtime performance: none.\n- Compiler performance: forces a monolithic core module; concentrates\n  Stage-0 compile cost and defeats per-stage attribution.\n- Memory: larger single-module semantic artifacts than a decomposed\n  design would produce.\n- Determinism: deterministic rejection; no nondeterminism observed.\n- Implementation complexity: high — every future tree stage must live in\n  the same module, and the boundary between \"tree code\" and \"fact code\"\n  must be policed by convention rather than the module system.\n\n## Evidence / reproduction\n\n```text\nmncs abi pressure/repro/finite-payload-consumer.mncs\n# MNB063 on construction, MNB066 on payload binding; diagnostics quote the\n# exact operation paths (functions[1].body..., functions[2].body...).\n```\n\nBisected from five MNB063 failures in `src/compiler/decl.mncs` helper\nfunctions (`parse_let`, `parse_return_stmt`, `block_else_close`,\n`block_await_else`, `block_if_frame`) that construct declaration-local\n`Stmt` variants with `expr.Expr` payloads; merging the expression layer\ninto the declaration module removed all five. Related grammar limit:\nthree-segment `alias.Type.Variant { ... }` never reaches elaboration as a\nfinite construction (parses as a record literal); see the finding body.\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision: fixed by `a7a8c05` (nominal-identity/canonicalization work; exact commit not bisected)\n- Follow-up evidence in this repository:\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): resolved\n\nReproduced the original failure first: with the two repro modules laid\nout as `probe/u1.mncs` + `probe/u2.mncs`, the previous pin reports\nMNB063 (construction) and MNB066 (payload projection) — confirming the\nfinding was real and that `mncs abi` surfaces backend diagnostics.\n(On the current pin the same layout yields exit 0 with zero\ndiagnostics, at both 0.10 and 0.13 profiles: the fix is not\nprofile-gated.) The 0.13 three-segment form `t.E.Name { ... }`\n(ENG-0007) also elaborates across modules in the same test.\n\nHistory preserved above: the homing-rule workaround that forced all\ntree types into `mncs.compiler.decl.v1`, its cost (monolithic core\nmodule, late lowering-stage discovery), and the grammar limit that\nmotivated it. The consolidation is *retained for now* — splitting tree\nlayers into separate modules is staged as follow-up work once the\ndeclaration suites run green again (blocked: CP-0014) — but it is now a\ndesign choice, not a language constraint. The `decl.mncs` module comment\nwas updated to say so.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0008",
+    "text": ""
+  },
+  "requiredBehavior": "One of: finite construction and payload projection work across module\nboundaries for identical nominal types (import identity equals home\nidentity at lowering); or the grammar/elaboration rejects foreign finite\npayload types early (at definition or first use) with a dedicated\ndiagnostic instead of passing elaboration and failing at lowering; or\nexplicit documentation of the intended module-visibility rule for finite\npayloads so compiler architecture can rely on it.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0008-finite-payload-visibility.md"
+  },
+  "summary": "Imported legacy pressure CP-0008: CP-0008.",
+  "target": "compiler",
+  "title": "CP-0008",
+  "version": "1"
+}

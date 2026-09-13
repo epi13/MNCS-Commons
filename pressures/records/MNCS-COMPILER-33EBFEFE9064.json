@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0011",
+  "contentDigest": "sha256:97721c60a3f8942818ee7590450bf9ca0310b9f87e202bcff5bd495aa64580ed",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "language-semantics",
+  "id": "MNCS-COMPILER-33EBFEFE9064",
+  "identity": {
+    "capability": "legacy.cp-0011",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0011",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "partially resolved (2026-09-12)",
+    "legacyId": "CP-0011",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:1902c5791a31670fa39d9ec3b923b98f8a1b6448f658162a891f9a69915bfe16",
+    "sourcePath": "mncs-compiler:0011-acyclic-calls-machines.md",
+    "sourceText": "# Pressure Finding CP-0011\n\nID: CP-0011\n\nStatus: partially resolved (2026-09-12)\n\nCategory: language | compiler-architecture\n\nSeverity: high (scope narrowed: machines still required except for\nstructural self-recursion)\n\nFrequency: pervasive\n\n## Acyclic calls forbid recursive descent; parsers become explicit machines\n\nSource Profiles 0.3+ reject every call cycle (MNE130), including direct\nself-recursion and mutual recursion between two functions. A compiler\nfrontend is naturally recursive — expressions nest in calls nest in\nexpressions, statements nest in blocks nest in statements — so the entire\ndeclaration core is written as explicit state machines:\n\n- Expression parsing is an iterative shunting-yard loop with explicit\n  operand/operator stacks (one action per fuel step), not precedence\n  climbing, because `binary_expression(min_prec)` recurses.\n- `if`/`else` nesting is a block machine over an explicit frame stack\n  (`Frame { cond, then_list, parent, phase }`), not recursive statement\n  functions, because branches contain statements that contain `if`.\n- Even list reversal is a fuel loop over a two-field record, not a\n  three-line recursive function.\n- Lookahead that Stage-0 does with backtracking cursors (generic-argument\n  detection, record-literal-vs-block disambiguation) is either\n  reimplemented as fixed multi-token peeking or deferred with an explicit\n  error.\n\nRecursion *in values* is fully supported (recursive enums elaborate,\nconstruct, match, and compile — the AST itself is a family of mutually\nrecursive enums), but recursion *in calls* is unavailable, so every\ntraversal of those values must also be iterative.\n\n## Compiler workload\n\nThe whole of `src/compiler/decl.mncs`: ~1400 lines of expression,\nstatement, declaration, and unit parsing with zero call cycles.\n\n## Minimal MNCS reproduction\n\nAny direct or mutual call cycle, e.g. `pressure/repro/recursive-call.mncs`:\n\n```text\nmncs 0.10;\nmodule probe.recursive_call;\nenum E { Leaf, Node { left: E, right: E } }\nfn depth(e: E) -> (result: u64) {\n    return match e {\n        Leaf => 0,\n        Node { left: l, right: r } => depth(l) + depth(r) + 1\n    };\n}\n```\n\nStage-0 reports MNE130 on the recursive call. (Recursive *types* in the\nsame file elaborate and compile; only the *call* is rejected.)\n\n## Current behavior\n\nThe acyclicity rule is presumably load-bearing for termination analysis,\nand this finding does not ask for general recursion. The pressure is the\n*shape* it forces on compiler code: every naturally recursive algorithm\narrives as a hand-rolled machine with its own stack type, fuel argument,\nprogress invariant, and reversal pass.\n\n## Current workaround\n\nThree machine patterns, each documented at its definition site:\n\n1. Shunting-yard with marker-carrying operator stack (expressions).\n2. Frame-stack block machine with await-else states (statements).\n3. Accumulator fuel loops over cons-lists (reversals, flattening).\n\n## Why the workaround is insufficient\n\n- Each machine is 100–250 lines where the recursive form would be\n  20–50, inflating the exact code whose compile cost is already the\n  dominant pressure (CP-0007).\n- Progress and fuel-sufficiency arguments live in comments; Stage-0\n  checks termination structurally (acyclicity) but cannot check that a\n  machine's fuel covers its state space, so fuel exhaustion is a silent\n  wrong-answer risk (see CP-0009).\n- The `depth(l) + depth(r)` shape — tree recursion producing a value\n  from children — has no iterative formulation that avoids materializing\n  an explicit worklist plus a rebuild pass, roughly tripling the code at\n  every future traversal (resolution, checking, lowering each need one).\n\n## Desired behavior\n\nWithout prescribing general recursion: bounded-recursion combinators\nwith statically visible depth bounds (e.g. structural recursion over a\nfinite value with a declared measure), or first-class machine-building\nsupport (a state-machine/block form whose fuel derives from its state\ntype), or documented confirmation that hand-rolled machines are the\nintended compiler style — with guidance on fuel verification so the\nsilent-exhaustion risk is addressed by construction rather than review.\n\n## Likely ownership\n\nlanguage | compiler architecture\n\n## Impact\n\n- Correctness: machines are harder to audit than the recursive forms;\n  fuel exhaustion fails silently.\n- Safety: none (termination is preserved; expressiveness is the cost).\n- Runtime performance: worklist traffic replaces call stacks; measured\n  per-request step maxima in `evidence/`.\n- Compiler performance: 3–5x code size versus recursive forms,\n  multiplying CP-0007 cost growth.\n- Memory: explicit stacks live in values copied per step.\n- Determinism: deterministic.\n- Implementation complexity: the dominant complexity driver of this run.\n\n## Evidence / reproduction\n\nThe declaration core itself is the evidence: grep for `Frame`,\n`ExprState`, `BlockState`, and the eight-link fuel chains. Step counts\nper request class are recorded in `evidence/decl-results.json`.\n\n## Upstream tracking\n\n- `mncs-language` issue/PR:\n- Resolution revision: profile 0.13 (RFC 0047 structural recursion, partial)\n- Follow-up evidence in this repository:\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): partially resolved\n\nProbed on the current pin: the original `depth()` reproducer — direct\nself-call with the first argument a match-bound structural descendant\nof a finite first parameter — elaborates at 0.13 (exit 0). Mutual\nrecursion is still MNE130, as documented (general, mutual, numeric-\ncountdown, cross-module, and higher-order recursion stay rejected).\n\nWhat this changes for the compiler: tree traversals shaped like\n`depth` (one finite value in, one value out, recursion on match-bound\nchildren) are now expressible directly, with kernel re-derivation of\nthe structural-decrease claim and static call-depth fuel on every\nbackend. What it does not change: the parser machines (shunting-yard,\nblock frames, fuel loops) recurse over *derived* state (operator\nstacks, token cursors, frame stacks), not over a single match-bound\nfinite parameter, so they do not fit the admitted shape — the machines\nare retained deliberately, not from inertia. A future pass could move\npure tree folds (depth/size/counts over `Expr`/`Stmt`) to structural\nrecursion once the suites run green (elaboration proof staged after\nCP-0014); the machine patterns stay for everything else. Fuel-\nexhaustion silence (shared with CP-0009) is unaddressed by this change.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0011",
+    "text": ""
+  },
+  "requiredBehavior": "Without prescribing general recursion: bounded-recursion combinators\nwith statically visible depth bounds (e.g. structural recursion over a\nfinite value with a declared measure), or first-class machine-building\nsupport (a state-machine/block form whose fuel derives from its state\ntype), or documented confirmation that hand-rolled machines are the\nintended compiler style — with guidance on fuel verification so the\nsilent-exhaustion risk is addressed by construction rather than review.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0011-acyclic-calls-machines.md"
+  },
+  "summary": "Imported legacy pressure CP-0011: CP-0011.",
+  "target": "compiler",
+  "title": "CP-0011",
+  "version": "1"
+}

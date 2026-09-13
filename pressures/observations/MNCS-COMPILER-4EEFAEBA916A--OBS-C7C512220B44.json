@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e25da7071f00aaff4b506ddcb795561c32577e22ded2427c217e689d114f423a",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0009",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0009-iteration-fuel-chaining.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-4EEFAEBA916A--OBS-C7C512220B44",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0009",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:ad74f88e3f2db05faa240bc4ee13f7ba37db4df4e82d403d6e4fcd06e0b24c8e"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-4EEFAEBA916A",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0009-iteration-fuel-chaining.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Chained traversal links with distinct identities per function, recorded\nas an explicit fuel argument in each loop's header comment:\n`src/compiler/segment.mncs` (`scan_fuel`, `significant`), expression\nparsing (eight links plus a counted link), block parsing (eight links).",
+    "legacyStatus": "partially resolved (2026-09-12)"
+  }
+}

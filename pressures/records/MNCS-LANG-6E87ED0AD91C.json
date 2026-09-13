@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-019",
+  "contentDigest": "sha256:6adefdbc9b2d4cdfc78f3d2969b3e45990560e817e9d4e05b92fefd96100e2b3",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-6E87ED0AD91C",
+  "identity": {
+    "capability": "legacy.press-019",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-019",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-019",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:17727bfdd1e506266402c6664588b489b9470bfe8f4cf006bb5d1e29b56063cb",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-019 — No fabric partition/merge/worker-loss semantics (P2, distribution)\n\n- Observed: slice-6 evaluation 2026-09-08 (`index/phase3-systems`) gated\n  fabric/cross-machine work on the slice-5 scale audit finding practical\n  infra. It did not: local fan-out already anti-scales under load\n  (loaded-box workers=1 beat workers=4 wall-clock, 103 s vs 308 s on the\n  hermetic 6-file corpus), the family campaign cost 5488 kernel calls /\n  1466 s wall for 18 files, and 396.7 calls/KB projects the 554-file /\n  2.07 MB census at ~804k calls — inventoried, not executed\n  (`evidence/ecosystem-mncs-family.json`).\n- Missing, with exact boundaries: (1) partition/work-unit transport —\n  `runner/mncs_index/bridge.py::call` is a synchronous local `mncs\n  execute` subprocess driver only (no work-unit type, remote endpoint,\n  or capability passing; the only fabric mentions in-repo are\n  future-boundary docs: `docs/INTEGRATIONS.md`, `docs/ARCHITECTURE.md`\n  layer 7, `ROADMAP.md` Phase 5, `SECURITY.md`); (2) distributed merge —\n  `results_to_records` + `extract.globalize` + `kernels.tree_combine`\n  are shared-memory only (in-process sorts, in-process `ThreadPoolExecutor`\n  over one `Kernels` object; no partial-partition wire format or\n  partition-hash-then-merge protocol); (3) worker loss/retry/duplicate/\n  reorder semantics — the pipeline failure model is fail-fast only\n  (`Pipeline._fail` first-error capture + stop broadcast + drain;\n  missing leaf -> `BuildFailed`), so at-least-once delivery with\n  deterministic merge is unimplementable.\n- Desired: a fabric work-unit transport honoring the\n  `docs/INTEGRATIONS.md` capability-boundary contract, a specified\n  partial-partition wire format proven to merge equal to the local hash,\n  and a retry/duplicate/reorder/loss harness against worker-kill\n  injection. PRESS-010 (batch/in-process kernel API) is the ordering\n  dependency: per-64-B-window subprocess dispatch makes per-item remote\n  execution uneconomical regardless of transport.\n- Workaround: none — distribution was NOT implemented and NOT faked;\n  all builds stay local. Reopen criteria are recorded in\n  `evidence/fabric-scale-gate.json`.\n- Classification: runtime/transport (missing), language semantics\n  (no distributed merge/worker-loss effects).\n- Slice-7 verdict 2026-09-08: **confirmed still blocked** (RFC 0028\n  still `NONE`; `bridge.call` re-read 2026-09-08 as a synchronous\n  local subprocess driver; pipeline still fail-fast). PRESS-010\n  ordering dependency stands — no rerun of the scale campaign was\n  needed because neither the cost model nor the missing interfaces\n  changed.\n- Acceptance-test-after-language-fix (all three must hold): (1) a\n  fabric work-unit transport ships one fixture partition and returns\n  its partial result; (2) partition-hash-then-merge over two\n  partitions equals the local canonical hash; (3) a worker-kill\n  injection still converges via retry/duplicate-suppression. Assert\n  with a new `tests/test_distributed.py` plus the reopen criteria in\n  `evidence/fabric-scale-gate.json`.\n\n## Not pressure (deliberate non-findings)\n\n- Source Profile 0.8 was sufficient for every kernel (records, `select`,\n  wrapping arithmetic, views, `u64` shifts, calls across functions).\n  No parser, type-system, or elaboration blockers were hit beyond the\n  entries above.\n- `execute` accepts `.mncs` source directly with precise, coded\n  diagnostics (`source-study`); the JSON request/response ABI is stable\n  and documented by example. Unknown functions surface as typed\n  `invalid_request` statuses, not crashes."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-019"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-019",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-019: No fabric partition/merge/worker-loss semantics (P2, distribution).",
+  "target": "language",
+  "title": "No fabric partition/merge/worker-loss semantics (P2, distribution)",
+  "version": "1"
+}

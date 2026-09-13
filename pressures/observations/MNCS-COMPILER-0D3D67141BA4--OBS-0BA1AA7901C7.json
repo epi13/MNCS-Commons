@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "validation": "historical-ledger-review"
+  },
+  "contentDigest": "sha256:1b13bcc4004e4badc1fd4c472ca37b7b39479a691bca297a1b4efdfd678c2d74",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0003-ledger-review",
+      "ref": "mncs-compiler:0003-scan-traversal-cost.md",
+      "status": "PASS",
+      "summary": "Repository source explicitly records this pressure and its local behavior/workaround."
+    }
+  ],
+  "id": "MNCS-COMPILER-0D3D67141BA4--OBS-0BA1AA7901C7",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": false,
+    "legacyId": "mncs-compiler:CP-0003",
+    "reviewKind": "historical-ledger-confirmation"
+  },
+  "observedAt": "2026-09-13T06:30:01Z",
+  "pressureId": "MNCS-COMPILER-0D3D67141BA4",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Consult the inert source ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "path": "mncs-compiler:0003-scan-traversal-cost.md",
+    "repository": "mncs-compiler"
+  },
+  "summary": "Compiler pressure ledger reviewed at the repository pin; its local repro/claim is confirmed as an observed compiler/tooling constraint. This is historical ledger evidence, not a current-language rerun.",
+  "version": "1",
+  "workaround": {
+    "description": "Preserved from the imported repository observation; consumer-specific removal remains unverified.",
+    "fallbackLanguage": null
+  }
+}

@@ -18,6 +18,9 @@ The canonical family-wide development-pressure exchange now lives in
 `mncs-language`, consumers, tooling and agents one deterministic query surface
 for observed constraints while preserving repository-local evidence and the
 distinction between a landed capability and a verified consumer resolution.
+The checked-in corpus is populated from the active compiler, numerics, ingest,
+web, index, Doctor, language-service, Forge, and Store ledgers; generated views
+make stale evidence and available-but-unverified capabilities explicit.
 
 Unlike a conventional message board, Commons is organized around structured claims, reproducible evidence, provenance, confidence, scope, and independent verification. Its purpose is to turn isolated observations into durable system knowledge without automatically treating every contribution as trusted or correct.
 

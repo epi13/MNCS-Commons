@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "legacy.ls-p-003",
+  "contentDigest": "sha256:6b04888468c1ca08423442ceb7972fdbea5cc91e46167c2b1ada14c8eac3f729",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-language-service",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-4790E16F393E",
+  "identity": {
+    "capability": "legacy.ls-p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-language-service:LS-P-003",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "CONFIRMED",
+    "legacyId": "LS-P-003",
+    "repository": "mncs-language-service",
+    "sourceDigest": "sha256:e797bdf37dde1b6b25d82b998cdb01f0504bf647b2975051a0bf3ee43736a8b7",
+    "sourcePath": "mncs-language-service:LS-P-003.md",
+    "sourceText": "# LS-P-003 — Import-wrapped leaf diagnostics lack machine-readable provenance\n\nStatus: CONFIRMED\n\n## 1. Reasonable service requirement\n\nWhen module A fails because its import B is broken, editor diagnostics in\nA should link to the exact failing span in B (LSP `relatedInformation`\nwith an owning URI and range), so the user jumps to the cause.\n\n## 2. Natural MNCS expression\n\nThe compiler already preserves the causal chain:\n`SourceDiagnostic.related: Vec<SourceDiagnostic>` carries the leaf\ndiagnostics verbatim (INGEST-P-007). The service should project each leaf\nto `(uri, range)`.\n\n## 3. What prevents it\n\nLeaf spans are relative to the dependency's source, but nothing on the\n`SourceDiagnostic` shape says so: no `source_identity`, no owning-URI\nfield, and no marker distinguishing leaf-relative spans from same-file\nspans. The outer `MNE172` span covers the `use` module-name token, so the\nservice must reverse-engineer the dependency by slicing source text and\nre-resolving the module name through `StoreResolver`.\n\n## 4. Minimal reproducer\n\nAny importing document whose dependency fails elaboration. The service\ncode that has to guess is `render_related` in\n`crates/service-core/src/queries.rs`:\n\n```rust\n// The outer span happens to cover the `use` name token (MNE172); parse\n// the module name out of source text and re-resolve it.\nlet dependency_uri = text\n    .get(outer.span.start..outer.span.end)\n    .and_then(parse_use_target)\n    .and_then(|module| StoreResolver::new(store).resolve(&module) ...);\n```\n\nIf a future compiler change moves the outer span or adds `related` to a\nnon-import diagnostic, this silently projects wrong ranges.\n\n## 5. Expected behavior\n\nEach `related` entry carries its owning source identity (or the compiler\nguarantees `related` spans are always same-file), so projection is\nmechanical, not heuristic.\n\n## 6. Actual behavior\n\nHeuristic recovery: URI with exact range when the dependency is resident,\nURI-only when it resolves outside the store, and neither when the\n`use`-target parse fails. Never a guessed same-file range (fail-closed).\n\n## 7. Classification\n\nCompiler/tooling contract (`mncs-compiler` diagnostic shape). Severity:\nlow-medium — the failure mode is degraded navigation, never wrong\nnavigation, by construction.\n\n## 8. Workaround\n\n`render_related` + `project_leaf` + `parse_use_target` as described above,\ncovered by cross-file behavior in the references/navigation tests. The\nconcrete upstream proposal: add an optional owning source identity to\n`SourceDiagnostic` (or to each `related` entry), defaulting empty so all\nexisting constructors keep compiling through the helper.\n\n## 9. Cost of the workaround\n\nBrittle coupling to one diagnostic code's span convention; every new\n`related` producer must be audited by hand. Estimated fix size upstream:\nsmall (one optional field + one helper assignment), but it touches a\nhot diagnostic type, so it needs its own compiler-side evidence cycle.\n"
+  },
+  "legacyIds": [
+    "mncs-language-service:LS-P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-language-service:LS-P-003",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-003.md"
+  },
+  "summary": "Imported legacy pressure LS-P-003: Import-wrapped leaf diagnostics lack machine-readable provenance.",
+  "target": "tooling",
+  "title": "Import-wrapped leaf diagnostics lack machine-readable provenance",
+  "version": "1"
+}

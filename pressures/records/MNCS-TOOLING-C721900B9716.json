@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-003",
+  "contentDigest": "sha256:40773c4ed34b2d2056bfe2593ab7fc9c304b751a1ebbf97ae2c97e777c11f537",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-C721900B9716",
+  "identity": {
+    "capability": "legacy.doc-p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-003",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround",
+    "legacyId": "DOC-P-003",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:b94577ea918bbf525ec930c0bd97c4b08cab2cef40a81588933ad11135a578b1",
+    "sourcePath": "mncs-doctor:DOC-P-003.md",
+    "sourceText": "# DOC-P-003 — No published version-transition rules\n\nStatus: workaround\n\nCategory: language | tooling\n\nSeverity: medium\n\nFrequency: pervasive (every `migrate` invocation)\n\n## Doctor workload\n\n`migrate --to latest` over a 0.8 repository must compose bounded adjacent\ntransitions (0.8 → 0.9 → … → 0.16) with per-edge provenance.\n\n## Minimal reproducer\n\n`mncs-doctor migrate --to latest --plan` on `fixtures/repos/outdated`\nreports every edge as `unknown` with provenance\n`doctor-seed: unrecorded upstream`, and `--apply` refuses (exit 4).\n\n## Current behavior\n\n- `default_registry()` records all 15 adjacent edges as `Unknown`.\n- Planning works (shortest forward path, no-op handling, downgrade\n  refusal); apply is fail-closed across unknown edges.\n- The structural path verdict is now made by `doctor.migration.v1` in the\n  production runtime and is checked against the host registry plan before\n  any transform is considered.\n- The only doctor-owned mutation is the mechanical header bump (REVIEW),\n  plus a JSON `--registry` extension point and synthetic 9.x fixtures\n  proving the engine (`fixtures/migration/`, 5 integration tests).\n\n## Desired behavior\n\nUpstream publishes per-edge transition knowledge (source transforms with\nsemantic guarantees, metadata steps, no-op markers, review-required\nflags) as versioned data Doctor can consume through `--registry` without\ncode changes.\n\n## Likely ownership\n\nlanguage (transition authorship); Doctor (orchestration, already built).\n\n## Impact\n\n- Functionality: production migration is plan-only today — honest, but\n  the flagship workflow awaits upstream data.\n- Safety: the fail-closed default is the correct posture, not a gap to\n  work around by guessing transforms.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-003",
+    "text": "`mncs-doctor migrate --to latest --plan` on `fixtures/repos/outdated`\nreports every edge as `unknown` with provenance\n`doctor-seed: unrecorded upstream`, and `--apply` refuses (exit 4)."
+  },
+  "requiredBehavior": "Upstream publishes per-edge transition knowledge (source transforms with\nsemantic guarantees, metadata steps, no-op markers, review-required\nflags) as versioned data Doctor can consume through `--registry` without\ncode changes.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-003.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-003: No published version-transition rules.",
+  "target": "tooling",
+  "title": "No published version-transition rules",
+  "version": "1"
+}

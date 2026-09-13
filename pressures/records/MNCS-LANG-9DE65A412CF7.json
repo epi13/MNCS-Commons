@@ -1,0 +1,52 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-001",
+  "contentDigest": "sha256:de03074070ef1d3cacc67fda68d2ac50e8acc93b42180f0014128233ccf9486f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "identity",
+  "id": "MNCS-LANG-9DE65A412CF7",
+  "identity": {
+    "capability": "legacy.ingest-p-001",
+    "domain": "identity",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-001",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:4c7dc55df3497b328e439d678cab48315b2ed740755d114bd2a62dc99c3a666c",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-001 — No string/text value: open-vocabulary identity cannot round-trip\n\n## Problem\nThe ingest pipeline needs bounded validated UTF-8/text slices with\ndelimiter search and source-span preservation. Entity spellings and\nunknown-object spellings must cross MNCS with byte-exact identity, and\ncanonical labels must render from codes, without host-side tables\ndrifting from MNCS tables.\n\n## Reproducer\n`language/mncs/ingest/parse.mncs::parse_transfer` returns\n`source_start/source_length` integer spans instead of the spelling, and\n`src/canonical.rs::object_label` mirrors `vocab.mncs` in Rust:\n\n```mncs\n// There is no expression of \"return the matched word\": the classifier\n// can only return THAT it matched (a code), never WHAT matched.\nfn classify_object(text: [byte; up_to 64], start: u64, length: u64) -> (result: i64)\n```\n\nExecutable: `tests/adapters.rs::vocabulary_codes_match_host_rendering`\npins both sides of the duplication.\n\n## Expected semantics\nA bounded text value (explicit max bytes, UTF-8 validated at the\nboundary) that MNCS can construct, return, compare, and project back to\nbytes — no heap allocation, no unbounded string type.\n\n## Current result\nStatus quo at 0.14: bytes and fixed arrays only. Equality is bifurcated\nby force (`ingest_codes_equal` + `ingest_spell_equal`, host ANDs the\nverdicts).\n\n## Architectural impact\nHost slices spans out of the original input; a two-entry render table\nduplicates MNCS vocabulary. A 200-word vocabulary would be a drift\nhazard. (Tranche A carries this further: unescaped field VALUES must\nmaterialize as fixed `[byte; 64]` buffers plus lengths.)\n\n## Severity\nMajor.\n\n## Owning layer\nType system / value model; standard library (validated-text wrapper).\n\n## Acceptance test\n`ingest_parse` returns the source spelling as a value (not a span);\n`src/canonical.rs::object_label` is deleted with no replacement; the\nvocabulary contract test still passes.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-001",
+    "text": "`language/mncs/ingest/parse.mncs::parse_transfer` returns\n`source_start/source_length` integer spans instead of the spelling, and\n`src/canonical.rs::object_label` mirrors `vocab.mncs` in Rust:\n\n```mncs\n// There is no expression of \"return the matched word\": the classifier\n// can only return THAT it matched (a code), never WHAT matched.\nfn classify_object(text: [byte; up_to 64], start: u64, length: u64) -> (result: i64)\n```\n\nExecutable: `tests/adapters.rs::vocabulary_codes_match_host_rendering`\npins both sides of the duplication."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-001: No string/text value: open-vocabulary identity cannot round-trip.",
+  "target": "language",
+  "title": "No string/text value: open-vocabulary identity cannot round-trip",
+  "version": "1"
+}

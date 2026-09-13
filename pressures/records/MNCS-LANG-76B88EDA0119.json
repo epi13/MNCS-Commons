@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-006",
+  "contentDigest": "sha256:b419a3b066495b203d7f75175e6958e3590e9f53faa496719c20991d792c4571",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-76B88EDA0119",
+  "identity": {
+    "capability": "legacy.p-006",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-006",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:ecfb1825a942fd1cbf5db976842460c45d2e79fdddab556d320a34dc8985a491",
+    "sourcePath": "mncs-numerics:P-006-cranelift-arity-crash/README.md",
+    "sourceText": "# P-006 — Cranelift SIGSEGV on arity-mismatched execution request\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-006`.\n\n`repro.mncs` is a two-argument `f64` minimum; `corpus.json` calls it\nwith ONE argument.\n\n```bash\ncargo run -q -p mncs-cli -- experiment run repros/P-006-cranelift-arity-crash/repro.mncs \\\n  --backend mncs-cranelift --corpus repros/P-006-cranelift-arity-crash/corpus.json\necho \"exit: $?\"\n```\n\n**RESOLVED (2026-09-12).** Expected: `invalid_request` on all five\nbackends. Was: SIGSEGV, exit 139, empty stdout on Cranelift only\n(bisected from a 150-case corpus; NaN inputs were suspected and\nexonerated — correct-arity NaN is fine). The audit also found the\nC11/LLVM retained-session paths (and C11 one-shot) missing the gate:\nextra arguments were silently ignored there. All native paths now\nrefuse with one shared value-contract message; kept as a\nreproducer.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-006",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-006-cranelift-arity-crash/README.md"
+  },
+  "summary": "Imported legacy pressure P-006: Cranelift SIGSEGV on arity-mismatched execution request.",
+  "target": "language",
+  "title": "Cranelift SIGSEGV on arity-mismatched execution request",
+  "version": "1"
+}

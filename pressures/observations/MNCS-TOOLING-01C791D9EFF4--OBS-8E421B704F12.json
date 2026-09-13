@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:cbdbb5b08b94d3874fa4611e94ebeee6162e49b69b93cad7fc5729947ff67062",
+  "evidence": [
+    {
+      "id": "legacy:mncs-doctor:DOC-P-021",
+      "kind": "legacy-markdown",
+      "ref": "mncs-doctor:DOC-P-021.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-TOOLING-01C791D9EFF4--OBS-8E421B704F12",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "DOC-P-021",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:9adf9d78ef69bdb413f0effe41ec5f0e949e3be43d353ff2fc0f7c8caecdcdc4"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-TOOLING-01C791D9EFF4",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Using `mncs experiment run` at `mncs-language` `a0255f8`, each of the ten\nDoctor policy sources was run against its checked-in value corpus on:\n\n```text\nmncs-research-bytecode\nmncs-portable-wasm-mvp\nmncs-c11\nmncs-llvm-ir\nmncs-cranelift\n```\n\nAll expected values were returned for all fifty module/backend runs. Six\nmodules nevertheless reported compiler `status: UNKNOWN` with\n`unresolved_reasons: [\"compilation retained required unresolved obligations\"]`:\n`version`, `health`, `migration`, `edits`, `fix`, and `scanner`. The returned\nvalues were correct, but the evidence status cannot be recorded as an\nunqualified backend PASS.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-021.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": "open"
+  }
+}

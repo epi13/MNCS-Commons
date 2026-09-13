@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-014",
+  "contentDigest": "sha256:b3c2273f64bb197aa337f72e20e349d348d26ead9baaed0369135f31c07250d6",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-E5C253732BF2",
+  "identity": {
+    "capability": "legacy.press-014",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-014",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-014",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:1485c5d22f7ddc9b097a74f286da0601232ead010c4f1f51735f45897f5bb5f4",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-014 — Unbounded text plumbing for rich extraction (P2, stdlib)\n\n- Observed: the canonical-v2 extractor (`src/extract.mncs`,\n  `runner/mncs_index/extract.py`, RFC 0007) decides per line, but MNCS\n  has no unbounded strings, no line splitting, no substring slicing, and\n  no corpus-scale sort (PRESS-005). Kernel windows are `[byte; up_to\n  64]`; names/targets/titles are unbounded file text.\n- Desired: chunked line cursors, bounded span slicing, and a specified\n  sort/dedup story so the whole extraction pipeline is in-language.\n- Workaround (all in `extract.py`, every verdict in MNCS): the host\n  splits `\\n`, strips one `\\r`, trims leading space/tab, and feeds the\n  kernel the ≤64 B prefix for `classify_decl`/`heading_level`; link\n  seams past the first window are decided per overlapping 64 B window\n  (stride 63, verdicts OR-ed); names are sliced dotted runs (≤64 B,\n  every segment an `is_symbol_token` verdict); link targets are sliced\n  `](...)` spans (no nesting, ≤256 B, UTF-8-strict); PRESS candidates\n  are `PRESS-` memcmp windows decided by `is_press_id`; RFC edges pair\n  adjacent kernel-shaped tokens in line-token order. Overlong, invalid,\n  or undecodable spans are skipped, never truncated into a wrong\n  identity. Global sort/dedup/seq assignment is host code over kernel\n  verdicts in `globalize`. Differentially pinned on seeded random inputs\n  (`tests/test_rich_model.py::test_extract_differential_random`); the\n  64 B-boundary seam is pinned (`test_overlong_and_foreign_bytes_skipped`).\n- Cost: the extractor's control plane is host code; only the verdicts\n  are MNCS meaning.\n- Slice-7 verdict 2026-09-08: **confirmed still missing.**\n  `library/std/text_scan` (+`text_view`, `text_map`) is still\n  64 B-window bounded (`window_equal`/`contains`/`find` all take\n  `[byte; up_to 64]`); no unbounded strings, line splitting, or\n  corpus-scale sort exist, so the host split/slice/sort/dedup in\n  `extract.py` + `globalize` stays.\n- Acceptance-test-after-language-fix: chunked line cursors feed an\n  MNCS pipeline that returns sorted deduped declaration rows for a\n  fixture file equal to `globalize` output; assert\n  `tests/test_rich_model.py::test_extract_differential_random` passes\n  with host line splitting deleted.\n- Update (gap review): two further meaning decisions live outside MNCS\n  verdicts and are pinned only by host-side differential tests, not by an\n  in-language specification — the cross-window word-overcount repair in\n  `pipeline.py` (host-coded space policy over `classify` verdicts) and\n  long-needle (`>8 B`) term substring in `query.py` (pure host scan; the\n  differential suite pins only the short-needle kernel path). Likewise\n  the merge contract is now explicit: `globalize` dedups headings on the\n  full row and sorts full tuples, so output depends on the row multiset,\n  never on worker arrival order (pinned by\n  `tests/test_rich_model.py::test_globalize_permuted_rows_converge`).\n  Truncation-vs-skip and span-boundary choices remain meaning decisions\n  awaiting chunked-span semantics upstream.\n- Classification: stdlib (missing collections/text), compiler (domain rule)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-014",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-014: Unbounded text plumbing for rich extraction (P2, stdlib).",
+  "target": "language",
+  "title": "Unbounded text plumbing for rich extraction (P2, stdlib)",
+  "version": "1"
+}

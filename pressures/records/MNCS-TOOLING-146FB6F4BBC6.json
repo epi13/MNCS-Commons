@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-010",
+  "contentDigest": "sha256:f5f48a8be3e2e7781857fc1b6f24f8516f5ad931c3c9a6b2f1183d82f5642a19",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-146FB6F4BBC6",
+  "identity": {
+    "capability": "legacy.doc-p-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-010",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (narrow host seam, by design for now)",
+    "legacyId": "DOC-P-010",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:c292c427b276e6f293330250efcd8bc02aaa90c560fa830cd1a6575799f6e74d",
+    "sourcePath": "mncs-doctor:DOC-P-010.md",
+    "sourceText": "# DOC-P-010 — No string-capable JSON encoding\n\nStatus: open (narrow host seam, by design for now)\n\nCategory: stdlib\n\nSeverity: medium\n\nFrequency: pervasive (every machine-readable report)\n\n## Doctor workload\n\n`report.rs` emits versioned JSON reports with messages, paths,\nexplanations, and provenance strings.\n\n## Current behavior (verified 2026-09-12)\n\nStdlib JSON (`json.mncs`, `json_emit.mncs`) handles ints-only canonical\nforms; strings are byte views without a joining/escaping/encoding\nsurface sufficient for report construction. The report *policy*\n(exit codes) moved to `mncs/doctor/report.mncs` with parity; encoding\nstays host-side (`serde_json`).\n\n## Workaround\n\nSplit already implemented: MNCS decides, host encodes.\n\n## Removal condition\n\nString-capable JSON emission in stdlib (or a granted encode host-call);\nthen move report construction down with golden-output parity tests.\n\n## Evidence\n\n`tests/mncs_parity.rs::parity_report_exit_for` (policy parity green);\n`docs/RUST-BOUNDARY-AUDIT.md` (report verdict).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-010",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-010.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-010: No string-capable JSON encoding.",
+  "target": "tooling",
+  "title": "No string-capable JSON encoding",
+  "version": "1"
+}

@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.cp-0006",
+  "contentDigest": "sha256:c07169aae9e387241e82bb80bdf70dcc97fd4e4d83e354a8b9e1f1a4ac738f34",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-compiler",
+  "domain": "io.filesystem",
+  "id": "MNCS-COMPILER-38B9F401EC5C",
+  "identity": {
+    "capability": "legacy.cp-0006",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-compiler:CP-0006",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open, re-confirmed (2026-09-12). Category: tooling,",
+    "legacyId": "CP-0006",
+    "repository": "mncs-compiler",
+    "sourceDigest": "sha256:f12cc57e7c68bf8ee330963a1fb1c8af67374e409fd285caff56dc9303c36f34",
+    "sourcePath": "mncs-compiler:0006-envelope-profile-inference.md",
+    "sourceText": "# CP-0006 — Stage-0 envelope inference disagrees with leading-comment syntax\n\nStatus: open, re-confirmed (2026-09-12). Category: tooling,\ncompiler-architecture. Severity: medium. Frequency: occasional.\nUpstream tracking: none; re-probed at 0.13 (MNE002 persists) and the\nfrontend suite now also pins the MNP008 parse-stage companion.\n\nWhile comparing header facts, `/* leading comment */ mncs 0.10; module a;`\nfollowed by a valid function reaches Rust parsing but loses its AST with MNE002:\n“source header version does not match its envelope”. The source lexer/parser\nallows trivia before the header; `SourceEnvelope::new` profile inference does\nnot agree for this spelling. `repro/leading-comment-envelope.mncs` reproduces it\nwith `mncs abi`; `python3 tools/test_pressure.py` checks MNE002 at the locked pin.\n\nWorkaround: the MNCS kernel establishes only syntax facts, leaving profile and\nenvelope validity as later obligations. Tests compare ordinary valid-header AST\nspans directly. Cases where Stage-0 discards its AST solely for envelope errors\nuse explicit expected spans and Rust CST boundaries; they are not claimed as\nfull AST parity. Unknown profile/version spellings are also syntax-only tests,\nnot claims that Stage-0 accepts those programs.\n\nDesired behavior: deterministic agreement between lexical header recognition and\nprofile inference, with syntax facts inspectable even when envelope validation\nfails. Likely owners: Stage-0 tooling and compiler architecture, not new syntax.\nCorrectness: valid-looking commented input cannot be elaborated through this\nStage-0 entry path; the new header fact makes no full-program acceptance claim.\nSafety/determinism: unchanged. Runtime, memory and compiler-performance impact\nare unmeasured; test complexity increases because AST access is coupled to\nunrelated validation. No upstream file was changed.\n\n## Re-evaluation (Stage-0 `a7a8c05`, 2026-09-12): still valid\n\nRe-probed with a 0.13 header spelling: MNE002 persists, now accompanied\nby a parse-stage MNP008 profile gate for unknown versions (the frontend\nsuite's envelope branch was updated to require the envelope diagnostic\nrather than stage exclusivity — same workaround, wider oracle shape).\nThe kernel contract is unchanged and still the right layering: syntax\nfacts first, envelope/profile validity as later obligations. No\nlanguage change needed; this stays a Stage-0 tooling agreement issue.\n"
+  },
+  "legacyIds": [
+    "mncs-compiler:CP-0006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-compiler:CP-0006",
+    "text": ""
+  },
+  "requiredBehavior": "deterministic agreement between lexical header recognition and\nprofile inference, with syntax facts inspectable even when envelope validation\nfails. Likely owners: Stage-0 tooling and compiler architecture, not new syntax.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0006-envelope-profile-inference.md"
+  },
+  "summary": "Imported legacy pressure CP-0006: Stage-0 envelope inference disagrees with leading-comment syntax.",
+  "target": "compiler",
+  "title": "Stage-0 envelope inference disagrees with leading-comment syntax",
+  "version": "1"
+}

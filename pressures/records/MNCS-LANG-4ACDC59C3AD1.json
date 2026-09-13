@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-ingest"
+  ],
+  "capability": "legacy.ingest-p-009",
+  "contentDigest": "sha256:64742f23fafcaf05cb7ac44e38ccadf906efafee7a906bba2b1671a57fa9e1d0",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-ingest",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-4ACDC59C3AD1",
+  "identity": {
+    "capability": "legacy.ingest-p-009",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-ingest:INGEST-P-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "INGEST-P-009",
+    "repository": "mncs-ingest",
+    "sourceDigest": "sha256:53266b0408433f3754ec1726c922bc078b4cddc57a070d0a1845a68c0c540621",
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8",
+    "sourceLedgerPath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourcePath": "mncs-ingest:LANGUAGE_PRESSURE.md",
+    "sourceText": "## INGEST-P-009 — Fixed windows + counts cross every boundary\n\n## Problem\nPass sentences, words, chunks, and code vectors between host and MNCS\nwithout per-call padding/length ceremony that both sides must agree on\nout-of-band.\n\n## Reproducer\nEvery ingest entry point is `(storage, explicit length)`:\n`ingest_parse(text, length)`, `next_line(carry, carry_len, view,\nview_len, eof)`. The host pads `[u64; 8]` windows; MNCS clamps.\n\n## Expected semantics\nLength-carrying sequence values whose declared length the callee trusts\nwithout a second parameter.\n\n## Current result\nStill reproduces at 0.14 (views carry runtime length internally, but\nentry points still take explicit lengths by convention and ABI).\n\n## Architectural impact\nCeremony per call; units (bytes vs scalars) agreed out-of-band.\nTranche G measures the serialization volume.\n\n## Severity\nErgonomic.\n\n## Owning layer\nABI/embed; type system.\n\n## Acceptance test\n`ingest_parse` takes one argument; the host passes N bytes and MNCS\nobserves length N with no `length` parameter.\n\n---"
+  },
+  "legacyIds": [
+    "mncs-ingest:INGEST-P-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-ingest:INGEST-P-009",
+    "text": "Every ingest entry point is `(storage, explicit length)`:\n`ingest_parse(text, length)`, `next_line(carry, carry_len, view,\nview_len, eof)`. The host pads `[u64; 8]` windows; MNCS clamps."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Imported legacy pressure INGEST-P-009: Fixed windows + counts cross every boundary.",
+  "target": "language",
+  "title": "Fixed windows + counts cross every boundary",
+  "version": "1"
+}

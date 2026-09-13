@@ -1,0 +1,52 @@
+{
+  "affectedRepositories": [
+    "mncs-commons"
+  ],
+  "capability": "dynamic_query_projection",
+  "contentDigest": "sha256:76215e5de9fcde28b73bd556390a56bd3c1f6e16e4aa54eeb1b9c4fff09a38b4",
+  "discoveredAt": "2026-09-13T08:30:00Z",
+  "discoveredBy": "mncs-commons",
+  "domain": "data.registry",
+  "id": "MNCS-LANG-6643CDECCFEC",
+  "identity": {
+    "capability": "dynamic_query_projection",
+    "domain": "data.registry",
+    "reproducerSignature": "commons-pressure-dynamic-registry-projection-v1",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.16",
+  "legacyIds": [],
+  "notes": "The closed lifecycle and classification laws are moved to src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs. This record tracks the remaining dynamic projection boundary, not unavoidable filesystem transport.",
+  "reproducer": {
+    "attemptedProgram": "mncs 0.16; module commons.pressure.projection; query dynamic JSON records by target/domain/status and fold an unbounded observation map",
+    "command": "mncs source-study <probe>",
+    "expected": "The capability is not representable as a general native MNCS program with current collections, dynamic text, JSON, and host-effect boundaries.",
+    "hostLocus": "src/mncs_commons/pressure.py:PressureRegistry.projections/query/validate/generate_views",
+    "signature": "commons-pressure-dynamic-registry-projection-v1"
+  },
+  "requiredBehavior": "A native Commons semantic layer should classify pressure projections, fold bounded event/observation collections, and expose deterministic query predicates over structured records without re-implementing the rules in a host language.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackKind": "semantic-adapter",
+    "fallbackLanguage": "python",
+    "hostBoundary": [
+      "json",
+      "filesystem",
+      "git",
+      "clock"
+    ],
+    "nativeConversionBlocked": true
+  },
+  "sourceRef": {
+    "commit": "89898f39ce49657523845d6790e08a1434b0b136",
+    "path": "src/mncs_commons/pressure.py",
+    "repository": "mncs-commons",
+    "symbol": "PressureRegistry.projections/query/validate/generate_views"
+  },
+  "summary": "PressureRegistry query, validation, relationship folding, and deterministic view materialization operate over unbounded JSON records, dynamic strings, maps/sets, and append-only event collections. Current MNCS can express the closed lifecycle decision kernel, but cannot host this dynamic projection semantics without a Python adapter.",
+  "target": "language",
+  "title": "Dynamic registry projection cannot yet be native MNCS",
+  "version": "1"
+}

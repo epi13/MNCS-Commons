@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:464eef7a1c04a433a8dd0eb8827da334a4d7597ed4650a52f62c34b226c9b034",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.16:P2-005",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "The current language test suite exercises the capability with bounded, explicit grant semantics."
+    }
+  ],
+  "id": "MNCS-LANG-71DAE5A34032--OBS-B836F4D3C90C",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "role": "upstream-implementation"
+  },
+  "observedAt": "2026-09-13T05:50:15Z",
+  "pressureId": "MNCS-LANG-71DAE5A34032",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "run the Profile 0.16 filesystem mutation corpus with an explicit fs_root grant",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "path": "docs/source-profile-0.16.md",
+    "repository": "mncs-language",
+    "test": "crates/mncs-cli/tests/pressure_fs_mutation.rs"
+  },
+  "summary": "Profile 0.16 composes stage-then-rename publication with explicit sync and exclusive creation.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "This is upstream capability evidence; the originating consumer workaround remains until consumer verification.",
+    "pressureImplementation": true
+  }
+}

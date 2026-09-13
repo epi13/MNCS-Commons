@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1a8d3a1fc18905aa9542f617b27ef3ad69117afed7a937f19eeb1e4d642b227b",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-009",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-4ACDC59C3AD1--OBS-D78FFD8D3744",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-009",
+    "sourceEntry": 8,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-4ACDC59C3AD1",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "Every ingest entry point is `(storage, explicit length)`:\n`ingest_parse(text, length)`, `next_line(carry, carry_len, view,\nview_len, eof)`. The host pads `[u64; 8]` windows; MNCS clamps.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

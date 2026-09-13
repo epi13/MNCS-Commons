@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:33de15bf84e625d531bf3e511c5ad5c2c434f5b6883b45b172124b76cbab8e8b",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-FDCBC01300B8--OBS-3C1689F02A94"
+  ],
+  "from": "confirmed",
+  "id": "EVT-A779F41A7753B4BA",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:07Z",
+  "pressureId": "MNCS-LANG-FDCBC01300B8",
+  "previousEvent": "EVT-E38312F9BA0F0779",
+  "reason": "Accept the Profile 0.16 filesystem mutation tranche as the owning upstream change.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

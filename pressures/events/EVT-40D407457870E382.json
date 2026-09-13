@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:507fae7bdfd50788e9298fbc20ca2dba6312a5ac65467734f2cd8c8781ddef92",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "accepted",
+  "id": "EVT-40D407457870E382",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:18Z",
+  "pressureId": "MNCS-LANG-71DAE5A34032",
+  "previousEvent": "EVT-9FB5887089FC2BA2",
+  "reason": "The capability is implemented in the current language/toolchain revision.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

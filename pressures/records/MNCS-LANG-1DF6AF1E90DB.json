@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-008",
+  "contentDigest": "sha256:002ee420970d48e2ffd093a28c6e03afbfcc98b0f67945e29d0571bc87c71215",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-1DF6AF1E90DB",
+  "identity": {
+    "capability": "legacy.web-p-008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (expected; structural language scope)",
+    "legacyId": "WEB-P-008",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:9e739995a1be025e4926ec04924aeeff7be5dc71b7d1632dde9e60b678e74632",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-008 — No traits/interfaces for transport abstraction\n\n- Status: open (expected; structural language scope)\n- Severity: major (shapes the io layer)\n- Category: type system (traits/interfaces)\n\nWhat mncs-web was trying to implement: `Reader`/`Writer`/`Stream`/\n`Connection`/`Listener` as interfaces with memory, socket, file, and\ntest implementations behind them (mission: \"alternate backends\").\n\nExpected behavior: interface/trait abstraction with static dispatch\n(or bounded dynamic dispatch) so transports are substitutable.\n\nActual behavior: Profile 0.13 leaves traits out of scope; generic\nfunctions exist but generic *nominal* declarations do not, and there is\nno interface mechanism. `web.transport.Pipe` is a concrete record with\nfree functions; socket/file transports cannot implement a shared\ninterface and must instead duplicate the function vocabulary by\nconvention.\n\nCurrent workaround: concrete `Pipe` + documented function-shape\ncontract (`pipe_write`/`pipe_read` backpressure-as-data verdicts) that\nfuture transports must mirror. No machinery pretends otherwise.\n\nCost of the workaround: substitutability is conventional, not checked;\ngeneric server code over transports cannot be written once.\n\nDesired capability: traits/interfaces (or a recorded decision for an\nalternative abstraction story) sufficient for Reader/Writer/Stream.\n\nOther projects likely affected: mncs-service, mncs-store (backends),\nmncs-engine (device streams).\n\nEvidence/tests: `src/web/transport.mncs`, ARCHITECTURE.md transport\nsection."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-008",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-008: No traits/interfaces for transport abstraction.",
+  "target": "language",
+  "title": "No traits/interfaces for transport abstraction",
+  "version": "1"
+}

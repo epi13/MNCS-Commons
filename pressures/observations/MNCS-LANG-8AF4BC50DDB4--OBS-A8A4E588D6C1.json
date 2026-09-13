@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "contentDigest": "sha256:63411f2d325582cd2a2937008227acb1ff5e8044c9b74d020ae19d3debc947e2",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.16:P1-001",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "The current language test suite exercises the capability with bounded, explicit grant semantics."
+    }
+  ],
+  "id": "MNCS-LANG-8AF4BC50DDB4--OBS-A8A4E588D6C1",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "backendScope": "mncs-research-bytecode",
+    "currentValidation": true,
+    "languageRevision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "role": "upstream-implementation"
+  },
+  "observedAt": "2026-09-13T05:50:00Z",
+  "pressureId": "MNCS-LANG-8AF4BC50DDB4",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "run the Profile 0.16 filesystem mutation corpus with an explicit fs_root grant",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "path": "docs/source-profile-0.16.md",
+    "repository": "mncs-language",
+    "test": "crates/mncs-cli/tests/pressure_fs_mutation.rs"
+  },
+  "summary": "Profile 0.16 provides capability-authorized create, positioned write, and append operations.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "This is upstream capability evidence; the originating consumer workaround remains until consumer verification.",
+    "pressureImplementation": true
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-002",
+  "contentDigest": "sha256:b148fdff302da9994c6395c01dd44e01729d0d73a62b577739b095733259eb78",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-D60929B65373",
+  "identity": {
+    "capability": "legacy.press-002",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-002",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:a4210857a7adaadea2d7ecc5a7482588d9a9ef45cb358d21e1fc5949a1b92454",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-002 — No synchronization primitives (P0, synchronization, runtime)\n\n- Observed: no channels (bounded/unbounded), mutexes, RwLocks, atomics,\n  CAS, barriers, semaphores, or condition variables in any profile or\n  stdlib module (`library/core`, `library/std` surveyed; RFC 0010 `NONE`).\n- Desired: at minimum a bounded multi-producer/multi-consumer channel\n  with close semantics and cancellation-safe receive, so backpressure and\n  shutdown are language-level contracts rather than host code.\n- Slice-4 verdict 2026-09-07 (`index/phase2-pressure`): **confirmed\n  still missing.** No channel, mutex, RwLock, atomic, CAS, barrier, or\n  close-semantics syntax exists to attempt. The closest in-language\n  shape — `task.request_cancel` arming a flag observed at the next\n  `advance` boundary (`candidate_cancel`, pinned by\n  `tests/test_language_probes.py::test_task_cancel_is_terminal`) — is a\n  cooperative single-task hand-off, not an MPMC bounded queue: it cannot\n  express backpressure, multi-producer close, or shutdown broadcast, so\n  both queue stages stay host-side.\n- Workaround: `queue.Queue(maxsize=...)` plus a hand-rolled drain protocol\n  (`producers_done` event, discard-after-stop, join guarantees) in\n  `pipeline.py`. An early draft of that protocol could hang `join()` on\n  failure; the fixed protocol is tested by `tests/test_failure.py`.\n- Update 2026-09-07 (`index/phase2-pressure`, slice 3): content\n  acquisition is now a second bounded-queue stage — single-threaded\n  enumeration feeding a bounded read queue drained by parallel reader\n  threads (`runner/mncs_index/discover.py::discover_concurrent`, sharing\n  the caller's worker/queue budget). Completion order never escapes\n  (results keyed by path, sorted; identity from sorted entries), the\n  drain protocol mirrors `pipeline.py` (every dequeue is `task_done`'d,\n  threads joined on all paths), and the bound is backpressure, not\n  meaning (`queue_size=1` builds identically). Tested by\n  `tests/test_concurrent_read.py` (slow/fast-failing/saturated reads,\n  cancellation with blocked readers, skewed and opposite layouts).\n- Cost: shutdown/cancellation semantics — a required RFC 0002 property —\n  cannot be expressed or tested in MNCS.\n- Classification: runtime/stdlib.\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0010\n  still `NONE`; no new channel/mutex/atomic syntax in any profile or\n  stdlib module). Probe file unchanged.\n- Acceptance-test-after-language-fix: an MNCS bounded channel with\n  close semantics passes N items from 2 producers to 1 consumer and\n  the consumer observes close exactly once; assert\n  `tests/test_concurrent_read.py` + `tests/test_failure.py` pass with\n  both queue stages expressed as language channels (host\n  `queue.Queue` deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-002",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-002: No synchronization primitives (P0, synchronization, runtime).",
+  "target": "language",
+  "title": "No synchronization primitives (P0, synchronization, runtime)",
+  "version": "1"
+}

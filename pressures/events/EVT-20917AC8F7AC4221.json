@@ -1,0 +1,26 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:5b84e5fb1a2dfc0a6f1727c11091f33d5f1cef8fd0d0afa24fd3339b69ccbf74",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-7BA2DA8A378E--OBS-95CED235AB3C"
+  ],
+  "from": "implementing",
+  "id": "EVT-20917AC8F7AC4221",
+  "implementation": {
+    "availableSince": "0.13",
+    "backend": "mncs-research-bytecode",
+    "capability": "store-p1-008",
+    "profile": "0.13",
+    "ref": "mncs-language:30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "verifiedAgainstProfile": "0.16"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:29Z",
+  "pressureId": "MNCS-LANG-7BA2DA8A378E",
+  "previousEvent": "EVT-6F1C278366AB8FB1",
+  "reason": "The owning language capability is available in the current toolchain.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

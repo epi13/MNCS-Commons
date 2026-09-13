@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-008",
+  "contentDigest": "sha256:bd25304f93f75b6c8822bb13906e1dcf0b7799f450dfcb758d8b6770ee6dd193",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-B613462C9EB6",
+  "identity": {
+    "capability": "legacy.press-008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-008",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:0bac4f335809f461b3cd73ade2fa09d5c7e81510e4461d4e60c9f8f93d212fab",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-008 — No concurrent error aggregation (P2, error model)\n\n- Observed: MNCS has failure modes (`fail`, `Result`-shaped stdlib) but no\n  way to aggregate failures across tasks, distinguish cancellation from\n  error, or propagate scoped diagnostics through a task tree.\n- Desired: typed multi-error results and cancellation-distinct failure\n  propagation for pipelines.\n- Workaround: host failure tree (first-error capture, stop broadcast,\n  `BuildFailed`/`BuildCancelled`, `MNCSError` kernel mapping). Tested in\n  `tests/test_failure.py`, including \"failed builds never publish\".\n- Cost: failure semantics — an RFC 0002 requirement — are host-defined.\n- Classification: language semantics, runtime.\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0011\n  still `PARTIAL` with no cancellation/deadline additions; RFC 0010\n  still `NONE`). No reproducer change possible — there is no syntax\n  to attempt.\n- Acceptance-test-after-language-fix: an MNCS task tree where one\n  leaf fails returns a typed multi-error distinguishing the failure\n  from a sibling cancellation; assert `tests/test_failure.py` passes\n  with the host failure tree replaced by language propagation\n  (`Pipeline._fail` deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-008",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-008: No concurrent error aggregation (P2, error model).",
+  "target": "language",
+  "title": "No concurrent error aggregation (P2, error model)",
+  "version": "1"
+}

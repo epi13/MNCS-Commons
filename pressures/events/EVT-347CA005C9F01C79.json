@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:c508679fc4e32b0e49b5e3b8ef63c161be4485b53221832a7ac148ff6b7895cd",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "confirmed",
+  "id": "EVT-347CA005C9F01C79",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:46:01Z",
+  "pressureId": "MNCS-TOOLING-7A39DE2CEB8F",
+  "previousEvent": "EVT-ED3A7C85DE0CEB2C",
+  "reason": "The source ledger explicitly supersedes this omnibus finding with narrower DOC-P-008 through DOC-P-019 records; historical text remains preserved.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "superseded",
+  "version": "1"
+}

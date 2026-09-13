@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "validation": "historical-ledger-review"
+  },
+  "contentDigest": "sha256:771dab1e70b000ba6fd3647b0a3fbd1d851bbf1e79c185d994752d1c0022daee",
+  "evidence": [
+    {
+      "id": "mncs-web:WEB-P-002-ledger-review",
+      "ref": "mncs-web:LANGUAGE_PRESSURES.md",
+      "status": "PASS",
+      "summary": "Repository source explicitly records this pressure and its local behavior/workaround."
+    }
+  ],
+  "id": "MNCS-LANG-E0ECD53CAE1F--OBS-6FE38B563B72",
+  "kind": "observation",
+  "languageProfile": "0.13",
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": false,
+    "legacyId": "mncs-web:WEB-P-002",
+    "reviewKind": "historical-ledger-confirmation"
+  },
+  "observedAt": "2026-09-13T06:30:54Z",
+  "pressureId": "MNCS-LANG-E0ECD53CAE1F",
+  "repository": "mncs-web",
+  "reproduction": {
+    "instructions": "Consult the inert source ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "b2ec20bafb841607f4bf1d11c6db527216954970",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md",
+    "repository": "mncs-web"
+  },
+  "summary": "Web language-pressure ledger reviewed at the repository pin; the local reproducer/workaround is confirmed as an observed consumer constraint. This is historical ledger evidence, not a current-language rerun.",
+  "version": "1",
+  "workaround": {
+    "description": "Preserved from the imported repository observation; consumer-specific removal remains unverified.",
+    "fallbackLanguage": null
+  }
+}

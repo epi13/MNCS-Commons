@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-web"
+  ],
+  "capability": "legacy.web-p-007",
+  "contentDigest": "sha256:552ff3e5f5c59c0016999537c5d34e26b59b73e31252dfcb5bb4ef911e83ce31",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-web",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-770B42F56E6C",
+  "identity": {
+    "capability": "legacy.web-p-007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-web:WEB-P-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open (expected; structural language scope, not a regression)",
+    "legacyId": "WEB-P-007",
+    "repository": "mncs-web",
+    "sourceDigest": "sha256:aab9bbd737540286573d12a5c2691491c65d5ffef96023ecbff5d566880d72e5",
+    "sourceLedgerDigest": "sha256:ac53c313e0b5743ba6b1fbdae10e5b0ff74551b94cc040c4111d5c6e683e8584",
+    "sourceLedgerPath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-web:LANGUAGE_PRESSURES.md",
+    "sourceText": "## WEB-P-007 — No first-class handlers/closures (numeric dispatch)\n\n- Status: open (expected; structural language scope, not a regression)\n- Severity: major (shapes the application layer)\n- Category: type system / semantics (higher-order functions)\n\nWhat mncs-web was trying to implement: a `Router` mapping paths to\nhandler functions/closures, and middleware as composable function\nvalues (`Handler`, `Middleware` in RFC 0001 terms).\n\nExpected behavior: first-class (possibly bounded/linear) function\nvalues so routes and middleware compose as values.\n\nActual behavior: Profile 0.13 explicitly leaves \"unrestricted callable\nvalues\" out of scope; routes map to `u64` handler ids and\n`web.app.dispatch` is an integer `match` over them.\n\nWhy this is a language issue: dynamic handler registration and\nmiddleware composition cannot be expressed without callable values;\nthe numeric-dispatch table is the only total encoding available.\n\nCurrent workaround: `Route.handler: u64` + exhaustive integer match in\n`dispatch` (unknown ids fall through to 404). Middleware does not exist\nin v1.\n\nCost of the workaround: adding a route means touching the table, the\nid registry, and the dispatch match (three sites, no static link\nbetween them); middleware/chains are unrepresentable; handler\nunit-testing goes through `serve_once` rather than direct calls.\n\nDesired capability: bounded callable values (or a vetted handler-registry\npattern in stdlib) with exhaustiveness checking preserved.\n\nOther projects likely affected: mncs-service, mncs-ui (callbacks),\nmncs-cli (subcommands).\n\nEvidence/tests: `src/web/router.mncs` (`handler: u64`),\n`src/web/app.mncs` (`dispatch`), `tests/test_app.py`."
+  },
+  "legacyIds": [
+    "mncs-web:WEB-P-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-web:WEB-P-007",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-web:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure WEB-P-007: No first-class handlers/closures (numeric dispatch).",
+  "target": "language",
+  "title": "No first-class handlers/closures (numeric dispatch)",
+  "version": "1"
+}

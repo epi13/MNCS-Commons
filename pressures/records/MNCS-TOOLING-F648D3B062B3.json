@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-012",
+  "contentDigest": "sha256:5e217a705926a889439dd7d901e9f028bd37d83e93a56cd616482e900932e408",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "identity",
+  "id": "MNCS-TOOLING-F648D3B062B3",
+  "identity": {
+    "capability": "legacy.doc-p-012",
+    "domain": "identity",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-012",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-012",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:da987ef9c107abaa2d10b5dedabf3a12d53472f6e20d03b7a158635f2481c067",
+    "sourcePath": "mncs-doctor:DOC-P-012.md",
+    "sourceText": "# DOC-P-012 — No symlink identity / target reads\n\nStatus: open\n\nCategory: language (stdlib/runtime surface)\n\nSeverity: high (safety-relevant)\n\nFrequency: common (discovery walk + transaction write guard)\n\n## Doctor workload\n\nDiscovery skips symlinked directories by default (cycle guard) and the\ntransaction layer refuses symlink targets at validate *and* write time\n(TOCTOU guard). Both need to distinguish symlinks and inspect them.\n\n## Current behavior (verified 2026-09-12)\n\n`fs_entry_kind_at` reports symlinks only as `other` (kind 2); no\nreadlink/target primitive exists, and 0.16 hardening treats symlinks as\nuntrusted (`other` entries never touched; O_NOFOLLOW tranche). There is\nno granted way to observe *which* links exist as links.\n\n## Workaround\n\nSymlink policy stays Rust. No mutation path moves to MNCS until link\nobservation exists — this is a hard safety gate, not polish.\n\n## Removal condition\n\nGranted symlink-identity observation under `fs_root`; then reproduce\nthe symlink refusal tests (`preserves_permissions_and_refuses_symlinks`)\nagainst an MNCS-driven transaction plan.\n\n## Evidence\n\n`docs/fs-resource-effects.md` symlink posture; transaction TOCTOU guard\nin `src/transaction.rs` with passing tests.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-012",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-012.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-012: No symlink identity / target reads.",
+  "target": "tooling",
+  "title": "No symlink identity / target reads",
+  "version": "1"
+}

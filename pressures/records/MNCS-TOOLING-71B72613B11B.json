@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-020",
+  "contentDigest": "sha256:b9b79565058289726d7bbb9a4331ddda72c2451504b61e4c7e4b28dc98a714d6",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-71B72613B11B",
+  "identity": {
+    "capability": "legacy.doc-p-020",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-020",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-020",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:372e82615f42ffefe771b261843ef61de338904318cf9ba1af491132019646db",
+    "sourcePath": "mncs-doctor:DOC-P-020.md",
+    "sourceText": "# DOC-P-020 — No Rust `Session` batch-call API\n\nStatus: open\n\nCategory: tooling (embedding API)\n\nSeverity: medium\n\nFrequency: every chunked or multi-entrypoint production call\n\n## Doctor workload\n\nProduction Doctor retains one `mncs_embed::Session` per policy module and\nmust call scanner `feed` once per 64-byte window, then `finish`. Commands\nalso call several scalar policy entrypoints in sequence. Session reuse avoids\nrecompilation, but there is no safe public Rust batch surface to amortize\nrequest validation and transport overhead.\n\n## Reproducer\n\nAt `mncs-language` `a0255f8`, `mncs-embed::Session` exposes `call` and\n`call_json`. The same crate exports `mncs_session_call_batch` only through its\nunsafe C ABI. Doctor's safe Rust runtime cannot use that ABI without creating\na second handle/lifetime/serialization boundary.\n\n## Observed impact\n\nThe 64-byte scanner is genuinely stateful and works, but each chunk is a\nseparate JSON call. A cold `mncs-doctor doctor` process compiling/opening the\nten policy sessions measured approximately 11.4–12.1 seconds and 39 MB peak\nRSS in the campaign environment. Subsequent calls within one process reuse\nsessions; separate CLI invocations necessarily pay the cold initialization.\n\n## Workaround\n\n`DoctorMncsRuntime` compiles once per process, retains sessions in a\nprocess-wide `OnceLock`, and fails closed on every call/return contract\nfailure. The scanner uses fixed windows and the policy runtime records every\nentrypoint in report provenance.\n\n## Removal condition\n\nExpose a safe, typed Rust batch/session API with deterministic ordering,\nper-call results, shared artifact identity, and request-level failure\nclassification. Re-run the scanner and command performance probes before\nchanging the runtime lifecycle.\n\n## Evidence\n\n- `src/mncs_runtime.rs` session cache and chunk-fed scanner.\n- `crates/mncs-embed/src/lib.rs` `Session::call_json` versus the C-only\n  `mncs_session_call_batch`.\n- Campaign timing: separate `doctor --json` processes took 11.4–12.1 s;\n  the session-reuse filesystem test observed `reused_session=true`.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-020"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-020",
+    "text": "At `mncs-language` `a0255f8`, `mncs-embed::Session` exposes `call` and\n`call_json`. The same crate exports `mncs_session_call_batch` only through its\nunsafe C ABI. Doctor's safe Rust runtime cannot use that ABI without creating\na second handle/lifetime/serialization boundary."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-020.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-020: No Rust `Session` batch-call API.",
+  "target": "tooling",
+  "title": "No Rust `Session` batch-call API",
+  "version": "1"
+}

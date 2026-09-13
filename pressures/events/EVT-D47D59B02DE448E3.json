@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:89f647ae61cadf27ee982f2abfbddc76aaf8163e82ca26833e13e73ea4927546",
+  "details": {
+    "reason": "Both expose host/process boundary cost, but their required semantics and workload measurements differ.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-D47D59B02DE448E3",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:15:00Z",
+  "relation": "related_to",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-4E8D16B49738",
+  "targetPressure": "MNCS-LANG-574813EA04B7",
+  "version": "1"
+}

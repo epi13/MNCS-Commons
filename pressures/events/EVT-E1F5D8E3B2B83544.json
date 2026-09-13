@@ -1,0 +1,25 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:58f51d7a477ff1662bf8ed4f6b988e5acd2bffc5b7632cef818d554a51f9d11a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-71DAE5A34032--OBS-B836F4D3C90C"
+  ],
+  "from": "implementing",
+  "id": "EVT-E1F5D8E3B2B83544",
+  "implementation": {
+    "availableSince": "0.16",
+    "backend": "mncs-research-bytecode",
+    "capability": "atomic_publication",
+    "profile": "0.16",
+    "ref": "mncs-language:30054cfd0b469bb326c21df3cd24e756741d7a9b"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T05:50:19Z",
+  "pressureId": "MNCS-LANG-71DAE5A34032",
+  "previousEvent": "EVT-40D407457870E382",
+  "reason": "Profile 0.16 provides the bounded capability; consumer verification remains outstanding.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

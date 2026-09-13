@@ -7,6 +7,8 @@
     "by-domain",
     "by-repository",
     "multi-repository",
+    "needs-revalidation",
+    "python-fallback",
     "recently-resolved",
     "rust-fallback",
     "unresolved-language"

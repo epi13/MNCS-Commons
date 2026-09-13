@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:abfa7c2fb71725be6ce1fd4c99c3392a79f301cfe4be146f8c0a19b7c0222bd5",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0015",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0015-version-aware-frontend.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-723468BE594D--OBS-A3D70278EF04",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0015",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:b6f80f7e04dac39d5cb2ef5e48fdb35fcc5a900dbdb1f6aca35de13c2e5163cb"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0015-version-aware-frontend.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "None. New-syntax use in compiler sources is constrained to what the\npipeline can still process: `!` and scalar `match` appear only in\nmodules whose *own* parsing is not required (frontend modules are\nexecuted, never re-parsed by MNCS code), and the decl-layer migration\nis staged to land together with version-aware parsing.",
+    "legacyStatus": "open"
+  }
+}

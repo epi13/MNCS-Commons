@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "research-bytecode",
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "tool": "target/debug/mncs"
+  },
+  "contentDigest": "sha256:d4f79b1b5c0735976608febe300904cc82b8a27f47e0f76400161194e64d0f16",
+  "evidence": [
+    {
+      "id": "mncs-compiler:CP-0010-current-source-study",
+      "ref": "pressure/repro/match-u64-pattern.mncs",
+      "status": "PASS",
+      "summary": "Profile header upgraded only for this semantically equivalent probe; current source-study accepts integer and wildcard match arms."
+    }
+  ],
+  "id": "MNCS-COMPILER-4924C0E45913--OBS-D858C9B28ACA",
+  "kind": "observation",
+  "languageProfile": "0.13",
+  "metadata": {
+    "activationCurrentProbe": "mncs-compiler:CP-0010",
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": true,
+    "validationScope": "minimal-reproducer"
+  },
+  "observedAt": "2026-09-13T08:00:01Z",
+  "pressureId": "MNCS-COMPILER-4924C0E45913",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the cited inert source-study fixture; this record does not execute repository-provided text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "command": "mncs source-study <probe>",
+    "commit": "0222ebdab0dd56bbce00c77e0369af501751cd6b",
+    "path": "pressure/repro/match-u64-pattern.mncs",
+    "repository": "mncs-compiler",
+    "temporaryProfileVariant": "0.13"
+  },
+  "summary": "Profile header upgraded only for this semantically equivalent probe; current source-study accepts integer and wildcard match arms.",
+  "version": "1",
+  "workaround": {
+    "description": "Historical compiler workaround is no longer needed for this minimal capability probe.",
+    "removed": true
+  }
+}

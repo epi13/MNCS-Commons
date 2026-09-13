@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-015",
+  "contentDigest": "sha256:8e65925f1f55cd8642dec23a22c047180178f9a3c1826b0b536011d14db5021d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-3125AEBBC1C3",
+  "identity": {
+    "capability": "legacy.press-015",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-015",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-015",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:e70b0ea009d6a67a0de9d1b39989c3a0fa7cd06974a4c76e38c5e7ec4465bd4f",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-015 — No relation values or graph traversal (P3, semantics)\n\n- Observed: relationships (`defines`/`references`/`depends-on`/`rfc-ref`)\n  are host-side index entries over kernel-extracted rows. MNCS has no\n  relation/table values, joins, or transitive-closure construct to query\n  in-language, so even single-hop lookups (`query.py` v2 methods) and\n  the merge dedup live in the host.\n- Desired: first-class edge sets with deterministic dedup/order plus a\n  bounded transitive-traversal construct (for real dependency\n  invalidation, not just edges).\n- Workaround: per-file rows merged by identity sort in `globalize`;\n  single-hop dictionary indexes in `QueryEngine`. Transitive queries\n  (dependents-of-dependents, invalidation sets) are not offered.\n- Cost: the dependency/invalidation graph exists as edges only; Phase 2\n  \"dependency/invalidation graph\" stays open (full revalidation, no\n  invalidation sets).\n- Update (gap review): rename lineage over those edges is a host-advisory\n  layer (`runner/mncs_index/lineage.py`) precisely because digest-keyed\n  verdict maps cannot be expressed in MNCS: `moved` requires exactly one\n  removed and exactly one added path sharing an authoritative MNCS\n  content digest, every ambiguous shape degrades to remove+add, and\n  emission is sorted so caller order cannot leak. Verdicts are untouched\n  (a `moved` pair still carries (2, 1)). Tested by\n  `tests/test_graph_invalidation.py` (fan-out, cycles, duplicates,\n  deterministic ambiguity).\n- Update 2026-09-08 (`index/phase3-systems`, slice 4): bounded\n  transitive traversal is now offered (`src/graph.mncs`,\n  `runner/mncs_index/graph.py`, `QueryEngine.dependencies` /\n  `transitive_dependents` / `invalidation_set`). The split is\n  deliberate: per-candidate admission (visited / depth / node budget)\n  is an MNCS verdict (`should_visit`, `depth_next` in\n  `mncs.index.graph.v1`), while adjacency, node identity, visited\n  sets, and canonical ordering stay host-explicit — relation values,\n  joins, and unbounded traversal remain inexpressible, so the entry\n  stays open. Semantics: exact path/symbol identity, first-visit-wins\n  (cycles/duplicates terminate, emit once), sorted deduped adjacency +\n  BFS + re-sorted output (insertion/worker order cannot leak),\n  `max_depth` in edges (one file hop = 2) and `max_nodes` over emitted\n  files with `truncated` attribution (visited-skips never truncate),\n  dangling targets (missing/renamed/deleted) are leaves, never errors.\n  The host mirror is differentially pinned against the kernel.\n  Tested by `tests/test_invalidation.py` (chains, diamonds, fan-out,\n  fan-in, cycles, duplicates, missing/renamed/deleted targets,\n  budgets, order sweeps, incremental == rebuild incl. invalidation).\n- Update (phase-3 gap review): two precision fixes with honest\n  scoping. (1) `max_nodes` is now a GLOBAL cap over total dependents\n  across roots (each sub-walk's budget shrinks by gathered nodes),\n  not per-walk — pinned by `test_invalidation_set_budget_is_global`\n  (multi-root, permutation-stable). (2) The kernel/host split is now\n  contractual, not aspirational: every traversal call site checks\n  `visited` first and passes `visited=False`, so the kernel's visited\n  branch fires only through direct unit tests\n  (`test_should_visit_truth_table`); the `depth_next` u64 wrap is\n  characterized (`2^64-1 → 0`) and unreachable in walks because\n  admission precedes every step. The kernel owns two scalar checks;\n  everything structural (adjacency, identity, order, iteration)\n  remains host — this entry stays open until relation values land.\n- Classification: language semantics, stdlib.\n- Slice-7 verdict 2026-09-08: **confirmed still missing at language\n  level** (no relation/table/join values in any profile or stdlib\n  module surveyed 2026-09-08; index-side bounded traversal in\n  `src/graph.mncs` + `graph.py` is a workaround, not the capability).\n- Acceptance-test-after-language-fix: an MNCS relation value holds\n  the extracted edge set with deterministic dedup/order and a bounded\n  transitive closure over fixture edges equals\n  `QueryEngine.invalidation_set`; assert `tests/test_invalidation.py`\n  passes with adjacency/visited sets as language values (host\n  dictionary indexes deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-015"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-015",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-015: No relation values or graph traversal (P3, semantics).",
+  "target": "language",
+  "title": "No relation values or graph traversal (P3, semantics)",
+  "version": "1"
+}

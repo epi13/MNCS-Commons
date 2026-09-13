@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:6d63238f2970230fea0eb82447b9b41fed6edfce0a217403fcd919c14d7040a3",
+  "details": {
+    "reason": "Both are bounded-sequence capacity pressures, with compiler whole-source storage and Store sequence contracts as distinct observations.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-5B0D821A94F41F1B",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:18:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-COMPILER-378246F62D9D",
+  "targetPressure": "MNCS-LANG-4EC58934F8DB",
+  "version": "1"
+}

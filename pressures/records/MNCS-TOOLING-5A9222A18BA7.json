@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "legacy.ls-p-005",
+  "contentDigest": "sha256:b65220882001d0d458ee26f3b027731045d581bee22bbd316e73c650ed40ca38",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-language-service",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-5A9222A18BA7",
+  "identity": {
+    "capability": "legacy.ls-p-005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-language-service:LS-P-005",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "REJECTED-AS-PRESSURE",
+    "legacyId": "LS-P-005",
+    "repository": "mncs-language-service",
+    "sourceDigest": "sha256:751888741ef267d3c51c92c3957b8520473f28446e166df7cb1580d766417e44",
+    "sourcePath": "mncs-language-service:LS-P-005.md",
+    "sourceText": "# LS-P-005 — JSON-RPC/LSP framing must remain a Rust boundary\n\nStatus: REJECTED-AS-PRESSURE\n\n## Investigation\n\nA full MNCS-native LSP transport would require, at minimum: string\nliterals and text manipulation (URIs, JSON keys), JSON parsing and\nserialization (optional fields, unions, recursive structures, request\nIDs), and stdio/socket I/O with framing (`Content-Length` headers).\n\n## Reproducer\n\nAttempting to model even one LSP message (`textDocument/didOpen`) in MNCS\nfails at the first field: URIs and method names are strings, and MNCS has\nno string type or literal (see LS-P-002). There is likewise no socket,\nstdio, or buffered-I/O surface in the language.\n\n## Reasoning\n\nThis is an accepted bootstrap boundary, not a deficiency to repair. Every\nlanguage needs a host I/O and transport substrate; LSP framing is\noperating-system integration in the same class as networking and process\nmanagement, which the campaign brief itself lists as legitimate Rust-side\nresponsibilities. The service keeps this boundary minimal and explicit:\n`crates/lsp` owns JSON-RPC framing and protocol translation only, and all\nsemantic answers come from the protocol-neutral core that MNCS-native\nkernels already query differentially.\n\nRevisit only if MNCS gains a string/JSON story for other reasons; do not\nadd transport-shaped features to the language to serve this record.\n"
+  },
+  "legacyIds": [
+    "mncs-language-service:LS-P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-language-service:LS-P-005",
+    "text": "Attempting to model even one LSP message (`textDocument/didOpen`) in MNCS\nfails at the first field: URIs and method names are strings, and MNCS has\nno string type or literal (see LS-P-002). There is likewise no socket,\nstdio, or buffered-I/O surface in the language."
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-language-service:LS-P-005.md"
+  },
+  "summary": "Imported legacy pressure LS-P-005: JSON-RPC/LSP framing must remain a Rust boundary.",
+  "target": "tooling",
+  "title": "JSON-RPC/LSP framing must remain a Rust boundary",
+  "version": "1"
+}

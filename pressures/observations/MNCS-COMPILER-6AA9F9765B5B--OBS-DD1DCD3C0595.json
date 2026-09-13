@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:6d7b31c63b659f6506da8e98d504d67b4173ff94eb105da19bfe28a73829f94f",
+  "evidence": [
+    {
+      "id": "legacy:mncs-compiler:CP-0005",
+      "kind": "legacy-markdown",
+      "ref": "mncs-compiler:0005-test-transport.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-COMPILER-6AA9F9765B5B--OBS-DD1DCD3C0595",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "CP-0005",
+    "sourceEntry": 0,
+    "sourceLedgerDigest": "sha256:dbaeb16b3a11b840abb621ec392ec335916c48d8424259b2cca5a3b0d25382fa"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-COMPILER-6AA9F9765B5B",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-compiler:0005-test-transport.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "fallbackLanguage": "python",
+    "legacyStatus": "open, re-confirmed (2026-09-12). Category: tooling,"
+  }
+}

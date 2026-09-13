@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-004",
+  "contentDigest": "sha256:a09ba7b1b00c1f2980a69961b6654881f9e0a46c3c2d2f40bdd8a27df0b1c80a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "type-system.generics",
+  "id": "MNCS-LANG-019204D482CB",
+  "identity": {
+    "capability": "legacy.p-004",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-numerics:P-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-004",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:f22617d99c5b2828a7942fa5f371ab3685de120ba90b0db6c1ee6ec1d3bd1a5c",
+    "sourcePath": "mncs-numerics:P-004-generic-records/README.md",
+    "sourceText": "# P-004 — No generic record declarations (diagnostic half resolved)\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-004`.\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-004-generic-records/repro.mncs --node-id repro\n```\n\n`record Box<N: Nat> { lane: [f64; N] }` (`repro.mncs`) is refused\nwith a single precise diagnostic at the `<` (language repair\n2026-09-12):\n\n```text\nMNP213 | generic record declarations are not supported; records cannot take type parameters\n```\n\n`enum Outcome<N: Nat> { ... }` (`repro_enum.mncs`) likewise:\n\n```text\nMNP214 | generic enum declarations are not supported; enums cannot take type parameters\n```\n\nBefore the repair each died in a four-diagnostic cascade\n(`MNP123`/`MNP072` + body/empty/trailing errors) naming everything\nexcept the rule. The parser now reuses the shared generic-parameter\nmachinery and skips the balanced body, so a declaration AFTER the\nrefused one still parses (pinned language-side by\n`pressure_generic_type_refusal`).\n\nThese repros deliberately go on to USE the generic type\n(`-> (result: Box<N>)`, `Box<N> { lane: xs }`), so diagnostics after\nthe first are use-site cascade for a type that cannot exist yet —\nthe same documented-cascade status as P-009's second error. The\nrepros stay in that form on purpose: they exhibit the full\nexpressive gap (generic carried state, generic outcome types), not\njust the declaration diagnostic.\n\nNumerics impact (unchanged): a traversal carries one state value, so\nmulti-scalar generic folds (e.g. generic prefix sums) are\ninexpressible; the library ships concrete-width records instead\n(`Pref` for `prefix4` in `src/numerics/vec_float_build.mncs`), and\n`normalized` traps on zero instead of returning a `ZeroNorm`\noutcome.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-004-generic-records/README.md"
+  },
+  "summary": "Imported legacy pressure P-004: No generic record declarations (diagnostic half resolved).",
+  "target": "language",
+  "title": "No generic record declarations (diagnostic half resolved)",
+  "version": "1"
+}

@@ -1,0 +1,99 @@
+{
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "pressures": [
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0005",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-COMPILER-6AA9F9765B5B",
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "compiler",
+      "title": "Bootstrap differential tests need a host test transport",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons"
+      ],
+      "capability": "dynamic_query_projection",
+      "currentValidation": true,
+      "domain": "data.registry",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-6643CDECCFEC",
+      "reporters": [
+        "mncs-commons"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "Dynamic registry projection cannot yet be native MNCS",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "currentValidation": true,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-8AF4BC50DDB4",
+      "reporters": [
+        "mncs-commons",
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocker",
+      "status": "available",
+      "target": "language",
+      "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    }
+  ],
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "python-fallback"
+}

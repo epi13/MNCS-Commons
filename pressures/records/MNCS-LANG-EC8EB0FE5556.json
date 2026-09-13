@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-008",
+  "contentDigest": "sha256:816f887baffa7834dd1d421ef04e539b83cfbd28d5a08035d53a63cda569cab9",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-EC8EB0FE5556",
+  "identity": {
+    "capability": "legacy.p-008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-008",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:a0e75a1a4768fcfb356c5e4c21cd34d01543fddf96d766d929ee42e100a85067",
+    "sourcePath": "mncs-numerics:P-008-float-literal-adaptation/README.md",
+    "sourceText": "# P-008 — Integer literals do not adapt to `f64` → RESOLVED (migrated)\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-008`.\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-008-float-literal-adaptation/repro.mncs --node-id repro\n```\n\n`xs[i] * 2` over `[f64; N]` now elaborates cleanly: the integer\nliteral `2` adapts to `f64` exactly (language repair 2026-09-12;\nlossless below 2^53, refused beyond). The only remaining\ndiagnostics are `CMP301` unresolved-obligation notes (conservative\nfallbacks the harness already accepts), not errors. Before the\nrepair this failed with `MNE118: integer literal cannot satisfy a\nnon-integer type` + `MNE119`.\n\nExponent notation (`1.5e3`, `1e-12`, `1e16`) parses with correct\nrounding in the same repair tranche.\n\nMigration: `src/` now uses the adapted spelling where it is\nload-bearing — e.g. `(2 * a)` in `quadratic`\n(`src/numerics/scalar_float.mncs`, pinned bit-identical to `2.0 * a`\nby the committed corpus) — and the mat_float/scalar/reduce suites\nexercise adaptation on all five backends (language-side\n`pressure_literal_symmetry`: left/right-literal symmetry,\nexact integer-to-float adaptation, non-adaptable mismatches still\nrefused via MNE119).\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-008",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-008-float-literal-adaptation/README.md"
+  },
+  "summary": "Imported legacy pressure P-008: Integer literals do not adapt to `f64` → RESOLVED (migrated).",
+  "target": "language",
+  "title": "Integer literals do not adapt to `f64` → RESOLVED (migrated)",
+  "version": "1"
+}

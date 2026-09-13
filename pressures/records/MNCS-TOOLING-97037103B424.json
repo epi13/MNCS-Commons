@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-018",
+  "contentDigest": "sha256:2754d6fb69a37394ceff1990e5a5e7f003f464356ef924a75ebda104eb442ea8",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "language-semantics",
+  "id": "MNCS-TOOLING-97037103B424",
+  "identity": {
+    "capability": "legacy.doc-p-018",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-018",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "fixed-upstream",
+    "legacyId": "DOC-P-018",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:0d57385b9c089871522ee49e39e331630d87a89ec012ecb3e16f6170ded0dfbf",
+    "sourcePath": "mncs-doctor:DOC-P-018.md",
+    "sourceText": "# DOC-P-018 — `from_source` refuses `use` imports (no embed freeze path)\n\nStatus: fixed-upstream\n\nCategory: tooling (embedding/packaging)\n\nSeverity: low\n\nFrequency: structural (every multi-module MNCS program)\n\n## Doctor workload\n\n`mncs/doctor/*.mncs` is ten modules with shared scalar conventions.\nThe natural shape is one module family with imports; tiny helpers are\ncurrently duplicated per file instead.\n\n## Current behavior (verified 2026-09-12)\n\n`Artifact::from_source` refuses sources with `use` imports\n(`crates/mncs-embed/src/lib.rs`: \"library resolution belongs to the\nbuild step that froze them\"). The compiler CLI now provides that build\nstep: with `MNCS_LIBRARY_PATH`, `mncs compile SOURCE --emit backend\n--target mncs-research-bytecode --output-dir DIR` resolves imports and\nemits `backend.json`; `mncs experiment execute` then runs that frozen\nartifact. A probe importing `doctor.version.v1`, `doctor.health.v1`, and\n`doctor.report.v1` compiled into one artifact and all three calls returned\ntheir expected values.\n\n`Artifact::from_source` itself remains intentionally source-only, so the\nshipped Doctor runtime still compiles its ten self-contained sources at\nstartup. The ecosystem freeze path is real; generated-artifact packaging\ninside the Doctor crate is the next adoption step.\n\n## Resolution\n\nThe immediate runtime workaround remains one self-contained source per\nproduction session. Multi-module family authoring no longer needs to be\navoided: the freeze command can materialize the import closure for packaging.\n\n## Closure condition\n\nThe upstream freeze step is present and executable. Close the remaining\npackaging follow-up by generating and pinning a Doctor family artifact with\ncompiler/provenance checks, then replace per-module source compilation.\n\n## Evidence\n\n`mncs compile` + `mncs experiment execute` imported-family probe at\n`mncs-language` `a0255f8`; `mncs bundle generate/verify` also produced the\ncontent-addressed stdlib closure used by the compiler.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-018"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-018",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-018.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-018: `from_source` refuses `use` imports (no embed freeze path).",
+  "target": "tooling",
+  "title": "`from_source` refuses `use` imports (no embed freeze path)",
+  "version": "1"
+}

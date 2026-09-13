@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-016",
+  "contentDigest": "sha256:2c2fc713aa2a003c3d982e2667544d66b4485cc4dbc95a033ab76fb63646b891",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "backend",
+  "id": "MNCS-LANG-6CE2CD2EB82B",
+  "identity": {
+    "capability": "legacy.p-016",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-numerics:P-016",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-016",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:78a5f77b087c0833ea028f3045d632c7e819787fdc2b539b853be2e76277704a",
+    "sourcePath": "mncs-numerics:P-016-generic-checked-index-crash/README.md",
+    "sourceText": "# P-016 — Generic `checked_index` panics four backends\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-016`.\n\n`repro.mncs` sums `[10.0, 20.0, 30.0]` through the permutation\n`[2, 0, 1]` with one `checked_index` per lane; `corpus.json` calls\n`gather_sum<3>` and expects `60.0` back.\n\n```bash\nexport MNCS_LIBRARY_PATH=$PWD/src   # run from the repo root, CLI in mncs-language/\ncargo run -q -p mncs-cli -- experiment run repros/P-016-generic-checked-index-crash/repro.mncs \\\n  --backend mncs-c11 --corpus repros/P-016-generic-checked-index-crash/corpus.json\n```\n\nThe CLI process dies instead of answering: `internal error:\nentered unreachable code: generic SequenceBound must be specialized\nbefore backend lowering` — at `crates/mncs-codegen/src/c11.rs:1692`\n(C11), `lower.rs:2927` (WASM), `llvm.rs:1979` (LLVM),\n`cranelift_backend.rs:1414` (Cranelift). Only\n`mncs-research-bytecode` lowers the operation (returns `60.0`,\ncorrect). P-006-class crash: a fuzzer, a REPL typo, or a stale\ncorpus kills the compiler process instead of receiving a refusal.\n\nNo library workaround exists that keeps the checked-index\ndischarge: any `checked_index` over a symbolic-bound sequence\ncrashes the four backends even for a pure read, so gather/permute\nkernels stay out of `src/` until the repair lands. The language's\nown `pressure-checked-index` example covers concrete bounds only,\nwhich is why the generic shape was never exercised.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-016"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-016",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-016-generic-checked-index-crash/README.md"
+  },
+  "summary": "Imported legacy pressure P-016: Generic `checked_index` panics four backends.",
+  "target": "language",
+  "title": "Generic `checked_index` panics four backends",
+  "version": "1"
+}

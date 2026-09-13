@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-012",
+  "contentDigest": "sha256:69f6816d8da8a8fa268d9ce54782533b15acc2aa4f892bc7bac1e7a6a3434027",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-7610973D3A68",
+  "identity": {
+    "capability": "legacy.press-012",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-index:PRESS-012",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-012",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:7c379d38cf39ab1f00e071e47b5f40c72c5c89acbac733bb6005ab0ab470b2a7",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-012 — No cancellation semantics (P2, runtime, language)\n\n- Observed: no deadlines, cancellation tokens, or scoped shutdown in any\n  profile; RFC 0011 (nondeterminism/failure) is `PARTIAL` without these.\n- Desired: structured cancellation propagation into blocked kernel calls.\n- Workaround: host cancel events checked between items plus the drain\n  protocol; in-flight subprocess calls run to completion (bounded by the\n  60 s timeout). Tested by cancellation tests.\n- Update 2026-09-07 (`index/phase2-pressure`, slice 3): the same pattern\n  now covers blocked readers — readers check cancel between queue items,\n  wake via sentinels/timeout-get, and in-flight file reads run to\n  completion (bounded by MAX_FILE_BYTES). Tested by\n  `tests/test_concurrent_read.py::test_cancellation_releases_blocked_readers`\n  (cancel lands mid-blocked-read -> prompt `BuildCancelled`, no hang).\n- Cost: shutdown latency is host-bounded, not language-guaranteed.\n- Classification: runtime, language semantics.\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0010\n  `NONE`, RFC 0011 `PARTIAL` without deadlines; pipeline code read\n  2026-09-08: cancel is a `threading.Event` checked between items,\n  in-flight `mncs execute` calls run to completion bounded only by\n  the 60 s bridge timeout).\n- Acceptance-test-after-language-fix: a scoped deadline cancels a\n  blocked kernel call within the deadline and the pipeline observes\n  `BuildCancelled` promptly; assert\n  `tests/test_concurrent_read.py::test_cancellation_releases_blocked_readers`\n  and `tests/test_failure.py` cancellation tests pass with\n  language-propagated cancellation (host `cancel_event` deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-012",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-012: No cancellation semantics (P2, runtime, language).",
+  "target": "language",
+  "title": "No cancellation semantics (P2, runtime, language)",
+  "version": "1"
+}

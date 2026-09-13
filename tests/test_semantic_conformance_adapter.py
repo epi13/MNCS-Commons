@@ -32,7 +32,12 @@ def conformance_report(**overrides) -> dict:
                         "reference": {"status": "returned", "observed": [], "verdict": "pass"},
                         "determinism_stable": True,
                         "backends": [
-                            {"backend": "mncs-portable-wasm-mvp", "status": "returned", "observed": [], "verdict": "pass"},
+                            {
+                                "backend": "mncs-portable-wasm-mvp",
+                                "status": "returned",
+                                "observed": [],
+                                "verdict": "pass",
+                            },
                         ],
                     }
                 ],
@@ -45,7 +50,9 @@ def conformance_report(**overrides) -> dict:
 
 
 def test_clean_report_projects_to_pass_without_authority_promotion() -> None:
-    result = from_conformance_report(conformance_report(), subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    result = from_conformance_report(
+        conformance_report(), subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     record = result.record
     assert record is not None
     assert result.valid
@@ -64,28 +71,38 @@ def test_clean_report_projects_to_pass_without_authority_promotion() -> None:
 
 def test_violations_project_to_fail() -> None:
     report = conformance_report(summary={"pass": 1, "fail": 2, "unknown": 0, "unsupported": 0})
-    result = from_conformance_report(report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    result = from_conformance_report(
+        report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     assert result.record is not None
     assert result.record["details"]["outcome"] == "FAIL"
 
 
 def test_unknown_stays_unknown() -> None:
     report = conformance_report(summary={"pass": 1, "fail": 0, "unknown": 1, "unsupported": 0})
-    result = from_conformance_report(report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    result = from_conformance_report(
+        report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     assert result.record is not None
     assert result.record["details"]["outcome"] == "UNKNOWN"
 
 
 def test_untested_report_establishes_no_pass() -> None:
-    report = conformance_report(predicates=[], summary={"pass": 0, "fail": 0, "unknown": 0, "unsupported": 3})
-    result = from_conformance_report(report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    report = conformance_report(
+        predicates=[], summary={"pass": 0, "fail": 0, "unknown": 0, "unsupported": 3}
+    )
+    result = from_conformance_report(
+        report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     assert result.record is not None
     assert result.record["details"]["outcome"] == "UNKNOWN"
 
 
 def test_unsupported_schema_version_refuses_to_guess() -> None:
     report = conformance_report(schema_version="mncs.conformance-report/9")
-    result = from_conformance_report(report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    result = from_conformance_report(
+        report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     assert result.record is None
     assert any(d.code == "UNKNOWN_CONFORMANCE_SCHEMA_VERSION" for d in result.diagnostics)
     assert "schema_version" in result.unresolved_fields
@@ -94,7 +111,9 @@ def test_unsupported_schema_version_refuses_to_guess() -> None:
 def test_malformed_report_establishes_no_claim() -> None:
     report = conformance_report()
     del report["summary"]
-    result = from_conformance_report(report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z")
+    result = from_conformance_report(
+        report, subject_identity="f" * 64, created_at="2026-09-06T08:00:00Z"
+    )
     assert result.record is None
     assert any(d.code == "MALFORMED_CONFORMANCE_REPORT" for d in result.diagnostics)
 

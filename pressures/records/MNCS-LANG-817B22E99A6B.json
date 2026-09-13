@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-007",
+  "contentDigest": "sha256:999fbf181b067fa5d6c4672af93961c6fe670d631683a3e9a2688ea3b3b21734",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-817B22E99A6B",
+  "identity": {
+    "capability": "legacy.p-007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-007",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:0e990833237d2c1deb750b71f140ee671675f970437f07c7fd711c0a09ba23a2",
+    "sourcePath": "mncs-numerics:P-007-exact-negation/README.md",
+    "sourceText": "# P-007 — No exact negation\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-007`.\n\n**RESOLVED (2026-09-12):** the `neg(x)` intrinsic landed (Profile\n0.12) — exact IEEE-754 negation on every backend, `fneg` redefined\nas `neg(x)`, and `f-fneg-v-1` now expects `-0.0` (bits\n`0x8000000000000000`). Was: `fneg` spelled `0.0 - x`, so\n`fneg(+0.0)` was `+0.0` — a one-bit deviation, pinned, not hidden.\nKept as a record.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-007",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-007-exact-negation/README.md"
+  },
+  "summary": "Imported legacy pressure P-007: No exact negation.",
+  "target": "language",
+  "title": "No exact negation",
+  "version": "1"
+}

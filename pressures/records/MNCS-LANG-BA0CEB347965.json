@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-017",
+  "contentDigest": "sha256:88780a0dbdf41402e0e53ead8e70f1dc60c641e5b37ccb8eca5efbeea9bcd4d0",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-BA0CEB347965",
+  "identity": {
+    "capability": "legacy.p-017",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-numerics:P-017",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-017",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:805b865a400ee2e57e2131b2598d8fa78d73b6d2f62eaa2a7bf4016050319258",
+    "sourcePath": "mncs-numerics:P-017-exp-log-absence/README.md",
+    "sourceText": "# P-017 — No `exp`/`log`/real-power intrinsics\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-017`.\n\n`repro.mncs` spells the softplus `log(1.0 + exp(x))`:\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-017-exp-log-absence/repro.mncs --node-id repro\n```\n\nBoth calls fail with `MNE131: call target does not resolve to a\nfunction in this module`: the float intrinsic inventory is\n`sin`/`cos`/`neg` only. No `exp`, no `log`, no real `pow`, no\nspelling for any of them.\n\nWhy it matters: an entire numerical family is inexpressible —\nsoftmax, log-sum-exp, cross-entropy, Gaussian densities, geometric\nmeans, any likelihood. The statistics/logistic examples in this\nrepository stop exactly where exponentiation starts. A Taylor-series\n`exp` hand-roll was considered and rejected: without `ldexp`/`frexp`\nrange reduction is crude, and the error analysis for a correctly\nrounded argument reduction needs exactly the error-free\ntransformations that are also absent (pressure P-012) — the\nworkaround would pretend a rigor the language cannot back.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-017"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-017",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-017-exp-log-absence/README.md"
+  },
+  "summary": "Imported legacy pressure P-017: No `exp`/`log`/real-power intrinsics.",
+  "target": "language",
+  "title": "No `exp`/`log`/real-power intrinsics",
+  "version": "1"
+}

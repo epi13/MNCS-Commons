@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-009",
+  "contentDigest": "sha256:c880a63b903df25810659acdbd2c145a77d2dcce50749a6db2fdebd321440ee7",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "type-system.generics",
+  "id": "MNCS-LANG-A341270CEEAA",
+  "identity": {
+    "capability": "legacy.p-009",
+    "domain": "type-system.generics",
+    "reproducerSignature": "legacy:mncs-numerics:P-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-009",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:ef364cbc128feaf2c8a28b5f02700b69ce7d7b32830f57c437b076c76249e824",
+    "sourcePath": "mncs-numerics:P-009-generic-arithmetic/README.md",
+    "sourceText": "# P-009 — No generic numeric arithmetic\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-009`.\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-009-generic-arithmetic/repro.mncs --node-id repro\n```\n\n`+`/`*` over a type parameter `T` fails with `MNE120: arithmetic\noperands must have an integer type` — misleading twice over (`f64`\nsupports both operators; the missing piece is a constraint system,\nnot an integer operand). The `MNE102` on the carried binding is pure\ncascade. Library workaround: per-width duplication (`sum_i32`/\n`dot_i32` in `src/numerics/vec_int.mncs` are line-for-line copies kept\nto measure the cost).\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-009",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-009-generic-arithmetic/README.md"
+  },
+  "summary": "Imported legacy pressure P-009: No generic numeric arithmetic.",
+  "target": "language",
+  "title": "No generic numeric arithmetic",
+  "version": "1"
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-numerics",
+  "contentDigest": "sha256:8b4b338307c4d958b586a4fb7dd7e950b730ac18f7a10100bd8f648b8b40bed5",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-A14DAEC8E40F--OBS-A1E9DEFFB7A3"
+  ],
+  "from": "confirmed",
+  "id": "EVT-B1A05B758BD5505B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T06:10:01Z",
+  "pressureId": "MNCS-LANG-A14DAEC8E40F",
+  "previousEvent": "EVT-2C7E3153B4405D70",
+  "reason": "Numerics accepts the reconciled upstream capability and records the consumer closure boundary.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

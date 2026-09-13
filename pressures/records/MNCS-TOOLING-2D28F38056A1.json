@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-006",
+  "contentDigest": "sha256:d32a407f23b2759c161f98a31dea0f1b2d2a835f2fa6bfdfc77ef00c49adabfe",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "io.filesystem",
+  "id": "MNCS-TOOLING-2D28F38056A1",
+  "identity": {
+    "capability": "legacy.doc-p-006",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-006",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "workaround",
+    "legacyId": "DOC-P-006",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:f8a8198f15f800c51cc98c3f3765596417eee37effc1e45b334d2f39fcd84ba5",
+    "sourcePath": "mncs-doctor:DOC-P-006.md",
+    "sourceText": "# DOC-P-006 — Study-JSON contract is useful but unversioned and file-local\n\nStatus: workaround\n\nCategory: tooling\n\nSeverity: low\n\nFrequency: common (every `RustCliBackend` invocation)\n\n## Doctor workload\n\n`RustCliBackend` runs `mncs source-study <file>` per file and needs\nmachine-readable diagnostics.\n\n## Discovery (2026-09-12)\n\n`source-study` already emits a JSON artifact on stdout with a\n`diagnostics` array (`{code, stage, severity, message,\nspan{start, end, line, column}, expected, found}`) — verified against the\nlive CLI (MNE131 with byte span observed). Doctor now consumes it with a\nversion-tolerant mapping (`toolchain.rs::map_study`), falling back to a\ncoarse `DOC201` only when the output is unparseable.\n\nRemaining gaps (why this stays pressure, not closed):\n\n1. The schema is unversioned and undocumented — Doctor's mapping can only\n   be tolerant, never certain.\n2. Invocation is file-local: cross-module facts (imports, workspace\n   resolution) cannot be supplied, so single-file runs report resolution\n   failures (MNE131/MNE173-class) that project-aware analysis would clear.\n3. Exit-code semantics for \"studied with findings\" vs \"tool failed\" are\n   inferred, not specified.\n\n## Desired behavior\n\nVersion the study envelope (or fold it into the DOC-P-001 programmatic\nAPI) and accept workspace context (library path, module roots) so\nproject-aware backends stop paying per-file process costs for known-\nunresolvable single-file runs.\n\n## Likely ownership\n\ntooling (schema version + workspace-aware verb); Doctor adopts.\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-006",
+    "text": ""
+  },
+  "requiredBehavior": "Version the study envelope (or fold it into the DOC-P-001 programmatic\nAPI) and accept workspace context (library path, module roots) so\nproject-aware backends stop paying per-file process costs for known-\nunresolvable single-file runs.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-006.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-006: Study-JSON contract is useful but unversioned and file-local.",
+  "target": "tooling",
+  "title": "Study-JSON contract is useful but unversioned and file-local",
+  "version": "1"
+}

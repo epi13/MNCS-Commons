@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:c82ce8ddfc2a3fc3a4f567ed6b1dd730e89eea7bc64623224bd43b5582d6482c",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-48E3919FB30E--OBS-D18781A1F48A"
+  ],
+  "from": "verifying",
+  "id": "EVT-2C2AA68CDC0713FB",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:00:00.006000Z",
+  "pressureId": "MNCS-COMPILER-48E3919FB30E",
+  "previousEvent": "EVT-6BBB24D9B6E9C326",
+  "reason": "The compiler pressure is resolved for the documented capability: current probe passes and its workaround is removed/not needed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

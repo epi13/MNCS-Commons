@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-009",
+  "contentDigest": "sha256:6e16b38437791f9639139c8604ad8c8f2c774a3e2ef207e384ea588d8f4b2318",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-LANG-6D53020635CD",
+  "identity": {
+    "capability": "legacy.press-009",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-index:PRESS-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-009",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:d1acec0634d1cda61a29de679e3c1b3d1500dedd8f28a0f6af9e2fff1995329d",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-009 — Nested iteration rejected (P3, semantics, compiler)\n\n- Observed: nested `iterate` fails with `MNE147` (Profile 0.4 rule).\n  Reproducer: `pressure/reproducers/nested-iterate.mncs`.\n- Desired: either nested bounded iteration with a multiplied cost bound or\n  a clearer diagnostic pointing at the factored-call pattern.\n- Workaround: factor the inner scan into a called function\n  (`window_equal8` called per outer position in `contains8`). Clean,\n  bounded (64x8 comparisons), no capability loss for this workload.\n- Cost: ergonomic only.\n- Classification: compiler/frontend.\n- Slice-7 verdict 2026-09-08 (`index/phase3-systems`): **RESOLVED\n  upstream for two-level nests (profile 0.11); third level still\n  refused everywhere.** mncs-language `stage-b3` (`179a404`) permits\n  one bounded iteration inside another with distinct identities plus\n  a readable counted index (14-case matrix, 14/14 on all five\n  backends; negatives pin MNE147/MNE102 limits). Reran: the 0.8\n  reproducer still fails MNE147 + consequential MNE102s (profiles\n  ≤0.10 unchanged by design); the byte-identical\n  `reproducers/nested-iterate-011.mncs` (`mncs 0.11`) elaborates and\n  executes (`returned false` on a haystack with no full needle copy,\n  `steps: 2047`). Kernels stay factored (valid on every profile; no\n  migration needed) — the 0.11 form is available for future kernels\n  that genuinely need two-dimensional scans.\n- Acceptance-test-after-language-fix (executable):\n  `tests/test_language_probes.py::test_nested_two_level_profile011_slice7`\n  (0.11 nest executes) +\n  `test_nested_still_refused_below_011_slice7` (0.8 still MNE147)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-009",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-009: Nested iteration rejected (P3, semantics, compiler).",
+  "target": "language",
+  "title": "Nested iteration rejected (P3, semantics, compiler)",
+  "version": "1"
+}

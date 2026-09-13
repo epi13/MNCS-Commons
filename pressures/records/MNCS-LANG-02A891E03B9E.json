@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-006",
+  "contentDigest": "sha256:a6a3c257dbc1fdb3857b9f6b4ece02ce2af83095074c7ded07d429317329e561",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "integrity.hashing",
+  "id": "MNCS-LANG-02A891E03B9E",
+  "identity": {
+    "capability": "legacy.press-006",
+    "domain": "integrity.hashing",
+    "reproducerSignature": "legacy:mncs-index:PRESS-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-006",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:42466f1b99653ee3dcbe4c6fdfbb858bf32d9244343776f6ba779fadf1025bc3",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-006 — No cryptographic digests (P1, hashing, stdlib)\n\n- Observed: no SHA-256 or other crypto digest is callable from MNCS\n  source; hashing in-language stops at stdlib folds.\n- Desired: either a verified digest primitive or an explicit non-goal with\n  a recommended bridging contract.\n- Workaround: dual digests — MNCS Merkle digest over the canonical\n  bytes (`mncs_fingerprint_of`) plus host SHA-256 (`index_hash`).\n  Both are asserted across worker counts; they cross-check each other.\n- Slice-4 verdict 2026-09-07 (`index/phase2-pressure`): **partially\n  available — verify-only SHA-256 confirmed at source level on a known\n  vector.** Smallest legal program\n  `pressure/reproducers/probe-sha256-abc.mncs` (`mncs 0.10`,\n  `capability verifier`, `effect sha256_digest authorized_by verifier`,\n  `return sha256_digest(msg);`) elaborates with zero `MNE`/`MNB`/`MNP`\n  errors and, under `--grant-crypto verifier`, digests `abc` to exactly\n  `ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`\n  (NIST vector, independently checkable via `printf abc | sha256sum`;\n  `steps: 2`, `expectation_met` + `effects_met`, effect provenance\n  `crypto:sha256`). Fail-closed without grant (`unsupported`). Limits:\n  verify-only (no keygen in-language), operands are public views\n  ≤64 B, experiment path only at ~0.13 s per minimal invocation —\n  cannot back per-window kernel hashing (16k calls/MB). The dual-digest\n  workaround (MNCS fold + host SHA-256 cross-check) stays.\n  Corpus: `pressure/reproducers/probe-sha256-abc-corpus.json`;\n  regression: `tests/test_language_probes.py::test_sha256_nist_abc_vector`.\n- Cost: the headline canonical hash is half-outsourced; long-term\n  content-addressing story depends on host crypto.\n- Classification: stdlib/runtime.\n- Slice-7 verdict 2026-09-08: **confirmed still partial.** Reran:\n  NIST \"abc\" vector still digests exactly (`steps: 2`,\n  `crypto:sha256` provenance; fail-closed without grant). Still\n  verify-only, views ≤64 B, experiment path only (~0.13 s/call).\n- Acceptance-test-after-language-fix: an in-kernel digest over a\n  >64 B input matches `sha256sum` on the same bytes through the fast\n  `execute` path (no grant, no per-call backend compile); assert the\n  dual-digest workaround collapses to one digest in\n  `tests/test_determinism.py` (host SHA-256 cross-check deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-006",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-006: No cryptographic digests (P1, hashing, stdlib).",
+  "target": "language",
+  "title": "No cryptographic digests (P1, hashing, stdlib)",
+  "version": "1"
+}

@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8c208afc193967fa774dbbbede175550d9934d41550849b1cee7c2dfd1ee9534",
+  "evidence": [
+    {
+      "id": "legacy:mncs-ingest:INGEST-P-002",
+      "kind": "legacy-markdown",
+      "ref": "mncs-ingest:LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Original pressure wording and evidence are preserved in the legacy snapshot."
+    }
+  ],
+  "id": "MNCS-LANG-438BF5EE1996--OBS-F2C57020D761",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "legacyId": "INGEST-P-002",
+    "sourceEntry": 1,
+    "sourceLedgerDigest": "sha256:213dc95a258193f2ae8bb93c5d6d27792507b7873c37cc6a67503c9c26e17bf8"
+  },
+  "observedAt": null,
+  "pressureId": "MNCS-LANG-438BF5EE1996",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "Pre-0.14 `vocab.mncs` takes `(text, start, length)` triples with manual\nclamping because `[byte; up_to 64]` cannot be sub-viewed\n(`span_byte`, `span_eq`, `span_prefix_eq` prologues ≈15% of the file).",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-ingest:LANGUAGE_PRESSURE.md"
+  },
+  "summary": "Legacy Markdown preserved verbatim; current lifecycle awaits Commons confirmation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "",
+    "legacyStatus": null
+  }
+}

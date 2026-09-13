@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:8a35c5a958ea3aabb2109d26c00802d2a2c6b836459c49d3fcbc1bf0197b2920",
+  "details": {
+    "reason": "Both require an MNCS-owned filesystem mutation/read surface; their reproductions and consumer contracts remain distinct.",
+    "semanticReview": "family-activation-2026-09"
+  },
+  "evidenceRefs": [],
+  "id": "EVT-E9C6B14D93112CE0",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-13T07:11:00Z",
+  "relation": "same_root_cause",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-270D33E72EA5",
+  "targetPressure": "MNCS-LANG-973FAC2F4FBD",
+  "version": "1"
+}

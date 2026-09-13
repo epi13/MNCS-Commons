@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "30054cfd0b469bb326c21df3cd24e756741d7a9b",
+    "validation": "historical-ledger-review"
+  },
+  "contentDigest": "sha256:2f0ee3aaac9003c9ca6968d4a960de673f0e25b1b29a5a065eb0a031d89084c0",
+  "evidence": [
+    {
+      "id": "mncs-language-service:LS-P-003-ledger-review",
+      "ref": "mncs-language-service:LS-P-003.md",
+      "status": "PASS",
+      "summary": "Repository source explicitly records this pressure and its local behavior/workaround."
+    }
+  ],
+  "id": "MNCS-TOOLING-4790E16F393E--OBS-891527CB3940",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "activationRun": "family-activation-2026-09",
+    "currentValidation": false,
+    "legacyId": "mncs-language-service:LS-P-003",
+    "reviewKind": "historical-ledger-confirmation"
+  },
+  "observedAt": "2026-09-13T06:31:05Z",
+  "pressureId": "MNCS-TOOLING-4790E16F393E",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Consult the inert source ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": "family-activation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "06a62ef70dfd8a147bdab22a817e6f0cb2f71d8d",
+    "path": "mncs-language-service:LS-P-003.md",
+    "repository": "mncs-language-service"
+  },
+  "summary": "Language-service pressure ledger reviewed at the repository pin; the local tooling constraint is confirmed as an observed consumer constraint. This is historical ledger evidence, not a current-language rerun.",
+  "version": "1",
+  "workaround": {
+    "description": "Preserved from the imported repository observation; consumer-specific removal remains unverified.",
+    "fallbackLanguage": "rust"
+  }
+}

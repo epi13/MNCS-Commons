@@ -1,0 +1,50 @@
+{
+  "affectedRepositories": [
+    "mncs-doctor"
+  ],
+  "capability": "legacy.doc-p-013",
+  "contentDigest": "sha256:d309c85a550a898738a975a456b386981c7f4c01d2dbc25372a5ab8bac73565d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-doctor",
+  "domain": "io.filesystem",
+  "id": "MNCS-TOOLING-2658866CECD9",
+  "identity": {
+    "capability": "legacy.doc-p-013",
+    "domain": "io.filesystem",
+    "reproducerSignature": "legacy:mncs-doctor:DOC-P-013",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": "open",
+    "legacyId": "DOC-P-013",
+    "repository": "mncs-doctor",
+    "sourceDigest": "sha256:69cd5cb8a18e4190cdba12669ad4f13e4245aa3f6ea181892825f2c188c68b84",
+    "sourcePath": "mncs-doctor:DOC-P-013.md",
+    "sourceText": "# DOC-P-013 — No temporary-file primitives\n\nStatus: open\n\nCategory: language (stdlib/runtime surface)\n\nSeverity: medium\n\nFrequency: per mutated file (transaction executor)\n\n## Doctor workload\n\nEvery file write goes to a temp sibling + atomic rename so a crash\nnever leaves a half-written file; temp names must not collide and must\nclean up on failure paths.\n\n## Current behavior (verified 2026-09-12)\n\nNo temp-file intrinsic exists; 0.16 offers `fs_create_file` (exclusive —\nrefuses when present, never overwrites), which covers collision refusal\nbut not unique-name generation or temp-lifecycle conventions.\n\n## Workaround\n\nTemp+rename stays in the Rust executor.\n\n## Removal condition\n\nA granted temp-file convention (unique names within the grant root,\nexecutors clean up) or an blessed exclusive-create retry pattern;\nthen reproduce the atomicity tests in MNCS-driven execution.\n\n## Evidence\n\n`src/transaction.rs` (`sibling_tmp`, rename, no-temp-survival test).\n"
+  },
+  "legacyIds": [
+    "mncs-doctor:DOC-P-013"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-doctor:DOC-P-013",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "fallbackLanguage": "rust",
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-doctor:DOC-P-013.md"
+  },
+  "summary": "Imported legacy pressure DOC-P-013: No temporary-file primitives.",
+  "target": "tooling",
+  "title": "No temporary-file primitives",
+  "version": "1"
+}

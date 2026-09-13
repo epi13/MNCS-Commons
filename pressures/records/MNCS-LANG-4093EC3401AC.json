@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-index"
+  ],
+  "capability": "legacy.press-018",
+  "contentDigest": "sha256:f7803f8c7d5da89c76def7483bc26b54ebba41ebc38c0cc3f7da80a2f48e0747",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-index",
+  "domain": "effects",
+  "id": "MNCS-LANG-4093EC3401AC",
+  "identity": {
+    "capability": "legacy.press-018",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-index:PRESS-018",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "PRESS-018",
+    "repository": "mncs-index",
+    "sourceDigest": "sha256:5163c1f5c42312ff5c87b4471aaf1553aad6750d81a3004631ea851800714807",
+    "sourceLedgerDigest": "sha256:f3c8c128e8ab0af38e90aeb36f6bfdb3b00e860a6eb9285a594996deb99857e4",
+    "sourceLedgerPath": "mncs-index:registry.md",
+    "sourcePath": "mncs-index:registry.md",
+    "sourceText": "## PRESS-018 — No storage-compaction / generation-GC effects (P2, persistence)\n\n- Observed: the RFC 0010 compaction protocol (retention schedules\n  over obsolete generations, orphan-staging triage, superseded\n  sidecars, storage metrics: counts, bytes, amplification,\n  reclaimed bytes, duration) is host-filesystem effects code in\n  `runner/mncs_index/store.py`. MNCS offers no enumerate-storage,\n  measure-bytes, or atomic-delete-generation effects —\n  `mncs-language` RFC 0026 (persistence) status `NONE` — so\n  \"reclaim exactly the generations no live reader pins, with\n  query-before == query-after\" cannot be named, audited, or tested\n  in-language.\n- Desired: effect-gated storage accounting (byte counts over named\n  generations) plus a deletion effect scoped by a\n  reader-protection contract (lease/epoch from PRESS-017), so a\n  compaction schedule is an MNCS-expressible policy rather than\n  host `os.unlink` calls.\n- Workaround: `Store.compact(schedule)` under the exclusive\n  `.HEAD.lock` — pid-attributed staging triage, record-first\n  `.reclaimed` updates, atomic `.compact.json` manifest. Pinned by\n  `tests/test_compact.py` (schedules, query/hash equivalence,\n  metrics truthfulness, live-reader process + threads, three\n  crash-injection points with resume convergence).\n- Why the workaround is insufficient: retention policy lives in\n  host strings, not a checkable language contract; byte metrics\n  come from `os.path.getsize`, with no in-language storage model\n  to test a schedule against; interruption safety rests on host\n  fsync discipline (PRESS-016), not an effect the language can\n  reason about.\n- Evidence: `tests/test_compact.py`; `rfcs/0010-deterministic-compaction.md`.\n- Reproducer status: no `.mncs` program can demonstrate this gap (no\n  storage-enumeration/deletion effects in source). The downstream\n  tests are the reproducers, including preview==real victim agreement\n  (`test_preview_matches_real_with_dead_pin`) and the global-budget\n  invalidation cap that exposes the same host-owns-structure boundary\n  from the graph side (`test_invalidation_set_budget_is_global`).\n- Classification: runtime (missing persistence/GC effects).\n- Slice-7 verdict 2026-09-08: **confirmed still missing** (RFC 0026\n  still `NONE`; retention schedules + `os.unlink` reclamation still\n  host code, read 2026-09-08).\n- Acceptance-test-after-language-fix: a language-expressible\n  retention schedule reclaims exactly the unpinned generations with\n  query-before == query-after over a fixture store; assert\n  `tests/test_compact.py` passes with the schedule as a language\n  policy value (host retention strings and `os.unlink` calls\n  deleted)."
+  },
+  "legacyIds": [
+    "mncs-index:PRESS-018"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-index:PRESS-018",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-index:registry.md"
+  },
+  "summary": "Imported legacy pressure PRESS-018: No storage-compaction / generation-GC effects (P2, persistence).",
+  "target": "language",
+  "title": "No storage-compaction / generation-GC effects (P2, persistence)",
+  "version": "1"
+}

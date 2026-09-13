@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-numerics"
+  ],
+  "capability": "legacy.p-018",
+  "contentDigest": "sha256:cc1e29e2ad418ac8978127672788ade4c2d10f7a950e99f5e3a4444eaf2e7cdb",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-numerics",
+  "domain": "type-system.views",
+  "id": "MNCS-LANG-C20E8604EB31",
+  "identity": {
+    "capability": "legacy.p-018",
+    "domain": "type-system.views",
+    "reproducerSignature": "legacy:mncs-numerics:P-018",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "P-018",
+    "repository": "mncs-numerics",
+    "sourceDigest": "sha256:9f12fac12fdfabe5c26a70252da7b5adc172a32d6d383ae5b466dbe04437559f",
+    "sourcePath": "mncs-numerics:P-018-inference-view-bounds/README.md",
+    "sourceText": "# P-018 — Inference does not flow through view bounds\n\nFull report: `docs/LANGUAGE_PRESSURES.md#P-018`.\n\n`repro.mncs` defines `vsum<N>` over `[f64; up_to N]` and calls it\nfrom `vmean<N>` without explicit arguments:\n\n```bash\ncargo run -q -p mncs-cli -- source-study repros/P-018-inference-view-bounds/repro.mncs --node-id repro\n```\n\nThe call fails with `MNE220: generic function 'vsum' requires 1\ngeneric argument(s); cannot infer N; supply explicit <...>`, even\nthough `N` is in scope and the argument carries it. Constraints\nflow through exact sequence structure and direct generic positions,\nbut not through `up_to` capacity bounds.\n\nLibrary workaround: the one affected call site\n(`mean_view` → `sum_view<N>` in\n`src/numerics/vec_float_reduce.mncs`) keeps its explicit `<N>`,\nlabeled in-source. Every other call site in the library migrates to\ninferred arguments; this is the only one that cannot.\n"
+  },
+  "legacyIds": [
+    "mncs-numerics:P-018"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-numerics:P-018",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-numerics:P-018-inference-view-bounds/README.md"
+  },
+  "summary": "Imported legacy pressure P-018: Inference does not flow through view bounds.",
+  "target": "language",
+  "title": "Inference does not flow through view bounds",
+  "version": "1"
+}
