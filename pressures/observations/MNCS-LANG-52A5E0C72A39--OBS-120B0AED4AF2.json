@@ -1,0 +1,50 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "ac66693",
+    "validation": "mncs-test self-suite, mncs-language dogfood, and mncs-actions filtered provider all pass with native suite aggregation"
+  },
+  "contentDigest": "sha256:c56c8955b9c5a7df17c2ab947c6efb8107cfc12eaabf6dfbf815ba8465d30c0b",
+  "evidence": [
+    {
+      "id": "mncs-test:native-suite-fold",
+      "ref": "tests/test_runner.py::test_self_suite",
+      "status": "PASS",
+      "summary": "Six first-class TestResult values are folded by mncs.test.suite.v1 with seven retained-session calls including empty and observe."
+    },
+    {
+      "id": "mncs-actions:native-provider",
+      "ref": "actions/mncs-test/test.sh",
+      "status": "PASS",
+      "summary": "Filtered action invocation packages mncs.check-result/1 with native_suite authority and retained-embed-batch execution."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-120B0AED4AF2",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T21:25:14Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/luna-first-class-tests-2026-09",
+    "commit": "e9235f7",
+    "path": "tools/mncs_test.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "Follow-up consumer verification confirms native semantic aggregation: the retained-session first-class path executes the selected test batch, then carries native TestResult values through mncs.test.suite.v1 empty and observe in the same session. The summary authority is native_suite; compiler launch, timeout/capture, no-embed fallback, external result transport, and the mncs-store consumer remain.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}
