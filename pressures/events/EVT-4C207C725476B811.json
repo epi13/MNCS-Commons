@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-harness",
+  "contentDigest": "sha256:dfa8e5744c3fd0b514b2810e8ebb5e9d7175f027221982774717b3fa509cc66c",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-B57B80FDF63D"
+  ],
+  "from": "discovered",
+  "id": "EVT-4C207C725476B811",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:20Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": null,
+  "reason": "Current compiler output and the pre-refresh Harness runtime reproduce a stable source-level contract versus physical export-name mismatch.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

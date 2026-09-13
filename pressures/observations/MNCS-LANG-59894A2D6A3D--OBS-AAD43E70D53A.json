@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "6b8c979"
+  },
+  "contentDigest": "sha256:228c75c0a2d838e2d7b7bcff786d1956f4a76e4ef9dc06f25783c3ab46bf37d6",
+  "evidence": [
+    {
+      "id": "mncs-harness:artifact-identity-rebuild-v2",
+      "kind": "regression-test",
+      "ref": "mncs-harness:512af42:scripts/build_mncs_artifacts.py --verify",
+      "status": "PASS",
+      "summary": "All 18 shipped artifacts match current-language rebuild identities."
+    },
+    {
+      "id": "mncs-harness:source-level-contract-runtime-v2",
+      "kind": "regression-test",
+      "ref": "mncs-harness:512af42:tests/test_mncs_exec.py",
+      "status": "PASS",
+      "summary": "Runtime decision kernels execute through current artifacts using stable source-level function names."
+    }
+  ],
+  "id": "MNCS-LANG-59894A2D6A3D--OBS-AAD43E70D53A",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T08:50:25Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "repository": "mncs-harness",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "512af42",
+    "path": "src/mncs_harness/mncs_runtime.py",
+    "repository": "mncs-harness"
+  },
+  "summary": "Harness runtime and artifact identity checks pass after the current-language contract migration.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

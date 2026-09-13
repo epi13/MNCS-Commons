@@ -223,6 +223,35 @@
     },
     {
       "affectedRepositories": [
+        "mncs-harness",
+        "mncs-language"
+      ],
+      "capability": "source-level-function-export-resolution",
+      "currentValidation": true,
+      "domain": "compiler.artifact-export-contract",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-59894A2D6A3D",
+      "reporters": [
+        "mncs-harness",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Current compiler artifacts separate source function contracts from backend export names",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-numerics"
       ],
       "capability": "legacy.p-006",

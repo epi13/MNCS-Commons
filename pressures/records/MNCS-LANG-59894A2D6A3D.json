@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-harness",
+    "mncs-language"
+  ],
+  "capability": "source-level-function-export-resolution",
+  "contentDigest": "sha256:dfd11132d3aa5c0223ce7771e18cb96025c3663ab177b2621c2cd62012e11637",
+  "discoveredAt": "2026-09-13T08:50:00Z",
+  "discoveredBy": "mncs-harness",
+  "domain": "compiler.artifact-export-contract",
+  "id": "MNCS-LANG-59894A2D6A3D",
+  "identity": {
+    "capability": "source-level-function-export-resolution",
+    "domain": "compiler.artifact-export-contract",
+    "reproducerSignature": "harness:source-function-contract-vs-backend-export-name.v1",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.16",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "harness:source-function-contract-vs-backend-export-name.v1",
+    "text": "At mncs-language revision 6b8c979, regenerate Harness frozen artifacts and invoke the pre-refresh mncs_runtime against harness_pins or harness_atlas. Physical exports are qualified names such as mncs_mncs_harness_pins_v1__pin__fields__valid while the runtime requests pin_fields_valid and refuses before execution."
+  },
+  "requiredBehavior": "Compiler-generated artifacts must expose a stable, documented source-level function contract for execution adapters even when backend export names are qualified or escaped; adapters must validate artifact identity and invoke the stable contract without rewriting generated artifacts.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "backendDivergence": true,
+    "correctness": true,
+    "nativeConversionBlocked": false
+  },
+  "sourceRef": {
+    "backend": "mncs-portable-wasm-mvp",
+    "commit": "207fae6",
+    "languageCommit": "6b8c979",
+    "languageRepository": "mncs-language",
+    "path": "src/mncs_harness/mncs_runtime.py",
+    "repository": "mncs-harness"
+  },
+  "summary": "Current mncs-language artifact generation preserved stable source-level function names in function_value_contracts while emitting qualified backend export names. The pre-refresh Harness runtime treated physical exports as the semantic API and failed closed before invoking valid decision kernels.",
+  "target": "language",
+  "title": "Current compiler artifacts separate source function contracts from backend export names",
+  "version": "1"
+}
