@@ -1,0 +1,30 @@
+{
+  "actor": "mncs-harness",
+  "contentDigest": "sha256:d076ae9ea8d6bd50466571aa89ee1a2705f153df41677a159dabf2626a7999db",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-6FE8BDD10237",
+    "MNCS-LANG-59894A2D6A3D--OBS-AAD43E70D53A"
+  ],
+  "from": "verifying",
+  "id": "EVT-9E39559B8ABC126E",
+  "implementation": {
+    "details": "All 18 frozen WASM and research-bytecode artifacts were regenerated from language main; runtime accepts legacy direct exports and current source-level function contracts.",
+    "profile": "0.16",
+    "ref": "mncs-harness:512af42:src/mncs_harness/mncs_runtime.py",
+    "repository": "mncs-harness",
+    "revision": "512af42",
+    "tests": [
+      "MNCS_EXECUTOR=/tmp/mncs-language-pressure-main/target/debug/mncs python scripts/build_mncs_artifacts.py --verify",
+      "MNCS_EXECUTOR=/tmp/mncs-language-pressure-main/target/debug/mncs python -m pytest -q tests/test_mncs_exec.py tests/test_mncs_logic.py tests/test_atlas_context.py"
+    ]
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:27Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": "EVT-6783BCAD61E3241B",
+  "reason": "The current compiler artifacts rebuild deterministically and Harness executes all decision kernels through stable source-level function contracts.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

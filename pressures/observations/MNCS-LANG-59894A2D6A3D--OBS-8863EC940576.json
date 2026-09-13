@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "6b8c979"
+  },
+  "contentDigest": "sha256:769b6c6b68aac716dd7ec553660ee3d09033aacff0b45c333ea96d66207c56f8",
+  "evidence": [
+    {
+      "id": "mncs-harness:pre-refresh-source-function-export-reproduction",
+      "kind": "runtime-reproduction",
+      "ref": "mncs-harness:207fae6:src/mncs_harness/mncs_runtime.py",
+      "status": "FAIL",
+      "summary": "The adapter reported a stable source-level function as absent because it only searched physical backend exports."
+    }
+  ],
+  "id": "MNCS-LANG-59894A2D6A3D--OBS-8863EC940576",
+  "kind": "observation",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": false,
+    "failureClass": "source-contract-export-name-mismatch"
+  },
+  "observedAt": "2026-09-13T08:50:01Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "repository": "mncs-harness",
+  "reproduction": {
+    "instructions": "Regenerate current Harness artifacts, then invoke the pre-refresh runtime with pin_fields_valid or fold4.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "207fae6",
+    "languageCommit": "6b8c979",
+    "path": "src/mncs_harness/mncs_runtime.py",
+    "repository": "mncs-harness"
+  },
+  "summary": "The current compiler-generated artifact shape was reproducible, but the pre-refresh Harness adapter rejected the stable source-level function before execution.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Refresh generated artifacts and teach the host adapter to resolve source-level function contracts; no generated-artifact hand edit is permitted."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:ea155b1dc91b90a71ae3c63c0ac97401d011fbd4a0cf354024b35cf087bf11cb",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-B57B80FDF63D"
+  ],
+  "from": "confirmed",
+  "id": "EVT-EFEC8F7B32547600",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:21Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": "EVT-4C207C725476B811",
+  "reason": "This is an inter-repository artifact contract migration: the compiler may mangle backend exports while consumers use source-level contracts.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

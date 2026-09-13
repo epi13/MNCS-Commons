@@ -53,6 +53,9 @@
     "mncs-forge-mcp": [
       "MNCS-TOOLING-9E7E149C94D9"
     ],
+    "mncs-harness": [
+      "MNCS-LANG-59894A2D6A3D"
+    ],
     "mncs-index": [
       "MNCS-LANG-02A891E03B9E",
       "MNCS-LANG-0973D3173B88",
@@ -91,6 +94,7 @@
     "mncs-language": [
       "MNCS-LANG-4219A56741DB",
       "MNCS-LANG-4F3798658F55",
+      "MNCS-LANG-59894A2D6A3D",
       "MNCS-LANG-71DAE5A34032",
       "MNCS-LANG-8AF4BC50DDB4",
       "MNCS-LANG-973FAC2F4FBD",

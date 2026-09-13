@@ -49,14 +49,15 @@ Forge may publish through a public adapter, but Commons must remain useful with 
 
 ## Atlas WASM backend pressures (2026-09)
 
-The Atlas family-registry campaign produced two concrete language/backend
+The Atlas family-registry campaign produced three concrete language/backend
 pressures. They are recorded as separate immutable declarations because their
-root causes and regression tests are different:
+root causes, owning layers, and regression tests are different:
 
 | Pressure | Root cause | Owner | Status |
 | --- | --- | --- | --- |
 | [`MNCS-LANG-4F3798658F55`](../pressures/records/MNCS-LANG-4F3798658F55.json) | Recursive cell flattening passed an `i64` scratch local directly to a WASM `i32.load` address operand. | `mncs-language` | resolved |
 | [`MNCS-LANG-4219A56741DB`](../pressures/records/MNCS-LANG-4219A56741DB.json) | Packed bounded view descriptors were treated as allocating views, suppressing loop-region reclamation until Atlas exhausted its arena. | `mncs-language` | resolved |
+| [`MNCS-LANG-59894A2D6A3D`](../pressures/records/MNCS-LANG-59894A2D6A3D.json) | Current artifacts preserved source-level function contracts while physical backend exports became qualified; the pre-refresh Harness adapter confused the two. | `mncs-harness` / `mncs-language` | resolved |
 
 Both records preserve a pre-fix Atlas reproduction, the exact language
 revision at which it was observed, implementation metadata, and separate
@@ -67,3 +68,5 @@ consumer verification is `tests.test_experimental_wasm`.
 
 The corresponding human-readable investigation is
 [`atlas-wasm-2026-09.md`](development-pressure-evidence/atlas-wasm-2026-09.md).
+The artifact-contract investigation is
+[`harness-artifact-contract-2026-09.md`](development-pressure-evidence/harness-artifact-contract-2026-09.md).

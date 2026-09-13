@@ -1,0 +1,29 @@
+{
+  "actor": "mncs-harness",
+  "contentDigest": "sha256:b1efc8d5bbe58b9cce35b2c5b30850745deddb42563d81c79e77934581aa43ba",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-B57B80FDF63D"
+  ],
+  "from": "implementing",
+  "id": "EVT-E2BF8816EE0432A9",
+  "implementation": {
+    "details": "All 18 frozen WASM and research-bytecode artifacts were regenerated from language main; runtime accepts legacy direct exports and current source-level function contracts.",
+    "profile": "0.16",
+    "ref": "mncs-harness:512af42:src/mncs_harness/mncs_runtime.py",
+    "repository": "mncs-harness",
+    "revision": "512af42",
+    "tests": [
+      "MNCS_EXECUTOR=/tmp/mncs-language-pressure-main/target/debug/mncs python scripts/build_mncs_artifacts.py --verify",
+      "MNCS_EXECUTOR=/tmp/mncs-language-pressure-main/target/debug/mncs python -m pytest -q tests/test_mncs_exec.py tests/test_mncs_logic.py tests/test_atlas_context.py"
+    ]
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:23Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": "EVT-24D974982CA95504",
+  "reason": "The adapter change and regenerated current-language artifacts are merged and available on Harness main.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

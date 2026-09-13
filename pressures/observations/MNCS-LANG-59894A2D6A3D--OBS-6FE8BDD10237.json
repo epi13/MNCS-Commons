@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-portable-wasm-mvp",
+    "component": "mncs-language",
+    "revision": "6b8c979"
+  },
+  "contentDigest": "sha256:9c8992938b437323d8e3107aefd2e8a82b2e54293c954ef085c9dfe3f07c0e3c",
+  "evidence": [
+    {
+      "id": "mncs-language:current-artifact-contracts-preserve-source-functions-v2",
+      "kind": "artifact-contract-inspection",
+      "ref": "mncs-language:6b8c979:current compiler artifact output",
+      "status": "PASS",
+      "summary": "Current artifacts preserve source-level function names in function_value_contracts while exposing qualified backend exports."
+    }
+  ],
+  "id": "MNCS-LANG-59894A2D6A3D--OBS-6FE8BDD10237",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "campaign": "atlas-family-registry-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T08:50:24Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "6b8c979",
+    "profile": "0.16",
+    "repository": "mncs-language"
+  },
+  "summary": "Current language main generates PASS artifacts with an explicit source-level function contract alongside qualified backend exports.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

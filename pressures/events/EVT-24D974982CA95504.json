@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-harness",
+  "contentDigest": "sha256:b5a98cea5992fe19ea38aafb1dd10be8e72e805fef3783af983de349f92cd678",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-B57B80FDF63D"
+  ],
+  "from": "accepted",
+  "id": "EVT-24D974982CA95504",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:22Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": "EVT-EFEC8F7B32547600",
+  "reason": "Regenerate all frozen artifacts with current mncs-language and update the runtime adapter and export-contract regression checks.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

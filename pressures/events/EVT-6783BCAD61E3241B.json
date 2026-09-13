@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-harness",
+  "contentDigest": "sha256:6a777c54f6beeb1b251693a795792e96eeaf1bbe4ae5587be2eecf8cee6bcfb3",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-59894A2D6A3D--OBS-6FE8BDD10237",
+    "MNCS-LANG-59894A2D6A3D--OBS-AAD43E70D53A"
+  ],
+  "from": "available",
+  "id": "EVT-6783BCAD61E3241B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-13T08:50:26Z",
+  "pressureId": "MNCS-LANG-59894A2D6A3D",
+  "previousEvent": "EVT-E2BF8816EE0432A9",
+  "reason": "Both the language producer and Harness consumer supplied current PASS verification for the source-level contract migration.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}
