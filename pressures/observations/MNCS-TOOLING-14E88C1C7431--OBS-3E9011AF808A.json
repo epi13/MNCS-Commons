@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:39264f11520337348c289a9b9fe48abccec5874f3164ad72ad669645a10cd84b",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-012-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "UNKNOWN",
+      "summary": "The limitation is an operational workspace boundary; semantic debugger capability was not established or disproved by this observation."
+    }
+  ],
+  "id": "MNCS-TOOLING-14E88C1C7431--OBS-3E9011AF808A",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-debug",
+      "mncs-language"
+    ],
+    "expected": "A pinned runtime can be rebuilt and identified in the campaign environment."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-TOOLING-14E88C1C7431",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "UNKNOWN"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-012.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The limitation is an operational workspace boundary; semantic debugger capability was not established or disproved by this observation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Record observed binary digest and checkout revision separately from pinned source revision.",
+    "removed": false
+  }
+}

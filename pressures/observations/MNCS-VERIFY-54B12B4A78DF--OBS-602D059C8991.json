@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4affbbfc9cdd1edf2268dc8818156e5c18d576b7c4b3e98a0946f9eb6bfc9bad",
+  "evidence": [
+    {
+      "id": "verification-mncs-actions-ff7d0df49524",
+      "kind": "consumer-test",
+      "ref": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage",
+      "status": "PASS",
+      "summary": "Actions validated the witness and packaged digest-bound debug evidence."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:52:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage",
+    "repository": "mncs-actions",
+    "revision": "ff7d0df49524a6f63e4fb462dbe5a281a9eb1f34"
+  },
+  "summary": "Actions validated the witness and packaged digest-bound debug evidence.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

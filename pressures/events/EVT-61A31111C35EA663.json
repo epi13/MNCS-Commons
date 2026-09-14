@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-actions",
+  "contentDigest": "sha256:7a66889d9daad7f088f97d49ee7d0f37593516d9306cfc6b3351029b20a911e1",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-920814C5B757",
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-C356DBC57F6F"
+  ],
+  "from": "discovered",
+  "id": "EVT-61A31111C35EA663",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:10:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "previousEvent": null,
+  "reason": "PASS reproducer established for the registered debug evidence provider membrane.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

@@ -1,0 +1,24 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:4c5d795c8faef6ccd2e26b7029e979edde6470bb7262de6698036bdf5aba4fbf",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-54B12B4A78DF--OBS-3A38E19A7FEB",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-9B55B65A5AB0",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-B40C9A9AD661"
+  ],
+  "from": "implementing",
+  "id": "EVT-29F47C087AFD5147",
+  "implementation": {
+    "ref": "mncs-test@65c261680c3ee05a16e1caf422b7f9011f1a3e55;mncs-debug@b0be3c588e02628aa9b7a42f7524a76edbf38556;mncs-actions@ff7d0df49524a6f63e4fb462dbe5a281a9eb1f34;mncs-forge-mcp@f96985fe3897c6e80b910f01d07b6e2fab51bb78"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:03:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "previousEvent": "EVT-55FC03EC1C3E1747",
+  "reason": "The test-to-debug-to-actions-to-Forge path is available for verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

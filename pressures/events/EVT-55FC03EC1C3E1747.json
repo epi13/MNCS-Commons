@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:c72db0cb6e468cd67dcfa98c0716b58b0bd7968539094994ed383f6c387853ba",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-54B12B4A78DF--OBS-3A38E19A7FEB",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-9B55B65A5AB0",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-B40C9A9AD661"
+  ],
+  "from": "accepted",
+  "id": "EVT-55FC03EC1C3E1747",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:02:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "previousEvent": "EVT-085B26E52262CA12",
+  "reason": "Owner implementation and consumer verification are landed at the exact revisions recorded in the evidence observations.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:fd8540f133894f455543a4cf2e179d277f7adc06b8fe00916055ee46f7412938",
+  "evidence": [
+    {
+      "id": "verification-mncs-language",
+      "kind": "consumer-test",
+      "ref": "mncs validate invalid-undeclared-effect fixture",
+      "status": "PASS",
+      "summary": "The compiler emitted structured validation diagnostics consumed by the debugger."
+    }
+  ],
+  "id": "MNCS-COMPILER-94428E41EEAC--OBS-AF3848F05981",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs validate invalid-undeclared-effect fixture",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:16:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs validate invalid-undeclared-effect fixture",
+    "repository": "mncs-language"
+  },
+  "summary": "The compiler emitted structured validation diagnostics consumed by the debugger.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

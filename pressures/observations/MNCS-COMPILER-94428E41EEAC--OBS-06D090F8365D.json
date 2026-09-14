@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:550e407122f243809ac0caeb4808693b8265002545a506b6c76b5023277f6fc3",
+  "evidence": [
+    {
+      "id": "verification-mncs-language-1da244a",
+      "kind": "consumer-test",
+      "ref": "mncs-language/cargo build --locked --bin mncs",
+      "status": "PASS",
+      "summary": "Current Profile 0.17 compiler build supplied the structured compile boundary."
+    }
+  ],
+  "id": "MNCS-COMPILER-94428E41EEAC--OBS-06D090F8365D",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:46:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-language/cargo build --locked --bin mncs",
+    "repository": "mncs-language",
+    "revision": "1da244a"
+  },
+  "summary": "Current Profile 0.17 compiler build supplied the structured compile boundary.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-actions",
+  "contentDigest": "sha256:79b8b508bd38f4977ba2aa863753850d1edddfbe82b3650f523ead69bb9b37fd",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-920814C5B757",
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-C356DBC57F6F"
+  ],
+  "from": "implementing",
+  "id": "EVT-9AF7BFDAF44DC0D0",
+  "implementation": {
+    "ref": "mncs-debug@b0be3c588e02628aa9b7a42f7524a76edbf38556;mncs-actions@ff7d0df49524a6f63e4fb462dbe5a281a9eb1f34"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:13:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "previousEvent": "EVT-765C58028A5DD8D7",
+  "reason": "The registered provider is available for fixed-revision verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

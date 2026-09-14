@@ -1,0 +1,47 @@
+{
+  "affectedRepositories": [
+    "mncs-debug",
+    "mncs-language-service"
+  ],
+  "capability": "shared-lsp-debug-source-binding",
+  "contentDigest": "sha256:d24feb3c3613c6d91a335fb8218876f89817deb71cec3113a78819858fa89a33",
+  "discoveredAt": "2026-09-13T23:16:40Z",
+  "discoveredBy": "mncs-debug",
+  "domain": "debugging.source-binding",
+  "id": "MNCS-TOOLING-673C8430E951",
+  "identity": {
+    "capability": "shared-lsp-debug-source-binding",
+    "domain": "debugging.source-binding",
+    "reproducerSignature": "mncs-debug:post-profile-0.17:lsp-source-binding",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.17",
+  "legacyIds": [
+    "mncs-debug:MNCS-DEBUG-P-008"
+  ],
+  "notes": "Reconciled against the post-Profile-0.17 mncs-test/mncs-debug integration; capability and consumer verification are tracked separately.",
+  "reproducer": {
+    "actual": "Declaration-level compiler spans are available; runtime operation binding and breakpoint UI remain unverified/unavailable.",
+    "command": "See mncs-debug pressures/MNCS-DEBUG-P-008.json and campaign fixtures.",
+    "expected": "The language service renders the same exact source locations as compiler/debug artifacts.",
+    "signature": "mncs-debug:post-profile-0.17:lsp-source-binding"
+  },
+  "requiredBehavior": "Language-service projections and debugger locations must share exact source identity, span encoding, and capability status.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "classification": "UNKNOWN",
+    "ownerLayer": "tooling"
+  },
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-008.json",
+    "repository": "mncs-debug",
+    "startingRevision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The family vocabulary now names source/module/function/test identities, spans, operation identities, and binding status, but the language service has not yet consumed runtime operation spans or live breakpoint resolution.",
+  "target": "tooling",
+  "title": "LSP integration lacks an exact debug source-binding contract",
+  "version": "1"
+}

@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:0e33d1bb5c3b5ea22dda40ccf818499579f462ac365e23771f18c11c37b22236",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-54B12B4A78DF--OBS-3A38E19A7FEB",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-9B55B65A5AB0",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-B40C9A9AD661"
+  ],
+  "from": "available",
+  "id": "EVT-44D1938E7BB5CE3A",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:04:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "previousEvent": "EVT-29F47C087AFD5147",
+  "reason": "All affected consumers have PASS verification at exact revisions and the workaround is not needed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

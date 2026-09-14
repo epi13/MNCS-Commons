@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:239e95d08c218834beffb558101731e101ef5966e702631c20aa84126242cc0a",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug-b0be3c5",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/tests/test_cli.py::RuntimeCliTests.test_import_test_result_preserves_test_ownership",
+      "status": "PASS",
+      "summary": "Debugger imported the selected TestExecution and retained test-result identity."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-4B5F0E9B514F",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:41:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-debug/tests/test_cli.py::RuntimeCliTests.test_import_test_result_preserves_test_ownership",
+    "repository": "mncs-debug",
+    "revision": "b0be3c5"
+  },
+  "summary": "Debugger imported the selected TestExecution and retained test-result identity.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

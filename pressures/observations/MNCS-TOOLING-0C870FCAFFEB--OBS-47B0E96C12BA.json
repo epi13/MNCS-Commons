@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4c451702de31c51f760d5bd22bb19da2cc65ccce9d27d7562c576f29d96a26ee",
+  "evidence": [
+    {
+      "id": "verification-mncs-actions",
+      "kind": "consumer-test",
+      "ref": "mncs-actions/tests/test_mncs_debug_action.py",
+      "status": "PASS",
+      "summary": "The registered mncs-debug action produced PASS debug evidence for a failing test."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-47B0E96C12BA",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-actions/tests/test_mncs_debug_action.py",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:14:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-actions/tests/test_mncs_debug_action.py",
+    "repository": "mncs-actions"
+  },
+  "summary": "The registered mncs-debug action produced PASS debug evidence for a failing test.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e5eb09c423d672092e37c6a418d4d87c2d3123f3b75bb0b7f0caf30511519b16",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-005-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "FAIL",
+      "summary": "Deterministic replay is rejected; bounded re-execution remains a weaker comparison."
+    }
+  ],
+  "id": "MNCS-RUNTIME-6382A1A44458--OBS-1C0D4070CD86",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-language",
+      "mncs-debug",
+      "mncs-forge-mcp"
+    ],
+    "expected": "A deterministic replay claim is established only with complete decision capture."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-RUNTIME-6382A1A44458",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "FAIL"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-005.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "Deterministic replay is rejected; bounded re-execution remains a weaker comparison.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use trace replay or label same-request re-execution as reproduced/mismatch without deterministic claims.",
+    "removed": false
+  }
+}

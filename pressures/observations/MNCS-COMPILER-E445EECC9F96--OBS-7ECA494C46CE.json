@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:88cc5feb5252ee3d448b11a05c18820f5064cff45cfa463af1b31ebd0f50bf72",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-002-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "FAIL",
+      "summary": "Declaration spans are exact; operation spans remain unavailable and are not inferred from text."
+    }
+  ],
+  "id": "MNCS-COMPILER-E445EECC9F96--OBS-7ECA494C46CE",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-language",
+      "mncs-debug",
+      "mncs-language-service",
+      "mncs-forge-mcp"
+    ],
+    "expected": "Every runtime operation can resolve to an exact source span."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "FAIL"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-002.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "Declaration spans are exact; operation spans remain unavailable and are not inferred from text.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Carry compiler inventory declaration span and semantic identities; report operation binding unavailable.",
+    "removed": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "affectedRepositories": [
+    "mncs-debug",
+    "mncs-language"
+  ],
+  "capability": "pinned-runtime-rebuild-storage",
+  "contentDigest": "sha256:9a275a1152b24e7275885e5cadc71d9841f434098466336c524aaa207654e6da",
+  "discoveredAt": "2026-09-13T23:16:40Z",
+  "discoveredBy": "mncs-debug",
+  "domain": "bootstrap.storage",
+  "id": "MNCS-TOOLING-14E88C1C7431",
+  "identity": {
+    "capability": "pinned-runtime-rebuild-storage",
+    "domain": "bootstrap.storage",
+    "reproducerSignature": "mncs-debug:post-profile-0.17:pinned-build-storage",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.17",
+  "legacyIds": [
+    "mncs-debug:MNCS-DEBUG-P-012"
+  ],
+  "notes": "Reconciled against the post-Profile-0.17 mncs-test/mncs-debug integration; capability and consumer verification are tracked separately.",
+  "reproducer": {
+    "actual": "The limitation is an operational workspace boundary; semantic debugger capability was not established or disproved by this observation.",
+    "command": "See mncs-debug pressures/MNCS-DEBUG-P-012.json and campaign fixtures.",
+    "expected": "A pinned runtime can be rebuilt and identified in the campaign environment.",
+    "signature": "mncs-debug:post-profile-0.17:pinned-build-storage"
+  },
+  "requiredBehavior": "Family campaigns need a reproducible bounded build/storage path for exact pinned provider revisions.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "classification": "UNKNOWN",
+    "ownerLayer": "tooling"
+  },
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-012.json",
+    "repository": "mncs-debug",
+    "startingRevision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The pinned runtime rebuild reached code generation before workspace quota was exhausted; the existing runtime was retained as an observed witness, not silently treated as the pinned build.",
+  "target": "tooling",
+  "title": "Pinned reference-runtime rebuild exceeded available workspace quota",
+  "version": "1"
+}

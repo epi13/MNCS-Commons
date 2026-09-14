@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:267a8715a9105ed60f76eed877668ad35fe49cd7c083b59a3ff9a8ce1ed34b27",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug-b0be3c5",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/tests/test_cli.py::RuntimeCliTests.test_compile_failure_is_structured_and_replayable_as_compile_failure",
+      "status": "PASS",
+      "summary": "Debugger preserved compile_failure classification and validation as structured evidence."
+    }
+  ],
+  "id": "MNCS-COMPILER-94428E41EEAC--OBS-E80E4FD5E2BA",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:47:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-debug/tests/test_cli.py::RuntimeCliTests.test_compile_failure_is_structured_and_replayable_as_compile_failure",
+    "repository": "mncs-debug",
+    "revision": "b0be3c5"
+  },
+  "summary": "Debugger preserved compile_failure classification and validation as structured evidence.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

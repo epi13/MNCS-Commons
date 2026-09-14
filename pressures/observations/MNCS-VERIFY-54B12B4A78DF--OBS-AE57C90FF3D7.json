@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:917b30f455b61970de05effd56342d3ec47d23fc5c813015ffea0795b0d2b037",
+  "evidence": [
+    {
+      "id": "verification-mncs-forge-mcp-f96985f",
+      "kind": "consumer-test",
+      "ref": "mncs-forge-mcp/tests/test_mncs_development.py::test_failure_loop_preserves_lineage_and_verifies_exact_repair",
+      "status": "PASS",
+      "summary": "Forge consumed structured test/debug evidence, diagnosed, repaired, and verified PASS."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-AE57C90FF3D7",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:43:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-forge-mcp/tests/test_mncs_development.py::test_failure_loop_preserves_lineage_and_verifies_exact_repair",
+    "repository": "mncs-forge-mcp",
+    "revision": "f96985f"
+  },
+  "summary": "Forge consumed structured test/debug evidence, diagnosed, repaired, and verified PASS.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

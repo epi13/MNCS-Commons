@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:da6bbd1c692e3294283b3534b66ecf785b55b4d363169bf3873dcfc99abe69fe",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "discovered",
+  "id": "EVT-3E58D2F9071DE3AC",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:30:00Z",
+  "pressureId": "MNCS-TOOLING-14E88C1C7431",
+  "previousEvent": null,
+  "reason": "Fresh reproduction remains UNKNOWN because pinned storage/bootstrap availability is an operational platform boundary, not an unresolved debugger semantic claim; retain for deployment coordination.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "deferred",
+  "version": "1"
+}

@@ -44,6 +44,18 @@
     },
     {
       "authority": "descriptive-only",
+      "id": "mncs-actions",
+      "repository": "epi13/mncs-actions",
+      "role": "automation transport and evidence"
+    },
+    {
+      "authority": "descriptive-only",
+      "id": "mncs-debug",
+      "repository": "epi13/mncs-debug",
+      "role": "canonical debugger provider"
+    },
+    {
+      "authority": "descriptive-only",
       "id": "mncs-doctor",
       "repository": "epi13/mncs-doctor",
       "role": "consumer remediation"

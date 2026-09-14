@@ -1,5 +1,8 @@
 {
   "domains": {
+    "actions.debug-provider": [
+      "MNCS-TOOLING-0C870FCAFFEB"
+    ],
     "backend": [
       "MNCS-LANG-21A2AA307869",
       "MNCS-LANG-4719D1B72215",
@@ -14,6 +17,9 @@
     "backend.wasm-address-typing": [
       "MNCS-LANG-4F3798658F55"
     ],
+    "bootstrap.storage": [
+      "MNCS-TOOLING-14E88C1C7431"
+    ],
     "compiler.artifact-export-contract": [
       "MNCS-LANG-59894A2D6A3D"
     ],
@@ -27,6 +33,36 @@
     ],
     "data.registry": [
       "MNCS-LANG-6643CDECCFEC"
+    ],
+    "debugging.diagnostics": [
+      "MNCS-COMPILER-94428E41EEAC"
+    ],
+    "debugging.effects": [
+      "MNCS-RUNTIME-3B723B6FADD8"
+    ],
+    "debugging.frames": [
+      "MNCS-RUNTIME-D5179B1A5E9D"
+    ],
+    "debugging.performance": [
+      "MNCS-TOOLING-A74DFC47DDB6"
+    ],
+    "debugging.replay": [
+      "MNCS-RUNTIME-6382A1A44458"
+    ],
+    "debugging.sessions": [
+      "MNCS-RUNTIME-A32B31916255"
+    ],
+    "debugging.source-binding": [
+      "MNCS-TOOLING-673C8430E951"
+    ],
+    "debugging.source-maps": [
+      "MNCS-COMPILER-E445EECC9F96"
+    ],
+    "debugging.test-handoff": [
+      "MNCS-VERIFY-54B12B4A78DF"
+    ],
+    "debugging.values": [
+      "MNCS-RUNTIME-F42CEFCE989D"
     ],
     "effects": [
       "MNCS-LANG-4093EC3401AC",

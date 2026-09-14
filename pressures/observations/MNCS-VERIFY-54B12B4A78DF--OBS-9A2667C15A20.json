@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1a8f62ffa9e77aa0c7b535347c47d9b5cf2e739d88ea398344d3090a2a3d8bc3",
+  "evidence": [
+    {
+      "id": "verification-mncs-test",
+      "kind": "consumer-test",
+      "ref": "mncs-test/tests/test_runner.py::test_first_class_failing_assertion",
+      "status": "PASS",
+      "summary": "The compiler-inventoried first-class failing test emitted canonical request and execution_lineage fields."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-9A2667C15A20",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-test/tests/test_runner.py::test_first_class_failing_assertion",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:10:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-test/tests/test_runner.py::test_first_class_failing_assertion",
+    "repository": "mncs-test"
+  },
+  "summary": "The compiler-inventoried first-class failing test emitted canonical request and execution_lineage fields.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:eeedd948dea972e76b31d4965b69ac660d883ea05bc41dce5c2c707b57457d09",
+  "evidence": [
+    {
+      "id": "verification-mncs-actions",
+      "kind": "consumer-test",
+      "ref": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage",
+      "status": "PASS",
+      "summary": "Actions validated the witness and produced a digest-bound evidence manifest."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-E366A7124969",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:12:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage",
+    "repository": "mncs-actions"
+  },
+  "summary": "Actions validated the witness and produced a digest-bound evidence manifest.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

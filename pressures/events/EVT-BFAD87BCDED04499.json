@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:ba8bef012392807b49e944450a913f68c83e5f8e39ca78acb98c4fa5014017eb",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-94428E41EEAC--OBS-AB9CDF8A3265",
+    "MNCS-COMPILER-94428E41EEAC--OBS-DE1B518A31FC"
+  ],
+  "from": "accepted",
+  "id": "EVT-BFAD87BCDED04499",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:22:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "previousEvent": "EVT-4BB4CD6C6C238BF0",
+  "reason": "The current compiler boundary and debugger consumer are landed and verified at exact revisions.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

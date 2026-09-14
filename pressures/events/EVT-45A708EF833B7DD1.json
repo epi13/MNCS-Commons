@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-actions",
+  "contentDigest": "sha256:6eae343daf0e4ddd542cd20aa08e4f0e0abfec2c2a7dd4a2236b258124be1f11",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-920814C5B757",
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-C356DBC57F6F"
+  ],
+  "from": "verifying",
+  "id": "EVT-45A708EF833B7DD1",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:16:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "previousEvent": "EVT-4E8275C391ADE317",
+  "reason": "All affected repositories have exact PASS verification and no remaining workaround.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

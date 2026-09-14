@@ -1,0 +1,49 @@
+{
+  "affectedRepositories": [
+    "mncs-debug",
+    "mncs-forge-mcp",
+    "mncs-language",
+    "mncs-language-service"
+  ],
+  "capability": "semantic-operation-source-spans",
+  "contentDigest": "sha256:89ec315e8b7ab72785a2d4b0a55633d224c219f3a372e8ed604b7de0e6a9c595",
+  "discoveredAt": "2026-09-13T23:16:40Z",
+  "discoveredBy": "mncs-debug",
+  "domain": "debugging.source-maps",
+  "id": "MNCS-COMPILER-E445EECC9F96",
+  "identity": {
+    "capability": "semantic-operation-source-spans",
+    "domain": "debugging.source-maps",
+    "reproducerSignature": "mncs-debug:post-profile-0.17:operation-source-spans",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.17",
+  "legacyIds": [
+    "mncs-debug:MNCS-DEBUG-P-002"
+  ],
+  "notes": "Reconciled against the post-Profile-0.17 mncs-test/mncs-debug integration; capability and consumer verification are tracked separately.",
+  "reproducer": {
+    "actual": "Declaration spans are exact; operation spans remain unavailable and are not inferred from text.",
+    "command": "See mncs-debug pressures/MNCS-DEBUG-P-002.json and campaign fixtures.",
+    "expected": "Every runtime operation can resolve to an exact source span.",
+    "signature": "mncs-debug:post-profile-0.17:operation-source-spans"
+  },
+  "requiredBehavior": "Stable source spans must survive lowering for semantic operations and be consumable by debugger and language-service clients.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "classification": "FAIL",
+    "ownerLayer": "compiler"
+  },
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-002.json",
+    "repository": "mncs-debug",
+    "startingRevision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "Profile 0.17 compiler inventory spans now bind test declarations, but lowered runtime operations still do not carry exact source spans.",
+  "target": "compiler",
+  "title": "Semantic operation identities lose source spans before execution",
+  "version": "1"
+}

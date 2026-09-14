@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:216328c500a102226659ac78bb94a8b910030fdec0946680a750cde090bd18f8",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-006-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "PASS",
+      "summary": "The live first-class failing fixture traversed mncs-test, mncs-debug, Actions packaging, and Forge verification."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-4F5A67EAEB6D",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-test",
+      "mncs-debug",
+      "mncs-actions",
+      "mncs-forge-mcp"
+    ],
+    "expected": "mncs-test FAIL -> mncs.debug-witness/1 with stable test/run/execution lineage."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "PASS"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-006.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The live first-class failing fixture traversed mncs-test, mncs-debug, Actions packaging, and Forge verification.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "No semantic workaround; provider boundaries are explicit.",
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:a00b9383f522e186c27c348f8c3e85e1522110c9a34b08c544d85d88c067b46f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-54B12B4A78DF--OBS-3A38E19A7FEB",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-9B55B65A5AB0",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-B40C9A9AD661"
+  ],
+  "from": "discovered",
+  "id": "EVT-40FFC29ECDD2B400",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:00:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "previousEvent": null,
+  "reason": "PASS reproducer established across the exact test/debug/action/Forge consumer path.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

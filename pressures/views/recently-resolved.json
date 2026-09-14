@@ -84,6 +84,35 @@
     },
     {
       "affectedRepositories": [
+        "mncs-debug",
+        "mncs-language"
+      ],
+      "capability": "structured-compile-failure-debug-artifact",
+      "currentValidation": true,
+      "domain": "debugging.diagnostics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-94428E41EEAC",
+      "reporters": [
+        "mncs-debug",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "Compile diagnostics do not yet form a stable debugger failure artifact",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 6,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0012",
@@ -438,6 +467,68 @@
         "affected": 1,
         "fail": 0,
         "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug"
+      ],
+      "capability": "registered-debug-evidence-provider",
+      "currentValidation": true,
+      "domain": "actions.debug-provider",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-0C870FCAFFEB",
+      "reporters": [
+        "mncs-actions",
+        "mncs-debug"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Debug provider registration and artifact projection need an actions contract",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 6,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-test"
+      ],
+      "capability": "structured-test-failure-debug-witness",
+      "currentValidation": true,
+      "domain": "debugging.test-handoff",
+      "fallbackLanguages": [],
+      "id": "MNCS-VERIFY-54B12B4A78DF",
+      "reporters": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-test"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "verification",
+      "title": "Test failure import needs stable executable evidence, not prose reconstruction",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 12,
         "unknown": 0
       }
     }

@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:d54ac2dfa224ff03d0d0053063f945287cc82121bbf3e45a0d7fbff6b937ebbd",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-008-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "UNKNOWN",
+      "summary": "Declaration-level compiler spans are available; runtime operation binding and breakpoint UI remain unverified/unavailable."
+    }
+  ],
+  "id": "MNCS-TOOLING-673C8430E951--OBS-CEC5B9E2F3BD",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-language-service",
+      "mncs-debug"
+    ],
+    "expected": "The language service renders the same exact source locations as compiler/debug artifacts."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "UNKNOWN"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-008.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "Declaration-level compiler spans are available; runtime operation binding and breakpoint UI remain unverified/unavailable.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use the shared contract vocabulary and show unavailable/derived binding status.",
+    "removed": false
+  }
+}

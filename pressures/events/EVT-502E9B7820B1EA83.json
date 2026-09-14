@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-actions",
+  "contentDigest": "sha256:4f7bab2d49aee84af9fe8a3fae8518f6da2d25a7af2e7b732630bbce784406ae",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-920814C5B757",
+    "MNCS-TOOLING-0C870FCAFFEB--OBS-C356DBC57F6F"
+  ],
+  "from": "confirmed",
+  "id": "EVT-502E9B7820B1EA83",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:11:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "previousEvent": "EVT-61A31111C35EA663",
+  "reason": "Accepted as an Actions transport capability with debugger semantics remaining in mncs-debug.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

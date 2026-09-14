@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:570f89556b4eff67a5591c066870b569c946589f22753dd5bfc2da4e89512204",
+  "evidence": [
+    {
+      "id": "verification-mncs-actions-ff7d0df49524",
+      "kind": "consumer-test",
+      "ref": "mncs-actions/tests/test_mncs_debug_action.py",
+      "status": "PASS",
+      "summary": "Registered debug Action produced PASS evidence for a failing test and UNKNOWN when not requested."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-C356DBC57F6F",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:55:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-actions/tests/test_mncs_debug_action.py",
+    "repository": "mncs-actions",
+    "revision": "ff7d0df49524a6f63e4fb462dbe5a281a9eb1f34"
+  },
+  "summary": "Registered debug Action produced PASS evidence for a failing test and UNKNOWN when not requested.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

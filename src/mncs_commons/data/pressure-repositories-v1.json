@@ -9,6 +9,8 @@
     {"id": "mncs-compiler", "repository": "epi13/mncs-compiler", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-control-mcp", "repository": "epi13/mncs-control-mcp", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-data", "repository": "epi13/mncs-data", "role": "family participant", "authority": "descriptive-only"},
+    {"id": "mncs-actions", "repository": "epi13/mncs-actions", "role": "automation transport and evidence", "authority": "descriptive-only"},
+    {"id": "mncs-debug", "repository": "epi13/mncs-debug", "role": "canonical debugger provider", "authority": "descriptive-only"},
     {"id": "mncs-doctor", "repository": "epi13/mncs-doctor", "role": "consumer remediation", "authority": "descriptive-only"},
     {"id": "mncs-engine", "repository": "epi13/mncs-engine", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-fabric", "repository": "epi13/mncs-fabric", "role": "family participant", "authority": "descriptive-only"},

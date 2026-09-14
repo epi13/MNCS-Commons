@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:83ed912cc354fd02aa4ac00d187a43f9d5fc3c6b3ff5cd4bc9e054be3f06041e",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/tests/test_cli.py::test_import_test_result",
+      "status": "PASS",
+      "summary": "mncs-debug imported the selected TestExecution and retained the source result reference."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-4D43AC609035",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-debug/tests/test_cli.py::test_import_test_result",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:11:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-debug/tests/test_cli.py::test_import_test_result",
+    "repository": "mncs-debug"
+  },
+  "summary": "mncs-debug imported the selected TestExecution and retained the source result reference.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

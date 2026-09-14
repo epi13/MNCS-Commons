@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:751469958074c3cc29fd18a566febc7ffbc0c0e2e8bdd95e8dec3742cd92c2b2",
+  "evidence": [
+    {
+      "id": "verification-mncs-test-65c2616",
+      "kind": "consumer-test",
+      "ref": "mncs-test/tests/test_runner.py::RunnerTests.test_failing_assertion_is_not_hidden",
+      "status": "PASS",
+      "summary": "Canonical compiler-inventoried failure emitted request artifact and execution lineage."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-2C2E7D3F9C8C",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:40:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-test/tests/test_runner.py::RunnerTests.test_failing_assertion_is_not_hidden",
+    "repository": "mncs-test",
+    "revision": "65c2616"
+  },
+  "summary": "Canonical compiler-inventoried failure emitted request artifact and execution lineage.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

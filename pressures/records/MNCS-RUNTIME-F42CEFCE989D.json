@@ -1,0 +1,48 @@
+{
+  "affectedRepositories": [
+    "mncs-debug",
+    "mncs-forge-mcp",
+    "mncs-language"
+  ],
+  "capability": "intermediate-value-observations",
+  "contentDigest": "sha256:753a7f0602ccf69ab5f3dfdf5a9a0c1f624b13669a45916e0f9b8a63b432b714",
+  "discoveredAt": "2026-09-13T23:16:40Z",
+  "discoveredBy": "mncs-debug",
+  "domain": "debugging.values",
+  "id": "MNCS-RUNTIME-F42CEFCE989D",
+  "identity": {
+    "capability": "intermediate-value-observations",
+    "domain": "debugging.values",
+    "reproducerSignature": "mncs-debug:post-profile-0.17:intermediate-values",
+    "target": "runtime"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.17",
+  "legacyIds": [
+    "mncs-debug:MNCS-DEBUG-P-001"
+  ],
+  "notes": "Reconciled against the post-Profile-0.17 mncs-test/mncs-debug integration; capability and consumer verification are tracked separately.",
+  "reproducer": {
+    "actual": "Only returned values and static value projections are available; intermediate history is absent.",
+    "command": "See mncs-debug pressures/MNCS-DEBUG-P-001.json and campaign fixtures.",
+    "expected": "Intermediate values are queryable by stable operation/value identity.",
+    "signature": "mncs-debug:post-profile-0.17:intermediate-values"
+  },
+  "requiredBehavior": "A bounded execution should expose stable typed intermediate value observations with operation, producer, and read/write lineage without changing production semantics.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "classification": "FAIL",
+    "ownerLayer": "runtime"
+  },
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-001.json",
+    "repository": "mncs-debug",
+    "startingRevision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The debugger records returned values and static operation identities, but the runtime does not emit a bounded typed observation stream for intermediate reads and writes.",
+  "target": "runtime",
+  "title": "Intermediate runtime values are not observable",
+  "version": "1"
+}

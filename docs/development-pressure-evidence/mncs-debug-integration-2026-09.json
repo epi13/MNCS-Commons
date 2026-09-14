@@ -1,0 +1,62 @@
+{
+  "schema": "commons.mncs.dev/development-pressure-evidence/v1",
+  "campaign": "mncs-debug-integration-2026-09",
+  "baseline": {
+    "mncs-language": "1da244a58d656b3058de05d0fc0f799a5e2f0106",
+    "mncs-test": "3942621b868d00628695781485415e77a9909680",
+    "mncs-debug": "679f795a6726ecefb04ad7f705680f7eaa7decc7",
+    "mncs-actions": "c08417111022d2d9ad908cacae85857ffeae29d7",
+    "mncs-forge-mcp": "d9f89df51130b1dbb499e97ee2982892d17ad7af",
+    "MNCS-Commons": "3d53a42f58c57e653f0ddf38343a791115f5b3f",
+    "mncs-language-service": "78ed96b3bf89ade67e98a079d1aff022f55d3091",
+    "mncs-doctor": "7a58c82269dad7308cd0e1ebb5b74c6ee6fa4bf0",
+    "mncs-atlas": "580d521d9d05c2c843040bb3e68065fcd663015d"
+  },
+  "verified_revisions": {
+    "mncs-language": "1da244a58d656b3058de05d0fc0f799a5e2f0106",
+    "mncs-test": "65c261680c3ee05a16e1caf422b7f9011f1a3e55",
+    "mncs-debug": "b0be3c588e02628aa9b7a42f7524a76edbf38556",
+    "mncs-actions": "ff7d0df49524a6f63e4fb462dbe5a281a9eb1f34",
+    "mncs-forge-mcp": "f96985fe3897c6e80b910f01d07b6e2fab51bb78",
+    "mncs-language-service": "ca78edbc32a59971fda3f82ec88c9cfa140d9c77",
+    "mncs-doctor": "069223af94ebf92fe8dc06aae81dcb96e3e2cd71",
+    "mncs-atlas": "1864c4a468994bed261a1ed154715828cc3cb0e8"
+  },
+  "vertical_path": {
+    "verdict": "PASS",
+    "stages": [
+      {"owner": "mncs-language", "artifact": "mncs test-inventory", "schema": "mncs.test-inventory/1", "evidence": "mncs-test/tests/test_runner.py", "status": "PASS"},
+      {"owner": "mncs-test", "artifact": "TestResult", "schema": "mncs.test-result/1", "evidence": "mncs-test/tests/test_runner.py::RunnerTests.test_failing_assertion_is_not_hidden", "status": "FAIL-as-test-fixture"},
+      {"owner": "mncs-debug", "artifact": "DebugWitness", "schema": "mncs.debug-witness/1", "evidence": "mncs-debug/tests/test_cli.py::RuntimeCliTests.test_import_test_result_preserves_test_ownership", "status": "PASS"},
+      {"owner": "mncs-actions", "artifact": "receipt-and-evidence", "schema": "mncs.check-result/1", "evidence": "mncs-actions/tests/test_mncs_debug_action.py::test_failing_test_produces_debug_evidence_with_lineage", "status": "PASS"},
+      {"owner": "mncs-forge-mcp", "artifact": "diagnosis-and-verification", "schema": "mncs.forge-mncs-development/1", "evidence": "mncs-forge-mcp/tests/test_mncs_development.py::test_failure_loop_preserves_lineage_and_verifies_exact_repair", "status": "PASS"}
+    ]
+  },
+  "identity_continuity": [
+    "source revision and source sha256",
+    "module and function identity",
+    "test declaration and TestExecution identity",
+    "test run, observation, and oracle-evaluation identity",
+    "canonical execution request and request artifact digest",
+    "debug witness and runtime execution identity",
+    "Actions receipt/evidence artifact digest",
+    "Forge before/after source and verification run identities"
+  ],
+  "pressure_reconciliation": [
+    {"local_id": "MNCS-DEBUG-P-001", "commons_id": "MNCS-RUNTIME-F42CEFCE989D", "classification": "PARTIALLY_RESOLVED", "status": "discovered", "owner": "mncs-language/runtime", "evidence": "returned values are preserved; intermediate history remains unsupported"},
+    {"local_id": "MNCS-DEBUG-P-002", "commons_id": "MNCS-COMPILER-E445EECC9F96", "classification": "PARTIALLY_RESOLVED", "status": "discovered", "owner": "mncs-language/compiler", "evidence": "declaration spans cross the handoff; lowered operation spans remain open"},
+    {"local_id": "MNCS-DEBUG-P-003", "commons_id": "MNCS-RUNTIME-D5179B1A5E9D", "classification": "PARTIALLY_RESOLVED", "status": "discovered", "owner": "mncs-language/runtime", "evidence": "static nested correspondence is available; runtime frames are not"},
+    {"local_id": "MNCS-DEBUG-P-004", "commons_id": "MNCS-RUNTIME-A32B31916255", "classification": "STILL_OPEN", "status": "discovered", "owner": "mncs-language/runtime", "evidence": "no truthful suspension/resume primitive"},
+    {"local_id": "MNCS-DEBUG-P-005", "commons_id": "MNCS-RUNTIME-6382A1A44458", "classification": "STILL_OPEN", "status": "discovered", "owner": "mncs-language/runtime", "evidence": "scheduler/effect/environment capture is absent; deterministic replay remains blocked"},
+    {"local_id": "MNCS-DEBUG-P-006", "commons_id": "MNCS-VERIFY-54B12B4A78DF", "classification": "RESOLVED", "status": "resolved", "owner": "mncs-test + mncs-debug + mncs-actions + mncs-forge-mcp", "evidence": "exact PASS verification from all four affected repositories"},
+    {"local_id": "MNCS-DEBUG-P-007", "commons_id": "MNCS-TOOLING-0C870FCAFFEB", "classification": "RESOLVED", "status": "resolved", "owner": "mncs-actions", "evidence": "exact PASS verification from mncs-debug and mncs-actions"},
+    {"local_id": "MNCS-DEBUG-P-008", "commons_id": "MNCS-TOOLING-673C8430E951", "classification": "PARTIALLY_RESOLVED", "status": "discovered", "owner": "mncs-language-service + compiler", "evidence": "shared declaration vocabulary is verified; live breakpoint binding is UNKNOWN"},
+    {"local_id": "MNCS-DEBUG-P-009", "commons_id": "MNCS-COMPILER-94428E41EEAC", "classification": "RESOLVED", "status": "resolved", "owner": "mncs-language/compiler + mncs-debug", "evidence": "exact PASS verification from compiler build and structured compile-failure debugger test"},
+    {"local_id": "MNCS-DEBUG-P-010", "commons_id": "MNCS-TOOLING-A74DFC47DDB6", "classification": "STILL_OPEN", "status": "discovered", "owner": "mncs-debug", "evidence": "bounded failure capture remains about 1058 ms above direct record in the five-run baseline"},
+    {"local_id": "MNCS-DEBUG-P-011", "commons_id": "MNCS-RUNTIME-3B723B6FADD8", "classification": "STILL_OPEN", "status": "discovered", "owner": "mncs-language/runtime", "evidence": "task/effect lifecycle events remain absent"},
+    {"local_id": "MNCS-DEBUG-P-012", "commons_id": "MNCS-TOOLING-14E88C1C7431", "classification": "PLATFORM_BOUNDARY", "status": "deferred", "owner": "campaign platform / CI storage", "evidence": "pinned rebuild is deferred for workspace quota/storage reasons"}
+  ],
+  "overhead": {"schema": "mncs.debug-overhead/1", "direct_median_ms": 7.566927000880241, "record_median_ms": 1065.7882480882108, "median_overhead_ms": 1058.2213210873306, "ratio": 140.84822649461668, "policy": "normal PASS capture disabled; failure capture bounded"},
+  "remaining_limitations": ["intermediate values", "lowered operation spans", "nested runtime frames", "live suspension", "watchpoints/expression evaluation", "deterministic effect replay", "task ancestry", "deep trace overhead", "pinned rebuild storage"],
+  "authority_map": {"language": "mncs-language", "testing": "mncs-test", "debugging": "mncs-debug", "transport": "mncs-actions", "orchestration": "mncs-forge-mcp", "coordination": "MNCS-Commons", "source_projection": "mncs-language-service", "health": "mncs-doctor", "orientation": "mncs-atlas"}
+}

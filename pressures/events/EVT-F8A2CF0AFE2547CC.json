@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:56f4d6e9c6d667aa63c4010561f750b7a134a6ba0a2321b07c52466266dba2f1",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-94428E41EEAC--OBS-AB9CDF8A3265",
+    "MNCS-COMPILER-94428E41EEAC--OBS-DE1B518A31FC"
+  ],
+  "from": "implementing",
+  "id": "EVT-F8A2CF0AFE2547CC",
+  "implementation": {
+    "ref": "mncs-language@1da244a58d656b3058de05d0fc0f799a5e2f0106;mncs-debug@b0be3c588e02628aa9b7a42f7524a76edbf38556"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:23:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "previousEvent": "EVT-BFAD87BCDED04499",
+  "reason": "Structured compile-failure evidence is available for verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

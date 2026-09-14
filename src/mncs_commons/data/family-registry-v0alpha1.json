@@ -1,7 +1,7 @@
 {
   "registryVersion": "commons.mncs.dev/family-registry/v0alpha1",
   "registryId": "mncs-family",
-  "revision": "2026-08-27",
+  "revision": "2026-09-13",
   "authority": "active-coordination-and-coverage",
   "nonAuthorities": [
     "conformance",
@@ -82,7 +82,49 @@
       "authorityClass": "language-tooling",
       "sharedCore": true,
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE", "SHARED_CORE"],
-      "consumes": ["mncs-language", "mncs-lineage"],
+      "consumes": ["mncs-language", "mncs-lineage", "mncs-debug"],
+      "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
+      "coveragePosture": "NEEDS_REVIEW"
+    },
+    {
+      "id": "mncs-test",
+      "repository": "epi13/mncs-test",
+      "displayName": "MNCS Test",
+      "group": "verification-tooling",
+      "role": "canonical MNCS test provider and native test semantics",
+      "status": "active",
+      "authorityClass": "verification-semantics",
+      "sharedCore": false,
+      "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
+      "consumes": ["mncs-language"],
+      "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
+      "coveragePosture": "NEEDS_REVIEW"
+    },
+    {
+      "id": "mncs-debug",
+      "repository": "epi13/mncs-debug",
+      "displayName": "MNCS Debug",
+      "group": "verification-tooling",
+      "role": "canonical structured debugger, witness, trace and provenance provider",
+      "status": "active",
+      "authorityClass": "debug-semantics",
+      "sharedCore": false,
+      "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
+      "consumes": ["mncs-language", "mncs-test"],
+      "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
+      "coveragePosture": "NEEDS_REVIEW"
+    },
+    {
+      "id": "mncs-actions",
+      "repository": "epi13/mncs-actions",
+      "displayName": "MNCS Actions",
+      "group": "operator-infrastructure",
+      "role": "execution, receipt, evidence and workflow transport",
+      "status": "active",
+      "authorityClass": "family-assurance-automation",
+      "sharedCore": false,
+      "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
+      "consumes": ["mncs-test", "mncs-debug", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
       "coveragePosture": "NEEDS_REVIEW"
     },
@@ -110,7 +152,7 @@
       "authorityClass": "non-normative-development-infrastructure",
       "sharedCore": false,
       "eligibleWorkLanes": ["DOCUMENTATION", "CONVERSION_PREP", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
-      "consumes": ["mncs-language", "mncs-fabric", "mncs-commons"],
+      "consumes": ["mncs-language", "mncs-test", "mncs-debug", "mncs-fabric", "mncs-commons"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
       "coveragePosture": "NEEDS_REVIEW"
     },

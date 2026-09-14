@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:ed99d6c276f76207d4ff326fcbd300697dcfa2ace9b8f7f61f9838e09c4cbd5c",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-54B12B4A78DF--OBS-3A38E19A7FEB",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-602D059C8991",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-9B55B65A5AB0",
+    "MNCS-VERIFY-54B12B4A78DF--OBS-B40C9A9AD661"
+  ],
+  "from": "confirmed",
+  "id": "EVT-085B26E52262CA12",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T00:01:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "previousEvent": "EVT-40FFC29ECDD2B400",
+  "reason": "Accepted as a family verification handoff capability with owner-native semantics preserved.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

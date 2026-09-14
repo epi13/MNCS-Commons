@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:db14ccdc97eb26c970b7b4334a4b4560d72b1e0dd4f4829eacbc32cbbf752648",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug-b0be3c588e02",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/integration/mncs-actions-provider.json",
+      "status": "PASS",
+      "summary": "Debugger provider descriptor matches the registered Actions membrane."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-920814C5B757",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-13T23:54:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "mncs-debug/integration/mncs-actions-provider.json",
+    "repository": "mncs-debug",
+    "revision": "b0be3c588e02628aa9b7a42f7524a76edbf38556"
+  },
+  "summary": "Debugger provider descriptor matches the registered Actions membrane.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

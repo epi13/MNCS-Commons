@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:37d41a4dec960a4f5f7aa8ce76b019d3a7882d3c3ccf92d94a979529a991529c",
+  "evidence": [
+    {
+      "id": "MNCS-DEBUG-P-007-post-profile-0.17",
+      "kind": "reproducer",
+      "ref": "mncs-debug:integration/2026-09",
+      "status": "PASS",
+      "summary": "The live action membrane produced PASS debug evidence for a failing test and UNKNOWN not_requested for a passing test."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-4CDF4D711A03",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "affectedRepositories": [
+      "mncs-actions",
+      "mncs-debug"
+    ],
+    "expected": "A failing test can trigger optional bounded debug evidence while preserving the test verdict."
+  },
+  "observedAt": "2026-09-13T23:00:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Run the referenced original fixture/command at the campaign pinned revisions.",
+    "status": "PASS"
+  },
+  "runId": "mncs-debug-integration-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/MNCS-DEBUG-P-007.json",
+    "repository": "mncs-debug",
+    "revision": "679f795a6726ecefb04ad7f705680f7eaa7decc7"
+  },
+  "summary": "The live action membrane produced PASS debug evidence for a failing test and UNKNOWN not_requested for a passing test.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Registered actions/mncs-debug provider and mncs-test debug-on-failure composition.",
+    "removed": "not_needed"
+  }
+}

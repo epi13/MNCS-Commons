@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4cdfb44839b3199e55ddfcf0b56b9c9772b3bba0e05c8e5b53161686b736599b",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/tests/test_cli.py::test_compile_failure",
+      "status": "PASS",
+      "summary": "The invalid source produced a compile_failure witness and debug-validation artifact."
+    }
+  ],
+  "id": "MNCS-COMPILER-94428E41EEAC--OBS-CB8AB2BB6E00",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-debug/tests/test_cli.py::test_compile_failure",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:17:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-debug/tests/test_cli.py::test_compile_failure",
+    "repository": "mncs-debug"
+  },
+  "summary": "The invalid source produced a compile_failure witness and debug-validation artifact.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1157a279081bd4378a8db5a2288a340c3f49b02a9add3f5dea26bd1077c2252c",
+  "evidence": [
+    {
+      "id": "verification-mncs-debug",
+      "kind": "consumer-test",
+      "ref": "mncs-debug/integration/mncs-actions-provider.json",
+      "status": "PASS",
+      "summary": "The debugger descriptor and transport contract match the Actions provider implementation."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-06324139C3FB",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "evidence_ref": "mncs-debug/integration/mncs-actions-provider.json",
+    "verification_revision": "coordinated-campaign-working-tree"
+  },
+  "observedAt": "2026-09-13T23:15:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "campaign": "mncs-debug-integration-2026-09",
+    "ref": "mncs-debug/integration/mncs-actions-provider.json",
+    "repository": "mncs-debug"
+  },
+  "summary": "The debugger descriptor and transport contract match the Actions provider implementation.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

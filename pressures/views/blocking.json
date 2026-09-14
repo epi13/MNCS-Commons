@@ -255,6 +255,65 @@
         "pass": 0,
         "unknown": 0
       }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language"
+      ],
+      "capability": "deterministic-scheduler-effect-replay",
+      "currentValidation": false,
+      "domain": "debugging.replay",
+      "fallbackLanguages": [],
+      "id": "MNCS-RUNTIME-6382A1A44458",
+      "reporters": [
+        "mncs-debug"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocking",
+      "status": "discovered",
+      "target": "runtime",
+      "title": "The runtime has no deterministic scheduler/effect/environment capture",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language",
+        "mncs-language-service"
+      ],
+      "capability": "safe-suspension-and-resume",
+      "currentValidation": false,
+      "domain": "debugging.sessions",
+      "fallbackLanguages": [],
+      "id": "MNCS-RUNTIME-A32B31916255",
+      "reporters": [
+        "mncs-debug"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocking",
+      "status": "discovered",
+      "target": "runtime",
+      "title": "Execution is one-shot and has no safe suspension or resume contract",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
     }
   ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",
