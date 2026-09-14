@@ -199,6 +199,9 @@
       "MNCS-LANG-8D86843C5F1C",
       "MNCS-LANG-A24150CD4D89",
       "MNCS-LANG-C20E8604EB31"
+    ],
+    "verification.scope-selection": [
+      "MNCS-VERIFY-CF7230C4396D"
     ]
   },
   "generatedFrom": "commons.mncs.dev/family-pressure/v1",

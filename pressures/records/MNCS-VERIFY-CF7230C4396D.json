@@ -1,0 +1,55 @@
+{
+  "affectedRepositories": [
+    "mncs-actions",
+    "mncs-commons",
+    "mncs-doctor",
+    "mncs-forge-mcp",
+    "mncs-test",
+    "ravel"
+  ],
+  "capability": "minimum-sufficient-verification-plan",
+  "contentDigest": "sha256:e8d6684bb03c56239a7736b1117e13fdf7161e0d4d38e041217b032f0108bdc5",
+  "discoveredAt": "2026-09-14T00:30:00Z",
+  "discoveredBy": "mncs-commons",
+  "domain": "verification.scope-selection",
+  "id": "MNCS-VERIFY-CF7230C4396D",
+  "identity": {
+    "capability": "minimum-sufficient-verification-plan",
+    "domain": "verification.scope-selection",
+    "reproducerSignature": "mncs-family:minimum-sufficient-verification-plan-validator",
+    "target": "verification"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.17",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "actual": "The consumers currently duplicate compatible but separate shape checks; mncs-test owns the checked-in schema while other repositories carry transport copies.",
+    "command": "Compare the plan validators and schemas in mncs-test, RAVEL, mncs-actions, and mncs-forge-mcp for the same mncs.verification-plan/1 artifact.",
+    "expected": "All consumers accept or reject the same bounded transport shape and preserve the same typed escalation vocabulary.",
+    "signature": "mncs-family:minimum-sufficient-verification-plan-validator"
+  },
+  "requiredBehavior": "Publish one versioned family-owned verification-plan schema and validator, or a language-native equivalent, consumed by Ravel, mncs-test, Actions, Forge, and future Doctor integrations without duplicating semantic selection logic.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "campaign": "selective-evidence-workflow-2026-09",
+    "classification": "OPEN",
+    "ownerLayer": "family-contract"
+  },
+  "sourceRef": {
+    "kind": "campaign-review",
+    "repositories": [
+      "RAVEL",
+      "mncs-test",
+      "mncs-actions",
+      "mncs-forge-mcp",
+      "mncs-doctor"
+    ],
+    "revision": "working-tree"
+  },
+  "summary": "The selective loop now has a working mncs.verification-plan/1 contract, but Ravel, mncs-test, Actions, and Forge each carry a boundary validator because the family has no shared canonical schema/validator package. Field drift can make a plan appear valid to one consumer and invalid to another.",
+  "target": "verification",
+  "title": "No single family-owned verification-plan validator",
+  "version": "1"
+}

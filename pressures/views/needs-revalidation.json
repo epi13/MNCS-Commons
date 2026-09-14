@@ -2637,6 +2637,38 @@
         "pass": 0,
         "unknown": 0
       }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-commons",
+        "mncs-doctor",
+        "mncs-forge-mcp",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "minimum-sufficient-verification-plan",
+      "currentValidation": false,
+      "domain": "verification.scope-selection",
+      "fallbackLanguages": [],
+      "id": "MNCS-VERIFY-CF7230C4396D",
+      "reporters": [
+        "mncs-commons"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "verification",
+      "title": "No single family-owned verification-plan validator",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 6,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
     }
   ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",

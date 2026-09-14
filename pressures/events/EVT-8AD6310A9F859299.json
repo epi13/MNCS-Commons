@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:8dd4bd6cdbb96e87e636533b27cd55b02eb0c11308ecaaea59488affb92fe5ac",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-CB12C1A6D30E"
+  ],
+  "from": "discovered",
+  "id": "EVT-8AD6310A9F859299",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T09:21:44Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": null,
+  "reason": "Canonical workflow evidence confirms the gap is architectural rather than a failing provider implementation.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}
