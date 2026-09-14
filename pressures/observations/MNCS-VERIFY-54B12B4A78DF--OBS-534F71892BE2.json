@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c38c1c013d95eb908eb8a70db37b6b2ea031d445d4409c0f00752eb85ce61232",
+  "evidence": [
+    {
+      "id": "verification-mncs-forge-mcp-dbece72fae7",
+      "kind": "consumer-test",
+      "ref": "mncs-forge-mcp/tests/test_mncs_development.py::test_failure_loop_consumes_actions_handoff_and_verifies_exact_repair",
+      "status": "PASS",
+      "summary": "Forge consumed the Actions-produced test/check/debug handoff, queried the witness, applied the bounded repair, and verified PASS."
+    },
+    {
+      "id": "github-actions-run-34795486359",
+      "kind": "hosted-canary",
+      "ref": "https://github.com/epi13/mncs-actions/actions/runs/34795486359",
+      "status": "PASS",
+      "summary": "The fixed Profile 0.17 family canary passed at the exact pinned revisions, including the Actions-to-Forge handoff."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-534F71892BE2",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T01:20:52Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "tests/test_mncs_development.py::test_failure_loop_consumes_actions_handoff_and_verifies_exact_repair",
+    "repository": "mncs-forge-mcp",
+    "revision": "dbece72fae723a93e9f7df636ab4ea47245b23be"
+  },
+  "summary": "Forge consumed the Actions-produced failure/debug handoff, preserved transport evidence, and verified the exact repair.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}
