@@ -147,6 +147,161 @@
         "pass": 0,
         "unknown": 0
       }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language",
+        "mncs-test"
+      ],
+      "capability": "effect-environment-lineage",
+      "currentValidation": true,
+      "domain": "debugging.effects",
+      "fallbackLanguages": [],
+      "id": "MNCS-RUNTIME-3B723B6FADD8",
+      "reporters": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language",
+        "mncs-test"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "available",
+      "target": "runtime",
+      "title": "Effect observations lack complete input lineage and environment capture",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "unknown",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 3,
+        "unknown": 1
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language"
+      ],
+      "capability": "runtime-frame-and-task-ancestry",
+      "currentValidation": true,
+      "domain": "debugging.frames",
+      "fallbackLanguages": [],
+      "id": "MNCS-RUNTIME-D5179B1A5E9D",
+      "reporters": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "available",
+      "target": "runtime",
+      "title": "Nested calls expose identities but not runtime frames",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 3,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language"
+      ],
+      "capability": "intermediate-value-observations",
+      "currentValidation": true,
+      "domain": "debugging.values",
+      "fallbackLanguages": [],
+      "id": "MNCS-RUNTIME-F42CEFCE989D",
+      "reporters": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "available",
+      "target": "runtime",
+      "title": "Intermediate runtime values are not observable",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 3,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-debug",
+        "mncs-language-service"
+      ],
+      "capability": "shared-lsp-debug-source-binding",
+      "currentValidation": true,
+      "domain": "debugging.source-binding",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-673C8430E951",
+      "reporters": [
+        "mncs-debug",
+        "mncs-language-service"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "available",
+      "target": "tooling",
+      "title": "LSP integration lacks an exact debug source-binding contract",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-forge-mcp"
+      ],
+      "capability": "low-overhead-bounded-debug-capture",
+      "currentValidation": true,
+      "domain": "debugging.performance",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-A74DFC47DDB6",
+      "reporters": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-forge-mcp"
+      ],
+      "revalidationRequired": false,
+      "severity": "moderate",
+      "status": "available",
+      "target": "tooling",
+      "title": "Static evidence collection dominates the current recording overhead",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 3,
+        "unknown": 0
+      }
     }
   ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",

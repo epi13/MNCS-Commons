@@ -113,6 +113,39 @@
     },
     {
       "affectedRepositories": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language",
+        "mncs-language-service"
+      ],
+      "capability": "semantic-operation-source-spans",
+      "currentValidation": true,
+      "domain": "debugging.source-maps",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-E445EECC9F96",
+      "reporters": [
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-language",
+        "mncs-language-service"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "Semantic operation identities lose source spans before execution",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 4,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0012",

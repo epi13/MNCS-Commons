@@ -263,14 +263,14 @@
         "mncs-language"
       ],
       "capability": "deterministic-scheduler-effect-replay",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "debugging.replay",
       "fallbackLanguages": [],
       "id": "MNCS-RUNTIME-6382A1A44458",
       "reporters": [
         "mncs-debug"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocking",
       "status": "discovered",
       "target": "runtime",
@@ -293,14 +293,14 @@
         "mncs-language-service"
       ],
       "capability": "safe-suspension-and-resume",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "debugging.sessions",
       "fallbackLanguages": [],
       "id": "MNCS-RUNTIME-A32B31916255",
       "reporters": [
         "mncs-debug"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocking",
       "status": "discovered",
       "target": "runtime",

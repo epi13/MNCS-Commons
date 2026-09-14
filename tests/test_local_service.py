@@ -65,8 +65,8 @@ def test_service_persists_independently_and_separates_authority(tmp_path: Path) 
     server, consumer, operator = _start(tmp_path)
     try:
         assert consumer.status()["storeHealthy"] is True
-        assert len(consumer.family_registry()["projects"]) == 17
-        assert consumer.family_coverage()["projectCount"] == 17
+        assert len(consumer.family_registry()["projects"]) == 20
+        assert consumer.family_coverage()["projectCount"] == 20
         assert consumer.descriptor()["operatorOperations"] == [
             "commons.publish",
             "family.health-sweep",

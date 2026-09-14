@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:697a7bc150b88517b9e16b9c351f582566c4879ff2b4e858de9beecbd39631f9",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P002-LSP",
+      "kind": "consumer-reproducer",
+      "ref": "cargo test --locked -p mncs-service-core",
+      "status": "PASS",
+      "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction."
+    }
+  ],
+  "id": "MNCS-COMPILER-E445EECC9F96--OBS-1E0E7D3A486B",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P002-LSP"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "cargo test --locked -p mncs-service-core",
+    "repository": "mncs-language-service",
+    "revision": "88b3c275249d119b2af471ea616a22eef1046597"
+  },
+  "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

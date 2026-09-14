@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:a6e5f4b4d6e00775b77e2d0c940967be638512481173ff31fa0958f4856eabe2",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-E445EECC9F96--OBS-180D973431E7"
+  ],
+  "from": "confirmed",
+  "id": "EVT-6D8D03CB9DB2DDBD",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:08Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "previousEvent": "EVT-AC56B64130666823",
+  "reason": "The capability is accepted as an owner-native tranche; broader unsupported claims remain explicit.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

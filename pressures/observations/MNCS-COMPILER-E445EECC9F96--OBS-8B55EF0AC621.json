@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:43907dd6da2e04391e6f2eab67edf5ac0a73b3577c3483339e4d170447c04f05",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P002-DEBUG",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction."
+    }
+  ],
+  "id": "MNCS-COMPILER-E445EECC9F96--OBS-8B55EF0AC621",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P002-DEBUG"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

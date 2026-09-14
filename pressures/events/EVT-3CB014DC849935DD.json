@@ -1,0 +1,26 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:7b4ae502782e24e612f54a9df5f7e2631568a395ffbcda76d64cde1b0e2cace9",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-E445EECC9F96--OBS-180D973431E7",
+    "MNCS-COMPILER-E445EECC9F96--OBS-1E0E7D3A486B",
+    "MNCS-COMPILER-E445EECC9F96--OBS-4BBB118201AB",
+    "MNCS-COMPILER-E445EECC9F96--OBS-7AED20F7A743",
+    "MNCS-COMPILER-E445EECC9F96--OBS-8B55EF0AC621"
+  ],
+  "from": "verifying",
+  "id": "EVT-3CB014DC849935DD",
+  "implementation": {
+    "consumerVerification": "mncs-debug@178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd + mncs-forge-mcp@3aa93ee15a057932e12aaccd1133101e9a2c9209 + mncs-language-service@88b3c275249d119b2af471ea616a22eef1046597",
+    "ref": "mncs-language@dbea90d18b28c8716ab34a8873ba308edba265f7:mncs.execution-source-map/1"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:08Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "previousEvent": "EVT-4234B3DBA830552B",
+  "reason": "The original operation-span reproducer passes and every affected repository verifies the same compiler-owned mapping; no heuristic workaround remains on the native path.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

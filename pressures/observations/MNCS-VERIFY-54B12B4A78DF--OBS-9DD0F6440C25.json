@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:58da7e6830e900dd968dc1e97f67a7a59a980baf455a2a18ae5eeeeaee64fb46",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P006-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-test + mncs-debug integration",
+      "status": "PASS",
+      "summary": "The canonical first-class test result remains authoritative while native bounded failure observations are attached by reference."
+    }
+  ],
+  "id": "MNCS-VERIFY-54B12B4A78DF--OBS-9DD0F6440C25",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "refreshOnly": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-VERIFY-54B12B4A78DF",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run mncs-test + mncs-debug integration at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "mncs-test + mncs-debug integration",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "The canonical first-class test result remains authoritative while native bounded failure observations are attached by reference.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

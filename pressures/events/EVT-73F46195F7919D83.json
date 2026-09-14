@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:56c3745c8aefd57727b5b722c3a22651673ac917a1d701e6bea11e0a701e3eb5",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-A74DFC47DDB6--OBS-7943BA8FB18B"
+  ],
+  "from": "discovered",
+  "id": "EVT-73F46195F7919D83",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:11Z",
+  "pressureId": "MNCS-TOOLING-A74DFC47DDB6",
+  "previousEvent": null,
+  "reason": "The original bounded capability reproducer now has a native structured observation.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

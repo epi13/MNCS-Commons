@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:180ab525f6e8501e4c011647177268d0b25aec9423c9a2dbeb17cc28af668340",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P010-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-overhead-2026-09.json",
+      "status": "PASS",
+      "summary": "Five-run modes show native observation disabled/bounded/diagnostic capture at approximately direct execution cost; aggregate debugger recording remains bootstrap/semantic-core bound."
+    }
+  ],
+  "id": "MNCS-TOOLING-A74DFC47DDB6--OBS-7943BA8FB18B",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "remaining": "aggregate bootstrap/protocol cost"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-A74DFC47DDB6",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run evidence/native-observability-overhead-2026-09.json at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-overhead-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Five-run modes show native observation disabled/bounded/diagnostic capture at approximately direct execution cost; aggregate debugger recording remains bootstrap/semantic-core bound.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

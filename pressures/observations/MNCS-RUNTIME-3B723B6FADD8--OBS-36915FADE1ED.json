@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:903e9a9873e3200136d961dd969a45df35df0a02717e5e86c90974c67ebf084c",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P011-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Supported effect fixtures emit shared effect invocation/result identities with operation, frame, capability, target, and lineage-only replayability; input/result values, task ancestry, and environment capture remain incomplete."
+    }
+  ],
+  "id": "MNCS-RUNTIME-3B723B6FADD8--OBS-36915FADE1ED",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "remaining": "effect input/result values, task ancestry, environment"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-3B723B6FADD8",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run evidence/native-observability-demonstrations-2026-09.json at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Supported effect fixtures emit shared effect invocation/result identities with operation, frame, capability, target, and lineage-only replayability; input/result values, task ancestry, and environment capture remain incomplete.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:59630072c177f73d7bedca8b6d7dc4866d0c3594e0d265fb0c4b924c5d8d9db7",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P008-LSP",
+      "kind": "consumer-reproducer",
+      "ref": "cargo test --locked -p mncs-service-core",
+      "status": "PASS",
+      "summary": "Shared compiler source identity and operation-level resolution are verified; no live execution control is inferred."
+    }
+  ],
+  "id": "MNCS-TOOLING-673C8430E951--OBS-8D10C990E5F7",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P008-LSP"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "cargo test --locked -p mncs-service-core",
+    "repository": "mncs-language-service",
+    "revision": "88b3c275249d119b2af471ea616a22eef1046597"
+  },
+  "summary": "Shared compiler source identity and operation-level resolution are verified; no live execution control is inferred.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

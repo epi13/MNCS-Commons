@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:956fdc4d8b844d22d286e7b82ebf949d04ea07f39aadd3c1ee8d6f21143501fd",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P008-DEBUG",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Shared compiler source identity and operation-level resolution are verified; no live execution control is inferred."
+    }
+  ],
+  "id": "MNCS-TOOLING-673C8430E951--OBS-E8363CE28F94",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P008-DEBUG"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Shared compiler source identity and operation-level resolution are verified; no live execution control is inferred.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

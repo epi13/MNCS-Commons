@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:326f3e278c78ffc04dd3e35ee2d6bfac2308b1fb672003e911f4e0f1d5d8378c",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P010-ACTIONS",
+      "kind": "consumer-reproducer",
+      "ref": "tests/test_mncs_debug_action.py",
+      "status": "PASS",
+      "summary": "Consumer verifies bounded native observation transport; this does not claim the full debugger process path is low overhead."
+    }
+  ],
+  "id": "MNCS-TOOLING-A74DFC47DDB6--OBS-408D644ED1BE",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P010-ACTIONS"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-A74DFC47DDB6",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_mncs_debug_action.py",
+    "repository": "mncs-actions",
+    "revision": "a5082391c9ac03d395a71fe4decc390a6eb19e7a"
+  },
+  "summary": "Consumer verifies bounded native observation transport; this does not claim the full debugger process path is low overhead.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

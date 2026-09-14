@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:457b13a83e4223a424653203194b87fd17b6a46dd4f1d51c53e3e1e48bb71b19",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P004-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-debug capability matrix: suspension unsupported",
+      "status": "FAIL",
+      "summary": "No safe suspension, pause, step, or resume exists; bounded observations are immutable completed-run projections."
+    }
+  ],
+  "id": "MNCS-RUNTIME-A32B31916255--OBS-0EC6C192E3D2",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "negativeReproduction": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-A32B31916255",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run mncs-debug capability matrix: suspension unsupported at the pinned revision.",
+    "status": "FAIL"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "mncs-debug capability matrix: suspension unsupported",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "No safe suspension, pause, step, or resume exists; bounded observations are immutable completed-run projections.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Capability is not yet available; preserve the limitation explicitly.",
+    "removed": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:a6f3c3f37a8c72e8a0a9dbfc29b28e0700b89c8c05ea7d50a3ddcd250bfdcf4b",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P003-FORGE",
+      "kind": "consumer-reproducer",
+      "ref": "tests/test_mncs_development.py",
+      "status": "PASS",
+      "summary": "Nested runtime frame ancestry is verified; task scheduling ancestry remains outside the supported model."
+    }
+  ],
+  "id": "MNCS-RUNTIME-D5179B1A5E9D--OBS-5277811659A0",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P003-FORGE"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-D5179B1A5E9D",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_mncs_development.py",
+    "repository": "mncs-forge-mcp",
+    "revision": "3aa93ee15a057932e12aaccd1133101e9a2c9209"
+  },
+  "summary": "Nested runtime frame ancestry is verified; task scheduling ancestry remains outside the supported model.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

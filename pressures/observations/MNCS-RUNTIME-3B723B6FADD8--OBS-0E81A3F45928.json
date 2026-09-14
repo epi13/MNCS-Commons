@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:7ac31d5ab33fc7ee9822babec4ecf0efb478b7c7a4c2a69e6a10c18b9ec1ad80",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P011-FORGE",
+      "kind": "consumer-reproducer",
+      "ref": "tests/test_mncs_development.py",
+      "status": "PASS",
+      "summary": "Forge transports effect facts as bounded diagnosis evidence without semantic reinterpretation."
+    }
+  ],
+  "id": "MNCS-RUNTIME-3B723B6FADD8--OBS-0E81A3F45928",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P011-FORGE"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-3B723B6FADD8",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_mncs_development.py",
+    "repository": "mncs-forge-mcp",
+    "revision": "3aa93ee15a057932e12aaccd1133101e9a2c9209"
+  },
+  "summary": "Forge transports effect facts as bounded diagnosis evidence without semantic reinterpretation.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

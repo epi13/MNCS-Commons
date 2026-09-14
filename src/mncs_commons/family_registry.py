@@ -39,9 +39,12 @@ CANONICAL_FAMILY = {
     "mncs": "epi13/machine-native-complexity-standard",
     "mncds": "epi13/machine-native-complexity-development-specification",
     "mncs-rights-provenance": "epi13/mncs-rights-provenance",
-    "mncs-language": "epi13/mncs-language",
-    "mncs-language-service": "epi13/mncs-language-service",
-    "mncs-validator-rs": "epi13/mncs-validator-rs",
+        "mncs-language": "epi13/mncs-language",
+        "mncs-language-service": "epi13/mncs-language-service",
+        "mncs-test": "epi13/mncs-test",
+        "mncs-debug": "epi13/mncs-debug",
+        "mncs-actions": "epi13/mncs-actions",
+        "mncs-validator-rs": "epi13/mncs-validator-rs",
     "mncs-forge-mcp": "epi13/mncs-forge-mcp",
     "mncs-fabric": "epi13/mncs-fabric",
     "mncs-commons": "epi13/MNCS-Commons",
@@ -120,7 +123,9 @@ def validate_family_registry(value: Mapping[str, Any]) -> None:
     if value.get("registryVersion") != REGISTRY_VERSION or not isinstance(projects, list):
         raise ValueError("family registry envelope is invalid")
     if len(projects) != len(CANONICAL_FAMILY):
-        raise ValueError("family registry must contain the canonical 17 projects")
+        raise ValueError(
+            f"family registry must contain the canonical {len(CANONICAL_FAMILY)} projects"
+        )
     ids: set[str] = set()
     repositories: set[str] = set()
     for project in projects:

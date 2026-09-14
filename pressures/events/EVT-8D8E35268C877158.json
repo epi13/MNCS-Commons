@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language-service",
+  "contentDigest": "sha256:c7cebd6a2bd01f2a058251416d9db540294653d18af55b1e51c52c7bb9527b7a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-673C8430E951--OBS-3F755C060962"
+  ],
+  "from": "accepted",
+  "id": "EVT-8D8E35268C877158",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:10Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "previousEvent": "EVT-6FE3F4C507DAB9EA",
+  "reason": "Integrate the owner-native fact into debugger and family consumers.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

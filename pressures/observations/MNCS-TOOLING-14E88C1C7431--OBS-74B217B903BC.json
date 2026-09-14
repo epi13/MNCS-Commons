@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:18776de7b7a63b3bd75a317d888b42101035318463322138d4902206ea175404",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P012-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "campaign pinned build/storage audit",
+      "status": "UNKNOWN",
+      "summary": "The final pinned runtime binary was identified and used; workspace quota/storage is an operational boundary and does not establish or disprove runtime observability semantics."
+    }
+  ],
+  "id": "MNCS-TOOLING-14E88C1C7431--OBS-74B217B903BC",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "platformBoundary": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-14E88C1C7431",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run campaign pinned build/storage audit at the pinned revision.",
+    "status": "UNKNOWN"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "campaign pinned build/storage audit",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "The final pinned runtime binary was identified and used; workspace quota/storage is an operational boundary and does not establish or disprove runtime observability semantics.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Capability is not yet available; preserve the limitation explicitly.",
+    "removed": false
+  }
+}

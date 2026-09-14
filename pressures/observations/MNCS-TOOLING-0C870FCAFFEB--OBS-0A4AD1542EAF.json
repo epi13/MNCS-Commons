@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:66b5ccd98ee762aa73ea40667d119eeaddb67d341f216e2420521f9a50a4c54d",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P007-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-actions/actions/mncs-debug",
+      "status": "PASS",
+      "summary": "The registered Actions debugger provider transports native observation and source-map artifacts without interpreting debugger semantics."
+    }
+  ],
+  "id": "MNCS-TOOLING-0C870FCAFFEB--OBS-0A4AD1542EAF",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "refreshOnly": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-0C870FCAFFEB",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run mncs-actions/actions/mncs-debug at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "mncs-actions/actions/mncs-debug",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "The registered Actions debugger provider transports native observation and source-map artifacts without interpreting debugger semantics.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

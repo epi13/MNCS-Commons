@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:e767c1cb2698318873eba05070289a95c81a60a0aa3f94b3cdc961800c80fac1",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-E445EECC9F96--OBS-180D973431E7",
+    "MNCS-COMPILER-E445EECC9F96--OBS-1E0E7D3A486B",
+    "MNCS-COMPILER-E445EECC9F96--OBS-4BBB118201AB",
+    "MNCS-COMPILER-E445EECC9F96--OBS-7AED20F7A743",
+    "MNCS-COMPILER-E445EECC9F96--OBS-8B55EF0AC621"
+  ],
+  "from": "available",
+  "id": "EVT-4234B3DBA830552B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:08Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "previousEvent": "EVT-1C7AA1081FA9BB62",
+  "reason": "All affected compiler/debugger/Forge/language-service consumers have current PASS verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}
