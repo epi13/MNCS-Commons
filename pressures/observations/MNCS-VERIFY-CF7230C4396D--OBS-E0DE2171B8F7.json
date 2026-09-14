@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4281036f91a854cf019ece5188789834f0e94f5ab0973488e9d2146abb21fa42",
+  "evidence": [
+    {
+      "id": "mncs-forge-mcp:development-tests:pass",
+      "status": "PASS",
+      "summary": "Forge development-loop contract tests passed; the native-provider integration canary and the optional Actions handoff are handled by the suite markers."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-E0DE2171B8F7",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:48Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-forge-mcp",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "mncs-forge-mcp",
+    "revision": "f9a7cc6",
+    "tests": "PYTHONPATH=src python3 -m pytest -q tests/test_mncs_development.py"
+  },
+  "summary": "Forge validates the Commons plan, preserves proof boundaries, consumes/reuses typed Debug sufficiency artifacts, and requests only the named adaptive projection.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

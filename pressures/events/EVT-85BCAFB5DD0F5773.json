@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:215db49516e8f2a0173434ee45b9667610d6dfb3406cc5b80416ed06c8ffd089",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21"
+  ],
+  "from": "accepted",
+  "id": "EVT-85BCAFB5DD0F5773",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T16:17:11Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": "EVT-58C0E09E344127B6",
+  "reason": "Implement and migrate every affected consumer to the Commons validator; remove copied schema and vocabulary authorities.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

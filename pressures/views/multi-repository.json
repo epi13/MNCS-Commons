@@ -803,25 +803,30 @@
         "ravel"
       ],
       "capability": "minimum-sufficient-verification-plan",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "verification.scope-selection",
       "fallbackLanguages": [],
       "id": "MNCS-VERIFY-CF7230C4396D",
       "reporters": [
-        "mncs-commons"
+        "mncs-actions",
+        "mncs-commons",
+        "mncs-doctor",
+        "mncs-forge-mcp",
+        "mncs-test",
+        "ravel"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
-      "status": "confirmed",
+      "status": "resolved",
       "target": "verification",
       "title": "No single family-owned verification-plan validator",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 6,
         "fail": 0,
-        "pass": 0,
+        "pass": 6,
         "unknown": 0
       }
     }

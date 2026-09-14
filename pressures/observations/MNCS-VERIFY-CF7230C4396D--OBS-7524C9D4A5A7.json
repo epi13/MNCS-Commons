@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:beaf9d00871f147646258c6fda22fd90bf4f5e61edc0ede92a5e3565f3f3586e",
+  "evidence": [
+    {
+      "id": "mncs-actions:pytest:358-pass",
+      "status": "PASS",
+      "summary": "358 Actions tests passed and 3 optional provider tests were skipped; shared plan and Debug transport tests passed."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-7524C9D4A5A7",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:32Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "mncs-actions",
+    "revision": "4765b57",
+    "tests": "PYTHONPATH=lib python3 -m pytest -q"
+  },
+  "summary": "Actions run-check delegates plan validation to Commons; adaptive Debug transport records typed sufficiency, evidence gaps, reused witness projections, and escalation reasons.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

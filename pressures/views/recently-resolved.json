@@ -564,6 +564,43 @@
         "pass": 13,
         "unknown": 0
       }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-commons",
+        "mncs-doctor",
+        "mncs-forge-mcp",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "minimum-sufficient-verification-plan",
+      "currentValidation": true,
+      "domain": "verification.scope-selection",
+      "fallbackLanguages": [],
+      "id": "MNCS-VERIFY-CF7230C4396D",
+      "reporters": [
+        "mncs-actions",
+        "mncs-commons",
+        "mncs-doctor",
+        "mncs-forge-mcp",
+        "mncs-test",
+        "ravel"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "verification",
+      "title": "No single family-owned verification-plan validator",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 6,
+        "fail": 0,
+        "pass": 6,
+        "unknown": 0
+      }
     }
   ],
   "schema": "commons.mncs.dev/family-pressure-view/v1",

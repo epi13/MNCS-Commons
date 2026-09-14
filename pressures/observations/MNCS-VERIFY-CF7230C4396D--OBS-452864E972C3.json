@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:86ff0aeefb0f74231ce51808d2a5b210c3338c4874ca8933514faaae2b7b1daa",
+  "evidence": [
+    {
+      "id": "mncs-test:pytest:15-pass",
+      "status": "PASS",
+      "summary": "15 mncs-test tests passed with the local schema removed and shared plan validation active."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-452864E972C3",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:26Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "mncs-test",
+    "revision": "d010aaa",
+    "tests": "PYTHONPATH=tools:../MNCS-Commons/src python3 -m pytest -q"
+  },
+  "summary": "mncs-test loads the Commons contract directly, retains only inventory-role checks, and no longer ships a local plan schema.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

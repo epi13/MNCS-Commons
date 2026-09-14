@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:9f44c1b867da885dcd1f786b6d301fdbc0b5cf672146eeb9876470f699768178",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21"
+  ],
+  "from": "confirmed",
+  "id": "EVT-58C0E09E344127B6",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T16:17:07Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": "EVT-8AD6310A9F859299",
+  "reason": "Accept the family-owned contract implementation as the canonical campaign work.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}
