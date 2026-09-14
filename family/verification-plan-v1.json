@@ -1,0 +1,24 @@
+{
+  "schema_version": "commons.mncs.dev/verification-plan-contract/v1",
+  "contract": "mncs.verification-plan/1",
+  "owner": "mncs-commons",
+  "validator": "src/mncs_commons/verification_plan.py",
+  "schema": "schemas/mncs-verification-plan-1.schema.json",
+  "identity": {
+    "algorithm": "sha256(canonical-json-without-plan_id):hex-lowercase-v1",
+    "serialization": "UTF-8 JSON, recursively sorted object keys, array order preserved, compact separators, ensure_ascii=false, allow_nan=false"
+  },
+  "authorities": {
+    "local_semantic_graph": "mncs-language",
+    "selection_policy": "ravel",
+    "test_execution": "mncs-test",
+    "diagnostic_evidence": "mncs-debug",
+    "execution_receipts": "mncs-actions",
+    "orchestration": "mncs-forge-mcp",
+    "transport_contract": "mncs-commons"
+  },
+  "compatibility": {
+    "legacy_schema_copies": "deprecated",
+    "removal_condition": "all listed consumers load this contract and the family mutation corpus passes at their boundary"
+  }
+}

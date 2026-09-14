@@ -1,0 +1,60 @@
+{
+  "schema_version": "mncs.verification-plan-corpus/1",
+  "valid_plan": {
+    "schema_version": "mncs.verification-plan/1",
+    "plan_id": "",
+    "source": {
+      "path": "source.mncs",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "impact": {
+      "graph_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "roots": ["mncs:function:changed"],
+      "affected_count": 1,
+      "direct_dependents": [],
+      "test_identities": ["mncs:test-case:one"],
+      "risk_flags": [],
+      "complete": true,
+      "limitations": [],
+      "cross_repository": {
+        "graph_identity": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "edges": [],
+        "selected_repositories": [],
+        "complete": true,
+        "limitations": []
+      }
+    },
+    "selection": {
+      "level": "changed_item",
+      "selected_test_identities": ["mncs:test-case:one"],
+      "available_test_count": 1,
+      "escalation_reasons": [],
+      "selected_repositories": [],
+      "available_repository_count": 0
+    },
+    "proof": {
+      "sufficient_to_stop": true,
+      "required_evidence": ["selected_test_cases_pass"],
+      "boundary": {
+        "claimed_scope": "changed_item",
+        "established": true,
+        "executor": "mncs-test",
+        "stop_condition": "selected_test_cases_pass"
+      }
+    },
+    "provenance": {
+      "provider": "corpus",
+      "policy": "shared-contract-test"
+    }
+  },
+  "mutations": [
+    {"name": "malformed_identity", "kind": "malformed_identity", "error": "IDENTITY_INVALID"},
+    {"name": "altered_plan_identity", "kind": "altered_plan_identity", "error": "IDENTITY_MISMATCH"},
+    {"name": "unknown_level", "kind": "unknown_level", "error": "VOCABULARY_UNKNOWN"},
+    {"name": "unknown_reason", "kind": "unknown_reason", "error": "VOCABULARY_UNKNOWN"},
+    {"name": "incomplete_impact", "kind": "incomplete_impact", "error": "COMPLETENESS_REASON_MISSING"},
+    {"name": "stale_source_binding", "kind": "stale_source_binding", "error": "SOURCE_STALE"},
+    {"name": "inventory_mismatch", "kind": "inventory_mismatch", "error": "INVENTORY_MISMATCH"},
+    {"name": "unsupported_schema", "kind": "unsupported_schema", "error": "SCHEMA_UNSUPPORTED"}
+  ]
+}

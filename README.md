@@ -98,6 +98,18 @@ Commons is intended to sit above and connect existing MNCS components:
 
 Commons should not replace those systems. It should let them exchange knowledge without collapsing every result into a single undifferentiated log.
 
+## Shared selective-verification contract
+
+Commons owns the transport contract for `mncs.verification-plan/1`:
+[`src/mncs_commons/verification_plan.py`](src/mncs_commons/verification_plan.py),
+its checked-in JSON schema, and the family metadata under `family/` define one
+schema revision, canonical identity algorithm, vocabulary, proof boundary, and
+cross-repository binding. Ravel owns selection policy; mncs-test owns exact
+execution; Actions owns receipts; Forge composes the workflow. Consumers may
+add role-specific source/inventory checks, but they do not copy the transport
+validator. The family mutation corpus is exercised across Ravel, mncs-test,
+Actions, and Forge.
+
 ## Family verification
 
 This repository consumes the shared `mncs-actions` family workflow
