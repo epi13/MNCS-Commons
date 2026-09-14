@@ -57,7 +57,6 @@
     {"local_id": "MNCS-DEBUG-P-012", "commons_id": "MNCS-TOOLING-14E88C1C7431", "classification": "PLATFORM_BOUNDARY", "status": "deferred", "owner": "campaign platform / CI storage", "evidence": "pinned rebuild is deferred for workspace quota/storage reasons"}
   ],
   "overhead": {"schema": "mncs.debug-overhead/1", "direct_median_ms": 7.566927000880241, "record_median_ms": 1065.7882480882108, "median_overhead_ms": 1058.2213210873306, "ratio": 140.84822649461668, "policy": "normal PASS capture disabled; failure capture bounded"},
-  "final_canary": {"schema": "mncs-actions.family-development-canary/1", "verdict": "PASS", "run": "https://github.com/epi13/mncs-actions/actions/runs/34795486359", "carrier_revision": "15484764abde772001359fd34ac84e997578e3d8", "contract_sha256": "f32f2b10a97d4d1c09fe2ad7a9fc8e7fa192b32fe6612dc7cff427d575efc96c", "artifact": {"name": "mncs-fixed-development-loop-evidence", "expired": false, "size_in_bytes": 6778924}},
   "remaining_limitations": ["intermediate values", "lowered operation spans", "nested runtime frames", "live suspension", "watchpoints/expression evaluation", "deterministic effect replay", "task ancestry", "deep trace overhead", "pinned rebuild storage"],
   "authority_map": {"language": "mncs-language", "testing": "mncs-test", "debugging": "mncs-debug", "transport": "mncs-actions", "orchestration": "mncs-forge-mcp", "coordination": "MNCS-Commons", "source_projection": "mncs-language-service", "health": "mncs-doctor", "orientation": "mncs-atlas"}
 }
