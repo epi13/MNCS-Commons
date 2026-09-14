@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:2193e0c9a1a247264278ddfb38f7ef2044e9f68f875ec30e9b84c9bbd83e96c5",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-3B723B6FADD8--OBS-36915FADE1ED"
+  ],
+  "from": "implementing",
+  "id": "EVT-60611FCF451D357E",
+  "implementation": {
+    "consumer": "mncs-debug@178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd",
+    "owner": "mncs-language/runtime",
+    "ref": "mncs-language@dbea90d18b28c8716ab34a8873ba308edba265f7:mncs.execution-observation/1"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:12Z",
+  "pressureId": "MNCS-RUNTIME-3B723B6FADD8",
+  "previousEvent": "EVT-6121C13C1C6ED65C",
+  "reason": "The capability is available at the pinned owner revision; availability is not full pressure resolution.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

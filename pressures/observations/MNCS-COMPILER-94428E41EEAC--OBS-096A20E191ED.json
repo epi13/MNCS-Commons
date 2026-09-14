@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:4e46105cdb4aa6ece45b2b22cc775f071f94103df6eda3cd74ba6f5c3e95a74b",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P009-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-language compiler/CLI + mncs-debug native path",
+      "status": "PASS",
+      "summary": "Compiler/runtime failure and observability artifacts retain structured boundary semantics."
+    }
+  ],
+  "id": "MNCS-COMPILER-94428E41EEAC--OBS-096A20E191ED",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "refreshOnly": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-COMPILER-94428E41EEAC",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run mncs-language compiler/CLI + mncs-debug native path at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "mncs-language compiler/CLI + mncs-debug native path",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Compiler/runtime failure and observability artifacts retain structured boundary semantics.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

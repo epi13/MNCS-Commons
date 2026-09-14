@@ -199,7 +199,7 @@ The complete field semantics, identity projection, lifecycle rules, and authorit
 The controller-local deployment profile is documented in [`docs/LOCAL_AGENT_NODE.md`](docs/LOCAL_AGENT_NODE.md).
 The lane model, worker bootstrap, claim lifecycle, policy checks, seeding, and four-worker example
 are documented in [`docs/PARALLEL_WORK.md`](docs/PARALLEL_WORK.md).
-The active 17-project family registry and bounded coverage projection are available through
+The active 20-project family registry and bounded coverage projection are available through
 `mncs-commons family registry` and `mncs-commons family coverage <store>`; Atlas remains
 descriptive orientation and is not scheduling authority.
 The hardened user-service example and installer are in [`deploy/systemd`](deploy/systemd/).

@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:532cb37884319c52ac47bf982a9089be8bca2c9dfce6d64162f2d051832424c6",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P008-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "cargo test --locked -p mncs-service-core",
+      "status": "PASS",
+      "summary": "The language service resolves the same compiler-owned operation source map used by mncs-debug; live breakpoint suspension remains unsupported."
+    }
+  ],
+  "id": "MNCS-TOOLING-673C8430E951--OBS-3F755C060962",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "remaining": "live breakpoint execution"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Re-run cargo test --locked -p mncs-service-core at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "cargo test --locked -p mncs-service-core",
+    "repository": "mncs-language-service",
+    "revision": "88b3c275249d119b2af471ea616a22eef1046597"
+  },
+  "summary": "The language service resolves the same compiler-owned operation source map used by mncs-debug; live breakpoint suspension remains unsupported.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e7972e23dd822d007788e6e787b5b5f80a93bdffacc0619b67717b575b73f0dc",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P005-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-debug capability matrix: deterministic replay unsupported",
+      "status": "FAIL",
+      "summary": "Effect lineage and bounded re-execution do not establish deterministic scheduler/effect/environment replay."
+    }
+  ],
+  "id": "MNCS-RUNTIME-6382A1A44458--OBS-D6BBB8D911EB",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "negativeReproduction": true
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-6382A1A44458",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run mncs-debug capability matrix: deterministic replay unsupported at the pinned revision.",
+    "status": "FAIL"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "mncs-debug capability matrix: deterministic replay unsupported",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Effect lineage and bounded re-execution do not establish deterministic scheduler/effect/environment replay.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Capability is not yet available; preserve the limitation explicitly.",
+    "removed": false
+  }
+}

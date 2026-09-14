@@ -253,36 +253,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language",
-        "mncs-language-service"
-      ],
-      "capability": "semantic-operation-source-spans",
-      "currentValidation": false,
-      "domain": "debugging.source-maps",
-      "fallbackLanguages": [],
-      "id": "MNCS-COMPILER-E445EECC9F96",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "compiler",
-      "title": "Semantic operation identities lose source spans before execution",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 4,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-web"
       ],
       "capability": "legacy.web-p-003",
@@ -2048,153 +2018,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language",
-        "mncs-test"
-      ],
-      "capability": "effect-environment-lineage",
-      "currentValidation": false,
-      "domain": "debugging.effects",
-      "fallbackLanguages": [],
-      "id": "MNCS-RUNTIME-3B723B6FADD8",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "Effect observations lack complete input lineage and environment capture",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 4,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language"
-      ],
-      "capability": "deterministic-scheduler-effect-replay",
-      "currentValidation": false,
-      "domain": "debugging.replay",
-      "fallbackLanguages": [],
-      "id": "MNCS-RUNTIME-6382A1A44458",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "blocking",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "The runtime has no deterministic scheduler/effect/environment capture",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 3,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language",
-        "mncs-language-service"
-      ],
-      "capability": "safe-suspension-and-resume",
-      "currentValidation": false,
-      "domain": "debugging.sessions",
-      "fallbackLanguages": [],
-      "id": "MNCS-RUNTIME-A32B31916255",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "blocking",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "Execution is one-shot and has no safe suspension or resume contract",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 4,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language"
-      ],
-      "capability": "runtime-frame-and-task-ancestry",
-      "currentValidation": false,
-      "domain": "debugging.frames",
-      "fallbackLanguages": [],
-      "id": "MNCS-RUNTIME-D5179B1A5E9D",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "Nested calls expose identities but not runtime frames",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 3,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-debug",
-        "mncs-forge-mcp",
-        "mncs-language"
-      ],
-      "capability": "intermediate-value-observations",
-      "currentValidation": false,
-      "domain": "debugging.values",
-      "fallbackLanguages": [],
-      "id": "MNCS-RUNTIME-F42CEFCE989D",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "Intermediate runtime values are not observable",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 3,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-021",
@@ -2215,34 +2038,6 @@
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-debug",
-        "mncs-language"
-      ],
-      "capability": "pinned-runtime-rebuild-storage",
-      "currentValidation": false,
-      "domain": "bootstrap.storage",
-      "fallbackLanguages": [],
-      "id": "MNCS-TOOLING-14E88C1C7431",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "moderate",
-      "status": "deferred",
-      "target": "tooling",
-      "title": "Pinned reference-runtime rebuild exceeded available workspace quota",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2422,34 +2217,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-debug",
-        "mncs-language-service"
-      ],
-      "capability": "shared-lsp-debug-source-binding",
-      "currentValidation": false,
-      "domain": "debugging.source-binding",
-      "fallbackLanguages": [],
-      "id": "MNCS-TOOLING-673C8430E951",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "tooling",
-      "title": "LSP integration lacks an exact debug source-binding contract",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 2,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-020",
@@ -2584,35 +2351,6 @@
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-actions",
-        "mncs-debug",
-        "mncs-forge-mcp"
-      ],
-      "capability": "low-overhead-bounded-debug-capture",
-      "currentValidation": false,
-      "domain": "debugging.performance",
-      "fallbackLanguages": [],
-      "id": "MNCS-TOOLING-A74DFC47DDB6",
-      "reporters": [
-        "mncs-debug"
-      ],
-      "revalidationRequired": true,
-      "severity": "moderate",
-      "status": "discovered",
-      "target": "tooling",
-      "title": "Static evidence collection dominates the current recording overhead",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0

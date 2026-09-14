@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:64d610a6d78487feef38302afebb915b98df9599618598a82a038f86291f7e27",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-3B723B6FADD8--OBS-36915FADE1ED"
+  ],
+  "from": "accepted",
+  "id": "EVT-6121C13C1C6ED65C",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:12Z",
+  "pressureId": "MNCS-RUNTIME-3B723B6FADD8",
+  "previousEvent": "EVT-AAD1B2B819B90979",
+  "reason": "Integrate the owner-native fact into debugger and family consumers.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

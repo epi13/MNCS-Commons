@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:da7d96d826e53ed64075a8fa08c7630bf55e723224af5e9a5ab41b8bd3ed8767",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P001-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Native bounded typed values, logical identities, versions, operation inputs/outputs, and value-origin queries pass; a separate full read/write history/watchpoint model remains open."
+    }
+  ],
+  "id": "MNCS-RUNTIME-F42CEFCE989D--OBS-93E9E2F8E175",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "nativeObservation": "mncs.execution-observation/1",
+    "remaining": "full read/write history"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-F42CEFCE989D",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run evidence/native-observability-demonstrations-2026-09.json at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Native bounded typed values, logical identities, versions, operation inputs/outputs, and value-origin queries pass; a separate full read/write history/watchpoint model remains open.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

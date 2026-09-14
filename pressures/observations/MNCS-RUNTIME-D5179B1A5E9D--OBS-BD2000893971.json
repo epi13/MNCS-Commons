@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:ed63b289c2814296b783719d28c57a002a5e9eb2bd6f8b4be5eeaafd0a77d999",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P003-OBS",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Nested/repeated calls produce execution-scoped frame identities with parent and call-operation relationships; the current executor still exposes no task ancestry."
+    }
+  ],
+  "id": "MNCS-RUNTIME-D5179B1A5E9D--OBS-BD2000893971",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "remaining": "task ancestry"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-D5179B1A5E9D",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run evidence/native-observability-demonstrations-2026-09.json at the pinned revision.",
+    "status": "PASS"
+  },
+  "runId": "mncs-native-observability-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Nested/repeated calls produce execution-scoped frame identities with parent and call-operation relationships; the current executor still exposes no task ancestry.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Native bounded observation path",
+    "removed": true
+  }
+}

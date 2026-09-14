@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-debug",
+  "contentDigest": "sha256:505d36326242d254708dd14d8488ac27d9eb6149b0605c58a5807678db478e55",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-A74DFC47DDB6--OBS-7943BA8FB18B"
+  ],
+  "from": "implementing",
+  "id": "EVT-73504F9879B33B5C",
+  "implementation": {
+    "measurement": "mncs:debug:overhead:e3f7a2b9bd20828a532a96cdbd73619e9e87444c2bc7ff86d15873e10e76da20",
+    "owner": "mncs-debug + mncs-language/runtime",
+    "ref": "mncs-debug@178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd:evidence/native-observability-overhead-2026-09.json"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:11Z",
+  "pressureId": "MNCS-TOOLING-A74DFC47DDB6",
+  "previousEvent": "EVT-E7BB2BF0221C383B",
+  "reason": "The capability is available at the pinned owner revision; availability is not full pressure resolution.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

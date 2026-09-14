@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:ff66cfb660605bcfd20047871ec1908d6558edfa95988c932e44f3206a195c90",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P002-LANGUAGE",
+      "kind": "consumer-reproducer",
+      "ref": "compiler/CLI source-map and observability tests",
+      "status": "PASS",
+      "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction."
+    }
+  ],
+  "id": "MNCS-COMPILER-E445EECC9F96--OBS-7AED20F7A743",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P002-LANGUAGE"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-COMPILER-E445EECC9F96",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "compiler/CLI source-map and observability tests",
+    "repository": "mncs-language",
+    "revision": "dbea90d18b28c8716ab34a8873ba308edba265f7"
+  },
+  "summary": "Exact compiler-owned source correspondence is consumed by this repository without heuristic reconstruction.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

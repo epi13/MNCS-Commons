@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-language-service",
+  "contentDigest": "sha256:ffe221efce15baa6be317d4454262520288dcef16a2e192f4f17055216f1e5b3",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-673C8430E951--OBS-3F755C060962"
+  ],
+  "from": "implementing",
+  "id": "EVT-C77E0D3C1FDB52E7",
+  "implementation": {
+    "owner": "mncs-language-service",
+    "ref": "mncs-language-service@88b3c275249d119b2af471ea616a22eef1046597:debug_binding",
+    "sourceAuthority": "mncs-language@dbea90d18b28c8716ab34a8873ba308edba265f7"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T04:51:10Z",
+  "pressureId": "MNCS-TOOLING-673C8430E951",
+  "previousEvent": "EVT-8D8E35268C877158",
+  "reason": "The capability is available at the pinned owner revision; availability is not full pressure resolution.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

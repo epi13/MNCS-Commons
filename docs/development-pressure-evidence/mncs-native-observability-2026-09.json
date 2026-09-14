@@ -1,0 +1,44 @@
+{
+  "schema": "commons.mncs.dev/development-pressure-evidence/v1",
+  "campaign": "mncs-native-observability-2026-09",
+  "profile": "0.17",
+  "starting_revisions": {
+    "mncs-language": "1da244a58d656b3058de05d0fc0f799a5e2f0106",
+    "mncs-test": "65c261680c3ee05a16e1caf422b7f9011f1a3e55",
+    "mncs-debug": "d134ed702a1be5a1aae32762219b66a1e802e1d6",
+    "mncs-actions": "b1c8275c268bb36c08caaa43a2aafea1e6ed5eca",
+    "mncs-forge-mcp": "dbece72fae723a93e9f7df636ab4ea47245b23be",
+    "mncs-language-service": "ca78edbc32a59971fda3f82ec88c9cfa140d9c77",
+    "MNCS-Commons": "48c11e3025affc532e83ff59a78af3cb29f40db2"
+  },
+  "verified_revisions": {
+    "mncs-language": "dbea90d18b28c8716ab34a8873ba308edba265f7",
+    "mncs-test": "65c261680c3ee05a16e1caf422b7f9011f1a3e55",
+    "mncs-debug": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd",
+    "mncs-actions": "a5082391c9ac03d395a71fe4decc390a6eb19e7a",
+    "mncs-forge-mcp": "3aa93ee15a057932e12aaccd1133101e9a2c9209",
+    "mncs-language-service": "88b3c275249d119b2af471ea616a22eef1046597"
+  },
+  "native_contract": {
+    "observation_schema": "mncs.execution-observation/1",
+    "observation_policy_schema": "mncs.execution-observation-policy/1",
+    "source_map_schema": "mncs.execution-source-map/1",
+    "semantic_identity_excludes": ["capture_policy", "observation_bounds"],
+    "observation_identity_includes": ["execution_identity", "capture_policy", "bounded_events", "bounded_values", "bounded_frames", "bounded_effects"]
+  },
+  "pressure_reconciliation": "mncs-debug/pressures/reconciliation-native-observability-2026-09.json",
+  "resolved": ["MNCS-COMPILER-E445EECC9F96"],
+  "partially_resolved": ["MNCS-RUNTIME-F42CEFCE989D", "MNCS-RUNTIME-D5179B1A5E9D", "MNCS-TOOLING-673C8430E951", "MNCS-TOOLING-A74DFC47DDB6", "MNCS-RUNTIME-3B723B6FADD8"],
+  "still_open": ["MNCS-RUNTIME-A32B31916255", "MNCS-RUNTIME-6382A1A44458"],
+  "platform_boundary": ["MNCS-TOOLING-14E88C1C7431"],
+  "demonstrations": ["exact_operation_source_mapping", "intermediate_value_provenance", "truthful_backtrace", "effect_provenance", "test_to_deep_debug", "forge_diagnosis", "separated_overhead"],
+  "authority_map": {
+    "language_runtime_truth": "mncs-language",
+    "test_truth": "mncs-test",
+    "debug_truth": "mncs-debug",
+    "transport": "mncs-actions",
+    "diagnosis": "mncs-forge-mcp",
+    "source_projection": "mncs-language-service",
+    "coordination": "MNCS-Commons"
+  }
+}

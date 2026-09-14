@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8043963712a82ca866ffde03e82ebf612c19a35ebdb1d80590bcb53e3bdc62fb",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P001-DEBUG",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Consumer verifies bounded native value identities and producer/consumer references; full write history is not claimed."
+    }
+  ],
+  "id": "MNCS-RUNTIME-F42CEFCE989D--OBS-34EA664A8E82",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P001-DEBUG"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-F42CEFCE989D",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Consumer verifies bounded native value identities and producer/consumer references; full write history is not claimed.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

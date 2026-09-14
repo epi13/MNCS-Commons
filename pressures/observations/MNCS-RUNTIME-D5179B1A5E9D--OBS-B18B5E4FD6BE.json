@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:11a6219d77ee49df111fc18d4d09c8c3c151bb285d9a983819a1b83bd8ab90e9",
+  "evidence": [
+    {
+      "id": "MNCS-NATIVE-P003-DEBUG",
+      "kind": "consumer-reproducer",
+      "ref": "evidence/native-observability-demonstrations-2026-09.json",
+      "status": "PASS",
+      "summary": "Nested runtime frame ancestry is verified; task scheduling ancestry remains outside the supported model."
+    }
+  ],
+  "id": "MNCS-RUNTIME-D5179B1A5E9D--OBS-B18B5E4FD6BE",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "mncs-native-observability-2026-09",
+    "currentValidation": true,
+    "evidenceId": "MNCS-NATIVE-P003-DEBUG"
+  },
+  "observedAt": "2026-09-14T01:00:00Z",
+  "pressureId": "MNCS-RUNTIME-D5179B1A5E9D",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "evidence/native-observability-demonstrations-2026-09.json",
+    "repository": "mncs-debug",
+    "revision": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd"
+  },
+  "summary": "Nested runtime frame ancestry is verified; task scheduling ancestry remains outside the supported model.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
