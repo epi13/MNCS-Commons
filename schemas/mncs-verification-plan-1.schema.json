@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/epi13/MNCS-Commons/blob/main/schemas/mncs-verification-plan-1.schema.json",
+  "title": "MNCS family verification plan transport contract",
+  "description": "Canonical transport shape. Selection policy remains provider-owned; role-specific source and inventory checks may be added by consumers.",
+  "type": "object",
+  "required": ["schema_version", "plan_id", "source", "impact", "selection", "proof", "provenance"],
+  "properties": {
+    "schema_version": {"const": "mncs.verification-plan/1"},
+    "plan_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "impact": {
+      "$ref": "#/$defs/impact"
+    },
+    "selection": {
+      "$ref": "#/$defs/selection"
+    },
+    "proof": {
+      "$ref": "#/$defs/proof"
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["provider", "policy"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "policy": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "strings": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "source": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "subject_identity": {"type": "string", "minLength": 1},
+        "subject_fingerprint": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": true
+    },
+    "cross_repository": {
+      "type": "object",
+      "required": ["graph_identity", "edges", "selected_repositories", "complete", "limitations"],
+      "properties": {
+        "graph_identity": {"$ref": "#/$defs/sha256"},
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["producer_repository", "consumer_repository", "contract_identity", "contract_revision", "consuming_identity", "provenance", "fingerprint"],
+            "properties": {
+              "producer_repository": {"type": "string", "minLength": 1},
+              "consumer_repository": {"type": "string", "minLength": 1},
+              "contract_identity": {"type": "string", "minLength": 1},
+              "contract_revision": {"type": "string", "minLength": 1},
+              "consuming_identity": {"type": "string", "minLength": 1},
+              "provenance": {"type": "string", "minLength": 1},
+              "fingerprint": {"$ref": "#/$defs/sha256"}
+            },
+            "additionalProperties": true
+          }
+        },
+        "selected_repositories": {"$ref": "#/$defs/strings"},
+        "complete": {"type": "boolean"},
+        "limitations": {"$ref": "#/$defs/strings"}
+      },
+      "additionalProperties": true
+    },
+    "impact": {
+      "type": "object",
+      "required": ["graph_identity", "roots", "affected_count", "direct_dependents", "test_identities", "risk_flags", "complete", "limitations", "cross_repository"],
+      "properties": {
+        "graph_identity": {"$ref": "#/$defs/sha256"},
+        "roots": {"$ref": "#/$defs/strings"},
+        "affected_count": {"type": "integer", "minimum": 0},
+        "direct_dependents": {"$ref": "#/$defs/strings"},
+        "test_identities": {"$ref": "#/$defs/strings"},
+        "risk_flags": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary", "effect_semantics", "high_connectivity", "public_contract", "shared_type", "truncated", "unknown_root"]}},
+        "complete": {"type": "boolean"},
+        "limitations": {"type": "array", "items": {"type": "string"}},
+        "cross_repository": {"$ref": "#/$defs/cross_repository"}
+      },
+      "additionalProperties": true
+    },
+    "selection": {
+      "type": "object",
+      "required": ["level", "selected_test_identities", "available_test_count", "escalation_reasons", "selected_repositories", "available_repository_count"],
+      "properties": {
+        "level": {"enum": ["changed_item", "direct_dependents", "affected_subsystem", "repository_canonical", "family"]},
+        "selected_test_identities": {"$ref": "#/$defs/strings"},
+        "available_test_count": {"type": "integer", "minimum": 0},
+        "escalation_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary_changed", "canonical_fixture_changed", "cross_repository_contract_changed", "cross_repository_graph_incomplete", "direct_dependents_affected", "dependent_targeted_test_failed", "effect_semantics_changed", "high_connectivity_definition_changed", "impact_evidence_truncated", "language_profile_changed", "migration_broad_semantic_surface", "parser_semantics_changed", "public_contract_changed", "serialization_format_changed", "shared_type_changed", "test_selection_unresolved", "unknown_changed_identity"]}},
+        "selected_repositories": {"$ref": "#/$defs/strings"},
+        "available_repository_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": true
+    },
+    "proof": {
+      "type": "object",
+      "required": ["sufficient_to_stop", "required_evidence", "boundary"],
+      "properties": {
+        "sufficient_to_stop": {"type": "boolean"},
+        "required_evidence": {"type": "array", "uniqueItems": true, "items": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "family_verification_pass"]}},
+        "boundary": {
+          "type": "object",
+          "required": ["claimed_scope", "established", "executor", "stop_condition"],
+          "properties": {
+            "claimed_scope": {"enum": ["changed_item", "direct_dependents", "affected_subsystem", "repository", "family"]},
+            "established": {"type": "boolean"},
+            "executor": {"type": "string", "minLength": 1},
+            "stop_condition": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "family_verification_pass"]}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

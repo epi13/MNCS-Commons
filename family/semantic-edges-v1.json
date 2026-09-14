@@ -1,0 +1,27 @@
+{
+  "schema_version": "commons.mncs.dev/family-semantic-edges/v1",
+  "revision": "selective-development-2026-09",
+  "complete": true,
+  "limitations": [
+    "Edges are repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
+    "Undeclared or profile-wide contracts must escalate to a wider family boundary."
+  ],
+  "repositories": [
+    {"id": "mncs-language", "repository": "epi13/mncs-language", "revision": "origin/main", "manifest_identity": "mncs-language-main"},
+    {"id": "mncs-test", "repository": "epi13/mncs-test", "revision": "origin/main", "manifest_identity": "mncs-test-main"},
+    {"id": "mncs-debug", "repository": "epi13/mncs-debug", "revision": "origin/main", "manifest_identity": "mncs-debug-main"},
+    {"id": "ravel", "repository": "epi13/RAVEL", "revision": "origin/main", "manifest_identity": "ravel-main"},
+    {"id": "mncs-actions", "repository": "epi13/mncs-actions", "revision": "origin/main", "manifest_identity": "mncs-actions-main"},
+    {"id": "mncs-forge-mcp", "repository": "epi13/mncs-forge-mcp", "revision": "origin/main", "manifest_identity": "mncs-forge-main"}
+  ],
+  "edges": [
+    {"producer_repository": "mncs-language", "consumer_repository": "mncs-test", "contract_identity": "mncs.compiler.test-inventory/1", "contract_revision": "0.17", "consuming_identity": "mncs-test:test-inventory", "provenance": "mncs-test:AGENTS.md", "fingerprint": "979c38a5ff9216db616a3422db91911ba3321d89984fa3a791ec3e9cfdab0057"},
+    {"producer_repository": "mncs-language", "consumer_repository": "ravel", "contract_identity": "mncs.semantic-impact/1", "contract_revision": "1", "consuming_identity": "ravel:impact-planner", "provenance": "RAVEL:docs/SELECTIVE_VERIFICATION.md", "fingerprint": "eea8cd3e0fdbdcd9b6e20a2f86fb6eb06e218c3e78585dcd30fc2ac03db311f6"},
+    {"producer_repository": "mncs-language", "consumer_repository": "mncs-debug", "contract_identity": "mncs.execution-observation/1", "contract_revision": "1", "consuming_identity": "mncs-debug:observation", "provenance": "mncs-debug:docs/architecture.md", "fingerprint": "2791e9adc98f0c5927f407795f1ceee83323fd163d564b0b95660244d42c1fd2"},
+    {"producer_repository": "mncs-test", "consumer_repository": "mncs-debug", "contract_identity": "mncs.test-result/1", "contract_revision": "1", "consuming_identity": "mncs-debug:test-result", "provenance": "mncs-debug:AGENTS.md", "fingerprint": "8ecce651475caac3732d7ca6f5f2acf7f3ddec3bf1173815c007ce5feb54ef09"},
+    {"producer_repository": "ravel", "consumer_repository": "mncs-test", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-test:verification-plan", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "a80e8af9276a0309c04ab0652caf757f4e91078f66efe6fda97e59efe31a3bdf"},
+    {"producer_repository": "ravel", "consumer_repository": "mncs-actions", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-actions:run-check", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "130d6a8d15441a721b29f2176d53762e6cb6f022887f39ff7e4efe64502ef03e"},
+    {"producer_repository": "ravel", "consumer_repository": "mncs-forge-mcp", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-forge-mcp:mncs_failure_loop", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "36a671325fb6358f34502a02a59647ac1fc9450282ea6a95773615a109d667ee"}
+  ],
+  "graph_identity": "54b2b2299d69334ef22b48ebfb2db136dabdbc42bfb5b7254aa04972ca91f430"
+}
