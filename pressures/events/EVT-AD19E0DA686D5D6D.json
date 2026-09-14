@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:af61a8a8d3473ed90730f87a15b4f09c4f97ea31894644feb42575a463650589",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21"
+  ],
+  "from": "implementing",
+  "id": "EVT-AD19E0DA686D5D6D",
+  "implementation": {
+    "kind": "family-contract",
+    "path": "src/mncs_commons/verification_plan.py",
+    "ref": "MNCS-Commons@ad04604"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T16:17:16Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": "EVT-85BCAFB5DD0F5773",
+  "reason": "Canonical validator and graph contract are published on Commons main; all affected consumers now load the shared authority.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

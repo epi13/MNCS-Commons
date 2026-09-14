@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:54db725eac305a12434c762f32777df3ac4f6ed380159e4d7b14b303e9c78ab4",
+  "evidence": [
+    {
+      "id": "mncs-doctor:cargo:102-pass",
+      "status": "PASS",
+      "summary": "102 Doctor unit/integration/parity tests passed, including incremental reuse and unreported-source invalidation canaries."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-A5D4AFAEAE49",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:37Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "mncs-doctor",
+    "revision": "0634fba",
+    "tests": "cargo test --all-targets"
+  },
+  "summary": "Doctor does not duplicate verification-plan semantics; its incremental inventory/report boundary is independently verified with digest, metadata invalidation, and reuse metrics.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

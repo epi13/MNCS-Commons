@@ -1,0 +1,24 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:f8f521e73481512000600fbb4ed2c98ca6f1ffb866e599daeda7858c95e50c2c",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-409526C422BD",
+    "MNCS-VERIFY-CF7230C4396D--OBS-452864E972C3",
+    "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21",
+    "MNCS-VERIFY-CF7230C4396D--OBS-7524C9D4A5A7",
+    "MNCS-VERIFY-CF7230C4396D--OBS-A5D4AFAEAE49",
+    "MNCS-VERIFY-CF7230C4396D--OBS-E0DE2171B8F7"
+  ],
+  "from": "verifying",
+  "id": "EVT-1294278690BBA4A0",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T16:17:47Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": "EVT-BE01229D3A322249",
+  "reason": "Resolved: the family validator, canonical identity/proof semantics, and mutation corpus are shared; all affected consumers pass against their pushed main revisions with duplicate authorities removed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

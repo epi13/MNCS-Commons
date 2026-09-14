@@ -1,0 +1,24 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:4fb3de78297b8e29fe6ae702e4436676d02a2253466ded2c3aa01b91baefc6c2",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-VERIFY-CF7230C4396D--OBS-409526C422BD",
+    "MNCS-VERIFY-CF7230C4396D--OBS-452864E972C3",
+    "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21",
+    "MNCS-VERIFY-CF7230C4396D--OBS-7524C9D4A5A7",
+    "MNCS-VERIFY-CF7230C4396D--OBS-A5D4AFAEAE49",
+    "MNCS-VERIFY-CF7230C4396D--OBS-E0DE2171B8F7"
+  ],
+  "from": "available",
+  "id": "EVT-BE01229D3A322249",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-14T16:17:40Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "previousEvent": "EVT-AD19E0DA686D5D6D",
+  "reason": "Run final consumer verification and reconcile the family mutation corpus.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

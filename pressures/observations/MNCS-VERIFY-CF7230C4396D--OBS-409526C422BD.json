@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:5c46dc5d5a6836136f0be11dababc0571e4d814e7d7c57d6d34ed553dba38878",
+  "evidence": [
+    {
+      "id": "RAVEL:pytest:99-pass",
+      "status": "PASS",
+      "summary": "99 RAVEL tests passed, including native policy, proof boundary, and consumer graph canaries."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-409526C422BD",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:19Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "ravel",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "RAVEL",
+    "revision": "95f098b",
+    "tests": "PYTHONPATH=src:../MNCS-Commons/src python3 -m pytest -q"
+  },
+  "summary": "Ravel consumes Commons validation, uses native MNCS selection policy in the normal path, emits proof boundaries, and selects declared cross-repository consumers.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

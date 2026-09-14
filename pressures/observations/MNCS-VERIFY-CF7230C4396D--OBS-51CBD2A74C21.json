@@ -1,0 +1,38 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:469408e77c662a33379a621e02e961bbb0a07b0784d86275da519b54eb4bfdb5",
+  "evidence": [
+    {
+      "id": "MNCS-Commons:pytest:287-pass",
+      "status": "PASS",
+      "summary": "287 Commons tests passed, including canonical plan and cross-consumer mutation tests."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-51CBD2A74C21",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-14T16:16:13Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign-main",
+    "repository": "MNCS-Commons",
+    "revision": "ad04604",
+    "tests": "TMPDIR=/tmp PYTHONPATH=src python3 -m pytest -q"
+  },
+  "summary": "Canonical Commons validator, identity algorithm, proof-boundary semantics, graph overlay, and shared mutation corpus pass.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
