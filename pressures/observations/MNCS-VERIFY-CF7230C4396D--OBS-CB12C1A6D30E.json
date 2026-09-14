@@ -1,0 +1,78 @@
+{
+  "agent": "codex",
+  "compiler": null,
+  "contentDigest": "sha256:8dd2e35ac36856513c4e011dd58ffaaffafc4e34a8373b7a1269af2280473d2f",
+  "evidence": [
+    {
+      "id": "mncs-test:e1caa6a:tests/test_runner.py::test_verification_plan_selects_exact_identity_and_keeps_check_compact",
+      "kind": "canonical-test",
+      "ref": "mncs-test@e1caa6a",
+      "status": "PASS",
+      "summary": "mncs-test consumes a source-bound exact-identity plan and emits compact selection evidence."
+    },
+    {
+      "id": "RAVEL:326460d:tests/test_impact.py",
+      "kind": "canonical-test",
+      "ref": "RAVEL@326460d",
+      "status": "PASS",
+      "summary": "Ravel joins compiler impact with the typed plan and explicit escalation reasons."
+    },
+    {
+      "id": "mncs-actions:3941023:tests/test_selective_evidence.py",
+      "kind": "canonical-test",
+      "ref": "mncs-actions@3941023",
+      "status": "PASS",
+      "summary": "Actions binds the plan digest and scope to the receipt and evidence manifest."
+    },
+    {
+      "id": "mncs-forge-mcp:4551c49:tests/test_mncs_development.py::test_failure_loop_consumes_ravel_plan_and_rebinds_after_repair",
+      "kind": "canonical-test",
+      "ref": "mncs-forge-mcp@4551c49",
+      "status": "PASS",
+      "summary": "Forge forwards the plan, rebinds it after repair, and records scope observability."
+    },
+    {
+      "id": "mncs-doctor:8a04de2:tests/doctor.rs::changed_path_narrows_doctor_surface",
+      "kind": "canonical-test",
+      "ref": "mncs-doctor@8a04de2",
+      "status": "PASS",
+      "summary": "Doctor narrows expensive diagnostics to the changed source surface."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-CB12C1A6D30E",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "plan_schema": "mncs.verification-plan/1",
+    "validator_gap": "no shared family-owned validator",
+    "workflow": "Ravel -> mncs-test -> Actions/Debug -> Forge"
+  },
+  "observedAt": "2026-09-14T01:30:00Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "Compare the plan validators and the checked-in schema in mncs-test, RAVEL, Actions, and Forge.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "campaign",
+    "repositories": {
+      "RAVEL": "326460d",
+      "mncs-actions": "3941023",
+      "mncs-doctor": "8a04de2",
+      "mncs-forge-mcp": "4551c49",
+      "mncs-language": "54353ef",
+      "mncs-test": "e1caa6a"
+    },
+    "revision": "selective-evidence-workflow-2026-09"
+  },
+  "summary": "Confirmed family pressure: the selective loop is executable, but its mncs.verification-plan/1 validators remain duplicated across consumers.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Each consumer performs a boundary shape check; mncs-test owns the checked-in JSON schema and Ravel owns selection policy.",
+    "legacyStatus": "temporary compatibility arrangement"
+  }
+}

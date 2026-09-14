@@ -1,0 +1,23 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8c48f4011015927f1e1b666e9b56c3c4df27ba249dc48aa8b239de61d46004a4",
+  "evidence": [],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-AD90C4F97397",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-14T00:30:00Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "mncs-family:minimum-sufficient-verification-plan-validator",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "The selective loop now has a working mncs.verification-plan/1 contract, but Ravel, mncs-test, Actions, and Forge each carry a boundary validator because the family has no shared canonical schema/validator package. Field drift can make a plan appear valid to one consumer and invalid to another.",
+  "version": "1",
+  "workaround": {}
+}
