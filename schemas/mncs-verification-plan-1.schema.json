@@ -97,6 +97,7 @@
         "selected_test_identities": {"$ref": "#/$defs/strings"},
         "available_test_count": {"type": "integer", "minimum": 0},
         "escalation_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary_changed", "canonical_fixture_changed", "cross_repository_contract_changed", "cross_repository_graph_incomplete", "direct_dependents_affected", "dependent_targeted_test_failed", "effect_semantics_changed", "high_connectivity_definition_changed", "impact_evidence_truncated", "language_profile_changed", "migration_broad_semantic_surface", "parser_semantics_changed", "public_contract_changed", "serialization_format_changed", "shared_type_changed", "test_selection_unresolved", "unknown_changed_identity"]}},
+        "routing_scope": {"enum": ["local", "selected_repositories", "family"]},
         "selected_repositories": {"$ref": "#/$defs/strings"},
         "available_repository_count": {"type": "integer", "minimum": 0}
       },

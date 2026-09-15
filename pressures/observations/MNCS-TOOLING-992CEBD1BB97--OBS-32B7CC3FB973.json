@@ -1,0 +1,59 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "working-tree",
+    "validation": "targeted-native-policy-test"
+  },
+  "contentDigest": "sha256:74da1a8bc69840ab29e9e31eaa52d892f296d5025f716da6abaaf74f0580000f",
+  "evidence": [
+    {
+      "id": "ravel:test_impact:native_typed_selection",
+      "ref": "RAVEL:tests/test_impact.py",
+      "status": "PASS",
+      "summary": "Native policy test verifies finite level/reason decoding and native sufficient_local output."
+    },
+    {
+      "id": "ravel:src:scalar-selection-input",
+      "ref": "RAVEL:src/ravel/impact.py",
+      "status": "PASS",
+      "summary": "The remaining host input boundary is an explicit positional integer code map for change_class."
+    },
+    {
+      "id": "mncs-language:src:typed-selection-output",
+      "ref": "mncs-language/library/family/verification_plan.mncs",
+      "status": "PASS",
+      "summary": "Policy returns VerificationLevel, EscalationReason sequence, and boolean sufficiency through the runtime boundary."
+    }
+  ],
+  "id": "MNCS-TOOLING-992CEBD1BB97--OBS-32B7CC3FB973",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "remainingSeam": "typed finite record input / generated host binding",
+    "status": "workaround_available_not_resolved"
+  },
+  "observedAt": "2026-09-14T18:00:00Z",
+  "pressureId": "MNCS-TOOLING-992CEBD1BB97",
+  "repository": "ravel",
+  "reproduction": {
+    "instructions": "Run RAVEL/tests/test_impact.py with the built mncs-language runtime and inspect _native_selection_policy input/output transport.",
+    "status": "UNKNOWN"
+  },
+  "runId": "selective-hardening-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "codex/selective-hardening-2026-09",
+    "commit": "working-tree",
+    "path": "RAVEL:src/ravel/impact.py",
+    "repository": "ravel",
+    "workingTree": "dirty-at-observation"
+  },
+  "summary": "Ravel now receives typed finite verification level and escalation-reason values from the MNCS-native policy, but the host still supplies a positional scalar change-class code because typed host input construction is not yet ergonomic.",
+  "version": "1",
+  "workaround": {
+    "description": "Keep the input boundary scalar and fail closed on malformed values; use Commons as the output vocabulary authority instead of a second Ravel output code map.",
+    "fallbackLanguage": "python"
+  }
+}

@@ -72,6 +72,15 @@ PROOF_BOUNDARIES = (
     "family",
 )
 
+# A family-level selection may route to an explicit consumer set without
+# claiming that the entire family has been proven. Keep routing scope separate
+# from the proof-boundary vocabulary.
+ROUTING_SCOPES = (
+    "local",
+    "selected_repositories",
+    "family",
+)
+
 _SHA256 = re.compile(r"^[a-f0-9]{64}$")
 
 
@@ -222,6 +231,35 @@ def validate_plan(
     repository_count = _non_negative_int(selection.get("available_repository_count"), "selection.available_repository_count")
     if len(selected_repositories) > repository_count:
         raise VerificationPlanError("INVENTORY_MISMATCH", "selection.selected_repositories", "selected count exceeds available repository count")
+    routing_scope = selection.get("routing_scope")
+    if routing_scope is None:
+        # Preserve the interpretation of plans emitted before this explicit
+        # distinction was added.
+        routing_scope = (
+            "selected_repositories"
+            if level == "family" and selected_repositories
+            else ("family" if level == "family" else "local")
+        )
+    elif routing_scope not in ROUTING_SCOPES:
+        raise VerificationPlanError("VOCABULARY_UNKNOWN", "selection.routing_scope", "unsupported routing scope")
+    if routing_scope == "local" and selected_repositories:
+        raise VerificationPlanError(
+            "ROUTING_SCOPE_INVALID",
+            "selection.routing_scope",
+            "local routing cannot name selected repositories",
+        )
+    if routing_scope == "selected_repositories" and not selected_repositories:
+        raise VerificationPlanError(
+            "ROUTING_SCOPE_INVALID",
+            "selection.selected_repositories",
+            "selected-repository routing requires at least one consumer",
+        )
+    if routing_scope == "family" and level != "family":
+        raise VerificationPlanError(
+            "ROUTING_SCOPE_INVALID",
+            "selection.routing_scope",
+            "family routing requires family verification level",
+        )
 
     proof = _object(plan.get("proof"), "proof")
     if not isinstance(proof.get("sufficient_to_stop"), bool):

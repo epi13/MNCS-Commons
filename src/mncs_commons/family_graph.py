@@ -16,6 +16,7 @@ from typing import Any, Mapping, Sequence
 
 
 GRAPH_SCHEMA = "commons.mncs.dev/family-semantic-edges/v1"
+DECLARATION_SCHEMA = "commons.mncs.semantic-contract-declarations/v1"
 
 
 class FamilyGraphError(ValueError):
@@ -39,6 +40,141 @@ def graph_identity(value: Mapping[str, Any]) -> str:
         if isinstance(edge, dict):
             edge.pop("fingerprint", None)
     return hashlib.sha256(_canonical(projection)).hexdigest()
+
+
+def declaration_identity(value: Mapping[str, Any]) -> str:
+    """Return the identity of one repository-owned contract declaration."""
+
+    projection = deepcopy(dict(value))
+    projection.pop("declaration_identity", None)
+    projection.pop("_path", None)
+    return hashlib.sha256(_canonical(projection)).hexdigest()
+
+
+def validate_declaration(value: Any) -> dict[str, Any]:
+    """Validate a repository-owned semantic contract declaration."""
+
+    if not isinstance(value, Mapping) or value.get("schema_version") != DECLARATION_SCHEMA:
+        raise FamilyGraphError(f"contract declaration must be {DECLARATION_SCHEMA}")
+    repository_id = value.get("repository_id")
+    revision = value.get("revision")
+    if not isinstance(repository_id, str) or not repository_id:
+        raise FamilyGraphError("contract declaration repository_id must be non-empty")
+    if not isinstance(revision, str) or not revision:
+        raise FamilyGraphError("contract declaration revision must be non-empty")
+    normalized = dict(value)
+    for kind, required in (
+        ("provides", ("contract_identity", "contract_revision", "exported_identity", "evidence")),
+        ("consumes", ("contract_identity", "contract_revision", "consumer_identity", "evidence")),
+    ):
+        entries = value.get(kind)
+        if not isinstance(entries, list):
+            raise FamilyGraphError(f"contract declaration {kind} must be an array")
+        identities: set[str] = set()
+        checked: list[dict[str, Any]] = []
+        for index, raw in enumerate(entries):
+            if not isinstance(raw, Mapping):
+                raise FamilyGraphError(f"contract declaration {kind}[{index}] must be an object")
+            entry = dict(raw)
+            for field in required:
+                if not isinstance(entry.get(field), str) or not entry[field]:
+                    raise FamilyGraphError(f"contract declaration {kind}[{index}].{field} must be non-empty")
+            identity = entry["contract_identity"]
+            if identity in identities:
+                raise FamilyGraphError(f"contract declaration {kind} repeats {identity}")
+            identities.add(identity)
+            checked.append(entry)
+        normalized[kind] = checked
+    return normalized
+
+
+def generate_graph(
+    declarations: Sequence[Mapping[str, Any]],
+    repositories: Sequence[Mapping[str, str]],
+    *,
+    revision: str = "generated-from-repository-declarations-v1",
+) -> dict[str, Any]:
+    """Generate the compact family graph from producer/consumer declarations.
+
+    The graph is an immutable routing artifact.  Its inputs remain owned by
+    each repository; generation fails closed when a contract is unprovided or
+    a consumer's requested revision disagrees with its producer.
+    """
+
+    checked = [validate_declaration(item) for item in declarations]
+    by_id = {item["repository_id"]: item for item in checked}
+    if len(by_id) != len(checked):
+        raise FamilyGraphError("contract declarations must have unique repositories")
+    repository_rows = [dict(item) for item in repositories]
+    repository_ids = {item.get("id") for item in repository_rows}
+    if repository_ids != set(by_id):
+        raise FamilyGraphError("repository metadata and contract declarations must cover the same repositories")
+    for item in repository_rows:
+        if not all(isinstance(item.get(field), str) and item[field] for field in ("id", "repository")):
+            raise FamilyGraphError("generated repository metadata requires id and repository")
+        declaration = by_id[item["id"]]
+        item.setdefault("revision", declaration["revision"])
+        item["manifest_identity"] = declaration_identity(declaration)
+        item.setdefault("declaration_path", declaration.get("_path", "family-semantic-contracts-v1.json"))
+
+    providers: dict[str, tuple[str, dict[str, Any]]] = {}
+    for declaration in checked:
+        for provided in declaration["provides"]:
+            identity = provided["contract_identity"]
+            if identity in providers:
+                raise FamilyGraphError(f"multiple producers declare {identity}")
+            providers[identity] = (declaration["repository_id"], provided)
+
+    edges: list[dict[str, Any]] = []
+    for declaration in checked:
+        for consumed in declaration["consumes"]:
+            identity = consumed["contract_identity"]
+            provider = providers.get(identity)
+            if provider is None:
+                raise FamilyGraphError(f"no producer declares consumed contract {identity}")
+            producer_id, provided = provider
+            if consumed["contract_revision"] != provided["contract_revision"]:
+                raise FamilyGraphError(
+                    f"consumer {declaration['repository_id']} requests {identity} revision "
+                    f"{consumed['contract_revision']}, producer declares {provided['contract_revision']}"
+                )
+            edge = {
+                "producer_repository": producer_id,
+                "consumer_repository": declaration["repository_id"],
+                "contract_identity": identity,
+                "contract_revision": provided["contract_revision"],
+                "consuming_identity": consumed["consumer_identity"],
+                "provenance": f"{declaration['repository_id']}:{consumed['evidence']}",
+            }
+            edge["fingerprint"] = edge_fingerprint(edge)
+            edges.append(edge)
+    edges.sort(key=lambda item: (item["producer_repository"], item["consumer_repository"], item["contract_identity"]))
+    source_declarations = [
+        {
+            "repository_id": item["repository_id"],
+            "path": item.get("_path", "family-semantic-contracts-v1.json"),
+            "identity": declaration_identity(item),
+        }
+        for item in sorted(checked, key=lambda value: value["repository_id"])
+    ]
+    graph: dict[str, Any] = {
+        "schema_version": GRAPH_SCHEMA,
+        "revision": revision,
+        "complete": True,
+        "limitations": [
+            "Edges are generated from repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
+            "Undeclared or profile-wide contracts must escalate to a wider family boundary.",
+        ],
+        "source": {
+            "kind": "repository_contract_declarations",
+            "schema_version": DECLARATION_SCHEMA,
+            "declarations": source_declarations,
+        },
+        "repositories": sorted(repository_rows, key=lambda item: item["id"]),
+        "edges": edges,
+    }
+    graph["graph_identity"] = graph_identity(graph)
+    return validate_graph(graph)
 
 
 def validate_graph(value: Any) -> dict[str, Any]:

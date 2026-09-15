@@ -1,9 +1,10 @@
 {
   "affectedRepositories": [
-    "mncs-doctor"
+    "mncs-doctor",
+    "ravel"
   ],
   "capability": "legacy.doc-p-019",
-  "contentDigest": "sha256:04ad1d11ecc3a559c79cc786006b35cdbdc8c8e4080eb193360c33201710bb80",
+  "contentDigest": "sha256:3cc10ef8a35c0392afec30c420e7eb339a8bcd5ee5bf47f90fa61d78b98e6c07",
   "discoveredAt": null,
   "discoveredBy": "mncs-doctor",
   "domain": "type-system.records",

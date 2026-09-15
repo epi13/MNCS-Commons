@@ -1,27 +1,155 @@
 {
   "schema_version": "commons.mncs.dev/family-semantic-edges/v1",
-  "revision": "selective-development-2026-09",
+  "revision": "generated-from-repository-declarations-v1",
   "complete": true,
   "limitations": [
-    "Edges are repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
+    "Edges are generated from repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
     "Undeclared or profile-wide contracts must escalate to a wider family boundary."
   ],
+  "source": {
+    "kind": "repository_contract_declarations",
+    "schema_version": "commons.mncs.semantic-contract-declarations/v1",
+    "declarations": [
+      {
+        "repository_id": "mncs-actions",
+        "path": "mncs-actions/family-semantic-contracts-v1.json",
+        "identity": "8634c8f8942fc6b99d9054ffda88fa7ccc6c2c535339f68266fc9d7f9e5b12b2"
+      },
+      {
+        "repository_id": "mncs-debug",
+        "path": "mncs-debug/family-semantic-contracts-v1.json",
+        "identity": "645a6b06ab00816aacd422625071efd15b8888f1e7028b370b25273cb27eb184"
+      },
+      {
+        "repository_id": "mncs-forge-mcp",
+        "path": "mncs-forge-mcp/family-semantic-contracts-v1.json",
+        "identity": "aa3984af739dea682a4b390cad782c414207fd2d1585e582d4c925d53f42f480"
+      },
+      {
+        "repository_id": "mncs-language",
+        "path": "mncs-language/family-semantic-contracts-v1.json",
+        "identity": "52ccdc121079a75fcdf7c85c5029bf42751da70b7ac98fdcb9755fbed77d2969"
+      },
+      {
+        "repository_id": "mncs-test",
+        "path": "mncs-test/family-semantic-contracts-v1.json",
+        "identity": "ec7ad4a3a71db69a85bcd0b5741db5ca86d6681bbb84852789339bca274266df"
+      },
+      {
+        "repository_id": "ravel",
+        "path": "RAVEL/family-semantic-contracts-v1.json",
+        "identity": "d5091a2234b690c975b50a61f740a878eb17d8f7cd545c4e3e5dc851e412695a"
+      }
+    ]
+  },
   "repositories": [
-    {"id": "mncs-language", "repository": "epi13/mncs-language", "revision": "origin/main", "manifest_identity": "mncs-language-main"},
-    {"id": "mncs-test", "repository": "epi13/mncs-test", "revision": "origin/main", "manifest_identity": "mncs-test-main"},
-    {"id": "mncs-debug", "repository": "epi13/mncs-debug", "revision": "origin/main", "manifest_identity": "mncs-debug-main"},
-    {"id": "ravel", "repository": "epi13/RAVEL", "revision": "origin/main", "manifest_identity": "ravel-main"},
-    {"id": "mncs-actions", "repository": "epi13/mncs-actions", "revision": "origin/main", "manifest_identity": "mncs-actions-main"},
-    {"id": "mncs-forge-mcp", "repository": "epi13/mncs-forge-mcp", "revision": "origin/main", "manifest_identity": "mncs-forge-main"}
+    {
+      "id": "mncs-actions",
+      "repository": "epi13/mncs-actions",
+      "revision": "1",
+      "manifest_identity": "8634c8f8942fc6b99d9054ffda88fa7ccc6c2c535339f68266fc9d7f9e5b12b2",
+      "declaration_path": "mncs-actions/family-semantic-contracts-v1.json"
+    },
+    {
+      "id": "mncs-debug",
+      "repository": "epi13/mncs-debug",
+      "revision": "1",
+      "manifest_identity": "645a6b06ab00816aacd422625071efd15b8888f1e7028b370b25273cb27eb184",
+      "declaration_path": "mncs-debug/family-semantic-contracts-v1.json"
+    },
+    {
+      "id": "mncs-forge-mcp",
+      "repository": "epi13/mncs-forge-mcp",
+      "revision": "1",
+      "manifest_identity": "aa3984af739dea682a4b390cad782c414207fd2d1585e582d4c925d53f42f480",
+      "declaration_path": "mncs-forge-mcp/family-semantic-contracts-v1.json"
+    },
+    {
+      "id": "mncs-language",
+      "repository": "epi13/mncs-language",
+      "revision": "1",
+      "manifest_identity": "52ccdc121079a75fcdf7c85c5029bf42751da70b7ac98fdcb9755fbed77d2969",
+      "declaration_path": "mncs-language/family-semantic-contracts-v1.json"
+    },
+    {
+      "id": "mncs-test",
+      "repository": "epi13/mncs-test",
+      "revision": "1",
+      "manifest_identity": "ec7ad4a3a71db69a85bcd0b5741db5ca86d6681bbb84852789339bca274266df",
+      "declaration_path": "mncs-test/family-semantic-contracts-v1.json"
+    },
+    {
+      "id": "ravel",
+      "repository": "epi13/RAVEL",
+      "revision": "1",
+      "manifest_identity": "d5091a2234b690c975b50a61f740a878eb17d8f7cd545c4e3e5dc851e412695a",
+      "declaration_path": "RAVEL/family-semantic-contracts-v1.json"
+    }
   ],
   "edges": [
-    {"producer_repository": "mncs-language", "consumer_repository": "mncs-test", "contract_identity": "mncs.compiler.test-inventory/1", "contract_revision": "0.17", "consuming_identity": "mncs-test:test-inventory", "provenance": "mncs-test:AGENTS.md", "fingerprint": "979c38a5ff9216db616a3422db91911ba3321d89984fa3a791ec3e9cfdab0057"},
-    {"producer_repository": "mncs-language", "consumer_repository": "ravel", "contract_identity": "mncs.semantic-impact/1", "contract_revision": "1", "consuming_identity": "ravel:impact-planner", "provenance": "RAVEL:docs/SELECTIVE_VERIFICATION.md", "fingerprint": "eea8cd3e0fdbdcd9b6e20a2f86fb6eb06e218c3e78585dcd30fc2ac03db311f6"},
-    {"producer_repository": "mncs-language", "consumer_repository": "mncs-debug", "contract_identity": "mncs.execution-observation/1", "contract_revision": "1", "consuming_identity": "mncs-debug:observation", "provenance": "mncs-debug:docs/architecture.md", "fingerprint": "2791e9adc98f0c5927f407795f1ceee83323fd163d564b0b95660244d42c1fd2"},
-    {"producer_repository": "mncs-test", "consumer_repository": "mncs-debug", "contract_identity": "mncs.test-result/1", "contract_revision": "1", "consuming_identity": "mncs-debug:test-result", "provenance": "mncs-debug:AGENTS.md", "fingerprint": "8ecce651475caac3732d7ca6f5f2acf7f3ddec3bf1173815c007ce5feb54ef09"},
-    {"producer_repository": "ravel", "consumer_repository": "mncs-test", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-test:verification-plan", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "a80e8af9276a0309c04ab0652caf757f4e91078f66efe6fda97e59efe31a3bdf"},
-    {"producer_repository": "ravel", "consumer_repository": "mncs-actions", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-actions:run-check", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "130d6a8d15441a721b29f2176d53762e6cb6f022887f39ff7e4efe64502ef03e"},
-    {"producer_repository": "ravel", "consumer_repository": "mncs-forge-mcp", "contract_identity": "mncs.verification-plan/1", "contract_revision": "1", "consuming_identity": "mncs-forge-mcp:mncs_failure_loop", "provenance": "MNCS-Commons:src/mncs_commons/verification_plan.py", "fingerprint": "36a671325fb6358f34502a02a59647ac1fc9450282ea6a95773615a109d667ee"}
+    {
+      "producer_repository": "mncs-language",
+      "consumer_repository": "mncs-debug",
+      "contract_identity": "mncs.execution-observation/1",
+      "contract_revision": "1",
+      "consuming_identity": "mncs-debug:observation",
+      "provenance": "mncs-debug:docs/architecture.md",
+      "fingerprint": "2791e9adc98f0c5927f407795f1ceee83323fd163d564b0b95660244d42c1fd2"
+    },
+    {
+      "producer_repository": "mncs-language",
+      "consumer_repository": "mncs-test",
+      "contract_identity": "mncs.compiler.test-inventory/1",
+      "contract_revision": "0.17",
+      "consuming_identity": "mncs-test:test-inventory",
+      "provenance": "mncs-test:tools/mncs_test.py",
+      "fingerprint": "957bdc578c26b5635c6d1584d8e2bc901da3f92997a0191953d7bd0a8435d4cf"
+    },
+    {
+      "producer_repository": "mncs-language",
+      "consumer_repository": "ravel",
+      "contract_identity": "mncs.semantic-impact/1",
+      "contract_revision": "1",
+      "consuming_identity": "ravel:impact-planner",
+      "provenance": "ravel:src/ravel/impact.py",
+      "fingerprint": "5de2d389e46696c9d43da70b5b2970306b452c1f95a86b4c2e7aabb19a35ec50"
+    },
+    {
+      "producer_repository": "mncs-test",
+      "consumer_repository": "mncs-debug",
+      "contract_identity": "mncs.test-result/1",
+      "contract_revision": "1",
+      "consuming_identity": "mncs-debug:test-result",
+      "provenance": "mncs-debug:AGENTS.md",
+      "fingerprint": "8ecce651475caac3732d7ca6f5f2acf7f3ddec3bf1173815c007ce5feb54ef09"
+    },
+    {
+      "producer_repository": "ravel",
+      "consumer_repository": "mncs-actions",
+      "contract_identity": "mncs.verification-plan/1",
+      "contract_revision": "1",
+      "consuming_identity": "mncs-actions:run-check",
+      "provenance": "mncs-actions:lib/mncs_family_contract.py",
+      "fingerprint": "989969b44e14c32838410da2484f658a1179d742976df0bed4361064bd46cdd3"
+    },
+    {
+      "producer_repository": "ravel",
+      "consumer_repository": "mncs-forge-mcp",
+      "contract_identity": "mncs.verification-plan/1",
+      "contract_revision": "1",
+      "consuming_identity": "mncs-forge-mcp:mncs_failure_loop",
+      "provenance": "mncs-forge-mcp:src/mncs_forge/verification_plan_contract.py",
+      "fingerprint": "356c7df4dd151af6f388f0c51fc8c63eabeae01025512f18e81352c1ecbbc482"
+    },
+    {
+      "producer_repository": "ravel",
+      "consumer_repository": "mncs-test",
+      "contract_identity": "mncs.verification-plan/1",
+      "contract_revision": "1",
+      "consuming_identity": "mncs-test:verification-plan",
+      "provenance": "mncs-test:tools/family_contract.py",
+      "fingerprint": "fff474ff4d5fba6d07c2140ae20da502716ea1454ac96c4075ee3f4aff8d8e60"
+    }
   ],
-  "graph_identity": "54b2b2299d69334ef22b48ebfb2db136dabdbc42bfb5b7254aa04972ca91f430"
+  "graph_identity": "cd7432eaf370211fe49f71920b4431ec912d9b3176291f3c1d978cc259828ceb"
 }

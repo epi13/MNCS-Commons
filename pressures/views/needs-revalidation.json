@@ -2302,35 +2302,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
-      ],
-      "capability": "legacy.doc-p-019",
-      "currentValidation": false,
-      "domain": "type-system.records",
-      "fallbackLanguages": [
-        "rust"
-      ],
-      "id": "MNCS-TOOLING-992CEBD1BB97",
-      "reporters": [
-        "mncs-doctor"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "tooling",
-      "title": "Typed record/enum host-call ergonomics",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-forge-mcp"
       ],
       "capability": "legacy.forge-p-0001",

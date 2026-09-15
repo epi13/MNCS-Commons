@@ -529,19 +529,22 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "ravel"
       ],
       "capability": "legacy.doc-p-019",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "type-system.records",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-TOOLING-992CEBD1BB97",
       "reporters": [
-        "mncs-doctor"
+        "mncs-doctor",
+        "ravel"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "tooling",
@@ -550,7 +553,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
