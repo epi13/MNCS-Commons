@@ -11,15 +11,19 @@
     "authority": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "module_identity", "interface_identity", "typed_call_schema_version", "generator_version", "binding_content_identity", "provider_fact_identity"],
+      "required": ["kind", "module_identity", "interface_identity", "generator_version", "binding_content_identity", "provider_fact_identity"],
       "properties": {
-        "kind": {"const": "language-owned-abi"},
+        "kind": {"enum": ["language-owned-abi", "language-owned-export-manifest"]},
         "module_identity": {"type": "string", "minLength": 1},
         "interface_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "typed_call_schema_version": {"const": "mncs.typed-call/1"},
         "generator_version": {"type": "string", "minLength": 1},
         "binding_content_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-        "provider_fact_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        "provider_fact_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "evidence_digests": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
       }
     },
     "providers": {

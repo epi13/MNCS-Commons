@@ -19,6 +19,7 @@ GRAPH_SCHEMA = "commons.mncs.dev/family-semantic-edges/v1"
 DECLARATION_SCHEMA = "commons.mncs.semantic-contract-declarations/v1"
 VERIFICATION_MANIFEST_SCHEMA = "commons.mncs.family-verification-checks/v1"
 PROVIDER_METADATA_SCHEMA = "commons.mncs.generated-provider-metadata/v1"
+PROVIDER_AUTHORITY_KINDS = frozenset({"language-owned-abi", "language-owned-export-manifest"})
 VERIFICATION_RUNNERS = frozenset({"declaration", "mncs-test"})
 MAX_CHECK_TEST_IDENTITIES = 256
 
@@ -28,7 +29,11 @@ class FamilyGraphError(ValueError):
 
 
 def validate_generated_provider_metadata(
-    value: Any, *, repository_id: str, declaration: Mapping[str, Any]
+    value: Any,
+    *,
+    repository_id: str,
+    declaration: Mapping[str, Any],
+    checkout: Path | None = None,
 ) -> dict[str, Any]:
     """Validate generated provider facts against the reviewable declaration.
 
@@ -55,6 +60,32 @@ def validate_generated_provider_metadata(
     ):
         if not isinstance(authority.get(field), str) or not authority[field]:
             raise FamilyGraphError(f"generated provider metadata authority.{field} must be non-empty")
+    if authority["kind"] not in PROVIDER_AUTHORITY_KINDS:
+        raise FamilyGraphError(
+            f"generated provider metadata authority.kind is unknown: {authority['kind']}"
+        )
+    typed_call_schema_version = authority.get("typed_call_schema_version")
+    if typed_call_schema_version is not None and typed_call_schema_version != "mncs.typed-call/1":
+        raise FamilyGraphError(
+            "generated provider metadata authority.typed_call_schema_version is unsupported"
+        )
+    evidence_digests = authority.get("evidence_digests")
+    if evidence_digests is not None:
+        if not isinstance(evidence_digests, Mapping):
+            raise FamilyGraphError("generated provider metadata authority.evidence_digests must be an object")
+        for evidence, identity in evidence_digests.items():
+            if (
+                not isinstance(evidence, str)
+                or not evidence
+                or Path(evidence).is_absolute()
+                or ".." in Path(evidence).parts
+                or not isinstance(identity, str)
+                or len(identity) != 64
+                or any(character not in "0123456789abcdef" for character in identity)
+            ):
+                raise FamilyGraphError(
+                    "generated provider metadata authority.evidence_digests contains an invalid identity"
+                )
     for field in ("interface_identity", "binding_content_identity"):
         identity = authority[field]
         if len(identity) != 64 or any(character not in "0123456789abcdef" for character in identity):
@@ -86,6 +117,24 @@ def validate_generated_provider_metadata(
         raise FamilyGraphError(
             f"generated provider metadata is stale for {repository_id}; regenerate provider facts"
         )
+    if evidence_digests is not None:
+        declared_evidence = {entry["evidence"] for entry in declared}
+        if set(evidence_digests) != declared_evidence:
+            raise FamilyGraphError(
+                f"generated provider metadata evidence paths are stale for {repository_id}; regenerate provider facts"
+            )
+        if checkout is not None:
+            for evidence, expected in evidence_digests.items():
+                evidence_path = checkout / evidence
+                if not evidence_path.is_file():
+                    raise FamilyGraphError(
+                        f"generated provider metadata evidence does not exist for {repository_id}: {evidence}"
+                    )
+                actual = hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+                if actual != expected:
+                    raise FamilyGraphError(
+                        f"generated provider metadata evidence is stale for {repository_id}: {evidence}"
+                    )
     return {**dict(value), "providers": sorted(normalized, key=lambda item: item["contract_identity"])}
 
 
