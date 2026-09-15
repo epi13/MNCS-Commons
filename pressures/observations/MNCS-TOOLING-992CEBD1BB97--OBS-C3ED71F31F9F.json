@@ -1,0 +1,50 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:7fe4168616e11833b2f2825229cd7fbed66eff6a026d9cfd850358bb4fd3724b",
+  "evidence": [
+    {
+      "id": "mncs-doctor:generated-rust-binding",
+      "ref": "src/generated/mncs_policy.rs",
+      "status": "PASS",
+      "summary": "Generated Rust binding submits the expected interface identity and typed records/finite values."
+    },
+    {
+      "id": "mncs-doctor:semantic-policy-migration",
+      "ref": "tests/mncs_parity.rs",
+      "status": "PASS",
+      "summary": "Representative version, transaction, traversal, file, health, verification, repair, and migration decisions use native semantic types."
+    }
+  ],
+  "id": "MNCS-TOOLING-992CEBD1BB97--OBS-C3ED71F31F9F",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "generatedBindings": [
+      "rust"
+    ],
+    "remainingSeam": "generic typed-value builder / identity discovery in mncs-embed",
+    "status": "partially_resolved"
+  },
+  "observedAt": "2026-09-15T20:01:00Z",
+  "pressureId": "MNCS-TOOLING-992CEBD1BB97",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Run cargo check --all-targets, cargo test, and the native parity suite from mncs-doctor main.",
+    "status": "PASS"
+  },
+  "runId": "luna-max-provider-facts-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "3e24f712",
+    "path": "src/mncs_runtime.rs"
+  },
+  "summary": "Doctor now consumes generated Rust bindings for representative semantic policy decisions and no longer uses production call_i64/call_u64 semantic code maps for those surfaces.",
+  "version": "1",
+  "workaround": {
+    "description": "The generated Rust binding removes the production semantic integer membrane for migrated surfaces; generic embed-side typed-value construction remains outside this slice.",
+    "removed": false
+  }
+}

@@ -215,7 +215,7 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 2,
+        "pass": 4,
         "unknown": 0
       }
     },

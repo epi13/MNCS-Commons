@@ -1,0 +1,56 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:acc5cc8aadc941fc79d9f317b10897ec75c0af5e17a32f417c9fadcdeb5c4bbb",
+  "evidence": [
+    {
+      "id": "ravel:generated-python-binding",
+      "ref": "src/ravel/generated/verification_plan.py",
+      "status": "PASS",
+      "summary": "Ravel no longer constructs the generic typed-call envelope or maintains a semantic code map."
+    },
+    {
+      "id": "ravel:provider-fact-generator",
+      "ref": "scripts/test_family_provider_metadata.py",
+      "status": "PASS",
+      "summary": "Changing the generated binding interface identity changes the provider fact and makes the checked-in artifact stale."
+    },
+    {
+      "id": "commons:provider-evidence-validation",
+      "ref": "MNCS-Commons:src/mncs_commons/family_graph.py",
+      "status": "PASS",
+      "summary": "Commons validates provider evidence content when reconciling a checkout."
+    }
+  ],
+  "id": "MNCS-TOOLING-992CEBD1BB97--OBS-4CD5F72A6D75",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "generatedBindings": [
+      "python"
+    ],
+    "remainingSeam": "generic typed-value builder / identity discovery in mncs-embed",
+    "status": "partially_resolved"
+  },
+  "observedAt": "2026-09-15T20:00:00Z",
+  "pressureId": "MNCS-TOOLING-992CEBD1BB97",
+  "repository": "ravel",
+  "reproduction": {
+    "instructions": "Run scripts/generate_family_provider_metadata.py --check and its focused generator tests.",
+    "status": "PASS"
+  },
+  "runId": "luna-max-provider-facts-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "5d3bedf",
+    "path": "scripts/generate_family_provider_metadata.py"
+  },
+  "summary": "Ravel now uses generated Python verification-plan types, and its provider facts are reproducibly generated from binding metadata with stale-interface and evidence-digest checks.",
+  "version": "1",
+  "workaround": {
+    "description": "Generated bindings remove the Ravel-specific transport workaround; a generic typed-value builder and identity-discovery helper in mncs-embed remain a separate unresolved pressure.",
+    "removed": false
+  }
+}
