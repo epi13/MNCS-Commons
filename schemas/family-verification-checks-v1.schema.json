@@ -22,15 +22,15 @@
           "surface": {"type": "string", "minLength": 1},
           "selector": {
             "type": "object",
-            "required": ["manifest", "test_identities"],
+            "required": ["manifest", "inventory_identity", "test_identities"],
             "properties": {
-              "manifest": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(^|/)\\.\\.(?:/|$)).+$"},
+              "manifest": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^(?!/)(?!.*(^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"},
               "test_identities": {
                 "type": "array",
                 "minItems": 1,
                 "maxItems": 256,
                 "uniqueItems": true,
-                "items": {"type": "string", "minLength": 1}
+                "items": {"type": "string", "minLength": 1, "maxLength": 512}
               },
               "inventory_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
             },

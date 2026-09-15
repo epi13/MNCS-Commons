@@ -5,9 +5,12 @@ implementation it describes.  A consuming entry may also name a
 `verification` identity and its command-free
 `family-verification-checks-v1.json` surface. A verification surface names
 the trusted runner kind (`declaration` or `mncs-test`) and, for behavioral
-checks, a bounded manifest plus exact test identities. It never carries a
-shell command. Commons binds the content digests of both files into the
-generated graph; changing either file makes the checked-in graph stale.
+checks, a bounded manifest, compiler inventory identity, and exact test
+identities. It never carries a shell command. Commons binds the content
+digests of both files into the generated graph; changing either file makes
+the checked-in graph stale. An unknown runner, unsafe selector path, missing
+inventory identity, duplicate test identity, or executable field is rejected
+before graph generation.
 
 The cheap local check is:
 
