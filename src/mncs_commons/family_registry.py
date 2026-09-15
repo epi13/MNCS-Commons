@@ -43,6 +43,7 @@ CANONICAL_FAMILY = {
         "mncs-language-service": "epi13/mncs-language-service",
         "mncs-test": "epi13/mncs-test",
         "mncs-debug": "epi13/mncs-debug",
+        "mncs-doctor": "epi13/mncs-doctor",
         "mncs-actions": "epi13/mncs-actions",
         "mncs-validator-rs": "epi13/mncs-validator-rs",
     "mncs-forge-mcp": "epi13/mncs-forge-mcp",

@@ -309,11 +309,11 @@
     }
   ],
   "coverage": {
-    "registry_identity": "8588b2ed464e9651437270501ea2e43e8867d7ab8f9937e940ec808707579d43",
-    "registered_family_project_count": 20,
-    "classified_project_count": 20,
+    "registry_identity": "9b50c79dab5703e7c031ca59298f6eb7e115de0883d6396a85d6f9250dda35e4",
+    "registered_family_project_count": 21,
+    "classified_project_count": 21,
     "semantic_graph_participant_count": 6,
-    "explicit_nonparticipant_count": 14,
+    "explicit_nonparticipant_count": 15,
     "unclassified_project_count": 0,
     "semantic_graph_participants": [
       "mncs-actions",
@@ -329,6 +329,7 @@
       "mncs-atlas",
       "mncs-commons",
       "mncs-control-mcp",
+      "mncs-doctor",
       "mncs-fabric",
       "mncs-harness",
       "mncs-language-service",
@@ -343,5 +344,5 @@
     "coverage_status": "complete",
     "topology_status": "complete_among_declared_participants"
   },
-  "graph_identity": "4235f62f6b000ac1ed7abdd488b1ead6689f5bb5f1015b710c1134a45f3d7642"
+  "graph_identity": "2d44e74c2f02ea41dc503117741bad554ca4fab6eaaae389a101c11a39607bba"
 }

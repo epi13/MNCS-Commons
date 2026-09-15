@@ -183,7 +183,7 @@ the handoff that turns application pressure into exclusive shared-core input.
 ## Family registry and coverage
 
 Commons owns the active coordination registry at `commons.mncs.dev/family-registry/v0alpha1`.
-It covers the canonical 20 repositories, records their groups, authority classes, eligible lanes,
+It covers the canonical 21 repositories, records their groups, authority classes, eligible lanes,
 and known consumers, and keeps explicit coverage posture for projects with no current task. Atlas
 remains the descriptive orientation source and is never a scheduling authority.
 

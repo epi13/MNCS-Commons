@@ -42,6 +42,11 @@
       "reason": "Consumes execution observations and test-result evidence for native diagnosis."
     },
     {
+      "id": "mncs-doctor",
+      "state": "explicit_nonparticipant",
+      "reason": "Owns repository health, migration, and repair policy but publishes no Commons semantic contract at this synchronization point."
+    },
+    {
       "id": "mncs-actions",
       "state": "participant",
       "declaration_path": "family-semantic-contracts-v1.json",
