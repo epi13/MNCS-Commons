@@ -133,6 +133,7 @@ def load_declarations(workspace: Path, *, commons_root: Path | None = None) -> t
                 generated_provider,
                 repository_id=project_id,
                 declaration=declaration,
+                checkout=candidate,
             )
         discovered[project_id] = (candidate, declaration)
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import subprocess
@@ -278,4 +279,109 @@ def test_generated_provider_facts_fail_closed_when_stale() -> None:
     with pytest.raises(FamilyGraphError, match="stale"):
         validate_generated_provider_metadata(
             generated, repository_id="ravel", declaration=declaration
+        )
+
+
+def test_generated_export_manifest_provider_facts_are_valid_without_typed_call_version() -> None:
+    declaration = {
+        "repository_id": "mncs-language",
+        "provides": [
+            {
+                "contract_identity": "mncs.compiler.test-inventory/1",
+                "contract_revision": "0.17",
+                "exported_identity": "mncs-language:test-inventory",
+                "evidence": "crates/mncs-cli/src/main.rs",
+            }
+        ],
+    }
+    generated = {
+        "schema_version": "commons.mncs.generated-provider-metadata/v1",
+        "repository_id": "mncs-language",
+        "authority": {
+            "kind": "language-owned-export-manifest",
+            "module_identity": "mncs.cli.family-contracts.v1",
+            "interface_identity": "0" * 64,
+            "generator_version": "mncs-language-provider-facts/0.1",
+            "binding_content_identity": "1" * 64,
+            "provider_fact_identity": "2" * 64,
+        },
+        "providers": declaration["provides"],
+    }
+    normalized = validate_generated_provider_metadata(
+        generated, repository_id="mncs-language", declaration=declaration
+    )
+    assert normalized["authority"]["kind"] == "language-owned-export-manifest"
+
+
+def test_generated_provider_facts_reject_unknown_authority_kind() -> None:
+    declaration = {
+        "repository_id": "ravel",
+        "provides": [
+            {
+                "contract_identity": "mncs.verification-plan/1",
+                "contract_revision": "1",
+                "exported_identity": "ravel:verification-plan",
+                "evidence": "src/ravel/impact.py",
+            }
+        ],
+    }
+    generated = {
+        "schema_version": "commons.mncs.generated-provider-metadata/v1",
+        "repository_id": "ravel",
+        "authority": {
+            "kind": "scraped-source",
+            "module_identity": "x",
+            "interface_identity": "0" * 64,
+            "generator_version": "x",
+            "binding_content_identity": "1" * 64,
+            "provider_fact_identity": "2" * 64,
+        },
+        "providers": declaration["provides"],
+    }
+    with pytest.raises(FamilyGraphError, match="unknown"):
+        validate_generated_provider_metadata(generated, repository_id="ravel", declaration=declaration)
+
+
+def test_generated_provider_facts_bind_evidence_content_when_checkout_is_available(tmp_path: Path) -> None:
+    checkout = tmp_path / "mncs-language"
+    evidence_path = checkout / "crates" / "mncs-cli" / "src" / "main.rs"
+    evidence_path.parent.mkdir(parents=True)
+    evidence_path.write_text("exported contract facts\n", encoding="utf-8")
+    declaration = {
+        "repository_id": "mncs-language",
+        "provides": [{
+            "contract_identity": "mncs.compiler.test-inventory/1",
+            "contract_revision": "0.17",
+            "exported_identity": "mncs-language:test-inventory",
+            "evidence": "crates/mncs-cli/src/main.rs",
+        }],
+    }
+    evidence_identity = hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+    generated = {
+        "schema_version": "commons.mncs.generated-provider-metadata/v1",
+        "repository_id": "mncs-language",
+        "authority": {
+            "kind": "language-owned-export-manifest",
+            "module_identity": "mncs.cli.family-contracts.v1",
+            "interface_identity": "0" * 64,
+            "generator_version": "mncs-language-provider-facts/0.1",
+            "binding_content_identity": "1" * 64,
+            "provider_fact_identity": "2" * 64,
+            "evidence_digests": {"crates/mncs-cli/src/main.rs": evidence_identity},
+        },
+        "providers": declaration["provides"],
+    }
+    validate_generated_provider_metadata(
+        generated,
+        repository_id="mncs-language",
+        declaration=declaration,
+        checkout=checkout,
+    )
+    evidence_path.write_text("changed export facts\n", encoding="utf-8")
+    with pytest.raises(FamilyGraphError, match="evidence is stale"):
+        validate_generated_provider_metadata(
+            generated,
+            repository_id="mncs-language",
+            declaration=declaration,
+            checkout=checkout,
         )
