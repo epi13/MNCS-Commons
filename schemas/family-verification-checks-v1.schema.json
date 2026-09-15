@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/epi13/MNCS-Commons/blob/main/schemas/family-verification-checks-v1.schema.json",
   "title": "MNCS repository-owned selective verification surfaces",
-  "description": "A command-free map from consumed contracts to exact check identities. Actions supplies the execution transport.",
+  "description": "A command-free map from consumed contracts to exact structural or behavioral check identities. Actions supplies trusted execution transport.",
   "type": "object",
   "required": ["schema_version", "repository_id", "checks"],
   "properties": {
@@ -18,8 +18,24 @@
         "properties": {
           "identity": {"type": "string", "minLength": 1},
           "contract_identity": {"type": "string", "minLength": 1},
-          "runner": {"const": "declaration"},
-          "surface": {"type": "string", "minLength": 1}
+          "runner": {"enum": ["declaration", "mncs-test"]},
+          "surface": {"type": "string", "minLength": 1},
+          "selector": {
+            "type": "object",
+            "required": ["manifest", "test_identities"],
+            "properties": {
+              "manifest": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(^|/)\\.\\.(?:/|$)).+$"},
+              "test_identities": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 256,
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "inventory_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+            },
+            "additionalProperties": false
+          }
         },
         "additionalProperties": true
       }

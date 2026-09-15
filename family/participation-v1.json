@@ -1,0 +1,113 @@
+{
+  "schema_version": "commons.mncs.family-participation/v1",
+  "registry_id": "mncs-family",
+  "purpose": "Explicit registry classification for semantic graph synchronization; this is not a conformance claim.",
+  "projects": [
+    {
+      "id": "mncs",
+      "state": "explicit_nonparticipant",
+      "reason": "The standard repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncds",
+      "state": "explicit_nonparticipant",
+      "reason": "The development-specification repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-rights-provenance",
+      "state": "explicit_nonparticipant",
+      "reason": "The rights and provenance repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-language",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the compiler-owned semantic-impact contract."
+    },
+    {
+      "id": "mncs-language-service",
+      "state": "explicit_nonparticipant",
+      "reason": "No repository-owned semantic graph declaration is published at this synchronization point."
+    },
+    {
+      "id": "mncs-test",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the native test-result contract and consumes compiler inventory and verification plans."
+    },
+    {
+      "id": "mncs-debug",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Consumes execution observations and test-result evidence for native diagnosis."
+    },
+    {
+      "id": "mncs-actions",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Consumes verification plans as the selected-consumer receipt and proof executor."
+    },
+    {
+      "id": "mncs-validator-rs",
+      "state": "explicit_nonparticipant",
+      "reason": "The independent validator has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-forge-mcp",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Consumes verification plans in the development orchestration loop."
+    },
+    {
+      "id": "mncs-fabric",
+      "state": "explicit_nonparticipant",
+      "reason": "The execution substrate has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-commons",
+      "state": "explicit_nonparticipant",
+      "reason": "Commons owns graph coordination but does not declare a joined consumer edge in its own generated graph."
+    },
+    {
+      "id": "mncs-harness",
+      "state": "explicit_nonparticipant",
+      "reason": "The harness has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-control-mcp",
+      "state": "explicit_nonparticipant",
+      "reason": "The control MCP has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-atlas",
+      "state": "explicit_nonparticipant",
+      "reason": "Atlas is orientation-only and has no repository-owned semantic graph declaration."
+    },
+    {
+      "id": "mncs-reference-studies",
+      "state": "explicit_nonparticipant",
+      "reason": "The reference-studies repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "ravel",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes verification plans and consumes compiler semantic impact."
+    },
+    {
+      "id": "mnel",
+      "state": "explicit_nonparticipant",
+      "reason": "The experimental-learning repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-lineage",
+      "state": "explicit_nonparticipant",
+      "reason": "The lineage repository has no repository-owned semantic graph declaration at this synchronization point."
+    },
+    {
+      "id": "mncs-tui",
+      "state": "explicit_nonparticipant",
+      "reason": "The TUI repository has no repository-owned semantic graph declaration at this synchronization point."
+    }
+  ]
+}
