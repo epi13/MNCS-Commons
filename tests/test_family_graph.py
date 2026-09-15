@@ -243,12 +243,39 @@ def test_unknown_runner_and_executable_fields_are_rejected() -> None:
     }
     with pytest.raises(FamilyGraphError):
         validate_verification_manifest(base, repository_id="ravel")
-
     base["checks"][0]["runner"] = "declaration"
     base["checks"][0]["command"] = "./run.sh"
     with pytest.raises(FamilyGraphError):
         validate_verification_manifest(base, repository_id="ravel")
 
+
+def test_mncs_test_runner_requires_bounded_inventory_bound() -> None:
+    manifest = {
+        "schema_version": "commons.mncs.family-verification-checks/v1",
+        "repository_id": "mncs-test",
+        "checks": [{
+            "identity": "mncs-test:behavior",
+            "contract_identity": "mncs.verification-plan/1",
+            "runner": "mncs-test",
+            "surface": "selected-consumer-behavior",
+            "selector": {
+                "manifest": "mncs-test.toml",
+                "inventory_identity": "a" * 64,
+                "test_identities": ["mncs:test-case:one"],
+            },
+        }],
+    }
+    normalized = validate_verification_manifest(manifest, repository_id="mncs-test")
+    assert normalized["checks"][0]["selector"]["inventory_identity"] == "a" * 64
+
+    del manifest["checks"][0]["selector"]["inventory_identity"]
+    with pytest.raises(FamilyGraphError, match="inventory_identity"):
+        validate_verification_manifest(manifest, repository_id="mncs-test")
+
+    manifest["checks"][0]["selector"]["inventory_identity"] = "a" * 64
+    manifest["checks"][0]["selector"]["manifest"] = r"nested\\mncs-test.toml"
+    with pytest.raises(FamilyGraphError, match="relative path"):
+        validate_verification_manifest(manifest, repository_id="mncs-test")
 
 def test_generated_provider_facts_fail_closed_when_stale() -> None:
     declaration = {

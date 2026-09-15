@@ -22,6 +22,8 @@ PROVIDER_METADATA_SCHEMA = "commons.mncs.generated-provider-metadata/v1"
 PROVIDER_AUTHORITY_KINDS = frozenset({"language-owned-abi", "language-owned-export-manifest"})
 VERIFICATION_RUNNERS = frozenset({"declaration", "mncs-test"})
 MAX_CHECK_TEST_IDENTITIES = 256
+MAX_CHECK_SELECTOR_LENGTH = 4096
+MAX_CHECK_TEST_IDENTITY_LENGTH = 512
 
 
 class FamilyGraphError(ValueError):
@@ -166,6 +168,60 @@ def declaration_identity(value: Mapping[str, Any]) -> str:
     return hashlib.sha256(_canonical(projection)).hexdigest()
 
 
+def _validate_mncs_test_selector(selector: Any, *, context: str) -> dict[str, Any]:
+    """Validate the bounded, command-free selector owned by mncs-test."""
+
+    if not isinstance(selector, Mapping):
+        raise FamilyGraphError(f"{context}.selector is required for mncs-test")
+    unknown = set(selector) - {"manifest", "inventory_identity", "test_identities"}
+    if unknown:
+        raise FamilyGraphError(
+            f"{context}.selector contains unsupported fields: {', '.join(sorted(unknown))}"
+        )
+    manifest = selector.get("manifest")
+    if (
+        not isinstance(manifest, str)
+        or not manifest
+        or len(manifest) > MAX_CHECK_SELECTOR_LENGTH
+        or Path(manifest).is_absolute()
+        or "\\" in manifest
+        or ".." in Path(manifest).parts
+    ):
+        raise FamilyGraphError(
+            f"{context}.selector.manifest must be a bounded relative path"
+        )
+    inventory_identity = selector.get("inventory_identity")
+    if (
+        not isinstance(inventory_identity, str)
+        or len(inventory_identity) != 64
+        or any(character not in "0123456789abcdef" for character in inventory_identity)
+    ):
+        raise FamilyGraphError(
+            f"{context}.selector.inventory_identity must be a lowercase digest"
+        )
+    test_identities = selector.get("test_identities")
+    if (
+        not isinstance(test_identities, list)
+        or not test_identities
+        or len(test_identities) > MAX_CHECK_TEST_IDENTITIES
+        or not all(
+            isinstance(item, str)
+            and bool(item)
+            and len(item) <= MAX_CHECK_TEST_IDENTITY_LENGTH
+            for item in test_identities
+        )
+        or len(set(test_identities)) != len(test_identities)
+    ):
+        raise FamilyGraphError(
+            f"{context}.selector.test_identities must be a bounded unique non-empty array"
+        )
+    return {
+        "manifest": manifest,
+        "inventory_identity": inventory_identity,
+        "test_identities": sorted(test_identities),
+    }
+
+
 def validate_verification_manifest(value: Any, *, repository_id: str) -> dict[str, Any]:
     """Validate a repository-owned, command-free verification surface map."""
 
@@ -193,48 +249,9 @@ def validate_verification_manifest(value: Any, *, repository_id: str) -> dict[st
             )
         selector = check.get("selector")
         if check["runner"] == "mncs-test":
-            if not isinstance(selector, Mapping):
-                raise FamilyGraphError(
-                    f"verification manifest checks[{index}].selector is required for mncs-test"
-                )
-            manifest = selector.get("manifest")
-            test_identities = selector.get("test_identities")
-            if (
-                not isinstance(manifest, str)
-                or not manifest
-                or Path(manifest).is_absolute()
-                or ".." in Path(manifest).parts
-            ):
-                raise FamilyGraphError(
-                    f"verification manifest checks[{index}].selector.manifest must be a bounded relative path"
-                )
-            if (
-                not isinstance(test_identities, list)
-                or not test_identities
-                or len(test_identities) > MAX_CHECK_TEST_IDENTITIES
-                or not all(isinstance(item, str) and item for item in test_identities)
-                or len(set(test_identities)) != len(test_identities)
-            ):
-                raise FamilyGraphError(
-                    f"verification manifest checks[{index}].selector.test_identities must be a bounded unique non-empty array"
-                )
-            normalized_selector = {
-                "manifest": manifest,
-                "test_identities": sorted(test_identities),
-            }
-            inventory_identity = selector.get("inventory_identity")
-            if inventory_identity is not None:
-                if (
-                    not isinstance(inventory_identity, str)
-                    or not inventory_identity
-                    or len(inventory_identity) != 64
-                    or any(character not in "0123456789abcdef" for character in inventory_identity)
-                ):
-                    raise FamilyGraphError(
-                        f"verification manifest checks[{index}].selector.inventory_identity is invalid"
-                    )
-                normalized_selector["inventory_identity"] = inventory_identity
-            check["selector"] = normalized_selector
+            check["selector"] = _validate_mncs_test_selector(
+                selector, context=f"verification manifest checks[{index}]"
+            )
         elif selector is not None:
             raise FamilyGraphError(
                 f"verification manifest checks[{index}].selector is only valid for mncs-test"
@@ -648,22 +665,11 @@ def validate_graph(value: Any) -> dict[str, Any]:
             )
         selector = verification.get("selector")
         if verification["runner"] == "mncs-test":
-            if not isinstance(selector, Mapping):
-                raise FamilyGraphError(f"edges[{index}].verification.selector is required for mncs-test")
-            test_identities = selector.get("test_identities")
-            manifest = selector.get("manifest")
-            if (
-                not isinstance(manifest, str)
-                or not manifest
-                or Path(manifest).is_absolute()
-                or ".." in Path(manifest).parts
-                or not isinstance(test_identities, list)
-                or not test_identities
-                or len(test_identities) > MAX_CHECK_TEST_IDENTITIES
-                or not all(isinstance(item, str) and item for item in test_identities)
-                or len(set(test_identities)) != len(test_identities)
-            ):
-                raise FamilyGraphError(f"edges[{index}].verification.selector is invalid")
+            verification = dict(verification)
+            verification["selector"] = _validate_mncs_test_selector(
+                selector, context=f"edges[{index}].verification"
+            )
+            edge["verification"] = verification
         elif selector is not None:
             raise FamilyGraphError(
                 f"edges[{index}].verification.selector is only valid for mncs-test"
