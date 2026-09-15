@@ -48,7 +48,11 @@ def load_declarations(workspace: Path) -> tuple[list[dict], list[dict]]:
                 f"{path} declares {declaration['repository_id']}, expected {project_id}"
             )
         declaration = bind_declaration_evidence(checkout, declaration)
-        declaration["_path"] = str(path.relative_to(workspace))
+        # The graph is a reusable family artifact, so its source path must not
+        # depend on whether a checkout directory is named ``RAVEL``, ``ravel``,
+        # or another local alias.  Keep the repository-owned identity in the
+        # path while retaining the actual checkout only for evidence reads.
+        declaration["_path"] = f"{project_id}/family-semantic-contracts-v1.json"
         declarations.append(declaration)
         project = registry[project_id]
         repositories.append(
