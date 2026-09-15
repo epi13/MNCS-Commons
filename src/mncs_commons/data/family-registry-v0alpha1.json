@@ -1,7 +1,7 @@
 {
   "registryVersion": "commons.mncs.dev/family-registry/v0alpha1",
   "registryId": "mncs-family",
-  "revision": "2026-09-13",
+  "revision": "2026-09-15",
   "authority": "active-coordination-and-coverage",
   "nonAuthorities": [
     "conformance",
@@ -111,6 +111,20 @@
       "sharedCore": false,
       "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
       "consumes": ["mncs-language", "mncs-test"],
+      "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
+      "coveragePosture": "NEEDS_REVIEW"
+    },
+    {
+      "id": "mncs-doctor",
+      "repository": "epi13/mncs-doctor",
+      "displayName": "MNCS Doctor",
+      "group": "verification-tooling",
+      "role": "repository health, migration and repair tool",
+      "status": "active",
+      "authorityClass": "non-normative-development-infrastructure",
+      "sharedCore": false,
+      "eligibleWorkLanes": ["DOCUMENTATION", "VERIFICATION", "REPO_LOCAL", "REPO_HYGIENE"],
+      "consumes": ["mncs-language"],
       "orientationSource": "https://github.com/epi13/mncs-atlas/blob/main/atlas.json",
       "coveragePosture": "NEEDS_REVIEW"
     },

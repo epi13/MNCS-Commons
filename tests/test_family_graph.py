@@ -41,10 +41,10 @@ def test_checked_in_graph_has_digest_bound_edges_and_selective_consumers() -> No
     assert all(edge["fingerprint"] for edge in consumers)
     assert graph["graph_identity"]
     coverage = graph["coverage"]
-    assert coverage["registered_family_project_count"] == 20
-    assert coverage["classified_project_count"] == 20
+    assert coverage["registered_family_project_count"] == 21
+    assert coverage["classified_project_count"] == 21
     assert coverage["semantic_graph_participant_count"] == 6
-    assert coverage["explicit_nonparticipant_count"] == 14
+    assert coverage["explicit_nonparticipant_count"] == 15
     assert coverage["unclassified_project_count"] == 0
     assert coverage["coverage_status"] == "complete"
     assert coverage["topology_status"] == "complete_among_declared_participants"
