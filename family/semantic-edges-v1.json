@@ -56,10 +56,10 @@
       {
         "repository_id": "mncs-language",
         "path": "mncs-language/family-semantic-contracts-v1.json",
-        "identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+        "identity": "e16aa2a2704439a20b734892fa5f8303ccbd3c084d859604bc803a877db9cad4",
         "evidence_digests": {
           "provides": {
-            "crates/mncs-cli/src/main.rs": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3"
+            "crates/mncs-cli/src/main.rs": "sha256:c4dc1e9e2cf9992b39b94a43bd22d15c51f4a393e78d708fb73feab08efb8ff3"
           },
           "consumes": {},
           "verification": {}
@@ -68,7 +68,7 @@
       {
         "repository_id": "mncs-test",
         "path": "mncs-test/family-semantic-contracts-v1.json",
-        "identity": "c473b354d234a844519f52df3ff6c6e8724c3b799efaf02abae35f392f7c947f",
+        "identity": "1606047a9a34189bdc96a2e67fde906ad41d46cf31d094667c13f24754cb7f10",
         "evidence_digests": {
           "provides": {
             "tools/mncs_test.py": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45"
@@ -78,7 +78,7 @@
             "tools/family_contract.py": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71"
           },
           "verification": {
-            "family-verification-checks-v1.json": "sha256:396aef502ec51a922b27331c72fa13c2755689480b45060a8907cba1d53029cd"
+            "family-verification-checks-v1.json": "sha256:69a04f32ade53e1157ec154f8b0c52b68bbec834ad65b3313ad94aeef2775f9d"
           }
         }
       },
@@ -126,14 +126,14 @@
       "id": "mncs-language",
       "repository": "epi13/mncs-language",
       "revision": "1",
-      "manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "manifest_identity": "e16aa2a2704439a20b734892fa5f8303ccbd3c084d859604bc803a877db9cad4",
       "declaration_path": "mncs-language/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-test",
       "repository": "epi13/mncs-test",
       "revision": "1",
-      "manifest_identity": "c473b354d234a844519f52df3ff6c6e8724c3b799efaf02abae35f392f7c947f",
+      "manifest_identity": "1606047a9a34189bdc96a2e67fde906ad41d46cf31d094667c13f24754cb7f10",
       "declaration_path": "mncs-test/family-semantic-contracts-v1.json"
     },
     {
@@ -152,7 +152,7 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:observation",
       "provenance": "mncs-debug:docs/architecture.md",
-      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "producer_manifest_identity": "e16aa2a2704439a20b734892fa5f8303ccbd3c084d859604bc803a877db9cad4",
       "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-language:execution-observation",
       "verification": {
@@ -163,9 +163,9 @@
         "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
-      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "provider_evidence_sha256": "sha256:c4dc1e9e2cf9992b39b94a43bd22d15c51f4a393e78d708fb73feab08efb8ff3",
       "consumer_evidence_sha256": "sha256:7c95ea925757bd3804661293cd30952ed0e4a18d349df3a67922d31afe88bd59",
-      "fingerprint": "39563c47ad1ed9babfbb2b85355c76456b558e27841dac0fa0f96f6ce2d0c616"
+      "fingerprint": "95b47069c9fa9cbdfabb5dc7849409ff78f61b16bcc69d82ba8de9aedf2e417e"
     },
     {
       "producer_repository": "mncs-language",
@@ -174,8 +174,8 @@
       "contract_revision": "0.17",
       "consuming_identity": "mncs-test:test-inventory",
       "provenance": "mncs-test:tools/mncs_test.py",
-      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
-      "consumer_manifest_identity": "c473b354d234a844519f52df3ff6c6e8724c3b799efaf02abae35f392f7c947f",
+      "producer_manifest_identity": "e16aa2a2704439a20b734892fa5f8303ccbd3c084d859604bc803a877db9cad4",
+      "consumer_manifest_identity": "1606047a9a34189bdc96a2e67fde906ad41d46cf31d094667c13f24754cb7f10",
       "provider_identity": "mncs-language:test-inventory",
       "verification": {
         "check_identity": "mncs-test:test-inventory-join",
@@ -184,10 +184,10 @@
         "evidence": "family-verification-checks-v1.json",
         "runner": "declaration"
       },
-      "verification_evidence_sha256": "sha256:396aef502ec51a922b27331c72fa13c2755689480b45060a8907cba1d53029cd",
-      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "verification_evidence_sha256": "sha256:69a04f32ade53e1157ec154f8b0c52b68bbec834ad65b3313ad94aeef2775f9d",
+      "provider_evidence_sha256": "sha256:c4dc1e9e2cf9992b39b94a43bd22d15c51f4a393e78d708fb73feab08efb8ff3",
       "consumer_evidence_sha256": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45",
-      "fingerprint": "520309f919ef884b46cacd4ab3643e2c58b7426dba54e3409ef3fb8113c63d12"
+      "fingerprint": "c7fc8cc5428f34d5c7625cab35a03b3a9df527ee11cce19cbb9107d65ae6ff5a"
     },
     {
       "producer_repository": "mncs-language",
@@ -196,7 +196,7 @@
       "contract_revision": "1",
       "consuming_identity": "ravel:impact-planner",
       "provenance": "ravel:src/ravel/impact.py",
-      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "producer_manifest_identity": "e16aa2a2704439a20b734892fa5f8303ccbd3c084d859604bc803a877db9cad4",
       "consumer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
       "provider_identity": "mncs-language:semantic-impact",
       "verification": {
@@ -207,9 +207,9 @@
         "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:8c090d656068b714f3fbd5e26822b05ee238918738eeec48f277bbb0caa1eb8c",
-      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "provider_evidence_sha256": "sha256:c4dc1e9e2cf9992b39b94a43bd22d15c51f4a393e78d708fb73feab08efb8ff3",
       "consumer_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
-      "fingerprint": "cb4c270a60921c7a30cdaca5fedb229f7ea5ea55158ec408e606098fe29d5315"
+      "fingerprint": "9463984e94dc490dfbcbc7c52f9cce406f370f269148f54bbab8522cea336338"
     },
     {
       "producer_repository": "mncs-test",
@@ -218,7 +218,7 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:test-result",
       "provenance": "mncs-debug:AGENTS.md",
-      "producer_manifest_identity": "c473b354d234a844519f52df3ff6c6e8724c3b799efaf02abae35f392f7c947f",
+      "producer_manifest_identity": "1606047a9a34189bdc96a2e67fde906ad41d46cf31d094667c13f24754cb7f10",
       "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-test:test-result",
       "verification": {
@@ -231,7 +231,7 @@
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
       "provider_evidence_sha256": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45",
       "consumer_evidence_sha256": "sha256:fea527f07fd954c2a6e8b400c1787723de3f43a586b6d2a53d1c0e37d5cb5950",
-      "fingerprint": "8ee2eefd60bbf245df148d39cf0f0491300fc3200f1c107919c3e59132287629"
+      "fingerprint": "6532c1f9faeb9f4474a31bb4848659fecf7272594a261f07c2e09dee79cdc842"
     },
     {
       "producer_repository": "ravel",
@@ -285,7 +285,7 @@
       "consuming_identity": "mncs-test:verification-plan",
       "provenance": "mncs-test:tools/family_contract.py",
       "producer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
-      "consumer_manifest_identity": "c473b354d234a844519f52df3ff6c6e8724c3b799efaf02abae35f392f7c947f",
+      "consumer_manifest_identity": "1606047a9a34189bdc96a2e67fde906ad41d46cf31d094667c13f24754cb7f10",
       "provider_identity": "ravel:verification-plan",
       "verification": {
         "check_identity": "mncs-test:verification-plan-contract",
@@ -299,13 +299,13 @@
             "mncs:0.2:test-case:tests.self_suite::arithmetic::048110093302a319d4962bf0ab6cf893312cfcc10981d4326ca6fafff87fd2a0",
             "mncs:0.2:test-case:tests.self_suite::boolean::36fb811221b71e39a0daec26be573986edb5703221a8f8ba179f98e9a65a4b56"
           ],
-          "inventory_identity": "5d69ac8678f4c84c67b48830c2e61906b5374b3fb9c1d0b773f89724ec511fe8"
+          "inventory_identity": "fbefc565bb03b559a075b65dce0c44780d6115ab2a566a014657433b6e5e65f3"
         }
       },
-      "verification_evidence_sha256": "sha256:396aef502ec51a922b27331c72fa13c2755689480b45060a8907cba1d53029cd",
+      "verification_evidence_sha256": "sha256:69a04f32ade53e1157ec154f8b0c52b68bbec834ad65b3313ad94aeef2775f9d",
       "provider_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
       "consumer_evidence_sha256": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71",
-      "fingerprint": "55c55bbf07fc396bbbb011d836f18fba8cfa6cf5dbc07c15a1f52548d24d0857"
+      "fingerprint": "75260826077b20963dd7b54f87682c33dded81a5252d89ddca3b33f6138df8e1"
     }
   ],
   "coverage": {
@@ -343,5 +343,5 @@
     "coverage_status": "complete",
     "topology_status": "complete_among_declared_participants"
   },
-  "graph_identity": "b7d6b4455ead9cdb8e61a14cf99d2c00ee81f6c7c708e4b89fa484fc3249b5a2"
+  "graph_identity": "60abfb36099526d3c2bfaef429e01d8ee74db92f53a469a216d2046e59535587"
 }
