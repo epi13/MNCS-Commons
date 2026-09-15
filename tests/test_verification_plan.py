@@ -122,12 +122,12 @@ def test_family_routing_scope_distinguishes_selected_consumers_from_family_proof
     )
     plan["proof"].update(
         sufficient_to_stop=False,
-        required_evidence=["family_verification_pass"],
+        required_evidence=["selected_consumer_proofs_pass"],
         boundary={
-            "claimed_scope": "family",
+            "claimed_scope": "selected_repositories",
             "established": False,
-            "executor": "family-router",
-            "stop_condition": "family_verification_pass",
+            "executor": "mncs-actions",
+            "stop_condition": "selected_consumer_proofs_pass",
         },
     )
     plan["plan_id"] = plan_identity(plan)

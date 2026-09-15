@@ -8,6 +8,7 @@ WorkRequests remain inert data; no operation in this module executes content.
 from __future__ import annotations
 
 import errno
+import hashlib
 import importlib
 import json
 import os
@@ -15,6 +16,7 @@ import re
 import socket
 import stat
 import struct
+import tempfile
 import threading
 import time
 import uuid
@@ -34,6 +36,7 @@ from . import __version__
 from .application import CommonsApplication
 from .canonical import canonical_json
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
+from .family_graph import FamilyGraphError, load_graph
 from .lane_policy import LANES
 from .query import QueryFilter
 from .store import CommonsStore, StoreError
@@ -50,6 +53,11 @@ MAX_CURSOR_BYTES = 64 * 1024
 MAX_LIMIT = 1000
 MAX_CONNECTIONS = 32
 REQUEST_TTL_SECONDS = 30.0
+# Linux permits at most 108 bytes for a filesystem AF_UNIX address, including
+# its terminating NUL.  Keep a wider margin for other POSIX implementations
+# and for future service-name suffixes.
+MAX_UNIX_SOCKET_PATH_BYTES = 96
+SOCKET_PATH_POLICY = "bounded-hash-v1"
 
 CONSUMER_OPERATIONS = frozenset(
     {
@@ -71,6 +79,7 @@ CONSUMER_OPERATIONS = frozenset(
         "work.policy",
         "work.scope-check",
         "family.registry",
+        "family.graph",
         "family.coverage",
         "family.consistency",
         "store.retention",
@@ -127,6 +136,74 @@ def _af_unix() -> int:
     return value
 
 
+def _private_runtime_root(root: Path) -> Path | None:
+    """Create/validate a private directory suitable for derived sockets."""
+
+    try:
+        root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        entry = os.lstat(root)
+    except OSError:
+        return None
+    if (
+        stat.S_ISLNK(entry.st_mode)
+        or not stat.S_ISDIR(entry.st_mode)
+        or entry.st_uid != _current_uid()
+    ):
+        return None
+    try:
+        os.chmod(root, 0o700)
+        entry = os.lstat(root)
+    except OSError:
+        return None
+    if entry.st_mode & 0o077:
+        return None
+    return root
+
+
+def _runtime_socket_root() -> Path:
+    """Return a short, private, reusable directory for long socket inputs."""
+
+    xdg_runtime = os.environ.get("XDG_RUNTIME_DIR")
+    if xdg_runtime:
+        candidate = Path(xdg_runtime).expanduser() / "mncs-commons"
+        if len(os.fsencode(str(candidate / ("mncs-" + "0" * 40 + ".sock")))) < 108:
+            prepared = _private_runtime_root(candidate)
+            if prepared is not None:
+                return prepared
+    fallback = Path(tempfile.gettempdir()) / f"mncs-commons-{_current_uid()}"
+    prepared = _private_runtime_root(fallback)
+    if prepared is None:
+        raise CommonsServiceError(
+            "SOCKET_PATH_UNSAFE", "no private runtime directory is available"
+        )
+    return prepared
+
+
+def _bounded_socket_path(path: Path | str) -> Path:
+    """Keep a requested socket identity while bounding its kernel path."""
+
+    requested = Path(path).expanduser()
+    if os.name != "posix" or not hasattr(socket, "AF_UNIX"):
+        return requested
+    if len(os.fsencode(str(requested))) < MAX_UNIX_SOCKET_PATH_BYTES:
+        return requested
+    try:
+        parent = os.lstat(requested.parent)
+    except FileNotFoundError:
+        parent = None
+    except OSError:
+        parent = None
+    if parent is not None and stat.S_ISLNK(parent.st_mode):
+        # Preserve the original path so _safe_socket_path can fail closed
+        # rather than allowing a long symlinked path to bypass that check.
+        return requested
+    digest = hashlib.sha256(os.fsencode(str(requested))).hexdigest()[:40]
+    derived = _runtime_socket_root() / f"mncs-{digest}.sock"
+    if len(os.fsencode(str(derived))) >= 108:
+        raise CommonsServiceError("SOCKET_PATH_UNSAFE", "derived socket path is too long")
+    return derived
+
+
 @dataclass(frozen=True, slots=True)
 class CommonsServiceConfig:
     store_path: Path
@@ -137,6 +214,9 @@ class CommonsServiceConfig:
     max_connections: int = MAX_CONNECTIONS
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "store_path", Path(self.store_path).expanduser())
+        object.__setattr__(self, "consumer_socket", _bounded_socket_path(self.consumer_socket))
+        object.__setattr__(self, "operator_socket", _bounded_socket_path(self.operator_socket))
         if not self.domain or len(self.domain) > 256 or "\x00" in self.domain:
             raise CommonsServiceError("CONFIG_INVALID", "domain must be bounded text")
         if not 0.1 <= self.request_timeout_seconds <= 30.0:
@@ -489,6 +569,11 @@ def service_tool_schemas() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             {},
         ),
         _tool_schema(
+            "commons_family_graph",
+            "Read the checked-in, digest-bound semantic family graph without rediscovery.",
+            {},
+        ),
+        _tool_schema(
             "commons_family_coverage",
             "Project bounded work coverage for every registered family project.",
             {},
@@ -617,6 +702,7 @@ class CommonsService:
             "operatorPublicationCapable": valid and operator_socket_ready,
             "consumerSocketReady": consumer_socket_ready,
             "operatorSocketReady": operator_socket_ready,
+            "socketPathPolicy": SOCKET_PATH_POLICY,
             "contentTrust": "UNTRUSTED",
             "executionAuthority": "none",
         }
@@ -645,6 +731,7 @@ class CommonsService:
             "recordProtocol": "commons.mncs.dev/v0alpha1",
             "exchangeProtocol": "commons.mncs.dev/exchange/v0alpha1",
             "transport": "LOCAL_UNIX_SOCKET",
+            "socketPathPolicy": SOCKET_PATH_POLICY,
             "consumerOperations": sorted(CONSUMER_OPERATIONS),
             # Keep the original descriptor list stable for older clients; the
             # lane-coordination operation is advertised in its dedicated view.
@@ -661,6 +748,18 @@ class CommonsService:
             "contentTrust": "UNTRUSTED",
             "executionAuthority": "none",
         }
+
+    def family_graph(self) -> dict[str, Any]:
+        configured = os.environ.get("MNCS_FAMILY_GRAPH_PATH")
+        path = (
+            Path(configured).expanduser()
+            if configured
+            else Path(__file__).resolve().parents[2] / "family" / "semantic-edges-v1.json"
+        )
+        try:
+            return load_graph(path)
+        except FamilyGraphError as error:
+            raise CommonsServiceError("FAMILY_GRAPH_UNAVAILABLE", str(error)) from error
 
     def _require_healthy(self) -> None:
         if self.status()["storeHealthy"] is not True:
@@ -727,6 +826,9 @@ class CommonsService:
         if operation == "family.registry":
             _only(arguments, set())
             return self.application.family_registry()
+        if operation == "family.graph":
+            _only(arguments, set())
+            return self.family_graph()
         if operation == "commons.validate":
             _only(arguments, {"record"})
             record = arguments.get("record")
@@ -1239,7 +1341,7 @@ class CommonsClient:
             )
         if not 0.1 <= timeout <= 30.0:
             raise CommonsServiceError("CONFIG_INVALID", "client timeout is outside bounds")
-        self.socket_path = Path(socket_path).expanduser()
+        self.socket_path = _bounded_socket_path(socket_path)
         self.timeout = timeout
 
     @classmethod
@@ -1401,6 +1503,9 @@ class CommonsClient:
 
     def family_registry(self) -> dict[str, Any]:
         return self._call("family.registry")
+
+    def family_graph(self) -> dict[str, Any]:
+        return self._call("family.graph")
 
     def family_coverage(self) -> dict[str, Any]:
         return self._call("family.coverage")

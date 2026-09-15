@@ -131,6 +131,9 @@ def test_consumer_client_has_no_publication_method(tmp_path: Path) -> None:
     try:
         assert not hasattr(consumer, "publish")
         assert consumer.describe()["interface"]["binding"] == "local-service"
+        graph = consumer.family_graph()
+        assert graph["graph_identity"]
+        assert graph["schema_version"] == "commons.mncs.dev/family-semantic-edges/v1"
     finally:
         server.close()
 
@@ -194,6 +197,32 @@ def test_symlink_socket_parent_is_rejected_without_chmod_target(tmp_path: Path) 
 
     assert rejected.value.code == "SOCKET_PATH_UNSAFE"
     assert stat.S_IMODE(os.lstat(actual).st_mode) == original_mode
+
+
+def test_long_checkout_socket_paths_use_bounded_runtime_paths(tmp_path: Path) -> None:
+    checkout = tmp_path / ("checkout-" + "x" * 76) / ("worktree-" + "y" * 76)
+    store = CommonsStore(checkout / "store")
+    store.init()
+    requested_consumer = checkout / "runtime" / ("consumer-" + "z" * 80 + ".sock")
+    requested_operator = checkout / "runtime" / ("operator-" + "q" * 80 + ".sock")
+    config = CommonsServiceConfig(store.root, requested_consumer, requested_operator)
+    assert config.consumer_socket != requested_consumer
+    assert config.operator_socket != requested_operator
+    assert len(os.fsencode(str(config.consumer_socket))) < 96
+    assert len(os.fsencode(str(config.operator_socket))) < 96
+    assert stat.S_IMODE(os.lstat(config.consumer_socket.parent).st_mode) == 0o700
+
+    server = CommonsServiceServer(CommonsService(config))
+    server.start()
+    consumer = CommonsClient.connect(requested_consumer)
+    try:
+        status = consumer.status()
+        assert status["consumerSocketReady"] is True
+        assert status["socketPathPolicy"] == "bounded-hash-v1"
+    finally:
+        server.close()
+    assert not config.consumer_socket.exists()
+    assert not config.operator_socket.exists()
 
 
 def test_only_one_service_can_own_a_store_with_alternate_sockets(tmp_path: Path) -> None:

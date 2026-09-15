@@ -31,3 +31,66 @@ jobs:
       - run: python scripts/validate_pressures.py
       - run: python scripts/validate_compat.py
       - run: python -m mncs_commons.cli --help
+
+  family-semantic-graph:
+    name: Reconcile semantic family graph
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out Commons
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check out current family declarations
+        uses: actions/checkout@v4
+        with:
+          repository: epi13/RAVEL
+          ref: main
+          path: family/RAVEL
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-test
+          ref: main
+          path: family/mncs-test
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-actions
+          ref: main
+          path: family/mncs-actions
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-forge-mcp
+          ref: main
+          path: family/mncs-forge-mcp
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-debug
+          ref: main
+          path: family/mncs-debug
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-language
+          ref: main
+          path: family/mncs-language
+          fetch-depth: 1
+      - run: python -m pip install -e .
+      - name: Validate every declaration and its evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          for repository in RAVEL mncs-test mncs-actions mncs-forge-mcp mncs-debug mncs-language; do
+            python scripts/validate_semantic_declaration.py \
+              --root "$GITHUB_WORKSPACE/family/$repository"
+          done
+      - name: Reject a stale checked-in graph
+        run: >-
+          python scripts/reconcile_semantic_edges.py
+          --workspace "$GITHUB_WORKSPACE/family"
+          --check

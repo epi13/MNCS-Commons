@@ -7,20 +7,13 @@ import argparse
 import json
 from pathlib import Path
 
-from mncs_commons.family_graph import FamilyGraphError, generate_graph, validate_declaration
+from mncs_commons.family_graph import (
+    FamilyGraphError,
+    bind_declaration_evidence,
+    generate_graph,
+    validate_declaration,
+)
 from mncs_commons.family_registry import family_registry
-
-
-def _validate_evidence_paths(checkout: Path, declaration: dict) -> None:
-    for kind in ("provides", "consumes"):
-        for index, entry in enumerate(declaration[kind]):
-            evidence = entry["evidence"]
-            evidence_path = checkout / evidence
-            if Path(evidence).is_absolute() or not evidence_path.is_file():
-                raise FamilyGraphError(
-                    f"{checkout / 'family-semantic-contracts-v1.json'} "
-                    f"{kind}[{index}] evidence does not exist: {evidence}"
-                )
 
 
 def load_declarations(workspace: Path) -> tuple[list[dict], list[dict]]:
@@ -54,7 +47,7 @@ def load_declarations(workspace: Path) -> tuple[list[dict], list[dict]]:
             raise FamilyGraphError(
                 f"{path} declares {declaration['repository_id']}, expected {project_id}"
             )
-        _validate_evidence_paths(checkout, declaration)
+        declaration = bind_declaration_evidence(checkout, declaration)
         declaration["_path"] = str(path.relative_to(workspace))
         declarations.append(declaration)
         project = registry[project_id]

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/epi13/MNCS-Commons/blob/main/schemas/family-verification-checks-v1.schema.json",
+  "title": "MNCS repository-owned selective verification surfaces",
+  "description": "A command-free map from consumed contracts to exact check identities. Actions supplies the execution transport.",
+  "type": "object",
+  "required": ["schema_version", "repository_id", "checks"],
+  "properties": {
+    "schema_version": {"const": "commons.mncs.family-verification-checks/v1"},
+    "repository_id": {"type": "string", "minLength": 1},
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["identity", "contract_identity", "runner", "surface"],
+        "properties": {
+          "identity": {"type": "string", "minLength": 1},
+          "contract_identity": {"type": "string", "minLength": 1},
+          "runner": {"const": "declaration"},
+          "surface": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

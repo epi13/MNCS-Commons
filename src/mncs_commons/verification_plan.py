@@ -61,6 +61,7 @@ ESCALATION_REASONS = (
 REQUIRED_EVIDENCE = (
     "selected_test_cases_pass",
     "repository_canonical_suite_pass",
+    "selected_consumer_proofs_pass",
     "family_verification_pass",
 )
 
@@ -69,6 +70,7 @@ PROOF_BOUNDARIES = (
     "direct_dependents",
     "affected_subsystem",
     "repository",
+    "selected_repositories",
     "family",
 )
 
@@ -280,6 +282,8 @@ def validate_plan(
             "must name one of proof.required_evidence",
         )
     expected_scope = "repository" if level == "repository_canonical" else level
+    if routing_scope == "selected_repositories":
+        expected_scope = "selected_repositories"
     if claimed_scope != expected_scope:
         raise VerificationPlanError(
             "PROOF_BOUNDARY_INVALID",
@@ -294,8 +298,14 @@ def validate_plan(
         )
     if level == "family" and proof["sufficient_to_stop"]:
         raise VerificationPlanError("PROOF_BOUNDARY_INVALID", "proof.sufficient_to_stop", "family routing evidence is not family proof")
-    if level == "family" and "family_verification_pass" not in evidence:
+    if level == "family" and routing_scope == "family" and "family_verification_pass" not in evidence:
         raise VerificationPlanError("PROOF_BOUNDARY_INVALID", "proof.required_evidence", "family plans require family_verification_pass")
+    if routing_scope == "selected_repositories" and "selected_consumer_proofs_pass" not in evidence:
+        raise VerificationPlanError(
+            "PROOF_BOUNDARY_INVALID",
+            "proof.required_evidence",
+            "selected-repository plans require selected_consumer_proofs_pass",
+        )
 
     provenance = _object(plan.get("provenance"), "provenance")
     _string(provenance.get("provider"), "provenance.provider")

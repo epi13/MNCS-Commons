@@ -108,15 +108,15 @@
       "required": ["sufficient_to_stop", "required_evidence", "boundary"],
       "properties": {
         "sufficient_to_stop": {"type": "boolean"},
-        "required_evidence": {"type": "array", "uniqueItems": true, "items": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "family_verification_pass"]}},
+        "required_evidence": {"type": "array", "uniqueItems": true, "items": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "selected_consumer_proofs_pass", "family_verification_pass"]}},
         "boundary": {
           "type": "object",
           "required": ["claimed_scope", "established", "executor", "stop_condition"],
           "properties": {
-            "claimed_scope": {"enum": ["changed_item", "direct_dependents", "affected_subsystem", "repository", "family"]},
+            "claimed_scope": {"enum": ["changed_item", "direct_dependents", "affected_subsystem", "repository", "selected_repositories", "family"]},
             "established": {"type": "boolean"},
             "executor": {"type": "string", "minLength": 1},
-            "stop_condition": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "family_verification_pass"]}
+            "stop_condition": {"enum": ["selected_test_cases_pass", "repository_canonical_suite_pass", "selected_consumer_proofs_pass", "family_verification_pass"]}
           },
           "additionalProperties": true
         }
