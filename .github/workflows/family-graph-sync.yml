@@ -59,7 +59,8 @@ jobs:
           python scripts/reconcile_semantic_edges.py \
             --workspace "$GITHUB_WORKSPACE/family" \
             --output "$RUNNER_TEMP/semantic-edges-v1.json"
-          python -m pytest -q tests/test_family_graph.py
+          MNCS_FAMILY_GRAPH_PATH="$RUNNER_TEMP/semantic-edges-v1.json" \
+            python -m pytest -q tests/test_family_graph.py
       - name: Publish graph when changed
         shell: bash
         env:
