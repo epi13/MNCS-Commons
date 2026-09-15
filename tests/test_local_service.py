@@ -138,6 +138,18 @@ def test_consumer_client_has_no_publication_method(tmp_path: Path) -> None:
         server.close()
 
 
+def test_family_graph_uses_configured_commons_root(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("MNCS_FAMILY_GRAPH_PATH", raising=False)
+    monkeypatch.setenv("MNCS_COMMONS_ROOT", str(Path(__file__).parents[1]))
+    server, consumer, _operator = _start(tmp_path)
+    try:
+        graph = consumer.family_graph()
+        assert graph["graph_identity"]
+        assert graph["schema_version"] == "commons.mncs.dev/family-semantic-edges/v1"
+    finally:
+        server.close()
+
+
 def test_store_and_sync_cursor_survive_service_restart(tmp_path: Path) -> None:
     server, consumer, operator = _start(tmp_path)
     config = server.service.config

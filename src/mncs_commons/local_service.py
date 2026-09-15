@@ -751,11 +751,20 @@ class CommonsService:
 
     def family_graph(self) -> dict[str, Any]:
         configured = os.environ.get("MNCS_FAMILY_GRAPH_PATH")
-        path = (
-            Path(configured).expanduser()
-            if configured
-            else Path(__file__).resolve().parents[2] / "family" / "semantic-edges-v1.json"
-        )
+        if configured:
+            path = Path(configured).expanduser()
+        else:
+            configured_root = os.environ.get("MNCS_COMMONS_ROOT")
+            if configured_root:
+                path = Path(configured_root).expanduser() / "family" / "semantic-edges-v1.json"
+            else:
+                candidates = (
+                    Path.cwd() / "family" / "semantic-edges-v1.json",
+                    Path(__file__).resolve().parents[2] / "family" / "semantic-edges-v1.json",
+                )
+                path = next(
+                    (candidate for candidate in candidates if candidate.is_file()), candidates[-1]
+                )
         try:
             return load_graph(path)
         except FamilyGraphError as error:

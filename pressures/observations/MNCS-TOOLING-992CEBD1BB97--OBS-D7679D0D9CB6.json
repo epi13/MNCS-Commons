@@ -1,0 +1,68 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "c9272ba2c12f26451042f95767d112d402b56826",
+    "validation": "typed-call-and-abi-canaries"
+  },
+  "contentDigest": "sha256:6df1f262d725f104d94fc6f7014c89ecaeaca2ae1ceecc0d7de0492dbd7aef0a",
+  "evidence": [
+    {
+      "detail": "Cross-repository and local policy selection pass through a typed SelectionInput record.",
+      "id": "RAVEL:tests/test_impact.py::typed-native-selection",
+      "ref": "RAVEL:tests/test_impact.py",
+      "status": "PASS"
+    },
+    {
+      "detail": "No _CHANGE_CLASS_CODES map or positional semantic input array remains.",
+      "id": "RAVEL:src/ravel/impact.py::_native_selection_policy",
+      "ref": "RAVEL:src/ravel/impact.py",
+      "status": "PASS"
+    },
+    {
+      "detail": "A second real consumer uses the same typed invocation mechanism for SufficiencyInput.",
+      "id": "MNCS-DEBUG:native-sufficiency",
+      "ref": "mncs-debug:mncs_debug/native_core.py",
+      "status": "PASS"
+    },
+    {
+      "detail": "Interface identity changes deterministically when an argument/enum/return contract changes.",
+      "id": "MNCS-LANGUAGE:abi-evolution-canary",
+      "ref": "mncs-language:crates/mncs-cli/tests",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-TOOLING-992CEBD1BB97--OBS-D7679D0D9CB6",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "currentValidation": true,
+    "remainingAffectedRepositories": [
+      "mncs-doctor"
+    ],
+    "status": "consumer-migrated-doctor-remaining",
+    "typedSchema": "mncs.typed-call/1"
+  },
+  "observedAt": "2026-09-14T20:00:00Z",
+  "pressureId": "MNCS-TOOLING-992CEBD1BB97",
+  "repository": "ravel",
+  "reproduction": {
+    "instructions": "Run Ravel native selection tests and the ABI evolution canary against the pushed mncs-language main revision.",
+    "result": "Typed record fields and ChangeClass finite variants were encoded by the shared typed request membrane; output level and reasons remained native finite values.",
+    "status": "PASS"
+  },
+  "runId": "mncs-typed-native-boundary-2026-09-14",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "015871eef9935ab8e73eb7eeb5664c7f0a579ab6",
+    "repository": "RAVEL"
+  },
+  "summary": "Ravel now invokes choose(SelectionInput) through the typed mncs.typed-call/1 boundary; its handwritten change-class code map and positional semantic input construction are removed. Doctor remains the affected scalar caller.",
+  "version": "1",
+  "workaround": {
+    "description": "Ravel positional change-class encoding was removed; only the deprecated native select_codes compatibility callable remains.",
+    "fallbackLanguage": "python",
+    "removed": true
+  }
+}
