@@ -17,6 +17,11 @@
     "orchestration": "mncs-forge-mcp",
     "transport_contract": "mncs-commons"
   },
+  "routing_scope": {
+    "authority": "ravel",
+    "values": ["local", "selected_repositories", "family"],
+    "semantics": "selected_repositories routes only the named consumers; family means family-wide routing. Neither routing scope alone establishes proof beyond proof.boundary."
+  },
   "compatibility": {
     "legacy_schema_copies": "deprecated",
     "removal_condition": "all listed consumers load this contract and the family mutation corpus passes at their boundary"

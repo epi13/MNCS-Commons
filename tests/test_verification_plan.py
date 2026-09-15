@@ -110,3 +110,32 @@ def test_stale_source_and_inventory_mismatch_are_common_dispositions(tmp_path) -
     with pytest.raises(VerificationPlanError) as error:
         validate_plan(plan, inventory_test_identities=["mncs:test:one"])
     assert error.value.code == "INVENTORY_MISMATCH"
+
+
+def test_family_routing_scope_distinguishes_selected_consumers_from_family_proof() -> None:
+    plan = _plan()
+    plan["selection"].update(
+        level="family",
+        routing_scope="selected_repositories",
+        selected_repositories=["consumer"],
+        available_repository_count=1,
+    )
+    plan["proof"].update(
+        sufficient_to_stop=False,
+        required_evidence=["family_verification_pass"],
+        boundary={
+            "claimed_scope": "family",
+            "established": False,
+            "executor": "family-router",
+            "stop_condition": "family_verification_pass",
+        },
+    )
+    plan["plan_id"] = plan_identity(plan)
+    assert validate_plan(plan)["selection"]["routing_scope"] == "selected_repositories"
+
+    invalid = _plan()
+    invalid["selection"].update(routing_scope="local", selected_repositories=["consumer"], available_repository_count=1)
+    invalid["plan_id"] = plan_identity(invalid)
+    with pytest.raises(VerificationPlanError) as error:
+        validate_plan(invalid)
+    assert error.value.code == "ROUTING_SCOPE_INVALID"
