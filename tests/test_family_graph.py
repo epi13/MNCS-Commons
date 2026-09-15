@@ -17,11 +17,17 @@ from mncs_commons.family_graph import (
 )
 
 
-GRAPH = Path(__file__).resolve().parents[1] / "family" / "semantic-edges-v1.json"
+DEFAULT_GRAPH = Path(__file__).resolve().parents[1] / "family" / "semantic-edges-v1.json"
+
+
+def graph_path() -> Path:
+    """Resolve the graph under test, allowing sync CI to test its candidate."""
+
+    return Path(os.environ.get("MNCS_FAMILY_GRAPH_PATH", DEFAULT_GRAPH))
 
 
 def test_checked_in_graph_has_digest_bound_edges_and_selective_consumers() -> None:
-    graph = load_graph(GRAPH)
+    graph = load_graph(graph_path())
     consumers = consumers_for(
         graph,
         producer_repository="ravel",
@@ -45,7 +51,7 @@ def test_checked_in_graph_has_digest_bound_edges_and_selective_consumers() -> No
 
 
 def test_graph_mutation_is_rejected(tmp_path: Path) -> None:
-    value = json.loads(GRAPH.read_text(encoding="utf-8"))
+    value = json.loads(graph_path().read_text(encoding="utf-8"))
     value["edges"][0]["consumer_repository"] = "ravel"
     path = tmp_path / "graph.json"
     path.write_text(json.dumps(value), encoding="utf-8")
