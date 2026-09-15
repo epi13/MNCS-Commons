@@ -13,7 +13,7 @@
       {
         "repository_id": "mncs-actions",
         "path": "mncs-actions/family-semantic-contracts-v1.json",
-        "identity": "999238edfc7a4bd1ddf95c8e064be745a593f4176ef3b0265e71a1c7d4cf4d5e",
+        "identity": "4a1331caf434e071c0ef7aa6ff69ca7f1746e9a240084077051f7b0f8a4018e0",
         "evidence_digests": {
           "provides": {},
           "consumes": {
@@ -27,11 +27,11 @@
       {
         "repository_id": "mncs-debug",
         "path": "mncs-debug/family-semantic-contracts-v1.json",
-        "identity": "59fdb3e7780d3cdecaf51c0c83f15cb100fc14cf6348ed8447bc92f6100fd3b4",
+        "identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
         "evidence_digests": {
           "provides": {},
           "consumes": {
-            "docs/architecture.md": "sha256:e7de02b6e0f85e929c7218b724a402f0813879c4cfbb9bed50c78b222957f833",
+            "docs/architecture.md": "sha256:7c95ea925757bd3804661293cd30952ed0e4a18d349df3a67922d31afe88bd59",
             "AGENTS.md": "sha256:fea527f07fd954c2a6e8b400c1787723de3f43a586b6d2a53d1c0e37d5cb5950"
           },
           "verification": {
@@ -42,7 +42,7 @@
       {
         "repository_id": "mncs-forge-mcp",
         "path": "mncs-forge-mcp/family-semantic-contracts-v1.json",
-        "identity": "09f24fd4655f2c9c23325b877355686682d099c7b4289eccb194914cc9d58c82",
+        "identity": "05215cd9ea3acc750c56521bedf7b3f26ddf74463509e9f8585b94945be8845d",
         "evidence_digests": {
           "provides": {},
           "consumes": {
@@ -56,10 +56,10 @@
       {
         "repository_id": "mncs-language",
         "path": "mncs-language/family-semantic-contracts-v1.json",
-        "identity": "85f90a5a575f0139fc1da5df9957574de679afe8a61c3e4f79d901d1b184dcab",
+        "identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
         "evidence_digests": {
           "provides": {
-            "crates/mncs-cli/src/main.rs": "sha256:81c9e08e1b3d2dbe3c8aab5f45a5eb9373bf1b54c32c336c2fe5bb0a9a3cd3ce"
+            "crates/mncs-cli/src/main.rs": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3"
           },
           "consumes": {},
           "verification": {}
@@ -68,30 +68,30 @@
       {
         "repository_id": "mncs-test",
         "path": "mncs-test/family-semantic-contracts-v1.json",
-        "identity": "438c6ba507ce2b19c93d8f8aebad1be44b71ecd22747480e439427ab71da754c",
+        "identity": "cc2f7a87849b7dc6448912a576c4198903b81ed04cf9ea11b509576c0f7a82d2",
         "evidence_digests": {
           "provides": {
-            "tools/mncs_test.py": "sha256:1a5652f82fa0d21690a0b57565a465e44d01df9fb03c5925a1fb798afb494062"
+            "tools/mncs_test.py": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45"
           },
           "consumes": {
-            "tools/mncs_test.py": "sha256:1a5652f82fa0d21690a0b57565a465e44d01df9fb03c5925a1fb798afb494062",
+            "tools/mncs_test.py": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45",
             "tools/family_contract.py": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71"
           },
           "verification": {
-            "family-verification-checks-v1.json": "sha256:3c49426dd66d6b49602a7a3f7cd7e7be38951107b98a45635a13d7762e87ed82"
+            "family-verification-checks-v1.json": "sha256:98d155a6d053cb5e2caa403d435ffb4c212d6ad9938d86b688d4916f1b88f9c8"
           }
         }
       },
       {
         "repository_id": "ravel",
         "path": "ravel/family-semantic-contracts-v1.json",
-        "identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
+        "identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
         "evidence_digests": {
           "provides": {
-            "src/ravel/impact.py": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310"
+            "src/ravel/impact.py": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e"
           },
           "consumes": {
-            "src/ravel/impact.py": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310"
+            "src/ravel/impact.py": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e"
           },
           "verification": {
             "family-verification-checks-v1.json": "sha256:8c090d656068b714f3fbd5e26822b05ee238918738eeec48f277bbb0caa1eb8c"
@@ -105,42 +105,42 @@
       "id": "mncs-actions",
       "repository": "epi13/mncs-actions",
       "revision": "1",
-      "manifest_identity": "999238edfc7a4bd1ddf95c8e064be745a593f4176ef3b0265e71a1c7d4cf4d5e",
+      "manifest_identity": "4a1331caf434e071c0ef7aa6ff69ca7f1746e9a240084077051f7b0f8a4018e0",
       "declaration_path": "mncs-actions/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-debug",
       "repository": "epi13/mncs-debug",
       "revision": "1",
-      "manifest_identity": "59fdb3e7780d3cdecaf51c0c83f15cb100fc14cf6348ed8447bc92f6100fd3b4",
+      "manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "declaration_path": "mncs-debug/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-forge-mcp",
       "repository": "epi13/mncs-forge-mcp",
       "revision": "1",
-      "manifest_identity": "09f24fd4655f2c9c23325b877355686682d099c7b4289eccb194914cc9d58c82",
+      "manifest_identity": "05215cd9ea3acc750c56521bedf7b3f26ddf74463509e9f8585b94945be8845d",
       "declaration_path": "mncs-forge-mcp/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-language",
       "repository": "epi13/mncs-language",
       "revision": "1",
-      "manifest_identity": "85f90a5a575f0139fc1da5df9957574de679afe8a61c3e4f79d901d1b184dcab",
+      "manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
       "declaration_path": "mncs-language/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-test",
       "repository": "epi13/mncs-test",
       "revision": "1",
-      "manifest_identity": "438c6ba507ce2b19c93d8f8aebad1be44b71ecd22747480e439427ab71da754c",
+      "manifest_identity": "cc2f7a87849b7dc6448912a576c4198903b81ed04cf9ea11b509576c0f7a82d2",
       "declaration_path": "mncs-test/family-semantic-contracts-v1.json"
     },
     {
       "id": "ravel",
       "repository": "epi13/RAVEL",
       "revision": "1",
-      "manifest_identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
+      "manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
       "declaration_path": "ravel/family-semantic-contracts-v1.json"
     }
   ],
@@ -152,19 +152,20 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:observation",
       "provenance": "mncs-debug:docs/architecture.md",
-      "producer_manifest_identity": "85f90a5a575f0139fc1da5df9957574de679afe8a61c3e4f79d901d1b184dcab",
-      "consumer_manifest_identity": "59fdb3e7780d3cdecaf51c0c83f15cb100fc14cf6348ed8447bc92f6100fd3b4",
+      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-language:execution-observation",
       "verification": {
         "check_identity": "mncs-debug:observation-contract",
         "executor": "mncs-debug",
         "surface": "diagnostic-observation-input",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
-      "provider_evidence_sha256": "sha256:81c9e08e1b3d2dbe3c8aab5f45a5eb9373bf1b54c32c336c2fe5bb0a9a3cd3ce",
-      "consumer_evidence_sha256": "sha256:e7de02b6e0f85e929c7218b724a402f0813879c4cfbb9bed50c78b222957f833",
-      "fingerprint": "5471b873a3584c677e997ab49da62c3fe9bba8d3ca33b1c79e854db11a2db157"
+      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "consumer_evidence_sha256": "sha256:7c95ea925757bd3804661293cd30952ed0e4a18d349df3a67922d31afe88bd59",
+      "fingerprint": "39563c47ad1ed9babfbb2b85355c76456b558e27841dac0fa0f96f6ce2d0c616"
     },
     {
       "producer_repository": "mncs-language",
@@ -173,19 +174,20 @@
       "contract_revision": "0.17",
       "consuming_identity": "mncs-test:test-inventory",
       "provenance": "mncs-test:tools/mncs_test.py",
-      "producer_manifest_identity": "85f90a5a575f0139fc1da5df9957574de679afe8a61c3e4f79d901d1b184dcab",
-      "consumer_manifest_identity": "438c6ba507ce2b19c93d8f8aebad1be44b71ecd22747480e439427ab71da754c",
+      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "consumer_manifest_identity": "cc2f7a87849b7dc6448912a576c4198903b81ed04cf9ea11b509576c0f7a82d2",
       "provider_identity": "mncs-language:test-inventory",
       "verification": {
         "check_identity": "mncs-test:test-inventory-join",
         "executor": "mncs-test",
         "surface": "compiler-inventory-to-runner",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
-      "verification_evidence_sha256": "sha256:3c49426dd66d6b49602a7a3f7cd7e7be38951107b98a45635a13d7762e87ed82",
-      "provider_evidence_sha256": "sha256:81c9e08e1b3d2dbe3c8aab5f45a5eb9373bf1b54c32c336c2fe5bb0a9a3cd3ce",
-      "consumer_evidence_sha256": "sha256:1a5652f82fa0d21690a0b57565a465e44d01df9fb03c5925a1fb798afb494062",
-      "fingerprint": "e20b9116202cf84c5a25b864515461400a06dd6ff7088cc0ea447a04e0a17661"
+      "verification_evidence_sha256": "sha256:98d155a6d053cb5e2caa403d435ffb4c212d6ad9938d86b688d4916f1b88f9c8",
+      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "consumer_evidence_sha256": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45",
+      "fingerprint": "7821e0653716d6a6e3943c503f97e60c906d14fce4121c7a246899d15d3a223e"
     },
     {
       "producer_repository": "mncs-language",
@@ -194,19 +196,20 @@
       "contract_revision": "1",
       "consuming_identity": "ravel:impact-planner",
       "provenance": "ravel:src/ravel/impact.py",
-      "producer_manifest_identity": "85f90a5a575f0139fc1da5df9957574de679afe8a61c3e4f79d901d1b184dcab",
-      "consumer_manifest_identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
+      "producer_manifest_identity": "03536e496a15b2f54059e7882c14ebe479f13fce5ed9fa6abd3af347817ec59c",
+      "consumer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
       "provider_identity": "mncs-language:semantic-impact",
       "verification": {
         "check_identity": "ravel:semantic-impact-join",
         "executor": "ravel",
         "surface": "semantic-impact-to-plan",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:8c090d656068b714f3fbd5e26822b05ee238918738eeec48f277bbb0caa1eb8c",
-      "provider_evidence_sha256": "sha256:81c9e08e1b3d2dbe3c8aab5f45a5eb9373bf1b54c32c336c2fe5bb0a9a3cd3ce",
-      "consumer_evidence_sha256": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310",
-      "fingerprint": "a17725d4d0bd5c729f61cae42253a831d103d8b580155082af12c990f0a63654"
+      "provider_evidence_sha256": "sha256:60d54560b5daf59a6eaf8a08ed678764f03e0103eb2ba43db04561891f8d5ee3",
+      "consumer_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
+      "fingerprint": "cb4c270a60921c7a30cdaca5fedb229f7ea5ea55158ec408e606098fe29d5315"
     },
     {
       "producer_repository": "mncs-test",
@@ -215,19 +218,20 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:test-result",
       "provenance": "mncs-debug:AGENTS.md",
-      "producer_manifest_identity": "438c6ba507ce2b19c93d8f8aebad1be44b71ecd22747480e439427ab71da754c",
-      "consumer_manifest_identity": "59fdb3e7780d3cdecaf51c0c83f15cb100fc14cf6348ed8447bc92f6100fd3b4",
+      "producer_manifest_identity": "cc2f7a87849b7dc6448912a576c4198903b81ed04cf9ea11b509576c0f7a82d2",
+      "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-test:test-result",
       "verification": {
         "check_identity": "mncs-debug:test-result-contract",
         "executor": "mncs-debug",
         "surface": "diagnostic-test-input",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
-      "provider_evidence_sha256": "sha256:1a5652f82fa0d21690a0b57565a465e44d01df9fb03c5925a1fb798afb494062",
+      "provider_evidence_sha256": "sha256:0903c946358145589ba3ca039bf4cf081ea49c6f992527cb638412845d678c45",
       "consumer_evidence_sha256": "sha256:fea527f07fd954c2a6e8b400c1787723de3f43a586b6d2a53d1c0e37d5cb5950",
-      "fingerprint": "030afeb7b1940ddc8cf03b3798114d75c0cb6675b2b5ee5fe9c9759d9c7ee02a"
+      "fingerprint": "c55625f00533b970f2c0035363af1a5a5844c14ad24e2f30bea277629f84a495"
     },
     {
       "producer_repository": "ravel",
@@ -236,19 +240,20 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-actions:run-check",
       "provenance": "mncs-actions:lib/mncs_family_contract.py",
-      "producer_manifest_identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
-      "consumer_manifest_identity": "999238edfc7a4bd1ddf95c8e064be745a593f4176ef3b0265e71a1c7d4cf4d5e",
+      "producer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
+      "consumer_manifest_identity": "4a1331caf434e071c0ef7aa6ff69ca7f1746e9a240084077051f7b0f8a4018e0",
       "provider_identity": "ravel:verification-plan",
       "verification": {
         "check_identity": "mncs-actions:verification-plan-receipt",
         "executor": "mncs-actions",
         "surface": "selected-consumer-receipt",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:021060d7e05d7d6dbdf76a5d645a0770568df46d60644605f1b98635cf4aeba1",
-      "provider_evidence_sha256": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310",
+      "provider_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
       "consumer_evidence_sha256": "sha256:df91db56b695bd85d41e480feb4ae67391915a0d9f17af74d7a8d6cbe79398a5",
-      "fingerprint": "66d6638e57c9874d8d6088bd8a11dacb15eb623eb3ff0b58dfd8bce2df2a7a27"
+      "fingerprint": "bb8075f7f5411c466271005d71c3fb805c4ffe1706daf4213404751c485cea51"
     },
     {
       "producer_repository": "ravel",
@@ -257,19 +262,20 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-forge-mcp:mncs_failure_loop",
       "provenance": "mncs-forge-mcp:src/mncs_forge/verification_plan_contract.py",
-      "producer_manifest_identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
-      "consumer_manifest_identity": "09f24fd4655f2c9c23325b877355686682d099c7b4289eccb194914cc9d58c82",
+      "producer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
+      "consumer_manifest_identity": "05215cd9ea3acc750c56521bedf7b3f26ddf74463509e9f8585b94945be8845d",
       "provider_identity": "ravel:verification-plan",
       "verification": {
         "check_identity": "mncs-forge-mcp:verification-plan-routing",
         "executor": "mncs-forge-mcp",
         "surface": "selected-consumer-routing",
-        "evidence": "family-verification-checks-v1.json"
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:0f4fa1d6aaad31d70dda6ddc76bbd94f12dcd7a3a4bfc68ffc757cd6a08f3b1a",
-      "provider_evidence_sha256": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310",
+      "provider_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
       "consumer_evidence_sha256": "sha256:3cd0eac31b9c17e257ad3bcf9357a25ee0fd7161dcb436955720ba2f2b2af4b0",
-      "fingerprint": "bf3d5c9e6c60eec8ceb462059309749a91157137ccd19318285e99cda01dac70"
+      "fingerprint": "044801e6dcf3e0412cc89f1db057dd2c18bfaa2d5e1be50f995bfed6dd5232b5"
     },
     {
       "producer_repository": "ravel",
@@ -278,20 +284,64 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-test:verification-plan",
       "provenance": "mncs-test:tools/family_contract.py",
-      "producer_manifest_identity": "d5cc57c23e3cf09f63b6112109d399638fd24b28133b824fd16fb01e57cef93a",
-      "consumer_manifest_identity": "438c6ba507ce2b19c93d8f8aebad1be44b71ecd22747480e439427ab71da754c",
+      "producer_manifest_identity": "7f7ac2e380024494c34b2a236370d8fa37f339fffcdee394d7dae1e9937956bd",
+      "consumer_manifest_identity": "cc2f7a87849b7dc6448912a576c4198903b81ed04cf9ea11b509576c0f7a82d2",
       "provider_identity": "ravel:verification-plan",
       "verification": {
         "check_identity": "mncs-test:verification-plan-contract",
         "executor": "mncs-test",
-        "surface": "selected-consumer-contract",
-        "evidence": "family-verification-checks-v1.json"
+        "surface": "selected-consumer-behavior",
+        "evidence": "family-verification-checks-v1.json",
+        "runner": "mncs-test",
+        "selector": {
+          "manifest": "mncs-test.toml",
+          "test_identities": [
+            "mncs:0.2:test-case:tests.self_suite::arithmetic::048110093302a319d4962bf0ab6cf893312cfcc10981d4326ca6fafff87fd2a0",
+            "mncs:0.2:test-case:tests.self_suite::boolean::36fb811221b71e39a0daec26be573986edb5703221a8f8ba179f98e9a65a4b56"
+          ],
+          "inventory_identity": "9c97462da26b12f46c76247409caa33d40f87c82649842cf7244d848dc2f7060"
+        }
       },
-      "verification_evidence_sha256": "sha256:3c49426dd66d6b49602a7a3f7cd7e7be38951107b98a45635a13d7762e87ed82",
-      "provider_evidence_sha256": "sha256:83a8971676262416a6634587abff58ad4e7b6fce1c5ade7ae0888cdd0da25310",
+      "verification_evidence_sha256": "sha256:98d155a6d053cb5e2caa403d435ffb4c212d6ad9938d86b688d4916f1b88f9c8",
+      "provider_evidence_sha256": "sha256:0fec4b7996ca31f666da22fcc650fd001c5e93aa613f95b747330b5f3743d13e",
       "consumer_evidence_sha256": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71",
-      "fingerprint": "7ee510f6e0c1ff9a8c5149b7a82112dda3e1470a1b078c15eadd79858f31741a"
+      "fingerprint": "a10abc682beaf4c3f9859bc9a1b9add8b1811964edfbca8e07a87aac4cd9a1c6"
     }
   ],
-  "graph_identity": "d18d0ceed49ae2d9cccfe8f13a3268eb5cacf31e9d582db08a2ef68292914d68"
+  "coverage": {
+    "registry_identity": "8588b2ed464e9651437270501ea2e43e8867d7ab8f9937e940ec808707579d43",
+    "registered_family_project_count": 20,
+    "classified_project_count": 20,
+    "semantic_graph_participant_count": 6,
+    "explicit_nonparticipant_count": 14,
+    "unclassified_project_count": 0,
+    "semantic_graph_participants": [
+      "mncs-actions",
+      "mncs-debug",
+      "mncs-forge-mcp",
+      "mncs-language",
+      "mncs-test",
+      "ravel"
+    ],
+    "explicit_nonparticipants": [
+      "mncds",
+      "mncs",
+      "mncs-atlas",
+      "mncs-commons",
+      "mncs-control-mcp",
+      "mncs-fabric",
+      "mncs-harness",
+      "mncs-language-service",
+      "mncs-lineage",
+      "mncs-reference-studies",
+      "mncs-rights-provenance",
+      "mncs-tui",
+      "mncs-validator-rs",
+      "mnel"
+    ],
+    "unclassified_repositories": [],
+    "coverage_status": "complete",
+    "topology_status": "complete_among_declared_participants"
+  },
+  "graph_identity": "fe0e0f573d864117c9faa25c1043506fc529479f963dcd377bc71e0cda07b826"
 }

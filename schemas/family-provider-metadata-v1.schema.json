@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commons.mncs.dev/schemas/family-provider-metadata-v1.schema.json",
+  "title": "Generated family provider metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repository_id", "authority", "providers"],
+  "properties": {
+    "schema_version": {"const": "commons.mncs.generated-provider-metadata/v1"},
+    "repository_id": {"type": "string", "minLength": 1},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "module_identity", "interface_identity", "typed_call_schema_version", "generator_version", "binding_content_identity", "provider_fact_identity"],
+      "properties": {
+        "kind": {"const": "language-owned-abi"},
+        "module_identity": {"type": "string", "minLength": 1},
+        "interface_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "typed_call_schema_version": {"const": "mncs.typed-call/1"},
+        "generator_version": {"type": "string", "minLength": 1},
+        "binding_content_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "provider_fact_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contract_identity", "contract_revision", "exported_identity", "evidence"],
+        "properties": {
+          "contract_identity": {"type": "string", "minLength": 1},
+          "contract_revision": {"type": "string", "minLength": 1},
+          "exported_identity": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

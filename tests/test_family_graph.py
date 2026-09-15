@@ -7,7 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from mncs_commons.family_graph import consumers_for, load_graph
+from mncs_commons.family_graph import (
+    FamilyGraphError,
+    consumers_for,
+    load_graph,
+    validate_generated_provider_metadata,
+    validate_verification_manifest,
+)
 
 
 GRAPH = Path(__file__).resolve().parents[1] / "family" / "semantic-edges-v1.json"
@@ -27,6 +33,14 @@ def test_checked_in_graph_has_digest_bound_edges_and_selective_consumers() -> No
     ]
     assert all(edge["fingerprint"] for edge in consumers)
     assert graph["graph_identity"]
+    coverage = graph["coverage"]
+    assert coverage["registered_family_project_count"] == 20
+    assert coverage["classified_project_count"] == 20
+    assert coverage["semantic_graph_participant_count"] == 6
+    assert coverage["explicit_nonparticipant_count"] == 14
+    assert coverage["unclassified_project_count"] == 0
+    assert coverage["coverage_status"] == "complete"
+    assert coverage["topology_status"] == "complete_among_declared_participants"
 
 
 def test_graph_mutation_is_rejected(tmp_path: Path) -> None:
@@ -127,11 +141,15 @@ def test_evidence_mutation_invalidates_reconciled_graph(tmp_path: Path) -> None:
                     )
 
     output = tmp_path / "semantic-edges-v1.json"
+    isolated_commons = tmp_path / "isolated-commons"
+    isolated_commons.mkdir()
     command = [
         "python",
         str(root / "scripts" / "reconcile_semantic_edges.py"),
         "--workspace",
         str(workspace),
+        "--commons-root",
+        str(isolated_commons),
         "--output",
         str(output),
     ]
@@ -201,3 +219,63 @@ def test_repository_local_declaration_check_reports_compact_identity(tmp_path: P
     assert output["repository_id"] == "ravel"
     assert len(output["declaration_identity"]) == 64
     assert output["evidence_digests"]["provides"]["src/impact.py"].startswith("sha256:")
+
+
+def test_unknown_runner_and_executable_fields_are_rejected() -> None:
+    base = {
+        "schema_version": "commons.mncs.family-verification-checks/v1",
+        "repository_id": "ravel",
+        "checks": [
+            {
+                "identity": "ravel:check",
+                "contract_identity": "mncs.verification-plan/1",
+                "runner": "unknown-runner",
+                "surface": "behavioral",
+            }
+        ],
+    }
+    with pytest.raises(FamilyGraphError):
+        validate_verification_manifest(base, repository_id="ravel")
+
+    base["checks"][0]["runner"] = "declaration"
+    base["checks"][0]["command"] = "./run.sh"
+    with pytest.raises(FamilyGraphError):
+        validate_verification_manifest(base, repository_id="ravel")
+
+
+def test_generated_provider_facts_fail_closed_when_stale() -> None:
+    declaration = {
+        "repository_id": "ravel",
+        "provides": [
+            {
+                "contract_identity": "mncs.verification-plan/1",
+                "contract_revision": "1",
+                "exported_identity": "ravel:verification-plan",
+                "evidence": "src/ravel/impact.py",
+            }
+        ],
+    }
+    generated = {
+        "schema_version": "commons.mncs.generated-provider-metadata/v1",
+        "repository_id": "ravel",
+        "authority": {
+            "kind": "language-owned-abi",
+            "module_identity": "mncs.family.verification_plan.v1",
+            "interface_identity": "0" * 64,
+            "generator_version": "mncs-provider-facts/0.1",
+            "binding_content_identity": "1" * 64,
+            "provider_fact_identity": "2" * 64,
+        },
+        "providers": [
+            {
+                "contract_identity": "mncs.verification-plan/1",
+                "contract_revision": "2",
+                "exported_identity": "ravel:verification-plan",
+                "evidence": "src/ravel/impact.py",
+            }
+        ],
+    }
+    with pytest.raises(FamilyGraphError, match="stale"):
+        validate_generated_provider_metadata(
+            generated, repository_id="ravel", declaration=declaration
+        )

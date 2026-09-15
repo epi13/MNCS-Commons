@@ -18,10 +18,75 @@ from typing import Any, Mapping, Sequence
 GRAPH_SCHEMA = "commons.mncs.dev/family-semantic-edges/v1"
 DECLARATION_SCHEMA = "commons.mncs.semantic-contract-declarations/v1"
 VERIFICATION_MANIFEST_SCHEMA = "commons.mncs.family-verification-checks/v1"
+PROVIDER_METADATA_SCHEMA = "commons.mncs.generated-provider-metadata/v1"
+VERIFICATION_RUNNERS = frozenset({"declaration", "mncs-test"})
+MAX_CHECK_TEST_IDENTITIES = 256
 
 
 class FamilyGraphError(ValueError):
     pass
+
+
+def validate_generated_provider_metadata(
+    value: Any, *, repository_id: str, declaration: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Validate generated provider facts against the reviewable declaration.
+
+    Provider facts are allowed to be generated from an authoritative ABI or
+    export manifest, but the graph never accepts an unchecked replacement for
+    the repository declaration.  A mismatch is a stale-generation failure;
+    consumer intent remains explicit in the declaration.
+    """
+
+    if not isinstance(value, Mapping) or value.get("schema_version") != PROVIDER_METADATA_SCHEMA:
+        raise FamilyGraphError(f"generated provider metadata must be {PROVIDER_METADATA_SCHEMA}")
+    if value.get("repository_id") != repository_id:
+        raise FamilyGraphError("generated provider metadata repository_id does not match its checkout")
+    authority = value.get("authority")
+    if not isinstance(authority, Mapping):
+        raise FamilyGraphError("generated provider metadata authority must be an object")
+    for field in (
+        "kind",
+        "module_identity",
+        "interface_identity",
+        "generator_version",
+        "binding_content_identity",
+        "provider_fact_identity",
+    ):
+        if not isinstance(authority.get(field), str) or not authority[field]:
+            raise FamilyGraphError(f"generated provider metadata authority.{field} must be non-empty")
+    for field in ("interface_identity", "binding_content_identity"):
+        identity = authority[field]
+        if len(identity) != 64 or any(character not in "0123456789abcdef" for character in identity):
+            raise FamilyGraphError(f"generated provider metadata authority.{field} must be a lowercase digest")
+    providers = value.get("providers")
+    if not isinstance(providers, list):
+        raise FamilyGraphError("generated provider metadata providers must be an array")
+    normalized: list[dict[str, str]] = []
+    identities: set[str] = set()
+    for index, raw in enumerate(providers):
+        if not isinstance(raw, Mapping):
+            raise FamilyGraphError(f"generated provider metadata providers[{index}] must be an object")
+        required = ("contract_identity", "contract_revision", "exported_identity", "evidence")
+        if any(not isinstance(raw.get(field), str) or not raw[field] for field in required):
+            raise FamilyGraphError(f"generated provider metadata providers[{index}] is incomplete")
+        contract_identity = str(raw["contract_identity"])
+        if contract_identity in identities:
+            raise FamilyGraphError(f"generated provider metadata repeats {contract_identity}")
+        identities.add(contract_identity)
+        normalized.append({field: str(raw[field]) for field in required})
+    declared = [
+        {field: str(entry[field]) for field in ("contract_identity", "contract_revision", "exported_identity", "evidence")}
+        for entry in declaration.get("provides", [])
+        if isinstance(entry, Mapping)
+    ]
+    if sorted(normalized, key=lambda item: item["contract_identity"]) != sorted(
+        declared, key=lambda item: item["contract_identity"]
+    ):
+        raise FamilyGraphError(
+            f"generated provider metadata is stale for {repository_id}; regenerate provider facts"
+        )
+    return {**dict(value), "providers": sorted(normalized, key=lambda item: item["contract_identity"])}
 
 
 def _canonical(value: Any) -> bytes:
@@ -73,10 +138,63 @@ def validate_verification_manifest(value: Any, *, repository_id: str) -> dict[st
                 raise FamilyGraphError(
                     f"verification manifest checks[{index}].{field} must be non-empty"
                 )
-        if check["runner"] != "declaration":
+        if check["runner"] not in VERIFICATION_RUNNERS:
             raise FamilyGraphError(
-                f"verification manifest checks[{index}].runner must be declaration"
+                f"verification manifest checks[{index}].runner is unknown: {check['runner']}"
             )
+        selector = check.get("selector")
+        if check["runner"] == "mncs-test":
+            if not isinstance(selector, Mapping):
+                raise FamilyGraphError(
+                    f"verification manifest checks[{index}].selector is required for mncs-test"
+                )
+            manifest = selector.get("manifest")
+            test_identities = selector.get("test_identities")
+            if (
+                not isinstance(manifest, str)
+                or not manifest
+                or Path(manifest).is_absolute()
+                or ".." in Path(manifest).parts
+            ):
+                raise FamilyGraphError(
+                    f"verification manifest checks[{index}].selector.manifest must be a bounded relative path"
+                )
+            if (
+                not isinstance(test_identities, list)
+                or not test_identities
+                or len(test_identities) > MAX_CHECK_TEST_IDENTITIES
+                or not all(isinstance(item, str) and item for item in test_identities)
+                or len(set(test_identities)) != len(test_identities)
+            ):
+                raise FamilyGraphError(
+                    f"verification manifest checks[{index}].selector.test_identities must be a bounded unique non-empty array"
+                )
+            normalized_selector = {
+                "manifest": manifest,
+                "test_identities": sorted(test_identities),
+            }
+            inventory_identity = selector.get("inventory_identity")
+            if inventory_identity is not None:
+                if (
+                    not isinstance(inventory_identity, str)
+                    or not inventory_identity
+                    or len(inventory_identity) != 64
+                    or any(character not in "0123456789abcdef" for character in inventory_identity)
+                ):
+                    raise FamilyGraphError(
+                        f"verification manifest checks[{index}].selector.inventory_identity is invalid"
+                    )
+                normalized_selector["inventory_identity"] = inventory_identity
+            check["selector"] = normalized_selector
+        elif selector is not None:
+            raise FamilyGraphError(
+                f"verification manifest checks[{index}].selector is only valid for mncs-test"
+            )
+        for forbidden in ("command", "commands", "shell", "script", "argv", "executable"):
+            if forbidden in check or (isinstance(selector, Mapping) and forbidden in selector):
+                raise FamilyGraphError(
+                    f"verification manifest checks[{index}] cannot carry executable field {forbidden!r}"
+                )
         if check["identity"] in identities:
             raise FamilyGraphError(
                 f"verification manifest repeats check identity {check['identity']}"
@@ -144,15 +262,25 @@ def bind_declaration_evidence(checkout: Path, value: Mapping[str, Any]) -> dict[
                     manifest_value, repository_id=declaration["repository_id"]
                 )
                 manifests[evidence_path] = manifest
-            if not any(
-                check["identity"] == verification["check_identity"]
-                and check["contract_identity"] == entry["contract_identity"]
-                for check in manifest["checks"]
-            ):
+            matched_check = next(
+                (
+                    check
+                    for check in manifest["checks"]
+                    if check["identity"] == verification["check_identity"]
+                    and check["contract_identity"] == entry["contract_identity"]
+                ),
+                None,
+            )
+            if matched_check is None:
                 raise FamilyGraphError(
                     f"verification manifest {evidence_path} does not declare "
                     f"{verification['check_identity']} for {entry['contract_identity']}"
                 )
+            bound_verification = dict(verification)
+            bound_verification["runner"] = matched_check["runner"]
+            if matched_check["runner"] == "mncs-test":
+                bound_verification["selector"] = dict(matched_check["selector"])
+            entry["verification"] = bound_verification
             digest = hashlib.sha256()
             try:
                 with evidence_path.open("rb") as stream:
@@ -239,6 +367,7 @@ def generate_graph(
     repositories: Sequence[Mapping[str, str]],
     *,
     revision: str = "generated-from-repository-declarations-v1",
+    coverage: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Generate the compact family graph from producer/consumer declarations.
 
@@ -326,9 +455,30 @@ def generate_graph(
         }
         for item in sorted(checked, key=lambda value: value["repository_id"])
     ]
+    if coverage is None:
+        participant_ids = sorted(repository_ids)
+        coverage = {
+            "registry_identity": "unavailable",
+            "registered_family_project_count": len(participant_ids),
+            "classified_project_count": len(participant_ids),
+            "semantic_graph_participant_count": len(participant_ids),
+            "explicit_nonparticipant_count": 0,
+            "unclassified_project_count": 0,
+            "semantic_graph_participants": participant_ids,
+            "explicit_nonparticipants": [],
+            "unclassified_repositories": [],
+            "coverage_status": "complete",
+            "topology_status": "complete_among_declared_participants",
+        }
+    else:
+        coverage = dict(coverage)
     graph: dict[str, Any] = {
         "schema_version": GRAPH_SCHEMA,
         "revision": revision,
+        # `complete` is intentionally scoped: it means the joined topology
+        # is complete among the repositories classified as graph
+        # participants. Registry-wide closure is represented separately by
+        # `coverage.coverage_status`.
         "complete": True,
         "limitations": [
             "Edges are generated from repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
@@ -341,6 +491,7 @@ def generate_graph(
         },
         "repositories": sorted(repository_rows, key=lambda item: item["id"]),
         "edges": edges,
+        "coverage": coverage,
     }
     graph["graph_identity"] = graph_identity(graph)
     return validate_graph(graph)
@@ -438,6 +589,41 @@ def validate_graph(value: Any) -> dict[str, Any]:
         for field in ("check_identity", "executor", "surface", "evidence"):
             if not isinstance(verification.get(field), str) or not verification[field]:
                 raise FamilyGraphError(f"edges[{index}].verification.{field} must be non-empty")
+        if verification.get("runner") not in VERIFICATION_RUNNERS:
+            raise FamilyGraphError(
+                f"edges[{index}].verification.runner is unknown: {verification.get('runner')}"
+            )
+        if verification.get("contract_identity") not in (None, edge["contract_identity"]):
+            raise FamilyGraphError(
+                f"edges[{index}].verification.contract_identity does not match the edge"
+            )
+        selector = verification.get("selector")
+        if verification["runner"] == "mncs-test":
+            if not isinstance(selector, Mapping):
+                raise FamilyGraphError(f"edges[{index}].verification.selector is required for mncs-test")
+            test_identities = selector.get("test_identities")
+            manifest = selector.get("manifest")
+            if (
+                not isinstance(manifest, str)
+                or not manifest
+                or Path(manifest).is_absolute()
+                or ".." in Path(manifest).parts
+                or not isinstance(test_identities, list)
+                or not test_identities
+                or len(test_identities) > MAX_CHECK_TEST_IDENTITIES
+                or not all(isinstance(item, str) and item for item in test_identities)
+                or len(set(test_identities)) != len(test_identities)
+            ):
+                raise FamilyGraphError(f"edges[{index}].verification.selector is invalid")
+        elif selector is not None:
+            raise FamilyGraphError(
+                f"edges[{index}].verification.selector is only valid for mncs-test"
+            )
+        for forbidden in ("command", "commands", "shell", "script", "argv", "executable"):
+            if forbidden in verification or (isinstance(selector, Mapping) and forbidden in selector):
+                raise FamilyGraphError(
+                    f"edges[{index}].verification cannot carry executable field {forbidden!r}"
+                )
         verification_digest = edge.get("verification_evidence_sha256")
         if (
             not isinstance(verification_digest, str)
@@ -464,6 +650,54 @@ def validate_graph(value: Any) -> dict[str, Any]:
     limitations = value.get("limitations")
     if not isinstance(limitations, list) or not all(isinstance(item, str) and item for item in limitations):
         raise FamilyGraphError("family graph limitations must be non-empty strings")
+    coverage = value.get("coverage")
+    if not isinstance(coverage, Mapping):
+        raise FamilyGraphError("family graph coverage must be an object")
+    count_fields = (
+        "registered_family_project_count",
+        "classified_project_count",
+        "semantic_graph_participant_count",
+        "explicit_nonparticipant_count",
+        "unclassified_project_count",
+    )
+    counts: dict[str, int] = {}
+    for field in count_fields:
+        count = coverage.get(field)
+        if not isinstance(count, int) or isinstance(count, bool) or count < 0:
+            raise FamilyGraphError(f"family graph coverage.{field} must be a non-negative integer")
+        counts[field] = count
+    if counts["semantic_graph_participant_count"] != len(repository_ids):
+        raise FamilyGraphError(
+            "family graph coverage participant count does not match repositories"
+        )
+    if counts["registered_family_project_count"] != (
+        counts["classified_project_count"] + counts["unclassified_project_count"]
+    ):
+        raise FamilyGraphError(
+            "family graph coverage registered count must equal classified plus unclassified"
+        )
+    for field, expected in (
+        ("semantic_graph_participants", repository_ids),
+        ("explicit_nonparticipants", None),
+        ("unclassified_repositories", None),
+    ):
+        items = coverage.get(field)
+        if not isinstance(items, list) or not all(isinstance(item, str) and item for item in items):
+            raise FamilyGraphError(f"family graph coverage.{field} must be a unique string array")
+        if len(items) != len(set(items)):
+            raise FamilyGraphError(f"family graph coverage.{field} must be a unique string array")
+        if expected is not None and set(items) != expected:
+            raise FamilyGraphError(
+                "family graph coverage.semantic_graph_participants does not match repositories"
+            )
+    if len(coverage["explicit_nonparticipants"]) != counts["explicit_nonparticipant_count"]:
+        raise FamilyGraphError("family graph coverage nonparticipant count is inconsistent")
+    if len(coverage["unclassified_repositories"]) != counts["unclassified_project_count"]:
+        raise FamilyGraphError("family graph coverage unclassified count is inconsistent")
+    if coverage.get("coverage_status") not in {"complete", "incomplete"}:
+        raise FamilyGraphError("family graph coverage.coverage_status is invalid")
+    if coverage.get("topology_status") != "complete_among_declared_participants":
+        raise FamilyGraphError("family graph coverage.topology_status is invalid")
     expected_identity = graph_identity(value)
     declared_identity = value.get("graph_identity")
     if declared_identity != expected_identity:
