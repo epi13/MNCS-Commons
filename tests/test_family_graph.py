@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 from pathlib import Path
+
+import pytest
 
 from mncs_commons.family_graph import consumers_for, load_graph
 
@@ -37,11 +41,13 @@ def test_graph_mutation_is_rejected(tmp_path: Path) -> None:
 
 
 def test_checked_in_graph_reconciles_against_repository_declarations() -> None:
-    import os
-    import subprocess
-
     root = Path(__file__).resolve().parents[1]
-    workspace = root.parent
+    workspace = Path(os.environ.get("MNCS_FAMILY_WORKSPACE", root.parent))
+    if not all(
+        (workspace / name / "family-semantic-contracts-v1.json").is_file()
+        for name in ("RAVEL", "mncs-test", "mncs-actions", "mncs-forge-mcp", "mncs-debug", "mncs-language")
+    ):
+        pytest.skip("family sibling checkouts are not available; family CI runs this check")
     result = subprocess.run(
         ["python", "scripts/reconcile_semantic_edges.py", "--workspace", str(workspace), "--check"],
         cwd=root,
@@ -51,3 +57,147 @@ def test_checked_in_graph_reconciles_against_repository_declarations() -> None:
         check=False,
     )
     assert result.returncode == 0, result.stderr or result.stdout
+
+
+def test_evidence_mutation_invalidates_reconciled_graph(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    workspace = tmp_path / "family-workspace"
+    workspace.mkdir()
+    declarations = {
+        "mncs-language": {
+            "schema_version": "commons.mncs.semantic-contract-declarations/v1",
+            "repository_id": "mncs-language",
+            "revision": "1",
+            "provides": [{
+                "contract_identity": "mncs.semantic-impact/1",
+                "contract_revision": "1",
+                "exported_identity": "mncs-language:semantic-impact",
+                "evidence": "contract/provider.txt",
+            }],
+            "consumes": [],
+        },
+        "ravel": {
+            "schema_version": "commons.mncs.semantic-contract-declarations/v1",
+            "repository_id": "ravel",
+            "revision": "1",
+            "provides": [],
+            "consumes": [{
+                "contract_identity": "mncs.semantic-impact/1",
+                "contract_revision": "1",
+                "consumer_identity": "ravel:impact",
+                "evidence": "contract/consumer.txt",
+                "verification": {
+                    "check_identity": "ravel:impact-contract",
+                    "executor": "ravel",
+                    "surface": "consumer-contract",
+                    "evidence": "contract/check.txt",
+                },
+            }],
+        },
+    }
+    for repository_id, declaration in declarations.items():
+        destination = workspace / repository_id
+        destination.mkdir()
+        (destination / "family-semantic-contracts-v1.json").write_text(
+            json.dumps(declaration, indent=2) + "\n", encoding="utf-8"
+        )
+        for kind in ("provides", "consumes"):
+            for entry in declaration[kind]:
+                target = destination / entry["evidence"]
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(f"{repository_id}:{kind}\n", encoding="utf-8")
+                verification = entry.get("verification")
+                if verification:
+                    check_path = destination / verification["evidence"]
+                    check_path.parent.mkdir(parents=True, exist_ok=True)
+                    check_path.write_text(
+                        json.dumps(
+                            {
+                                "schema_version": "commons.mncs.family-verification-checks/v1",
+                                "repository_id": repository_id,
+                                "checks": [{
+                                    "identity": entry["verification"]["check_identity"],
+                                    "contract_identity": entry["contract_identity"],
+                                    "runner": "declaration",
+                                    "surface": entry["verification"]["surface"],
+                                }],
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+
+    output = tmp_path / "semantic-edges-v1.json"
+    command = [
+        "python",
+        str(root / "scripts" / "reconcile_semantic_edges.py"),
+        "--workspace",
+        str(workspace),
+        "--output",
+        str(output),
+    ]
+    generated = subprocess.run(
+        command,
+        cwd=root,
+        env={"PYTHONPATH": str(root / "src")},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert generated.returncode == 0, generated.stderr or generated.stdout
+    graph = load_graph(output)
+    assert graph["source"]["declarations"][0]["evidence_digests"]
+    assert all("consumer_evidence_sha256" in edge for edge in graph["edges"])
+
+    evidence = workspace / "mncs-language" / "contract" / "provider.txt"
+    evidence.write_text(evidence.read_text(encoding="utf-8") + "\n# semantic mutation\n", encoding="utf-8")
+    checked = subprocess.run(
+        [*command, "--check"],
+        cwd=root,
+        env={"PYTHONPATH": str(root / "src")},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert checked.returncode != 0
+    assert "stale semantic graph" in checked.stdout
+
+
+def test_repository_local_declaration_check_reports_compact_identity(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    checkout = tmp_path / "repository"
+    checkout.mkdir()
+    declaration = {
+        "schema_version": "commons.mncs.semantic-contract-declarations/v1",
+        "repository_id": "ravel",
+        "revision": "1",
+        "provides": [{
+            "contract_identity": "mncs.verification-plan/1",
+            "contract_revision": "1",
+            "exported_identity": "ravel:verification-plan",
+            "evidence": "src/impact.py",
+        }],
+        "consumes": [],
+    }
+    (checkout / "family-semantic-contracts-v1.json").write_text(
+        json.dumps(declaration), encoding="utf-8"
+    )
+    (checkout / "src").mkdir()
+    (checkout / "src" / "impact.py").write_text("pass\n", encoding="utf-8")
+    checked = subprocess.run(
+        [
+            "python",
+            str(root / "scripts" / "validate_semantic_declaration.py"),
+            "--root",
+            str(checkout),
+        ],
+        cwd=root,
+        env={"PYTHONPATH": str(root / "src")},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert checked.returncode == 0, checked.stderr
+    output = json.loads(checked.stdout)
+    assert output["repository_id"] == "ravel"
+    assert len(output["declaration_identity"]) == 64
+    assert output["evidence_digests"]["provides"]["src/impact.py"].startswith("sha256:")
