@@ -1,0 +1,54 @@
+{
+  "agent": "codex",
+  "compiler": null,
+  "contentDigest": "sha256:908f9704748602e3ab6255a09d124e33738653a33d5980ea02940ab15aafcb05",
+  "evidence": [
+    {
+      "detail": "The current Doctor policy call remains a positional scalar membrane.",
+      "id": "MNCS-DOCTOR:tests/mncs_parity.rs::scalar-policy-call",
+      "ref": "mncs-doctor:tests/mncs_parity.rs",
+      "status": "PASS"
+    },
+    {
+      "detail": "The runtime can transport typed records, but this does not migrate the policy caller.",
+      "id": "MNCS-DOCTOR:tests/mncs_parity.rs::typed-record-roundtrip",
+      "ref": "mncs-doctor:tests/mncs_parity.rs",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-TOOLING-992CEBD1BB97--OBS-02F2A1F3C8F5",
+  "kind": "verification",
+  "languageProfile": "0.16",
+  "metadata": {
+    "currentValidation": true,
+    "migratedConsumers": [
+      "ravel",
+      "mncs-debug"
+    ],
+    "status": "confirmed-remaining-scalar-boundary",
+    "typedSchema": "mncs.typed-call/1"
+  },
+  "observedAt": "2026-09-14T20:05:00Z",
+  "pressureId": "MNCS-TOOLING-992CEBD1BB97",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Inspect Doctor parity coverage and its native policy call against the pushed language/runtime boundary.",
+    "result": "Typed record round-trip coverage exists, while the canonical Doctor caller still constructs positional scalar arguments.",
+    "status": "PASS"
+  },
+  "runId": "mncs-typed-native-boundary-2026-09-14",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "51e79f7e0313e6fb3be3ea3f5c94dd166bd777bd",
+    "repository": "mncs-doctor"
+  },
+  "summary": "The typed native invocation capability is available and proven by Ravel and mncs-debug, but Doctor still crosses its native policy boundary through scalar positional arguments; the pressure remains unresolved.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Doctor continues to maintain scalar positional invocation knowledge until its policy boundary is migrated.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}
