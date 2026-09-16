@@ -56,10 +56,10 @@
       {
         "repository_id": "mncs-language",
         "path": "mncs-language/family-semantic-contracts-v1.json",
-        "identity": "bf18d7a3687c9de5949a41a619edb7c113a5d67ee4cba9fe8d0ffad9b5c19b59",
+        "identity": "eb60a97fd4ac182f12f51ecf90a7bd245eed714c94df8aaf53b851169b70d1dd",
         "evidence_digests": {
           "provides": {
-            "crates/mncs-cli/src/main.rs": "sha256:e95c4c94037073322a1a75194479c8c4931b4c2df61b4056c4f8a9320ec6b1ab"
+            "crates/mncs-cli/src/main.rs": "sha256:c26e0b04b95e7f144c21d7a3badf035e8e638ce53b981e497113187811227b0b"
           },
           "consumes": {},
           "verification": {}
@@ -68,17 +68,17 @@
       {
         "repository_id": "mncs-test",
         "path": "mncs-test/family-semantic-contracts-v1.json",
-        "identity": "c3794a2648540f7d0ab8e80fabc247a48c48861764effdddea9b807e40964aa7",
+        "identity": "290af88bb75154cb7421e4f047e2c0ffaaeabfa8fcdb2d9dabff2cd8f6473879",
         "evidence_digests": {
           "provides": {
-            "native/mncs/test/suite/v1.mncs": "sha256:57aa83f922777e4110e228be499d665ba15efbd8c0c94a78df81b3843d851d21"
+            "native/mncs/test/suite/v1.mncs": "sha256:6130e71fce3535d3dba1561d43e9d675c110ef7d079bb1379e100d9d725d0888"
           },
           "consumes": {
-            "native-userland-status.json": "sha256:4155270f68401431e63085f010c54529d14fe20a8c984058bd4c95a34a6228ff",
+            "native-userland-status.json": "sha256:05fe06d165bcf7b6ae8a7671fededff3e0de0889bcecccb83422ff05842b60b6",
             "tools/family_contract.py": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71"
           },
           "verification": {
-            "family-verification-checks-v1.json": "sha256:7a32985eeea107417c6b891cb8a2cc116dbcd01c2fe7e6bc59501a6ed8b33c84"
+            "family-verification-checks-v1.json": "sha256:44e383cfa897d4428149a5111ab6763806aea8d4cc0968fdbdb696542459febe"
           }
         }
       },
@@ -126,14 +126,14 @@
       "id": "mncs-language",
       "repository": "epi13/mncs-language",
       "revision": "1",
-      "manifest_identity": "bf18d7a3687c9de5949a41a619edb7c113a5d67ee4cba9fe8d0ffad9b5c19b59",
+      "manifest_identity": "eb60a97fd4ac182f12f51ecf90a7bd245eed714c94df8aaf53b851169b70d1dd",
       "declaration_path": "mncs-language/family-semantic-contracts-v1.json"
     },
     {
       "id": "mncs-test",
       "repository": "epi13/mncs-test",
       "revision": "1",
-      "manifest_identity": "c3794a2648540f7d0ab8e80fabc247a48c48861764effdddea9b807e40964aa7",
+      "manifest_identity": "290af88bb75154cb7421e4f047e2c0ffaaeabfa8fcdb2d9dabff2cd8f6473879",
       "declaration_path": "mncs-test/family-semantic-contracts-v1.json"
     },
     {
@@ -152,7 +152,7 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:observation",
       "provenance": "mncs-debug:docs/architecture.md",
-      "producer_manifest_identity": "bf18d7a3687c9de5949a41a619edb7c113a5d67ee4cba9fe8d0ffad9b5c19b59",
+      "producer_manifest_identity": "eb60a97fd4ac182f12f51ecf90a7bd245eed714c94df8aaf53b851169b70d1dd",
       "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-language:execution-observation",
       "verification": {
@@ -163,9 +163,9 @@
         "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
-      "provider_evidence_sha256": "sha256:e95c4c94037073322a1a75194479c8c4931b4c2df61b4056c4f8a9320ec6b1ab",
+      "provider_evidence_sha256": "sha256:c26e0b04b95e7f144c21d7a3badf035e8e638ce53b981e497113187811227b0b",
       "consumer_evidence_sha256": "sha256:7c95ea925757bd3804661293cd30952ed0e4a18d349df3a67922d31afe88bd59",
-      "fingerprint": "1190903993f416780ef55fe2e6852400d24dd5ac79921c2b6a389cecb031d697"
+      "fingerprint": "8fb003c0fc1df7dfef7b0befbf70a4afe586003173dc44b180b81903c30601ab"
     },
     {
       "producer_repository": "mncs-language",
@@ -174,8 +174,8 @@
       "contract_revision": "0.17",
       "consuming_identity": "mncs-test:test-inventory",
       "provenance": "mncs-test:native-userland-status.json",
-      "producer_manifest_identity": "bf18d7a3687c9de5949a41a619edb7c113a5d67ee4cba9fe8d0ffad9b5c19b59",
-      "consumer_manifest_identity": "c3794a2648540f7d0ab8e80fabc247a48c48861764effdddea9b807e40964aa7",
+      "producer_manifest_identity": "eb60a97fd4ac182f12f51ecf90a7bd245eed714c94df8aaf53b851169b70d1dd",
+      "consumer_manifest_identity": "290af88bb75154cb7421e4f047e2c0ffaaeabfa8fcdb2d9dabff2cd8f6473879",
       "provider_identity": "mncs-language:test-inventory",
       "verification": {
         "check_identity": "mncs-test:test-inventory-join",
@@ -185,16 +185,16 @@
         "runner": "mncs-test",
         "selector": {
           "manifest": "mncs-test.toml",
-          "inventory_identity": "cf2ed97b0b44f1cbec6bf2692e53c9af7987d4444efe227a72e590bfba6efa3d",
+          "inventory_identity": "cf14fefd6c7809287b9a00b243dc57d118e5ea3e91c60acb2f868a1536b3b444",
           "test_identities": [
             "mncs:0.2:test-case:tests.self_suite::task_lifecycle::699193aeddc0a792f85936fd4d4b34c62615ecc3eeb519c51fa3a6a7b34ea2db"
           ]
         }
       },
-      "verification_evidence_sha256": "sha256:7a32985eeea107417c6b891cb8a2cc116dbcd01c2fe7e6bc59501a6ed8b33c84",
-      "provider_evidence_sha256": "sha256:e95c4c94037073322a1a75194479c8c4931b4c2df61b4056c4f8a9320ec6b1ab",
-      "consumer_evidence_sha256": "sha256:4155270f68401431e63085f010c54529d14fe20a8c984058bd4c95a34a6228ff",
-      "fingerprint": "47d13b7e672c1b6e440b76a907ad627543d6e015eabf088b1bbe9e33d3f505ac"
+      "verification_evidence_sha256": "sha256:44e383cfa897d4428149a5111ab6763806aea8d4cc0968fdbdb696542459febe",
+      "provider_evidence_sha256": "sha256:c26e0b04b95e7f144c21d7a3badf035e8e638ce53b981e497113187811227b0b",
+      "consumer_evidence_sha256": "sha256:05fe06d165bcf7b6ae8a7671fededff3e0de0889bcecccb83422ff05842b60b6",
+      "fingerprint": "8e2a83c0398a836ce0d4fce2fd5b9a319caf22bbdb0c10081b4b7bab8d467200"
     },
     {
       "producer_repository": "mncs-language",
@@ -203,7 +203,7 @@
       "contract_revision": "1",
       "consuming_identity": "ravel:impact-planner",
       "provenance": "ravel:src/ravel/impact.py",
-      "producer_manifest_identity": "bf18d7a3687c9de5949a41a619edb7c113a5d67ee4cba9fe8d0ffad9b5c19b59",
+      "producer_manifest_identity": "eb60a97fd4ac182f12f51ecf90a7bd245eed714c94df8aaf53b851169b70d1dd",
       "consumer_manifest_identity": "3e240edd5ac714900599f1bc350877fd1e32cf089bbac29da6c71e7aee495593",
       "provider_identity": "mncs-language:semantic-impact",
       "verification": {
@@ -214,9 +214,9 @@
         "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:8c090d656068b714f3fbd5e26822b05ee238918738eeec48f277bbb0caa1eb8c",
-      "provider_evidence_sha256": "sha256:e95c4c94037073322a1a75194479c8c4931b4c2df61b4056c4f8a9320ec6b1ab",
+      "provider_evidence_sha256": "sha256:c26e0b04b95e7f144c21d7a3badf035e8e638ce53b981e497113187811227b0b",
       "consumer_evidence_sha256": "sha256:8f3d0c519f498e6be80dc0fb82ffe3aa06eeb089d25debd7084f7f74783025d2",
-      "fingerprint": "d12e4c9c7d02ac539bd0a6f374e04292472d83ca083886813c1a82809c435103"
+      "fingerprint": "98026cb575bbfd73ca7cab542524fe4b76fb57d76a62f6220133a996dda8d44a"
     },
     {
       "producer_repository": "mncs-test",
@@ -225,7 +225,7 @@
       "contract_revision": "1",
       "consuming_identity": "mncs-debug:test-result",
       "provenance": "mncs-debug:AGENTS.md",
-      "producer_manifest_identity": "c3794a2648540f7d0ab8e80fabc247a48c48861764effdddea9b807e40964aa7",
+      "producer_manifest_identity": "290af88bb75154cb7421e4f047e2c0ffaaeabfa8fcdb2d9dabff2cd8f6473879",
       "consumer_manifest_identity": "63494266ef3e54b8eb70b7123381eb9499765a24f0a84fe56864435377f8aa5f",
       "provider_identity": "mncs-test:test-result",
       "verification": {
@@ -236,9 +236,9 @@
         "runner": "declaration"
       },
       "verification_evidence_sha256": "sha256:7fcb37fae54fd7bd3496c1f8e32d6a6fdc386fc32b050d30bfa251e7ac82fe93",
-      "provider_evidence_sha256": "sha256:57aa83f922777e4110e228be499d665ba15efbd8c0c94a78df81b3843d851d21",
+      "provider_evidence_sha256": "sha256:6130e71fce3535d3dba1561d43e9d675c110ef7d079bb1379e100d9d725d0888",
       "consumer_evidence_sha256": "sha256:fea527f07fd954c2a6e8b400c1787723de3f43a586b6d2a53d1c0e37d5cb5950",
-      "fingerprint": "6e6cc8390c10970354aa02e01746948c7bbc85ecbe341b8bf94ebdf5bd2504d5"
+      "fingerprint": "43d3c4fc9da5aabf39ab62f9d5591ee59eeefb980d3d7bafe45a43232354f740"
     },
     {
       "producer_repository": "ravel",
@@ -292,7 +292,7 @@
       "consuming_identity": "mncs-test:verification-plan",
       "provenance": "mncs-test:tools/family_contract.py",
       "producer_manifest_identity": "3e240edd5ac714900599f1bc350877fd1e32cf089bbac29da6c71e7aee495593",
-      "consumer_manifest_identity": "c3794a2648540f7d0ab8e80fabc247a48c48861764effdddea9b807e40964aa7",
+      "consumer_manifest_identity": "290af88bb75154cb7421e4f047e2c0ffaaeabfa8fcdb2d9dabff2cd8f6473879",
       "provider_identity": "ravel:verification-plan",
       "verification": {
         "check_identity": "mncs-test:verification-plan-contract",
@@ -302,17 +302,17 @@
         "runner": "mncs-test",
         "selector": {
           "manifest": "mncs-test.toml",
-          "inventory_identity": "cf2ed97b0b44f1cbec6bf2692e53c9af7987d4444efe227a72e590bfba6efa3d",
+          "inventory_identity": "cf14fefd6c7809287b9a00b243dc57d118e5ea3e91c60acb2f868a1536b3b444",
           "test_identities": [
             "mncs:0.2:test-case:tests.self_suite::arithmetic::048110093302a319d4962bf0ab6cf893312cfcc10981d4326ca6fafff87fd2a0",
             "mncs:0.2:test-case:tests.self_suite::boolean::36fb811221b71e39a0daec26be573986edb5703221a8f8ba179f98e9a65a4b56"
           ]
         }
       },
-      "verification_evidence_sha256": "sha256:7a32985eeea107417c6b891cb8a2cc116dbcd01c2fe7e6bc59501a6ed8b33c84",
+      "verification_evidence_sha256": "sha256:44e383cfa897d4428149a5111ab6763806aea8d4cc0968fdbdb696542459febe",
       "provider_evidence_sha256": "sha256:8f3d0c519f498e6be80dc0fb82ffe3aa06eeb089d25debd7084f7f74783025d2",
       "consumer_evidence_sha256": "sha256:18baa65e3f915b8150f988dac28eff3c84ebbb4aa2a670f3bf33884d272cef71",
-      "fingerprint": "37ee5fb0e840ae599a563d70eac002e1748f929547d141514b78e7d30d4987a5"
+      "fingerprint": "5c0f030e1886c2332f0f7da9658809b58b66a44e5cd76e205e35dea4f0993771"
     }
   ],
   "coverage": {
@@ -351,5 +351,5 @@
     "coverage_status": "complete",
     "topology_status": "complete_among_declared_participants"
   },
-  "graph_identity": "cfa553cbf77fc4991df5aec3a193c784f328cd58c4713bbbe40175061307db8a"
+  "graph_identity": "ba7218c785ffdf5f7a73497df13b2d9eaab041b99ade918acdd802905fda1dfb"
 }
