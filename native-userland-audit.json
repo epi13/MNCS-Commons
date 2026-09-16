@@ -7,6 +7,18 @@
     "family identity normalization",
     "semantic graph and verification contracts"
   ],
+  "native_userland_status_aggregation": {
+    "entrypoint": "mncs_commons.native_userland.aggregate_native_userland_status",
+    "authority": "repository-owned native-userland-status.json declarations",
+    "lifecycle_vocabulary": [
+      "host_bootstrap",
+      "hybrid",
+      "native_shadow",
+      "native_canonical",
+      "host_deprecated",
+      "host_removed"
+    ]
+  },
   "host_canonical_responsibilities": [
     {
       "area": "persistent pressure store and generated materialized views",

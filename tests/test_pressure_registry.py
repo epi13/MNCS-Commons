@@ -121,6 +121,44 @@ def test_existing_pressure_accumulates_another_repository_and_candidates(tmp_pat
     assert registry.validate().valid
 
 
+def test_alias_and_canonical_verifications_share_one_current_repository_state(
+    tmp_path: Path,
+) -> None:
+    registry = PressureRegistry(tmp_path / "pressures")
+    created = registry.add(pressure_spec(repository="mncs-forge-mcp"))
+    pressure = created["id"]
+
+    registry.verify(
+        pressure,
+        repository="mncs-forge-mcp",
+        status="PASS",
+        workaround_removed=True,
+        summary="historical alias verification",
+        observed_at="2026-09-14T00:00:00Z",
+    )
+    registry.verify(
+        pressure,
+        repository="mncs-forge",
+        status="PASS",
+        workaround_removed=True,
+        summary="current canonical verification",
+        observed_at="2026-09-14T00:00:01Z",
+    )
+
+    projection = registry.show(pressure)
+    assert len(projection.data["verification"]) == 2
+    assert len(projection.data["verificationCurrent"]) == 1
+    assert projection.data["verificationCurrent"][0]["repository"] == "mncs-forge"
+    assert projection.data["verificationSummary"] == {
+        "affected": 1,
+        "pass": 1,
+        "fail": 0,
+        "unknown": 0,
+    }
+    result = registry.query(repository="mncs-forge")
+    assert result[0]["verificationState"] == "ready"
+
+
 def test_lifecycle_keeps_available_distinct_from_resolved_and_requires_all_consumers(
     tmp_path: Path,
 ) -> None:

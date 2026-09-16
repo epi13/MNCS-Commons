@@ -1,0 +1,13 @@
+{
+  "schema_version": "mncs.native-userland-status/1",
+  "repository_id": "MNCS-Commons",
+  "status": "host_bootstrap",
+  "canonical_entrypoint": "mncs-commons CLI/service",
+  "native_sources": {},
+  "canonical_mncs_surfaces": [
+    "pressure lifecycle semantics",
+    "family identity normalization",
+    "semantic graph and verification contracts"
+  ],
+  "next_migration_slice": "native pressure projection over a runtime-backed persistent store"
+}

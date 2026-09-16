@@ -188,6 +188,29 @@ def _instant_key(value: object) -> datetime:
     return datetime.min.replace(tzinfo=timezone.utc)
 
 
+def _current_verifications(
+    observations: Iterable[Mapping[str, Any]],
+) -> dict[str, Mapping[str, Any]]:
+    """Return one current verification per canonical repository.
+
+    Verification observations remain append-only provenance. Projection and
+    resolution describe the current state of each logical consumer, so an
+    alias observation followed by its canonical repository observation must
+    not count twice.
+    """
+
+    current: dict[str, Mapping[str, Any]] = {}
+    ordered = sorted(
+        (item for item in observations if item.get("kind") == "verification"),
+        key=lambda item: (_instant_key(item.get("observedAt")), str(item.get("id", ""))),
+    )
+    for item in ordered:
+        repository = normalize_repository(item.get("repository"))
+        if repository is not None:
+            current[repository] = item
+    return current
+
+
 def _text(value: object, field: str, *, required: bool = True, maximum: int = 4096) -> str | None:
     if not isinstance(value, str):
         if required:
@@ -1000,15 +1023,7 @@ class PressureRegistry:
         if target == "resolved":
             if not refs or not refs.issubset(observations):
                 return "resolved evidenceRefs must point to observations in this pressure"
-            verification: dict[str, Mapping[str, Any]] = {}
-            ordered_verifications = sorted(
-                (item for item in projection.observations if item.get("kind") == "verification"),
-                key=lambda item: (_instant_key(item.get("observedAt")), str(item.get("id", ""))),
-            )
-            for item in ordered_verifications:
-                repository = normalize_repository(item.get("repository"))
-                if repository is not None:
-                    verification[repository] = item
+            verification = _current_verifications(projection.observations)
             affected = set(projection.data.get("affectedRepositories", []))
             if not affected:
                 return "resolved requires at least one affected repository"
@@ -1210,6 +1225,7 @@ class PressureRegistry:
             workaround = item.get("workaround")
             if isinstance(workaround, Mapping) and workaround:
                 workarounds.append(item)
+        current_verifications = _current_verifications(relevant_observations)
         data.update(
             {
                 "status": state if not diagnostics else "conflicted",
@@ -1217,6 +1233,10 @@ class PressureRegistry:
                 "affectedRepositories": sorted(affected),
                 "evidence": sorted(evidence, key=lambda item: str(item.get("id", ""))),
                 "verification": sorted(verifications, key=lambda item: str(item.get("id", ""))),
+                "verificationCurrent": [
+                    copy.deepcopy(dict(item))
+                    for _, item in sorted(current_verifications.items(), key=lambda pair: pair[0])
+                ],
                 "workarounds": sorted(workarounds, key=lambda item: str(item.get("id", ""))),
                 "implementation": next(
                     (
@@ -1231,15 +1251,15 @@ class PressureRegistry:
                     "affected": len(affected),
                     "pass": sum(
                         item.get("reproduction", {}).get("status") == "PASS"
-                        for item in verifications
+                        for item in current_verifications.values()
                     ),
                     "fail": sum(
                         item.get("reproduction", {}).get("status") == "FAIL"
-                        for item in verifications
+                        for item in current_verifications.values()
                     ),
                     "unknown": sum(
                         item.get("reproduction", {}).get("status") == "UNKNOWN"
-                        for item in verifications
+                        for item in current_verifications.values()
                     ),
                 },
             }
@@ -1756,7 +1776,7 @@ class PressureRegistry:
                 int(verification_summary["unknown"]),
                 sum(
                     item.get("workaround", {}).get("removed", "not_needed") in {True, "not_needed"}
-                    for item in data.get("verification", [])
+                    for item in data.get("verificationCurrent", [])
                 ),
             )
             if needs_revalidation and not _requires_revalidation(
