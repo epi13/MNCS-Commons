@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "bb6d599",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:81e76d67590f6f844696a2782e2a4a074f0bd79591e384edac0b810d11ba49f5",
+  "evidence": [
+    {
+      "id": "mncs-actions:native-structured-family",
+      "status": "PASS",
+      "summary": "Family-check and selected-proof typed projections round-trip through mncs.application-call/1."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-74512C752266",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/structured-data"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-actions-structured-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "bb6d599",
+    "path": "tests/test_native_actions.py",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "Actions shadow transports bounded typed call arguments and results through the reusable canonical structured-data boundary; application semantics remain in native records.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}

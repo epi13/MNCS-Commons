@@ -236,6 +236,8 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor",
         "mncs-test"
       ],
@@ -248,6 +250,8 @@
       ],
       "id": "MNCS-TOOLING-146FB6F4BBC6",
       "reporters": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor",
         "mncs-test"
       ],
@@ -260,7 +264,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 4,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -561,6 +565,8 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor",
         "mncs-test"
       ],
@@ -573,6 +579,8 @@
       ],
       "id": "MNCS-TOOLING-B665F138D324",
       "reporters": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor",
         "mncs-test"
       ],
@@ -585,7 +593,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 4,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -654,19 +662,23 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-015",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-CB736AB5B3F0",
       "reporters": [
+        "mncs-actions",
+        "mncs-debug",
         "mncs-doctor"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "moderate",
       "status": "confirmed",
       "target": "tooling",
@@ -675,7 +687,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0

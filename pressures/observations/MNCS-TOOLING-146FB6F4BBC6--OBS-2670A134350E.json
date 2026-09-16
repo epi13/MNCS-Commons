@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d09abd3",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:1668b477d4ed7eac4347fd5c1b9d02acae69bc1641d67b8ca29b3caeb5528fb2",
+  "evidence": [
+    {
+      "id": "mncs-debug:native-structured-witness",
+      "status": "PASS",
+      "summary": "Witness materialization typed result is admitted and projected without a Python semantic decoder."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-2670A134350E",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/structured-data"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-debug-structured-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "d09abd3",
+    "path": "tests/test_native_shadow.py",
+    "repository": "mncs-debug",
+    "workingTree": false
+  },
+  "summary": "Debug shadow transports typed witness arguments/results through the reusable structured boundary while keeping sufficiency policy in mncs.debug.v1.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}

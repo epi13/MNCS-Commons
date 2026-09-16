@@ -1,0 +1,53 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "bb6d599",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:839bfc944b0954f5544c6baf606113900142540e87ca1b3919a9e6099e748831",
+  "evidence": [
+    {
+      "id": "mncs-actions:native-process-pass",
+      "status": "PASS",
+      "summary": "Native family-check shadow returns PASS through mncs process."
+    },
+    {
+      "id": "mncs-actions:native-process-proof",
+      "status": "PASS",
+      "summary": "Selected-proof shadow returns the expected FAIL aggregate through the same bounded process transport."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-B8EF1F4A281D",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/process-effect"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-actions-process-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "bb6d599",
+    "path": "tests/test_native_actions.py",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "Actions native shadow launches the generic bounded process capability with explicit argv, bounded stdout, exit status, and deadline enforcement.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}

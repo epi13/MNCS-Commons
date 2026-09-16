@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d09abd3",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:45ad0ea24c22cf81e65db00773349164b656a81802ff3ddbcff1d7923585d7d7",
+  "evidence": [
+    {
+      "id": "mncs-debug:native-process-witness",
+      "status": "PASS",
+      "summary": "Witness materialization returns READY through mncs process with stdout_truncated=false."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-758FB2493392",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/process-effect"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-debug-process-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "d09abd3",
+    "path": "tests/test_native_shadow.py",
+    "repository": "mncs-debug",
+    "workingTree": false
+  },
+  "summary": "Debug native shadow invokes the generic bounded process capability with explicit argv, bounded UTF-8 capture, successful exit status, and a deadline.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}

@@ -2412,35 +2412,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doctor"
-      ],
-      "capability": "legacy.doc-p-015",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [
-        "rust"
-      ],
-      "id": "MNCS-TOOLING-CB736AB5B3F0",
-      "reporters": [
-        "mncs-doctor"
-      ],
-      "revalidationRequired": true,
-      "severity": "moderate",
-      "status": "confirmed",
-      "target": "tooling",
-      "title": "No CLI argv / stdin / stdout program interface",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-006",

@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "97ef66d",
+    "validation": "mncs-test full suite: 21 passed; native retained session and projection canaries PASS"
+  },
+  "contentDigest": "sha256:5c41aaf1d20e5ad5bb8d713ac3c5c883c2cc0553e5cde28ef48c236f683b2643",
+  "evidence": [
+    {
+      "id": "mncs-test:full-suite-phase2",
+      "status": "PASS",
+      "summary": "The repository test suite passes 21 tests including family-check and native result projection paths."
+    },
+    {
+      "id": "mncs-test:direct-native-session-projection",
+      "status": "PASS",
+      "summary": "PASS and FAIL native tests return MNCS-owned status/classification projections through one retained session."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-F34B276D137E",
+  "kind": "verification",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "97ef66d",
+    "path": "tests/test_runner.py and native mncs-test canaries",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "Current mncs-test retains one in-process embed session for exact selected execution and native semantic result/suite projections; external launcher and JSON compatibility boundaries remain.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

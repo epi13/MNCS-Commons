@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d09abd3",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:8b4182ed0872311b591663086a6e2e8a5d2a65a7b561493e1df4ca2620428f8f",
+  "evidence": [
+    {
+      "id": "mncs-debug:generic-call-launcher",
+      "status": "PASS",
+      "summary": "Native witness planning executes through generic call/process transport."
+    }
+  ],
+  "id": "MNCS-TOOLING-CB736AB5B3F0--OBS-5AC490C4DBC3",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/application-entry"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-CB736AB5B3F0",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-debug-generic-launcher-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "d09abd3",
+    "path": "tests/test_native_shadow.py",
+    "repository": "mncs-debug",
+    "workingTree": false
+  },
+  "summary": "Debug uses the reusable generic call/process launcher; a first-class MNCS argv/stdin/stdout program interface is still not claimed.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}

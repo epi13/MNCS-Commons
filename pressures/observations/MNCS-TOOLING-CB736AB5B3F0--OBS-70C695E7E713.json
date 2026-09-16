@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "bb6d599",
+    "validation": "Phase II focused native canary"
+  },
+  "contentDigest": "sha256:20a2eaa2480eec67ff8487205d98a8f02f2d43b1a187f5a592156519187e9adf",
+  "evidence": [
+    {
+      "id": "mncs-actions:generic-call-launcher",
+      "status": "PASS",
+      "summary": "Native family semantics execute through the generic call launcher and bounded process transport."
+    }
+  ],
+  "id": "MNCS-TOOLING-CB736AB5B3F0--OBS-70C695E7E713",
+  "kind": "observation",
+  "languageProfile": "0.17",
+  "metadata": {
+    "campaign": "luna-max-phase2-2026-09-15",
+    "currentValidation": true,
+    "targetLayer": "runtime/application-entry"
+  },
+  "observedAt": "2026-09-15T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-CB736AB5B3F0",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Re-run the focused native Phase II canary recorded by this observation.",
+    "status": "PASS"
+  },
+  "runId": "phase2-actions-generic-launcher-canary",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "bb6d599",
+    "path": "tests/test_native_actions.py",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "Actions uses the reusable generic mncs call/process launcher rather than a new application-specific Rust subcommand; full native argv/stdin/stdout application entry remains open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic runtime transport is dogfooded, but the remaining native source-level effect/entrypoint gap is intentionally retained.",
+    "fallbackLanguage": "rust",
+    "removed": false
+  }
+}
