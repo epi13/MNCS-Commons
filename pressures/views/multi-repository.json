@@ -22,11 +22,11 @@
       "title": "Compile diagnostics do not yet form a stable debugger failure artifact",
       "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 6,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -55,11 +55,11 @@
       "title": "Semantic operation identities lose source spans before execution",
       "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 5,
+        "pass": 4,
         "unknown": 0
       }
     },
@@ -148,7 +148,7 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 2,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -536,11 +536,11 @@
       "title": "Debug provider registration and artifact projection need an actions contract",
       "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 6,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -661,7 +661,7 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 4,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -817,11 +817,11 @@
       "title": "Test failure import needs stable executable evidence, not prose reconstruction",
       "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 14,
+        "pass": 4,
         "unknown": 0
       }
     },
@@ -854,11 +854,11 @@
       "title": "No single family-owned verification-plan validator",
       "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 6,
         "fail": 0,
-        "pass": 7,
+        "pass": 6,
         "unknown": 0
       }
     }

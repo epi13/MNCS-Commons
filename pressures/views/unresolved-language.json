@@ -844,7 +844,7 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 2,
+        "pass": 1,
         "unknown": 0
       }
     },
