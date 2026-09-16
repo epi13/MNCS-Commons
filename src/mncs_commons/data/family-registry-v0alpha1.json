@@ -157,8 +157,8 @@
       "coveragePosture": "NEEDS_REVIEW"
     },
     {
-      "id": "mncs-forge-mcp",
-      "repository": "epi13/mncs-forge-mcp",
+      "id": "mncs-forge",
+      "repository": "epi13/mncs-forge",
       "displayName": "MNCS Forge",
       "group": "operator-infrastructure",
       "role": "development and evidence control plane",

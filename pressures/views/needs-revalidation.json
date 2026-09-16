@@ -2302,7 +2302,7 @@
     },
     {
       "affectedRepositories": [
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "capability": "legacy.forge-p-0001",
       "currentValidation": false,
@@ -2310,7 +2310,7 @@
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-9E7E149C94D9",
       "reporters": [
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "revalidationRequired": true,
       "severity": "major",

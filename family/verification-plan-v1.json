@@ -14,7 +14,7 @@
     "test_execution": "mncs-test",
     "diagnostic_evidence": "mncs-debug",
     "execution_receipts": "mncs-actions",
-    "orchestration": "mncs-forge-mcp",
+    "orchestration": "mncs-forge",
     "transport_contract": "mncs-commons"
   },
   "routing_scope": {

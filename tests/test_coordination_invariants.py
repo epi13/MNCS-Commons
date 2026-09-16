@@ -238,17 +238,17 @@ def test_mixed_timezone_offsets_sort_chronologically(tmp_path) -> None:
     )
     assert len(res["superseded"]) == 0
     cov = app.family_coverage()
-    proj = next(p for p in cov["projects"] if p["projectId"] == "mncs-forge-mcp")
+    proj = next(p for p in cov["projects"] if p["projectId"] == "mncs-forge")
     assert proj["state"] == CoverageState.ACTIVE_WORK.value
 
 
 def test_alias_spellings_resolve_to_one_identity() -> None:
     for inp, exp in [
-        ("epi13/mncs-forge-mcp", "mncs-forge-mcp"),
-        ("mncs-forge-mcp", "mncs-forge-mcp"),
-        ("mncs-forge", "mncs-forge-mcp"),
-        ("forge", "mncs-forge-mcp"),
-        ("https://github.com/epi13/mncs-forge-mcp", "mncs-forge-mcp"),
+        ("epi13/mncs-forge-mcp", "mncs-forge"),
+        ("mncs-forge-mcp", "mncs-forge"),
+        ("mncs-forge", "mncs-forge"),
+        ("forge", "mncs-forge"),
+        ("https://github.com/epi13/mncs-forge-mcp", "mncs-forge"),
         ("MNCS-Commons", "mncs-commons"),
         ("commons", "mncs-commons"),
     ]:

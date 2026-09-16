@@ -1,11 +1,11 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language"
   ],
   "capability": "deterministic-scheduler-effect-replay",
-  "contentDigest": "sha256:cdcba96f1ad86a1104de8ba7f097b8d5912eb4203aa9b472975bcb031154157b",
+  "contentDigest": "sha256:a43d7cd6b04a1cd47800e857dace80232ac374c0a2486fd8bc545ceaababcab4",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.replay",

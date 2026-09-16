@@ -15,7 +15,7 @@ def main() -> int:
 
     root = ROOT
     sibling_names = {
-        "forge": "mncs-forge-mcp",
+        "forge": "mncs-forge",
         "fabric": "mncs-fabric",
         "mnel": "Machine-Native-Experimental-Learning",
         "ravel": "RAVEL",

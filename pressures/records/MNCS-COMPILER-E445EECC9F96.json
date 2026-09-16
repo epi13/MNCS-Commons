@@ -1,12 +1,12 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language",
     "mncs-language-service"
   ],
   "capability": "semantic-operation-source-spans",
-  "contentDigest": "sha256:89ec315e8b7ab72785a2d4b0a55633d224c219f3a372e8ed604b7de0e6a9c595",
+  "contentDigest": "sha256:2a4f99ac0aeab98205eb61be1de30e915d7335d5d7b534852293fce62ca609b5",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.source-maps",

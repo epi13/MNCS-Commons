@@ -1,12 +1,12 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language",
     "mncs-language-service"
   ],
   "capability": "safe-suspension-and-resume",
-  "contentDigest": "sha256:5bc3b7677c134bb5d264e2c741af7cf09ab72e67f1ee220923d402e8986c9444",
+  "contentDigest": "sha256:4df79f98d7b268cc6279f1a32f8c1c990caa28c1db8c64c56e0c06f0c2989643",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.sessions",

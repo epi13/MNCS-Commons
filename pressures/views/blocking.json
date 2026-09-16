@@ -259,7 +259,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "deterministic-scheduler-effect-replay",
@@ -288,7 +288,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-language-service"
       ],

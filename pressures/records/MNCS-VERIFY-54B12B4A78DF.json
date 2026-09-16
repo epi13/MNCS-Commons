@@ -2,11 +2,11 @@
   "affectedRepositories": [
     "mncs-actions",
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-test"
   ],
   "capability": "structured-test-failure-debug-witness",
-  "contentDigest": "sha256:bd44e19fdd260fc264680d8b12e04ae0b00cd3f7df045b2bb815bff65e47600f",
+  "contentDigest": "sha256:9056015dd56ef3aa41138d7002d5c6fe53c2fa2e630d1769202b9e01eba6b714",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.test-handoff",

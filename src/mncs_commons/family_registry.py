@@ -46,7 +46,7 @@ CANONICAL_FAMILY = {
         "mncs-doctor": "epi13/mncs-doctor",
         "mncs-actions": "epi13/mncs-actions",
         "mncs-validator-rs": "epi13/mncs-validator-rs",
-    "mncs-forge-mcp": "epi13/mncs-forge-mcp",
+    "mncs-forge": "epi13/mncs-forge",
     "mncs-fabric": "epi13/mncs-fabric",
     "mncs-commons": "epi13/MNCS-Commons",
     "mncs-harness": "epi13/mncs-harness",
@@ -59,8 +59,8 @@ CANONICAL_FAMILY = {
     "mncs-tui": "epi13/mncs-tui",
 }
 SOURCE_ID_ALIASES = {
-    "mncs-forge": "mncs-forge-mcp",
-    "forge": "mncs-forge-mcp",
+    "mncs-forge-mcp": "mncs-forge",
+    "forge": "mncs-forge",
     "mncs-control": "mncs-control-mcp",
     "control": "mncs-control-mcp",
     "fabric": "mncs-fabric",
@@ -188,6 +188,11 @@ def canonical_project_identity(value: object) -> dict[str, str] | None:
             expected_repository,
             expected_repository.rsplit("/", 1)[-1],
             *(alias for alias, target in SOURCE_ID_ALIASES.items() if target == project_id),
+            *(
+                f"epi13/{alias}"
+                for alias, target in SOURCE_ID_ALIASES.items()
+                if target == project_id
+            ),
         }
         if candidate in {alias.lower() for alias in aliases}:
             return {

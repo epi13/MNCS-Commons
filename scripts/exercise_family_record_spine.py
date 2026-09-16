@@ -17,7 +17,7 @@ def _sources(workspace: Path) -> None:
         "mncs-control-mcp",
         "mncs-harness",
         "mncs-fabric",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "machine-native-complexity-development-specification",
     )
     for repository in repositories:

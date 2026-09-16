@@ -247,7 +247,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-web": "mncs-web",
         "mncs-doctor": "mncs-doctor",
         "mncs-ravel": "ravel",
-        "mncs-forge": "mncs-forge-mcp",
+        "mncs-forge": "mncs-forge",
         "mncs-signal": "mncs-signal",
         "mncs-data": "mncs-data",
         "mncs-engine": "mncs-engine",
@@ -261,7 +261,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-fabric": "mncs-fabric",
         "mncs-commons": "mncs-commons",
         "ravel": "ravel",
-        "forge": "mncs-forge-mcp",
+        "forge": "mncs-forge",
     }
     aliases.update(extras)
     for project_id in (
@@ -271,7 +271,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-language",
         "mncs-language-service",
         "mncs-validator-rs",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-fabric",
         "mncs-commons",
         "mncs-harness",
@@ -289,7 +289,7 @@ def _repository_aliases() -> dict[str, str]:
         aliases[project_id] = project_id
     aliases.update(
         {
-            "mncs-forge-mcp": "mncs-forge-mcp",
+            "mncs-forge-mcp": "mncs-forge",
             "mncs-control-mcp": "mncs-control-mcp",
             "RAVEL": "ravel",
         }
@@ -1006,7 +1006,9 @@ class PressureRegistry:
                 key=lambda item: (_instant_key(item.get("observedAt")), str(item.get("id", ""))),
             )
             for item in ordered_verifications:
-                verification[str(item.get("repository"))] = item
+                repository = normalize_repository(item.get("repository"))
+                if repository is not None:
+                    verification[repository] = item
             affected = set(projection.data.get("affectedRepositories", []))
             if not affected:
                 return "resolved requires at least one affected repository"
@@ -1141,9 +1143,13 @@ class PressureRegistry:
                 break
             pre_data = copy.deepcopy(dict(record))
             pre_data["affectedRepositories"] = sorted(
-                set(record.get("affectedRepositories", []))
+                {
+                    normalize_repository(item) or str(item)
+                    for item in record.get("affectedRepositories", [])
+                }
                 | {
-                    str(item.get("repository"))
+                    normalize_repository(item.get("repository"))
+                    or str(item.get("repository"))
                     for item in relevant_observations
                     if isinstance(item.get("repository"), str)
                 }
@@ -1181,16 +1187,23 @@ class PressureRegistry:
                 PressureDiagnostic("MISSING_RECORD", record_id, "pressure declaration is missing")
             )
         data = copy.deepcopy(dict(record))
-        reporters = {str(record.get("discoveredBy"))}
-        affected = set(record.get("affectedRepositories", []))
+        reporters = {
+            normalize_repository(record.get("discoveredBy"))
+            or str(record.get("discoveredBy"))
+        }
+        affected = {
+            normalize_repository(item) or str(item)
+            for item in record.get("affectedRepositories", [])
+        }
         evidence: list[Mapping[str, Any]] = []
         verifications: list[Mapping[str, Any]] = []
         workarounds: list[Mapping[str, Any]] = []
         for item in relevant_observations:
             repository = item.get("repository")
             if isinstance(repository, str):
-                reporters.add(repository)
-                affected.add(repository)
+                canonical_repository = normalize_repository(repository) or repository
+                reporters.add(canonical_repository)
+                affected.add(canonical_repository)
             evidence.extend(item.get("evidence", []))
             if item.get("kind") == "verification":
                 verifications.append(item)

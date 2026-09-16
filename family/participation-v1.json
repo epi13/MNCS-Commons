@@ -58,7 +58,7 @@
       "reason": "The independent validator has no repository-owned semantic graph declaration at this synchronization point."
     },
     {
-      "id": "mncs-forge-mcp",
+      "id": "mncs-forge",
       "state": "participant",
       "declaration_path": "family-semantic-contracts-v1.json",
       "reason": "Consumes verification plans in the development orchestration loop."

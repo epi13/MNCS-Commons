@@ -3,12 +3,12 @@
     "mncs-actions",
     "mncs-commons",
     "mncs-doctor",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-test",
     "ravel"
   ],
   "capability": "minimum-sufficient-verification-plan",
-  "contentDigest": "sha256:e8d6684bb03c56239a7736b1117e13fdf7161e0d4d38e041217b032f0108bdc5",
+  "contentDigest": "sha256:47a5f6488eebfe86a23359cfa900f62cf8621c0282cde1ac6238cedc4dee5426",
   "discoveredAt": "2026-09-14T00:30:00Z",
   "discoveredBy": "mncs-commons",
   "domain": "verification.scope-selection",
@@ -25,7 +25,7 @@
   "notes": null,
   "reproducer": {
     "actual": "The consumers currently duplicate compatible but separate shape checks; mncs-test owns the checked-in schema while other repositories carry transport copies.",
-    "command": "Compare the plan validators and schemas in mncs-test, RAVEL, mncs-actions, and mncs-forge-mcp for the same mncs.verification-plan/1 artifact.",
+    "command": "Compare the plan validators and schemas in mncs-test, RAVEL, mncs-actions, and mncs-forge for the same mncs.verification-plan/1 artifact.",
     "expected": "All consumers accept or reject the same bounded transport shape and preserve the same typed escalation vocabulary.",
     "signature": "mncs-family:minimum-sufficient-verification-plan-validator"
   },
@@ -43,7 +43,7 @@
       "RAVEL",
       "mncs-test",
       "mncs-actions",
-      "mncs-forge-mcp",
+      "mncs-forge",
       "mncs-doctor"
     ],
     "revision": "working-tree"

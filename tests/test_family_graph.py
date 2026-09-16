@@ -35,7 +35,7 @@ def test_checked_in_graph_has_digest_bound_edges_and_selective_consumers() -> No
     )
     assert [edge["consumer_repository"] for edge in consumers] == [
         "mncs-actions",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test",
     ]
     assert all(edge["fingerprint"] for edge in consumers)
@@ -66,7 +66,7 @@ def test_checked_in_graph_reconciles_against_repository_declarations() -> None:
     workspace = Path(os.environ.get("MNCS_FAMILY_WORKSPACE", root.parent))
     if not all(
         (workspace / name / "family-semantic-contracts-v1.json").is_file()
-        for name in ("RAVEL", "mncs-test", "mncs-actions", "mncs-forge-mcp", "mncs-debug", "mncs-language")
+        for name in ("RAVEL", "mncs-test", "mncs-actions", "mncs-forge", "mncs-debug", "mncs-language")
     ):
         pytest.skip("family sibling checkouts are not available; family CI runs this check")
     result = subprocess.run(

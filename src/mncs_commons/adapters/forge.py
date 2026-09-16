@@ -70,7 +70,7 @@ def from_forge_result(
         status = ResultStatus.UNKNOWN.value
     return observation_from_external(
         producer_type="forge",
-        producer_id="mncs-forge-mcp",
+        producer_id="mncs-forge",
         source_identity=str(identity) if identity else None,
         subject_type="artifact",
         subject_identity=subject_identity,
@@ -99,7 +99,7 @@ def from_forge_work_request(
     identity = request.get("request_identity") or request.get("request_id")
     return observation_from_external(
         producer_type="forge",
-        producer_id="mncs-forge-mcp",
+        producer_id="mncs-forge",
         source_identity=str(identity) if identity else None,
         subject_type="artifact",
         subject_identity=subject_identity,
@@ -147,7 +147,7 @@ def from_execution_receipt(
         source_time = str(lifecycle.get("started_at") or "") or None
     return observation_from_external(
         producer_type="forge",
-        producer_id="mncs-forge-mcp",
+        producer_id="mncs-forge",
         source_identity=source_identity,
         subject_type="execution-receipt",
         subject_identity=subject_identity,

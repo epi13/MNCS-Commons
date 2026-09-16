@@ -369,7 +369,7 @@ def test_health_sweep_creates_fresh_hygiene_and_resolves_it_on_pass(tmp_path) ->
     project = next(
         item
         for item in app.family_coverage()["projects"]
-        if item["projectId"] == "mncs-forge-mcp"
+        if item["projectId"] == "mncs-forge"
     )
     assert project["state"] == CoverageState.ACTIVE_WORK.value
     second = app.family_health_sweep([{**failure, "observedAt": "2026-08-27T02:00:00Z"}])
@@ -382,7 +382,7 @@ def test_health_sweep_creates_fresh_hygiene_and_resolves_it_on_pass(tmp_path) ->
     project = next(
         item
         for item in app.family_coverage()["projects"]
-        if item["projectId"] == "mncs-forge-mcp"
+        if item["projectId"] == "mncs-forge"
     )
     assert project["state"] == CoverageState.HEALTHY_NO_WORK.value
 

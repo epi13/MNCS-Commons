@@ -1,11 +1,11 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language"
   ],
   "capability": "runtime-frame-and-task-ancestry",
-  "contentDigest": "sha256:7c2f7e77d89d40bad3f594f42c39456360ea1898e3f7731c9aa634a3b51972e0",
+  "contentDigest": "sha256:10d244fa0d193899a940bf0e954fcd621413f62f30b1ec9f386a763d4da9a439",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.frames",

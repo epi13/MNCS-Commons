@@ -13,7 +13,7 @@ verification.
 | `mncs-test` | `65c261680c3ee05a16e1caf422b7f9011f1a3e55` | canonical test provider |
 | `mncs-debug` | `178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd` | debugger consumer and evidence |
 | `mncs-actions` | `a5082391c9ac03d395a71fe4decc390a6eb19e7a` | provider transport |
-| `mncs-forge-mcp` | `3aa93ee15a057932e12aaccd1133101e9a2c9209` | structured diagnosis and verification |
+| `mncs-forge` | `3aa93ee15a057932e12aaccd1133101e9a2c9209` | structured diagnosis and verification |
 | `mncs-language-service` | `88b3c275249d119b2af471ea616a22eef1046597` | operation/source projection |
 | `MNCS-Commons` | `48c11e3025affc532e83ff59a78af3cb29f40db2` | starting Commons head for this reconciliation |
 

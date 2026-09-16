@@ -7,7 +7,7 @@
     "mncs-test": "65c261680c3ee05a16e1caf422b7f9011f1a3e55",
     "mncs-debug": "d134ed702a1be5a1aae32762219b66a1e802e1d6",
     "mncs-actions": "b1c8275c268bb36c08caaa43a2aafea1e6ed5eca",
-    "mncs-forge-mcp": "dbece72fae723a93e9f7df636ab4ea47245b23be",
+    "mncs-forge": "dbece72fae723a93e9f7df636ab4ea47245b23be",
     "mncs-language-service": "ca78edbc32a59971fda3f82ec88c9cfa140d9c77",
     "MNCS-Commons": "48c11e3025affc532e83ff59a78af3cb29f40db2"
   },
@@ -16,7 +16,7 @@
     "mncs-test": "65c261680c3ee05a16e1caf422b7f9011f1a3e55",
     "mncs-debug": "178f8bfd05b9ecee6aa5edb912baa59ddcc1bfdd",
     "mncs-actions": "a5082391c9ac03d395a71fe4decc390a6eb19e7a",
-    "mncs-forge-mcp": "3aa93ee15a057932e12aaccd1133101e9a2c9209",
+    "mncs-forge": "3aa93ee15a057932e12aaccd1133101e9a2c9209",
     "mncs-language-service": "88b3c275249d119b2af471ea616a22eef1046597"
   },
   "native_contract": {
@@ -37,7 +37,7 @@
     "test_truth": "mncs-test",
     "debug_truth": "mncs-debug",
     "transport": "mncs-actions",
-    "diagnosis": "mncs-forge-mcp",
+    "diagnosis": "mncs-forge",
     "source_projection": "mncs-language-service",
     "coordination": "MNCS-Commons"
   }

@@ -240,7 +240,7 @@ def seed_work(path: Path, domain: str = "local") -> dict[str, object]:
         {
             "workId": "work:seed-forge-commons-compat",
             "lane": "VERIFICATION",
-            "repository": "mncs-forge-mcp",
+            "repository": "mncs-forge",
             "task": (
                 "Add a compatibility verification fixture for Commons work-request and "
                 "completion-evidence records."

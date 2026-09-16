@@ -151,7 +151,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-test"
       ],
@@ -162,7 +162,7 @@
       "id": "MNCS-RUNTIME-3B723B6FADD8",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-test"
       ],
@@ -184,7 +184,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "runtime-frame-and-task-ancestry",
@@ -194,7 +194,7 @@
       "id": "MNCS-RUNTIME-D5179B1A5E9D",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "revalidationRequired": false,
@@ -215,7 +215,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "intermediate-value-observations",
@@ -225,7 +225,7 @@
       "id": "MNCS-RUNTIME-F42CEFCE989D",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "revalidationRequired": false,
@@ -276,7 +276,7 @@
       "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "capability": "low-overhead-bounded-debug-capture",
       "currentValidation": true,
@@ -286,7 +286,7 @@
       "reporters": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "revalidationRequired": false,
       "severity": "moderate",

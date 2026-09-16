@@ -75,11 +75,11 @@
     {
       "aliases": [
         "forge",
-        "mncs-forge"
+        "mncs-forge-mcp"
       ],
       "authority": "descriptive-only",
-      "id": "mncs-forge-mcp",
-      "repository": "epi13/mncs-forge-mcp",
+      "id": "mncs-forge",
+      "repository": "epi13/mncs-forge",
       "role": "family participant"
     },
     {

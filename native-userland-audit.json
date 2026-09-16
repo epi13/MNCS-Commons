@@ -1,0 +1,35 @@
+{
+  "schema_version": "mncs.native-userland-audit/1",
+  "repository": "mncs-commons",
+  "status": "host_bootstrap",
+  "canonical_mncs_surfaces": [
+    "pressure lifecycle semantics",
+    "family identity normalization",
+    "semantic graph and verification contracts"
+  ],
+  "host_canonical_responsibilities": [
+    {
+      "area": "persistent pressure store and generated materialized views",
+      "classification": "missing_reusable_runtime_capability",
+      "eliminating_capability": "persistent filesystem, atomic publication, clocks, and canonical JSON effects"
+    },
+    {
+      "area": "local node/service, Unix sockets, framing, and HTTP/TCP adapters",
+      "classification": "external_interoperability_only",
+      "eliminating_capability": "native sockets and service-loop effects, when needed"
+    },
+    {
+      "area": "Python CLI and compatibility migration tools",
+      "classification": "small_application_refactor",
+      "eliminating_capability": "direct native pressure and family modules"
+    }
+  ],
+  "existing_pressures": [
+    "MNCS-LANG-973FAC2F4FBD",
+    "MNCS-TOOLING-2658866CECD9",
+    "MNCS-TOOLING-146FB6F4BBC6",
+    "MNCS-LANG-52A5E0C72A39"
+  ],
+  "migration_order": 6,
+  "next_native_slice": "native pressure projection over a runtime-backed persistent store"
+}

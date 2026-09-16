@@ -29,7 +29,7 @@ def _consumers() -> list[tuple[str, ModuleType]]:
         "ravel": PROJECTS / "RAVEL/src/ravel/family_contract.py",
         "mncs-test": PROJECTS / "mncs-test/tools/family_contract.py",
         "mncs-actions": PROJECTS / "mncs-actions/lib/mncs_family_contract.py",
-        "mncs-forge-mcp": PROJECTS / "mncs-forge-mcp/src/mncs_forge/verification_plan_contract.py",
+        "mncs-forge": PROJECTS / "mncs-forge/src/mncs_forge/verification_plan_contract.py",
     }
     missing = [str(path) for path in paths.values() if not path.is_file()]
     if missing:

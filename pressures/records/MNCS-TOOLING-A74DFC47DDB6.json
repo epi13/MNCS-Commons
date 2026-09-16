@@ -2,10 +2,10 @@
   "affectedRepositories": [
     "mncs-actions",
     "mncs-debug",
-    "mncs-forge-mcp"
+    "mncs-forge"
   ],
   "capability": "low-overhead-bounded-debug-capture",
-  "contentDigest": "sha256:fb9fb5a4faf938bc1920526e8d170348814bec3a83e2aea30630ebbb660885c2",
+  "contentDigest": "sha256:4cbd0f9a09261e444df200fe0545db10d680d517a427d8bfe33c0ecc6e806ace",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.performance",

@@ -33,7 +33,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-language-service"
       ],
@@ -44,7 +44,7 @@
       "id": "MNCS-COMPILER-E445EECC9F96",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-language-service"
       ],
@@ -55,11 +55,11 @@
       "title": "Semantic operation identities lose source spans before execution",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 4,
+        "pass": 5,
         "unknown": 0
       }
     },
@@ -364,7 +364,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-test"
       ],
@@ -375,7 +375,7 @@
       "id": "MNCS-RUNTIME-3B723B6FADD8",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-test"
       ],
@@ -397,7 +397,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "deterministic-scheduler-effect-replay",
@@ -426,7 +426,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language",
         "mncs-language-service"
       ],
@@ -456,7 +456,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "runtime-frame-and-task-ancestry",
@@ -466,7 +466,7 @@
       "id": "MNCS-RUNTIME-D5179B1A5E9D",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "revalidationRequired": false,
@@ -487,7 +487,7 @@
     {
       "affectedRepositories": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "capability": "intermediate-value-observations",
@@ -497,7 +497,7 @@
       "id": "MNCS-RUNTIME-F42CEFCE989D",
       "reporters": [
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "revalidationRequired": false,
@@ -669,7 +669,7 @@
       "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "capability": "low-overhead-bounded-debug-capture",
       "currentValidation": true,
@@ -679,7 +679,7 @@
       "reporters": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "revalidationRequired": false,
       "severity": "moderate",
@@ -796,7 +796,7 @@
       "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test"
       ],
       "capability": "structured-test-failure-debug-witness",
@@ -807,7 +807,7 @@
       "reporters": [
         "mncs-actions",
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test"
       ],
       "revalidationRequired": false,
@@ -821,7 +821,7 @@
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 13,
+        "pass": 14,
         "unknown": 0
       }
     },
@@ -830,7 +830,7 @@
         "mncs-actions",
         "mncs-commons",
         "mncs-doctor",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test",
         "ravel"
       ],
@@ -843,7 +843,7 @@
         "mncs-actions",
         "mncs-commons",
         "mncs-doctor",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test",
         "ravel"
       ],
@@ -854,11 +854,11 @@
       "title": "No single family-owned verification-plan validator",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 6,
         "fail": 0,
-        "pass": 6,
+        "pass": 7,
         "unknown": 0
       }
     }

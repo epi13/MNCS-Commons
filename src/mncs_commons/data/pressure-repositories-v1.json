@@ -14,7 +14,7 @@
     {"id": "mncs-doctor", "repository": "epi13/mncs-doctor", "role": "consumer remediation", "authority": "descriptive-only"},
     {"id": "mncs-engine", "repository": "epi13/mncs-engine", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-fabric", "repository": "epi13/mncs-fabric", "role": "family participant", "authority": "descriptive-only"},
-    {"id": "mncs-forge-mcp", "repository": "epi13/mncs-forge-mcp", "role": "family participant", "authority": "descriptive-only", "aliases": ["forge", "mncs-forge"]},
+    {"id": "mncs-forge", "repository": "epi13/mncs-forge", "role": "family participant", "authority": "descriptive-only", "aliases": ["forge", "mncs-forge-mcp"]},
     {"id": "mncs-geometry", "repository": "epi13/mncs-geometry", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-harness", "repository": "epi13/mncs-harness", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-index", "repository": "epi13/mncs-index", "role": "family participant", "authority": "descriptive-only"},

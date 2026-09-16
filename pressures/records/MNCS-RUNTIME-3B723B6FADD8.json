@@ -1,12 +1,12 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language",
     "mncs-test"
   ],
   "capability": "effect-environment-lineage",
-  "contentDigest": "sha256:96df6282626d952c5956effbdd1dcc31d52ffbbf20999240f526e2bebea955b2",
+  "contentDigest": "sha256:5432d402c526958315705e14abceda7a0b689e6877b68f81e030647fb450a9ce",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.effects",

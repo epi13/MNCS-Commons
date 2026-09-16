@@ -302,7 +302,7 @@ def test_health_sweep_creates_repo_local_hygiene(tmp_path) -> None:
     assert details["lane"] == "REPO_HYGIENE"
     assert details["affectedRepositories"] == ["mncs-forge-mcp"]
     assert details["canonicalAffectedRepositories"] == [details["canonicalRepository"]]
-    assert details["canonicalRepository"] == "epi13/mncs-forge-mcp"
+    assert details["canonicalRepository"] == "epi13/mncs-forge"
     # No multi-repo hygiene should be AVAILABLE from sweep
     for work in app.work_next(lane="REPO_HYGIENE", limit=100)["work"]:
         d = work["current"]["details"]
@@ -468,5 +468,5 @@ def test_hygiene_invalid_never_becomes_available_via_health_sweep_alias(tmp_path
     sweep = app.family_health_sweep([obs])
     assert sweep["proposals"][0]["proposal"] == "ACCEPTED"
     details = app.work_status(sweep["proposals"][0]["workId"])["current"]["details"]
-    assert details["canonicalRepository"] == "epi13/mncs-forge-mcp"
-    assert details["canonicalAffectedRepositories"] == ["epi13/mncs-forge-mcp"]
+    assert details["canonicalRepository"] == "epi13/mncs-forge"
+    assert details["canonicalAffectedRepositories"] == ["epi13/mncs-forge"]

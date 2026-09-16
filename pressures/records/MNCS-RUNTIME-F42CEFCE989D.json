@@ -1,11 +1,11 @@
 {
   "affectedRepositories": [
     "mncs-debug",
-    "mncs-forge-mcp",
+    "mncs-forge",
     "mncs-language"
   ],
   "capability": "intermediate-value-observations",
-  "contentDigest": "sha256:753a7f0602ccf69ab5f3dfdf5a9a0c1f624b13669a45916e0f9b8a63b432b714",
+  "contentDigest": "sha256:2b2b7f3e29a3bf4f93c875810af38ea66510b5f8bffe1b81b6980dc03a729e80",
   "discoveredAt": "2026-09-13T23:16:40Z",
   "discoveredBy": "mncs-debug",
   "domain": "debugging.values",

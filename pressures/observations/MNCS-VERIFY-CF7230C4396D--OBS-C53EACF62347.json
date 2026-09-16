@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c604f6eeddeaadac491f25f0a6ecda80501034811831eb4f04a1d09832e46806",
+  "evidence": [
+    {
+      "id": "mncs-forge:repository-rename-revalidation:2026-09-15",
+      "kind": "repository-rename-revalidation",
+      "ref": "epi13/mncs-forge",
+      "status": "PASS",
+      "summary": "Canonical repository identity and the existing consumer proof surface agree after the rename."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-C53EACF62347",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-15T12:00:00Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Revalidated after the canonical repository rename; the existing consumer verification remains valid under epi13/mncs-forge.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

@@ -72,7 +72,7 @@
       "MNCS-TOOLING-F648D3B062B3",
       "MNCS-VERIFY-CF7230C4396D"
     ],
-    "mncs-forge-mcp": [
+    "mncs-forge": [
       "MNCS-COMPILER-E445EECC9F96",
       "MNCS-RUNTIME-3B723B6FADD8",
       "MNCS-RUNTIME-6382A1A44458",

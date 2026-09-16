@@ -13,7 +13,7 @@ Use the read-only local inspection commands:
 
 ```bash
 mncs-commons compat list
-mncs-commons compat report --repo forge=../mncs-forge-mcp --repo mnel=../Machine-Native-Experimental-Learning
+mncs-commons compat report --repo forge=../mncs-forge --repo mnel=../Machine-Native-Experimental-Learning
 mncs-commons compat check-local --producer mncs-language --repo ../mncs-language
 ```
 

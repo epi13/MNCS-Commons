@@ -5,10 +5,10 @@ independent evaluation or a conformance decision.
 
 Forge source:
 
-- repository: local `../mncs-forge-mcp`
+- repository: local `../mncs-forge`
 - commit used for the control plane: `bc9388d0ad8e8be554791def5d8aa6ff2f44d72d`
 - version: `0.1.0a2`
-- interface: local CLI through `../mncs-forge-mcp/.venv/bin/mncs-forge`
+- interface: local CLI through `../mncs-forge/.venv/bin/mncs-forge`
 - Commons configuration: [`mncs-forge.toml`](../mncs-forge.toml)
 
 The epoch was begun with generator `codex-luna-high-2026-08-08` and evaluator
@@ -41,7 +41,7 @@ report is available through:
 
 ```bash
 python scripts/validate_live_compat.py
-mncs-commons compat report --repo forge=../mncs-forge-mcp
+mncs-commons compat report --repo forge=../mncs-forge
 ```
 
 Forge retains the `FAIL > UNKNOWN > PASS` aggregation rule. No UNKNOWN was promoted to PASS.
