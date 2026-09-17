@@ -24,6 +24,9 @@ VERIFICATION_RUNNERS = frozenset({"declaration", "mncs-test"})
 MAX_CHECK_TEST_IDENTITIES = 256
 MAX_CHECK_SELECTOR_LENGTH = 4096
 MAX_CHECK_TEST_IDENTITY_LENGTH = 512
+UNAVAILABLE_REGISTRY_IDENTITY = hashlib.sha256(
+    b"mncs-family-registry-unavailable/v1"
+).hexdigest()
 
 
 class FamilyGraphError(ValueError):
@@ -524,7 +527,11 @@ def generate_graph(
     if coverage is None:
         participant_ids = sorted(repository_ids)
         coverage = {
-            "registry_identity": "unavailable",
+            # A graph built only from supplied declarations has no registry
+            # authority. Keep the field identity-shaped so typed consumers
+            # can ingest it, while the incomplete status prevents it from
+            # being mistaken for registry-wide closure.
+            "registry_identity": UNAVAILABLE_REGISTRY_IDENTITY,
             "registered_family_project_count": len(participant_ids),
             "classified_project_count": len(participant_ids),
             "semantic_graph_participant_count": len(participant_ids),
@@ -533,7 +540,7 @@ def generate_graph(
             "semantic_graph_participants": participant_ids,
             "explicit_nonparticipants": [],
             "unclassified_repositories": [],
-            "coverage_status": "complete",
+            "coverage_status": "incomplete",
             "topology_status": "complete_among_declared_participants",
         }
     else:
@@ -708,6 +715,13 @@ def validate_graph(value: Any) -> dict[str, Any]:
     coverage = value.get("coverage")
     if not isinstance(coverage, Mapping):
         raise FamilyGraphError("family graph coverage must be an object")
+    registry_identity = coverage.get("registry_identity")
+    if (
+        not isinstance(registry_identity, str)
+        or len(registry_identity) != 64
+        or any(character not in "0123456789abcdef" for character in registry_identity)
+    ):
+        raise FamilyGraphError("family graph coverage.registry_identity must be a lower-case SHA-256 identity")
     count_fields = (
         "registered_family_project_count",
         "classified_project_count",

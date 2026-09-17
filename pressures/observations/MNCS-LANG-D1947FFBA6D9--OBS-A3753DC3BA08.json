@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "6bb4456",
+    "validation": "sequence_extra_helpers_agree_per_backend: 16 cases on five executable backends"
+  },
+  "contentDigest": "sha256:e49088a34f79f8abbe5b555a9237b964bc8f17932a33c6a7c75d6f5dc2e7f026",
+  "evidence": [
+    {
+      "id": "mncs-language:phase6-bounded-filter-five-backends",
+      "kind": "executable",
+      "ref": "crates/mncs-cli/tests/abi_boundary.rs::sequence_extra_helpers_agree_per_backend",
+      "status": "PASS",
+      "summary": "Sixteen sequence helper and builder cases agree across the five executable backends, including exact runtime-length compaction results."
+    },
+    {
+      "id": "mncs-language:legacy-scatter-still-absent",
+      "kind": "language-audit",
+      "ref": "library/core/sequences.mncs::ByteViewBuilder256",
+      "status": "FAIL",
+      "summary": "The repair uses exact bounded storage, carried state, and checked functional push; it does not add indexed mutation or general view-to-exact scatter."
+    }
+  ],
+  "id": "MNCS-LANG-D1947FFBA6D9--OBS-A3753DC3BA08",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "consumerPressureUse": "bounded sequence materialization/filter/compaction",
+    "disposition": "partial-capability-revalidation"
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-LANG-D1947FFBA6D9",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run cargo test -p mncs-cli --test abi_boundary sequence_extra_helpers_agree_per_backend and compare the bounded builder with the legacy frame_generic scatter reproducer.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "6bb4456",
+    "path": "library/core/sequences.mncs",
+    "repository": "mncs-language",
+    "workingTree": false
+  },
+  "summary": "Profile 0.18 now materializes runtime-length bounded byte-view selections through capacity-checked functional builders used by RAVEL, mncs-test, and mncs-actions. The original unrestricted scatter-write and view-to-exact requirement remains absent.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "RAVEL, mncs-test, and mncs-actions use bounded builders; arbitrary frame widths and unrestricted scatter remain monomorphized or host-side.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

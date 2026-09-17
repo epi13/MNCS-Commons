@@ -15,6 +15,49 @@ enum RoutingScope { local, selected_repositories, family }
 enum ContractFamilyVerdict { PASS, FAIL, UNKNOWN }
 enum ContractProviderVerdict { PASS, FAIL, SKIP, UNSUPPORTED }
 
+// Family schema identifiers are contract-owned values. Applications import
+// these functions instead of copying numeric ASCII arrays into each native
+// entrypoint; the external spellings remain centralized and executable.
+fn verification_plan_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 118, 101, 114, 105, 102, 105, 99, 97, 116, 105, 111, 110, 45, 112, 108, 97, 110, 47, 49];
+}
+
+fn semantic_impact_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 115, 101, 109, 97, 110, 116, 105, 99, 45, 105, 109, 112, 97, 99, 116, 47, 49];
+}
+
+fn test_inventory_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 116, 101, 115, 116, 45, 105, 110, 118, 101, 110, 116, 111, 114, 121, 47, 49];
+}
+
+fn semantic_edge_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 102, 97, 109, 105, 108, 121, 45, 115, 101, 109, 97, 110, 116, 105, 99, 45, 101, 100, 103, 101, 47, 49];
+}
+
+fn provider_declaration_schema() -> (result: [byte; up_to 64]) {
+    return [99, 111, 109, 109, 111, 110, 115, 46, 109, 110, 99, 115, 46, 115, 101, 109, 97, 110, 116, 105, 99, 45, 99, 111, 110, 116, 114, 97, 99, 116, 45, 100, 101, 99, 108, 97, 114, 97, 116, 105, 111, 110, 115, 47, 118, 49];
+}
+
+fn test_result_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 116, 101, 115, 116, 45, 114, 101, 115, 117, 108, 116, 47, 49];
+}
+
+fn check_result_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 99, 104, 101, 99, 107, 45, 114, 101, 115, 117, 108, 116, 47, 49];
+}
+
+fn receipt_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 101, 120, 101, 99, 117, 116, 105, 111, 110, 45, 114, 101, 99, 101, 105, 112, 116, 47, 49];
+}
+
+fn evidence_manifest_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 101, 118, 105, 100, 101, 110, 99, 101, 45, 109, 97, 110, 105, 102, 101, 115, 116, 47, 49];
+}
+
+fn selected_proof_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 115, 101, 108, 101, 99, 116, 101, 100, 45, 102, 97, 109, 105, 108, 121, 45, 112, 114, 111, 111, 102, 47, 49];
+}
+
 record SourceContract {
     path: [byte; up_to 1024],
     sha256: [byte; 32],
@@ -40,7 +83,24 @@ record CrossRepositoryContract {
     edges: [SemanticEdgeContract; up_to 128],
     selected_repositories: [[byte; up_to 256]; up_to 64],
     complete: bool,
-    limitations: [[byte; up_to 1024]; up_to 64]
+    limitations: [[byte; up_to 1024]; up_to 64],
+    coverage: FamilyGraphCoverageContract
+}
+
+// Registry coverage is part of the graph projection, not an opaque host
+// annotation. `complete` above describes topology among the selected graph
+// participants; these fields preserve the separate closed-world coverage
+// facts used by RAVEL when it chooses a proof boundary.
+record FamilyGraphCoverageContract {
+    registry_identity: [byte; 32],
+    registered_family_project_count: u64,
+    classified_project_count: u64,
+    semantic_graph_participant_count: u64,
+    explicit_nonparticipant_count: u64,
+    unclassified_project_count: u64,
+    unclassified_repositories: [[byte; up_to 256]; up_to 64],
+    coverage_status: [byte; up_to 64],
+    topology_status: [byte; up_to 128]
 }
 
 record SemanticImpactContract {
@@ -72,6 +132,10 @@ record SelectionContract {
 record ProofBoundaryContract {
     sufficient_to_stop: bool,
     required_evidence: [[byte; up_to 128]; up_to 16],
+    boundary: ProofBoundaryDetails
+}
+
+record ProofBoundaryDetails {
     claimed_scope: [byte; up_to 128],
     established: bool,
     executor: [byte; up_to 256],
@@ -81,14 +145,21 @@ record ProofBoundaryContract {
 record ProvenanceContract {
     provider: [byte; up_to 256],
     policy: [byte; up_to 256],
-    compiler_impact_schema: [byte; up_to 128],
+    compiler_impact_schema: [byte; up_to 64],
+    dependencies: ProvenanceDependencies
+}
+
+// Keep the dependency object nested as it is on the canonical external
+// VerificationPlan. This avoids a native-only flattening that needs an
+// undocumented adapter at every artifact boundary.
+record ProvenanceDependencies {
     source_sha256: [byte; 32],
     semantic_graph_identity: [byte; 32],
     inventory_subject_identity: [byte; up_to 512],
     inventory_subject_fingerprint: [byte; 32],
     family_graph_identity: [byte; 32],
     selected_test_identities: [[byte; up_to 1024]; up_to 256],
-    contract_revision: [byte; up_to 128]
+    contract_revision: [byte; up_to 64]
 }
 
 // Complete native VerificationPlan representation. The plan_id is the
@@ -191,6 +262,55 @@ record SelectedProofContract {
     required_evidence: [[byte; up_to 128]; up_to 16],
     verdict: ContractFamilyVerdict,
     sufficient: bool
+}
+
+// Construct the contract-owned selection record from a small numeric level
+// projection supplied by an application policy. Keeping the finite-value
+// construction here avoids application-local adapters between policy enums
+// and the Commons contract enum while retaining one nominal type.
+fn selection_contract(
+    level_code: i64,
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    available_test_count: u64,
+    escalation_reasons: [[byte; up_to 1024]; up_to 64],
+    routing_scope: RoutingScope,
+    selected_repositories: [[byte; up_to 256]; up_to 64],
+    available_repository_count: u64,
+    semantic_graph_repository_count: u64,
+    registered_family_project_count: u64,
+    coverage_classified_project_count: u64,
+    unclassified_project_count: u64
+) -> (result: SelectionContract) {
+    let level: VerificationLevel = select_level(level_code);
+    return SelectionContract {
+        level: level,
+        selected_test_identities: selected_test_identities,
+        available_test_count: available_test_count,
+        escalation_reasons: escalation_reasons,
+        routing_scope: routing_scope,
+        selected_repositories: selected_repositories,
+        available_repository_count: available_repository_count,
+        semantic_graph_repository_count: semantic_graph_repository_count,
+        registered_family_project_count: registered_family_project_count,
+        coverage_classified_project_count: coverage_classified_project_count,
+        unclassified_project_count: unclassified_project_count
+    };
+}
+
+fn select_level(code: i64) -> (result: VerificationLevel) {
+    if code == 1 {
+        return VerificationLevel.direct_dependents;
+    }
+    if code == 2 {
+        return VerificationLevel.affected_subsystem;
+    }
+    if code == 3 {
+        return VerificationLevel.repository_canonical;
+    }
+    if code == 4 {
+        return VerificationLevel.family;
+    }
+    return VerificationLevel.changed_item;
 }
 
 // Identity material is deliberately explicit. Extension fields accepted by

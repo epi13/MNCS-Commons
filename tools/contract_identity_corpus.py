@@ -227,6 +227,11 @@ def external_identity(name: str, value: dict[str, Any]) -> str:
     projection = json.loads(json.dumps(value))
     if name == "verification_plan":
         projection["schema_version"] = "mncs.verification-plan/1"
+        # These are transport-only extensions in the family contract. They
+        # must survive publication when present, but cannot rotate the
+        # executable plan identity.
+        projection.pop("presentation_extension", None)
+        projection.pop("diagnostic_annotations", None)
     self_field = SELF_FIELDS.get(name)
     if self_field:
         projection.pop(self_field, None)
@@ -247,6 +252,9 @@ def build_corpus() -> tuple[dict[str, Any], dict[str, list[tuple[str, str]]], di
     host_fields: dict[str, Any] = {}
     for name, type_name in CASE_TYPES.items():
         external = external_value(type_name, type_name, records, enums)
+        if name == "verification_plan":
+            external["presentation_extension"] = {"note": "non-semantic corpus extension"}
+            external["diagnostic_annotations"] = ["identity parity probe"]
         corpus[name] = external
         host_fields[name] = host_value(type_name, external, records, enums)
     return host_fields, corpus, enums

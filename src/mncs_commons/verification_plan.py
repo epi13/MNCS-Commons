@@ -51,6 +51,7 @@ ESCALATION_REASONS = (
     "direct_dependents_affected",
     "dependent_targeted_test_failed",
     "effect_semantics_changed",
+    "family_registry_coverage_incomplete",
     "high_connectivity_definition_changed",
     "impact_evidence_truncated",
     "language_profile_changed",
@@ -186,6 +187,34 @@ def _cross_repository(value: Any) -> dict[str, Any]:
             "impact.cross_repository.selected_repositories",
             "must equal the consumer repositories represented by edges",
         )
+    coverage = _object(cross.get("coverage"), "impact.cross_repository.coverage")
+    _string(coverage.get("registry_identity"), "impact.cross_repository.coverage.registry_identity", sha256=True)
+    for field in (
+        "registered_family_project_count",
+        "classified_project_count",
+        "semantic_graph_participant_count",
+        "explicit_nonparticipant_count",
+        "unclassified_project_count",
+    ):
+        _non_negative_int(coverage.get(field), f"impact.cross_repository.coverage.{field}")
+    _strings(
+        coverage.get("unclassified_repositories"),
+        "impact.cross_repository.coverage.unclassified_repositories",
+    )
+    for field, allowed in (
+        ("coverage_status", ("complete", "incomplete", "not_requested")),
+            (
+                "topology_status",
+                ("complete", "complete_among_declared_participants", "incomplete", "unavailable", "not_requested"),
+            ),
+    ):
+        status = coverage.get(field)
+        if status not in allowed:
+            raise VerificationPlanError(
+                "VOCABULARY_UNKNOWN",
+                f"impact.cross_repository.coverage.{field}",
+                f"unsupported coverage status {status!r}",
+            )
     return dict(cross)
 
 

@@ -21,7 +21,18 @@
         "edges": [],
         "selected_repositories": [],
         "complete": true,
-        "limitations": []
+        "limitations": [],
+        "coverage": {
+          "registry_identity": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "registered_family_project_count": 0,
+          "classified_project_count": 0,
+          "semantic_graph_participant_count": 0,
+          "explicit_nonparticipant_count": 0,
+          "unclassified_project_count": 0,
+          "unclassified_repositories": [],
+          "coverage_status": "not_requested",
+          "topology_status": "not_requested"
+        }
       }
     },
     "selection": {

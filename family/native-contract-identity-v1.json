@@ -14,9 +14,16 @@
     "identity_fields": {
       "verification_plan": [
         "schema_version", "source.path", "source.sha256", "source.subject_identity",
-        "source.subject_fingerprint", "impact", "selection", "proof",
+        "source.subject_fingerprint", "impact", "impact.cross_repository.coverage",
+        "selection", "proof", "proof.boundary",
         "provenance.provider", "provenance.policy",
-        "provenance.compiler_impact_schema", "provenance.dependencies"
+        "provenance.compiler_impact_schema", "provenance.dependencies.source_sha256",
+        "provenance.dependencies.semantic_graph_identity",
+        "provenance.dependencies.inventory_subject_identity",
+        "provenance.dependencies.inventory_subject_fingerprint",
+        "provenance.dependencies.family_graph_identity",
+        "provenance.dependencies.selected_test_identities",
+        "provenance.dependencies.contract_revision"
       ],
       "semantic_edge": [
         "producer_repository", "consumer_repository", "contract_identity",
@@ -58,6 +65,10 @@
       "evidence_manifest": "evidence_identity is sha256 of EvidenceManifestIdentityMaterial",
       "selected_proof": "proof_identity is sha256 of SelectedProofIdentityMaterial"
     },
+    "projection_notes": {
+      "mncs-test.ProviderCheckResult.check_identity": "bounded provider-protocol selector label; it is not the canonical fixed-32 CheckResultContract.check_identity digest. Actions binds the selector to the canonical check identity at the artifact boundary.",
+      "VerificationPlan.proof.boundary": "native ProofBoundaryContract preserves the external nested proof.boundary object; it is not flattened into the proof root."
+    },
     "non_identity_extensions": [
       "presentation-only metadata",
       "diagnostic annotations",
@@ -71,7 +82,7 @@
     "case_count": 10,
     "parity_count": 10,
     "mismatch_count": 0,
-    "finding": "all ten baseline identity-material cases match byte-for-byte after structured_digest was repaired to reuse the type-directed external contract projection; closure remains reopened because unclassified external extension fields are still not retained by typed ingress."
+    "finding": "all ten baseline identity-material cases match byte-for-byte after structured_digest was repaired to reuse the type-directed external contract projection; the VerificationPlan corpus now includes typed graph coverage, nested provenance dependencies, and the nested proof boundary. Closure remains reopened because unclassified external extension fields are still not retained by typed ingress."
   },
   "contracts": [
     "mncs.verification-plan/1",

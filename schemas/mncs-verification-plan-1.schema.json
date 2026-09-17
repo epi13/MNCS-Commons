@@ -25,7 +25,22 @@
       "required": ["provider", "policy"],
       "properties": {
         "provider": {"type": "string", "minLength": 1},
-        "policy": {"type": "string", "minLength": 1}
+        "policy": {"type": "string", "minLength": 1},
+        "compiler_impact_schema": {"type": "string", "minLength": 1},
+        "dependencies": {
+          "type": "object",
+          "required": ["source_sha256", "semantic_graph_identity", "inventory_subject_identity", "inventory_subject_fingerprint", "family_graph_identity", "selected_test_identities", "contract_revision"],
+          "properties": {
+            "source_sha256": {"$ref": "#/$defs/sha256"},
+            "semantic_graph_identity": {"$ref": "#/$defs/sha256"},
+            "inventory_subject_identity": {"type": "string", "minLength": 1},
+            "inventory_subject_fingerprint": {"$ref": "#/$defs/sha256"},
+            "family_graph_identity": {"$ref": "#/$defs/sha256"},
+            "selected_test_identities": {"$ref": "#/$defs/strings"},
+            "contract_revision": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": true
+        }
       },
       "additionalProperties": true
     }
@@ -47,7 +62,7 @@
     },
     "cross_repository": {
       "type": "object",
-      "required": ["graph_identity", "edges", "selected_repositories", "complete", "limitations"],
+      "required": ["graph_identity", "edges", "selected_repositories", "complete", "limitations", "coverage"],
       "properties": {
         "graph_identity": {"$ref": "#/$defs/sha256"},
         "edges": {
@@ -69,7 +84,24 @@
         },
         "selected_repositories": {"$ref": "#/$defs/strings"},
         "complete": {"type": "boolean"},
-        "limitations": {"$ref": "#/$defs/strings"}
+        "limitations": {"$ref": "#/$defs/strings"},
+        "coverage": {"$ref": "#/$defs/family_graph_coverage"}
+      },
+      "additionalProperties": true
+    },
+    "family_graph_coverage": {
+      "type": "object",
+      "required": ["registry_identity", "registered_family_project_count", "classified_project_count", "semantic_graph_participant_count", "explicit_nonparticipant_count", "unclassified_project_count", "unclassified_repositories", "coverage_status", "topology_status"],
+      "properties": {
+        "registry_identity": {"$ref": "#/$defs/sha256"},
+        "registered_family_project_count": {"type": "integer", "minimum": 0},
+        "classified_project_count": {"type": "integer", "minimum": 0},
+        "semantic_graph_participant_count": {"type": "integer", "minimum": 0},
+        "explicit_nonparticipant_count": {"type": "integer", "minimum": 0},
+        "unclassified_project_count": {"type": "integer", "minimum": 0},
+        "unclassified_repositories": {"$ref": "#/$defs/strings"},
+        "coverage_status": {"enum": ["complete", "incomplete", "not_requested"]},
+        "topology_status": {"enum": ["complete", "complete_among_declared_participants", "incomplete", "unavailable", "not_requested"]}
       },
       "additionalProperties": true
     },
@@ -96,7 +128,7 @@
         "level": {"enum": ["changed_item", "direct_dependents", "affected_subsystem", "repository_canonical", "family"]},
         "selected_test_identities": {"$ref": "#/$defs/strings"},
         "available_test_count": {"type": "integer", "minimum": 0},
-        "escalation_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary_changed", "canonical_fixture_changed", "cross_repository_contract_changed", "cross_repository_graph_incomplete", "direct_dependents_affected", "dependent_targeted_test_failed", "effect_semantics_changed", "high_connectivity_definition_changed", "impact_evidence_truncated", "language_profile_changed", "migration_broad_semantic_surface", "parser_semantics_changed", "public_contract_changed", "serialization_format_changed", "shared_type_changed", "test_selection_unresolved", "unknown_changed_identity"]}},
+        "escalation_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary_changed", "canonical_fixture_changed", "cross_repository_contract_changed", "cross_repository_graph_incomplete", "direct_dependents_affected", "dependent_targeted_test_failed", "effect_semantics_changed", "family_registry_coverage_incomplete", "high_connectivity_definition_changed", "impact_evidence_truncated", "language_profile_changed", "migration_broad_semantic_surface", "parser_semantics_changed", "public_contract_changed", "serialization_format_changed", "shared_type_changed", "test_selection_unresolved", "unknown_changed_identity"]}},
         "routing_scope": {"enum": ["local", "selected_repositories", "family"]},
         "selected_repositories": {"$ref": "#/$defs/strings"},
         "available_repository_count": {"type": "integer", "minimum": 0}
