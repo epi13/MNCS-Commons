@@ -1,0 +1,80 @@
+{
+  "schema_version": "commons.mncs.native-contract-identity/v1",
+  "repository_id": "MNCS-Commons",
+  "revision": "1",
+  "native_module": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs",
+  "fullExternalContractIdentity": {
+    "status": "closed",
+    "authority": "MNCS-Commons family contract declarations plus owning repository schemas",
+    "canonical_identity": {
+      "verification_plan": "sha256(canonical-json-without-plan_id):hex-lowercase-v1",
+      "native_material": "mncs.commons.family.contracts.v1 identity-material functions; callers hash the returned typed material with structured_digest"
+    },
+    "extension_rule": "unknown external fields remain identity-bearing until explicitly classified; presentation_extension and diagnostic_annotations are the currently declared non-semantic extensions",
+    "identity_fields": {
+      "verification_plan": [
+        "source.path", "source.sha256", "source.subject_identity",
+        "source.subject_fingerprint", "impact", "selection", "proof",
+        "provenance.provider", "provenance.policy",
+        "provenance.compiler_impact_schema", "provenance.dependencies"
+      ],
+      "semantic_edge": [
+        "producer_repository", "consumer_repository", "contract_identity",
+        "contract_revision", "consuming_identity", "provenance", "fingerprint",
+        "consumer_manifest_identity", "check_identity", "selected_test_identities"
+      ],
+      "provider_declaration": [
+        "repository_id", "provider_identity", "interface_identity",
+        "revision_identity", "source_identity", "inventory_identity", "revision",
+        "capabilities"
+      ],
+      "test_result": [
+        "provider_identity", "provider_revision_identity",
+        "interface_identity", "inventory_identity", "execution",
+        "selected_test_identities", "verdict", "failure_code", "evidence_identity"
+      ],
+      "check_result": [
+        "check_identity", "provider_identity",
+        "provider_revision_identity", "interface_identity", "inventory_identity",
+        "test_result_identity", "execution_identity", "evidence_identity", "verdict"
+      ],
+      "receipt": [
+        "plan_identity", "graph_identity", "edge_identity", "source_identity",
+        "contract_identity", "consumer_identity", "provider_identity",
+        "provider_revision_identity", "interface_identity", "inventory_identity",
+        "test_result_identity", "check_result_identity", "execution_identity",
+        "evidence_identity", "profile_identity", "verdict"
+      ],
+      "selected_proof": [
+        "plan_identity", "selected_repositories", "selected_check_identities",
+        "required_evidence", "verdict", "sufficient"
+      ]
+    },
+    "derived_identities": {
+      "verification_plan": "plan_id is sha256 of VerificationPlanIdentityMaterial",
+      "test_result": "result_identity is sha256 of TestResultIdentityMaterial",
+      "check_result": "result_identity is sha256 of CheckResultIdentityMaterial",
+      "receipt": "receipt_identity is sha256 of ReceiptIdentityMaterial",
+      "evidence_manifest": "evidence_identity is sha256 of EvidenceManifestIdentityMaterial",
+      "selected_proof": "proof_identity is sha256 of SelectedProofIdentityMaterial"
+    },
+    "non_identity_extensions": [
+      "presentation-only metadata",
+      "diagnostic annotations",
+      "presentation_extension",
+      "diagnostic_annotations"
+    ]
+  },
+  "contracts": [
+    "mncs.verification-plan/1",
+    "mncs.semantic-impact/1",
+    "mncs.test-inventory/1",
+    "mncs.semantic-edge/1",
+    "commons.mncs.semantic-contract-declarations/v1",
+    "mncs.test-result/1",
+    "mncs.check-result/1",
+    "mncs.execution-receipt/1",
+    "mncs.evidence-manifest/1",
+    "mncs.selected-family-proof/1"
+  ]
+}

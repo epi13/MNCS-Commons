@@ -5,8 +5,10 @@
   "canonical_entrypoint": "mncs-commons CLI/service",
   "native_sources": {
     "family-artifact-wire": "src/mncs_commons/mesh/mncs/commons/family/artifact/v1.mncs",
-    "family-evidence": "src/mncs_commons/mesh/mncs/commons/family/evidence/v1.mncs"
+    "family-evidence": "src/mncs_commons/mesh/mncs/commons/family/evidence/v1.mncs",
+    "family-contracts": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs"
   },
+  "fullExternalContractIdentity": "family/native-contract-identity-v1.json",
   "native_shadow_slices": [
     "Commons-owned family artifact wire views",
     "Commons-owned typed family evidence records"
@@ -16,5 +18,5 @@
     "family identity normalization",
     "semantic graph and verification contracts"
   ],
-  "next_migration_slice": "native pressure projection over a runtime-backed persistent store"
+  "next_migration_slice": "native family contract consumers and canonical identity digest parity"
 }

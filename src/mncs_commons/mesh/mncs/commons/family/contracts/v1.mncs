@@ -1,0 +1,437 @@
+mncs 0.18;
+
+// mncs.commons.family.contracts.v1
+//
+// Complete native identity-bearing representations for the family contracts.
+// The external JSON documents remain forward-compatible: the runtime accepts
+// declared fields plus extension fields. This module names the semantic
+// material which is allowed to affect a canonical identity. Applications may
+// add bounded transport metadata around these records, but may not replace
+// them with an application-specific projection.
+module mncs.commons.family.contracts.v1;
+
+enum VerificationLevel { changed_item, direct_dependents, affected_subsystem, repository_canonical, family }
+enum RoutingScope { local, selected_repositories, family }
+enum ContractFamilyVerdict { PASS, FAIL, UNKNOWN }
+enum ContractProviderVerdict { PASS, FAIL, SKIP, UNSUPPORTED }
+
+record SourceContract {
+    path: [byte; up_to 1024],
+    sha256: [byte; 32],
+    subject_identity: [byte; up_to 512],
+    subject_fingerprint: [byte; 32]
+}
+
+record SemanticEdgeContract {
+    producer_repository: [byte; up_to 256],
+    consumer_repository: [byte; up_to 256],
+    contract_identity: [byte; up_to 256],
+    contract_revision: [byte; up_to 128],
+    consuming_identity: [byte; up_to 512],
+    provenance: [byte; up_to 1024],
+    fingerprint: [byte; 32],
+    consumer_manifest_identity: [byte; 32],
+    check_identity: [byte; up_to 256],
+    selected_test_identities: [[byte; up_to 1024]; up_to 256]
+}
+
+record CrossRepositoryContract {
+    graph_identity: [byte; 32],
+    edges: [SemanticEdgeContract; up_to 128],
+    selected_repositories: [[byte; up_to 256]; up_to 64],
+    complete: bool,
+    limitations: [[byte; up_to 1024]; up_to 64]
+}
+
+record SemanticImpactContract {
+    graph_identity: [byte; 32],
+    roots: [[byte; up_to 512]; up_to 128],
+    affected_count: u64,
+    direct_dependents: [[byte; up_to 512]; up_to 128],
+    test_identities: [[byte; up_to 1024]; up_to 256],
+    risk_flags: [[byte; up_to 128]; up_to 32],
+    complete: bool,
+    limitations: [[byte; up_to 1024]; up_to 64],
+    cross_repository: CrossRepositoryContract
+}
+
+record SelectionContract {
+    level: VerificationLevel,
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    available_test_count: u64,
+    escalation_reasons: [[byte; up_to 1024]; up_to 64],
+    routing_scope: RoutingScope,
+    selected_repositories: [[byte; up_to 256]; up_to 64],
+    available_repository_count: u64,
+    semantic_graph_repository_count: u64,
+    registered_family_project_count: u64,
+    coverage_classified_project_count: u64,
+    unclassified_project_count: u64
+}
+
+record ProofBoundaryContract {
+    sufficient_to_stop: bool,
+    required_evidence: [[byte; up_to 128]; up_to 16],
+    claimed_scope: [byte; up_to 128],
+    established: bool,
+    executor: [byte; up_to 256],
+    stop_condition: [byte; up_to 128]
+}
+
+record ProvenanceContract {
+    provider: [byte; up_to 256],
+    policy: [byte; up_to 256],
+    compiler_impact_schema: [byte; up_to 128],
+    source_sha256: [byte; 32],
+    semantic_graph_identity: [byte; 32],
+    inventory_subject_identity: [byte; up_to 512],
+    inventory_subject_fingerprint: [byte; 32],
+    family_graph_identity: [byte; 32],
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    contract_revision: [byte; up_to 128]
+}
+
+// Complete native VerificationPlan representation. The plan_id is the
+// identity of the material returned by verification_plan_identity_material;
+// callers must not synthesize it from a partial wire view.
+record VerificationPlan {
+    plan_id: [byte; 32],
+    source: SourceContract,
+    impact: SemanticImpactContract,
+    selection: SelectionContract,
+    proof: ProofBoundaryContract,
+    provenance: ProvenanceContract
+}
+
+record TestInventoryContract {
+    subject_identity: [byte; up_to 512],
+    subject_fingerprint: [byte; 32],
+    test_case_identities: [[byte; up_to 1024]; up_to 256]
+}
+
+record ProviderDeclarationContract {
+    repository_id: [byte; up_to 256],
+    provider_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    revision_identity: [byte; 32],
+    source_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    revision: [byte; up_to 128],
+    capabilities: [[byte; up_to 128]; up_to 32]
+}
+
+record TestExecutionContract {
+    execution_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    selection_count: u64
+}
+
+record TestResultContract {
+    result_identity: [byte; 32],
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    execution: TestExecutionContract,
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    verdict: ContractProviderVerdict,
+    failure_code: u64,
+    evidence_identity: [byte; 32]
+}
+
+record CheckResultContract {
+    result_identity: [byte; 32],
+    check_identity: [byte; 32],
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    verdict: ContractFamilyVerdict
+}
+
+record ReceiptContract {
+    receipt_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    profile_identity: [byte; 32],
+    verdict: ContractFamilyVerdict
+}
+
+record EvidenceManifestContract {
+    evidence_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    failure_material: [byte; up_to 1024],
+    artifact_identities: [[byte; 32]; up_to 64]
+}
+
+record SelectedProofContract {
+    proof_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    selected_repositories: [[byte; up_to 256]; up_to 64],
+    selected_check_identities: [[byte; 32]; up_to 64],
+    required_evidence: [[byte; up_to 128]; up_to 16],
+    verdict: ContractFamilyVerdict,
+    sufficient: bool
+}
+
+// Identity material is deliberately explicit. Extension fields accepted by
+// the external decoder are not present here and therefore do not rotate an
+// identity. Any field that changes verification meaning must be added here
+// before it can be treated as a compatible extension.
+record VerificationPlanIdentityMaterial {
+    source: SourceContract,
+    impact: SemanticImpactContract,
+    selection: SelectionContract,
+    proof: ProofBoundaryContract,
+    provenance: ProvenanceContract
+}
+
+record SemanticImpactIdentityMaterial {
+    graph_identity: [byte; 32],
+    roots: [[byte; up_to 512]; up_to 128],
+    affected_count: u64,
+    direct_dependents: [[byte; up_to 512]; up_to 128],
+    test_identities: [[byte; up_to 1024]; up_to 256],
+    risk_flags: [[byte; up_to 128]; up_to 32],
+    complete: bool,
+    limitations: [[byte; up_to 1024]; up_to 64],
+    cross_repository: CrossRepositoryContract
+}
+
+record TestInventoryIdentityMaterial {
+    subject_identity: [byte; up_to 512],
+    subject_fingerprint: [byte; 32],
+    test_case_identities: [[byte; up_to 1024]; up_to 256]
+}
+
+record SemanticEdgeIdentityMaterial {
+    producer_repository: [byte; up_to 256],
+    consumer_repository: [byte; up_to 256],
+    contract_identity: [byte; up_to 256],
+    contract_revision: [byte; up_to 128],
+    consuming_identity: [byte; up_to 512],
+    provenance: [byte; up_to 1024],
+    fingerprint: [byte; 32],
+    consumer_manifest_identity: [byte; 32],
+    check_identity: [byte; up_to 256],
+    selected_test_identities: [[byte; up_to 1024]; up_to 256]
+}
+
+record ProviderDeclarationIdentityMaterial {
+    repository_id: [byte; up_to 256],
+    provider_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    revision_identity: [byte; 32],
+    source_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    revision: [byte; up_to 128],
+    capabilities: [[byte; up_to 128]; up_to 32]
+}
+
+record TestResultIdentityMaterial {
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    execution: TestExecutionContract,
+    selected_test_identities: [[byte; up_to 1024]; up_to 256],
+    verdict: ContractProviderVerdict,
+    failure_code: u64,
+    evidence_identity: [byte; 32]
+}
+
+record CheckResultIdentityMaterial {
+    check_identity: [byte; 32],
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    verdict: ContractFamilyVerdict
+}
+
+record ReceiptIdentityMaterial {
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    provider_identity: [byte; 32],
+    provider_revision_identity: [byte; 32],
+    interface_identity: [byte; 32],
+    inventory_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    profile_identity: [byte; 32],
+    verdict: ContractFamilyVerdict
+}
+
+record EvidenceManifestIdentityMaterial {
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    failure_material: [byte; up_to 1024],
+    artifact_identities: [[byte; 32]; up_to 64]
+}
+
+record SelectedProofIdentityMaterial {
+    plan_identity: [byte; 32],
+    selected_repositories: [[byte; up_to 256]; up_to 64],
+    selected_check_identities: [[byte; 32]; up_to 64],
+    required_evidence: [[byte; up_to 128]; up_to 16],
+    verdict: ContractFamilyVerdict,
+    sufficient: bool
+}
+
+fn verification_plan_identity_material(plan: VerificationPlan) -> (result: VerificationPlanIdentityMaterial) {
+    return VerificationPlanIdentityMaterial {
+        source: plan.source,
+        impact: plan.impact,
+        selection: plan.selection,
+        proof: plan.proof,
+        provenance: plan.provenance
+    };
+}
+
+fn semantic_impact_identity_material(impact: SemanticImpactContract) -> (result: SemanticImpactIdentityMaterial) {
+    return SemanticImpactIdentityMaterial {
+        graph_identity: impact.graph_identity,
+        roots: impact.roots,
+        affected_count: impact.affected_count,
+        direct_dependents: impact.direct_dependents,
+        test_identities: impact.test_identities,
+        risk_flags: impact.risk_flags,
+        complete: impact.complete,
+        limitations: impact.limitations,
+        cross_repository: impact.cross_repository
+    };
+}
+
+fn test_inventory_identity_material(inventory: TestInventoryContract) -> (result: TestInventoryIdentityMaterial) {
+    return TestInventoryIdentityMaterial {
+        subject_identity: inventory.subject_identity,
+        subject_fingerprint: inventory.subject_fingerprint,
+        test_case_identities: inventory.test_case_identities
+    };
+}
+
+fn semantic_edge_identity_material(edge: SemanticEdgeContract) -> (result: SemanticEdgeIdentityMaterial) {
+    return SemanticEdgeIdentityMaterial {
+        producer_repository: edge.producer_repository,
+        consumer_repository: edge.consumer_repository,
+        contract_identity: edge.contract_identity,
+        contract_revision: edge.contract_revision,
+        consuming_identity: edge.consuming_identity,
+        provenance: edge.provenance,
+        fingerprint: edge.fingerprint,
+        consumer_manifest_identity: edge.consumer_manifest_identity,
+        check_identity: edge.check_identity,
+        selected_test_identities: edge.selected_test_identities
+    };
+}
+
+fn provider_declaration_identity_material(declaration: ProviderDeclarationContract) -> (result: ProviderDeclarationIdentityMaterial) {
+    return ProviderDeclarationIdentityMaterial {
+        repository_id: declaration.repository_id,
+        provider_identity: declaration.provider_identity,
+        interface_identity: declaration.interface_identity,
+        revision_identity: declaration.revision_identity,
+        source_identity: declaration.source_identity,
+        inventory_identity: declaration.inventory_identity,
+        revision: declaration.revision,
+        capabilities: declaration.capabilities
+    };
+}
+
+fn test_result_identity_material(result_value: TestResultContract) -> (result: TestResultIdentityMaterial) {
+    return TestResultIdentityMaterial {
+        provider_identity: result_value.provider_identity,
+        provider_revision_identity: result_value.provider_revision_identity,
+        interface_identity: result_value.interface_identity,
+        inventory_identity: result_value.inventory_identity,
+        execution: result_value.execution,
+        selected_test_identities: result_value.selected_test_identities,
+        verdict: result_value.verdict,
+        failure_code: result_value.failure_code,
+        evidence_identity: result_value.evidence_identity
+    };
+}
+
+fn check_result_identity_material(result_value: CheckResultContract) -> (result: CheckResultIdentityMaterial) {
+    return CheckResultIdentityMaterial {
+        check_identity: result_value.check_identity,
+        provider_identity: result_value.provider_identity,
+        provider_revision_identity: result_value.provider_revision_identity,
+        interface_identity: result_value.interface_identity,
+        inventory_identity: result_value.inventory_identity,
+        test_result_identity: result_value.test_result_identity,
+        execution_identity: result_value.execution_identity,
+        evidence_identity: result_value.evidence_identity,
+        verdict: result_value.verdict
+    };
+}
+
+fn receipt_identity_material(receipt: ReceiptContract) -> (result: ReceiptIdentityMaterial) {
+    return ReceiptIdentityMaterial {
+        plan_identity: receipt.plan_identity,
+        graph_identity: receipt.graph_identity,
+        edge_identity: receipt.edge_identity,
+        source_identity: receipt.source_identity,
+        contract_identity: receipt.contract_identity,
+        consumer_identity: receipt.consumer_identity,
+        provider_identity: receipt.provider_identity,
+        provider_revision_identity: receipt.provider_revision_identity,
+        interface_identity: receipt.interface_identity,
+        inventory_identity: receipt.inventory_identity,
+        test_result_identity: receipt.test_result_identity,
+        check_result_identity: receipt.check_result_identity,
+        execution_identity: receipt.execution_identity,
+        evidence_identity: receipt.evidence_identity,
+        profile_identity: receipt.profile_identity,
+        verdict: receipt.verdict
+    };
+}
+
+fn evidence_manifest_identity_material(manifest: EvidenceManifestContract) -> (result: EvidenceManifestIdentityMaterial) {
+    return EvidenceManifestIdentityMaterial {
+        test_result_identity: manifest.test_result_identity,
+        check_result_identity: manifest.check_result_identity,
+        execution_identity: manifest.execution_identity,
+        failure_material: manifest.failure_material,
+        artifact_identities: manifest.artifact_identities
+    };
+}
+
+fn selected_proof_identity_material(proof: SelectedProofContract) -> (result: SelectedProofIdentityMaterial) {
+    return SelectedProofIdentityMaterial {
+        plan_identity: proof.plan_identity,
+        selected_repositories: proof.selected_repositories,
+        selected_check_identities: proof.selected_check_identities,
+        required_evidence: proof.required_evidence,
+        verdict: proof.verdict,
+        sufficient: proof.sufficient
+    };
+}
