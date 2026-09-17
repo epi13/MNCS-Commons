@@ -8,12 +8,12 @@
     "authority": "MNCS-Commons family contract declarations plus owning repository schemas",
     "canonical_identity": {
       "verification_plan": "sha256(canonical-json-without-plan_id):hex-lowercase-v1",
-      "native_material": "mncs.commons.family.contracts.v1 identity-material functions; callers currently hash the returned typed material with structured_digest, which is not yet proven equivalent to the external projection"
+      "native_material": "mncs.commons.family.contracts.v1 identity-material functions; language structured_digest hashes their type-directed canonical external projection"
     },
     "extension_rule": "unknown external fields remain identity-bearing until explicitly classified; presentation_extension and diagnostic_annotations are the currently declared non-semantic extensions. Native structured ingress currently drops unknown fields, so canonical cutover remains blocked until this boundary is reconciled.",
     "identity_fields": {
       "verification_plan": [
-        "source.path", "source.sha256", "source.subject_identity",
+        "schema_version", "source.path", "source.sha256", "source.subject_identity",
         "source.subject_fingerprint", "impact", "selection", "proof",
         "provenance.provider", "provenance.policy",
         "provenance.compiler_impact_schema", "provenance.dependencies"
@@ -69,9 +69,9 @@
     "corpus": "tests/fixtures/contract-identity-corpus-v1.json",
     "runner": "tools/contract_identity_corpus.py",
     "case_count": 10,
-    "parity_count": 0,
-    "mismatch_count": 10,
-    "finding": "structured_digest serializes the MNCS typed-value representation, including representation tags and nominal record metadata; the external authority hashes the contract JSON projection. These are distinct algorithms, not repository-local formatting differences."
+    "parity_count": 10,
+    "mismatch_count": 0,
+    "finding": "all ten baseline identity-material cases match byte-for-byte after structured_digest was repaired to reuse the type-directed external contract projection; closure remains reopened because unclassified external extension fields are still not retained by typed ingress."
   },
   "contracts": [
     "mncs.verification-plan/1",

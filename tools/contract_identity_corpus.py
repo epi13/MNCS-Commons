@@ -3,9 +3,9 @@
 
 The corpus is derived from the checked-in native contract declarations so a
 field/type change changes the input set instead of silently leaving an old
-hand-written fixture behind.  It intentionally reports parity failures: the
-current Phase V claim that ``structured_digest`` is the external contract
-identity is being revalidated, not assumed.
+hand-written fixture behind. Native ``structured_digest`` now uses the same
+type-directed external projection as structured publication; this tool keeps
+the two authorities executable and exact.
 """
 
 from __future__ import annotations
@@ -95,6 +95,7 @@ def bound_size(bound: str) -> tuple[int, bool]:
 def readable_bytes(field: str) -> bytes:
     values = {
         "path": b"source.mncs",
+        "schema_version": b"mncs.verification-plan/1",
         "required_evidence": b"selected_test_cases_pass",
         "risk_flags": b"high_connectivity",
         "revision": b"phase6",
