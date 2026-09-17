@@ -95,6 +95,7 @@ record ProvenanceContract {
 // identity of the material returned by verification_plan_identity_material;
 // callers must not synthesize it from a partial wire view.
 record VerificationPlan {
+    schema_version: [byte; up_to 64],
     plan_id: [byte; 32],
     source: SourceContract,
     impact: SemanticImpactContract,
@@ -197,6 +198,7 @@ record SelectedProofContract {
 // identity. Any field that changes verification meaning must be added here
 // before it can be treated as a compatible extension.
 record VerificationPlanIdentityMaterial {
+    schema_version: [byte; up_to 64],
     source: SourceContract,
     impact: SemanticImpactContract,
     selection: SelectionContract,
@@ -308,6 +310,7 @@ record SelectedProofIdentityMaterial {
 
 fn verification_plan_identity_material(plan: VerificationPlan) -> (result: VerificationPlanIdentityMaterial) {
     return VerificationPlanIdentityMaterial {
+        schema_version: plan.schema_version,
         source: plan.source,
         impact: plan.impact,
         selection: plan.selection,

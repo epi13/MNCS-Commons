@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import os
 import subprocess
@@ -29,7 +30,27 @@ def test_phase6_corpus_revalidates_native_external_identity_relation() -> None:
     report = json.loads(completed.stdout)
     assert report["summary"] == {
         "case_count": 10,
-        "mismatch_count": 10,
-        "parity_count": 0,
+        "mismatch_count": 0,
+        "parity_count": 10,
     }
-    assert all(not case["parity"] for case in report["cases"])
+    assert all(case["parity"] for case in report["cases"])
+
+
+def test_native_identity_rotates_when_contract_semantics_change() -> None:
+    from tools.contract_identity_corpus import build_corpus, call_native
+
+    mncs = Path(os.environ.get("MNCS_BINARY", LANGUAGE_ROOT / "target/debug/mncs"))
+    host_fields, _, _ = build_corpus()
+    base_args = {"record": {"type": "ContractIdentityCorpus", "fields": host_fields}}
+    base = call_native(mncs, base_args)
+
+    mutated_fields = copy.deepcopy(host_fields)
+    verdict = mutated_fields["test_result"]["record"]["fields"]["verdict"]["finite"]
+    verdict["variant"] = "FAIL"
+    mutated = call_native(
+        mncs,
+        {"record": {"type": "ContractIdentityCorpus", "fields": mutated_fields}},
+    )
+
+    assert mutated["test_result"] != base["test_result"]
+    assert mutated["check_result"] == base["check_result"]
