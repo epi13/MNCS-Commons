@@ -3,7 +3,14 @@
   "repository_id": "MNCS-Commons",
   "status": "host_bootstrap",
   "canonical_entrypoint": "mncs-commons CLI/service",
-  "native_sources": {},
+  "native_sources": {
+    "family-artifact-wire": "src/mncs_commons/mesh/mncs/commons/family/artifact/v1.mncs",
+    "family-evidence": "src/mncs_commons/mesh/mncs/commons/family/evidence/v1.mncs"
+  },
+  "native_shadow_slices": [
+    "Commons-owned family artifact wire views",
+    "Commons-owned typed family evidence records"
+  ],
   "canonical_mncs_surfaces": [
     "pressure lifecycle semantics",
     "family identity normalization",

@@ -1,0 +1,80 @@
+mncs 0.18;
+
+// Commons-owned wire views for the first host-free Actions ingress slice.
+// These are intentionally small typed views of the external contracts: the
+// generic decoder enforces the declared schema and required fields, while
+// unknown contract-owned fields remain available to later revisions. The
+// application semantics never consume a dynamic JSON tree.
+module mncs.commons.family.artifact.v1;
+
+record ArtifactSource {
+    path: [byte; up_to 1024],
+    sha256: [byte; 32]
+}
+
+record ArtifactSelection {
+    selected_test_identities: [[byte; up_to 1024]; up_to 64],
+    selected_repositories: [[byte; up_to 256]; up_to 64]
+}
+
+record TestSelectionArtifact {
+    selected_test_identities: [[byte; up_to 1024]; up_to 64]
+}
+
+record ArtifactCrossRepository {
+    graph_identity: [byte; 32]
+}
+
+record ArtifactImpact {
+    cross_repository: ArtifactCrossRepository
+}
+
+record VerificationPlanArtifact {
+    plan_id: [byte; 32],
+    source: ArtifactSource,
+    impact: ArtifactImpact,
+    selection: ArtifactSelection
+}
+
+record ArtifactSelector {
+    test_identities: [[byte; up_to 1024]; up_to 64]
+}
+
+record ArtifactVerification {
+    check_identity: [byte; up_to 256],
+    selector: ArtifactSelector
+}
+
+record SemanticEdgeArtifact {
+    producer_repository: [byte; up_to 256],
+    consumer_repository: [byte; up_to 256],
+    contract_identity: [byte; up_to 256],
+    contract_revision: [byte; up_to 128],
+    fingerprint: [byte; 32],
+    consumer_manifest_identity: [byte; 32],
+    verification: ArtifactVerification
+}
+
+record ProviderDeclarationArtifact {
+    repository_id: [byte; up_to 256],
+    revision: [byte; up_to 128]
+}
+
+enum ArtifactVerdict { PASS, FAIL, UNKNOWN }
+
+record TestExecutionArtifact {
+    run_identity: [byte; up_to 256],
+    test_case_identities: [[byte; up_to 1024]; up_to 64]
+}
+
+record TestResultArtifact {
+    verdict: ArtifactVerdict,
+    execution: TestExecutionArtifact,
+    selection: TestSelectionArtifact
+}
+
+record CheckResultArtifact {
+    id: [byte; up_to 256],
+    provider: [byte; up_to 256],
+    verdict: ArtifactVerdict
+}

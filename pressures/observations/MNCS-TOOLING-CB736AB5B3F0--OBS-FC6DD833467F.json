@@ -1,0 +1,53 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "7f49d37c45345e174357cabd6d211657ade46e75",
+    "validation": "generic run-app canary"
+  },
+  "contentDigest": "sha256:602ac252fc7370b69fde96b1d21b09e581fe4ed06c50c1fa271822c90153424f",
+  "evidence": [
+    {
+      "id": "mncs-language:phase4-run-app-canary",
+      "status": "PASS",
+      "summary": "The generic launcher admitted a repository-owned descriptor and returned a typed ApplicationExit with bounded process-boundary data."
+    },
+    {
+      "id": "mncs-actions:phase4-descriptor-canary",
+      "status": "PASS",
+      "summary": "Actions-owned descriptors declare native application identity, entrypoint, profile, libraries, and explicit artifact capabilities."
+    }
+  ],
+  "id": "MNCS-TOOLING-CB736AB5B3F0--OBS-FC6DD833467F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "phase4-native-userland-2026-09",
+    "canonicalCutover": "not_yet",
+    "capabilityState": "available",
+    "consumerMigration": "open"
+  },
+  "observedAt": "2026-09-17T10:53:22Z",
+  "pressureId": "MNCS-TOOLING-CB736AB5B3F0",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating Phase IV canary recorded by this observation",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "040aeb9f49da3c6897d42620b5e9e7e02f92ac43",
+    "path": "native-applications/actions-family-external.json",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "The generic run-app launcher and repository-owned application descriptors now pass bounded argv, environment, cwd, stdin, and capability authority to an MNCS entrypoint. Actions has descriptors and canaries, but its normal selected-family CLI remains the compatibility launcher.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The language/runtime capability is available for this slice; consumer migration or full contract closure remains open.",
+    "removed": false
+  }
+}

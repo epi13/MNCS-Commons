@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "7f49d37c45345e174357cabd6d211657ade46e75",
+    "validation": "structured codec focused tests and Actions native canary"
+  },
+  "contentDigest": "sha256:d3b9d001a10ea4eecc2ef33d1ed8e9fcc3ca5e994d35e4e2935577239bd7073e",
+  "evidence": [
+    {
+      "id": "mncs-actions:phase4-typed-artifact-canary",
+      "status": "PASS",
+      "summary": "Native Actions reads actual-shaped plan, edge, TestResult, CheckResult, provider, and receipt documents and publishes a typed result and receipt."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-8E79822E1E83",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "phase4-native-userland-2026-09",
+    "capabilityState": "available",
+    "consumerMigration": "open",
+    "fullExternalContractIdentity": "open"
+  },
+  "observedAt": "2026-09-17T10:53:22Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating Phase IV canary recorded by this observation",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "040aeb9f49da3c6897d42620b5e9e7e02f92ac43",
+    "path": "native-applications/actions-family-external.json",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "Profile 0.18 generic structured_read/structured_write now admits and publishes the selected Actions artifact wire views through one bounded native codec. The native canary passes, but the partial external view still leaves full contract identity closure and host orchestration migration open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The language/runtime capability is available for this slice; consumer migration or full contract closure remains open.",
+    "removed": false
+  }
+}

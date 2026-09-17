@@ -1,0 +1,49 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "7f49d37c45345e174357cabd6d211657ade46e75",
+    "validation": "direct provider and native reuse canaries"
+  },
+  "contentDigest": "sha256:efb4203dd632e6db2984e07331a4fb517e46d362498cc29ca7c422be17b4f061",
+  "evidence": [
+    {
+      "id": "mncs-actions:phase4-direct-mncs-test-provider",
+      "status": "PASS",
+      "summary": "Actions calls mncs.test.provider.v1::run_selected directly with no Python, shell, mncs call, or JSON subprocess mediation."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-D515846518D6",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "phase4-native-userland-2026-09",
+    "capabilityState": "demonstrated_for_one_provider",
+    "consumerMigration": "open",
+    "genericProviderLoading": "open",
+    "processBoundariesRemoved": 1
+  },
+  "observedAt": "2026-09-17T10:53:22Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating Phase IV canary recorded by this observation",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "040aeb9f49da3c6897d42620b5e9e7e02f92ac43",
+    "path": "native-applications/actions-family-direct-provider.json",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "A direct typed Actions to mncs-test provider canary now executes the selected arithmetic test in one linked MNCS session and returns a nominal TestResult; the existing Python selective-family path still uses subprocess transport and the generic provider/session architecture is not yet general.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The language/runtime capability is available for this slice; consumer migration or full contract closure remains open.",
+    "removed": false
+  }
+}

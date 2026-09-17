@@ -1,0 +1,181 @@
+mncs 0.18;
+
+// Commons-owned typed family evidence contract.
+//
+// This module is the single native representation used by Actions and later
+// provider consumers.  JSON is only the bounded external envelope emitted or
+// consumed by the generic structured artifact effect.  Applications must not
+// recreate these records with application-specific JSON decoders.
+module mncs.commons.family.evidence.v1;
+
+// FamilyVerdict is namespace-distinct from provider test verdict
+// vocabularies, so a linked Actions application may import both this
+// contract and mncs-test without ambiguous constructors.
+enum FamilyVerdict { PASS, FAIL, UNKNOWN }
+
+record PlanEvidence {
+    family_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_identity: [byte; 32],
+    check_identity: [byte; 32]
+}
+
+record GraphEvidence {
+    family_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32]
+}
+
+record EdgeEvidence {
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    producer_identity: [byte; 32],
+    producer_revision_identity: [byte; 32]
+}
+
+record TestResultEvidence {
+    result_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    verdict: FamilyVerdict
+}
+
+record CheckResultEvidence {
+    result_identity: [byte; 32],
+    check_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    verdict: FamilyVerdict
+}
+
+record ReceiptMaterial {
+    family_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    producer_identity: [byte; 32],
+    producer_revision_identity: [byte; 32],
+    verdict: FamilyVerdict
+}
+
+record ReceiptEvidence {
+    receipt_identity: [byte; 32],
+    family_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    producer_identity: [byte; 32],
+    producer_revision_identity: [byte; 32],
+    verdict: FamilyVerdict
+}
+
+record FamilyCheckInput {
+    plan: PlanEvidence,
+    graph: GraphEvidence,
+    edge: EdgeEvidence,
+    test_result: TestResultEvidence,
+    check_result: CheckResultEvidence,
+    prior_receipt: ReceiptEvidence
+}
+
+record ProofMaterial {
+    family_identity: [byte; 32],
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    receipt_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    verdict: FamilyVerdict
+}
+
+record FamilyCheckResult {
+    verdict: FamilyVerdict,
+    proof_sufficient: bool,
+    reusable: bool,
+    reason_code: u64,
+    plan_identity: [byte; 32],
+    graph_identity: [byte; 32],
+    edge_identity: [byte; 32],
+    source_identity: [byte; 32],
+    contract_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    test_result_identity: [byte; 32],
+    check_result_identity: [byte; 32],
+    execution_identity: [byte; 32],
+    evidence_identity: [byte; 32],
+    receipt: ReceiptEvidence,
+    proof_identity: [byte; 32]
+}
+
+record ConsumerObservation {
+    material: ProofMaterial,
+    proof_identity: [byte; 32]
+}
+
+record ProofIdentityStep {
+    prior_identity: [byte; 32],
+    consumer_identity: [byte; 32],
+    ordinal: u64,
+    verdict: FamilyVerdict
+}
+
+record SelectiveProof {
+    verdict: FamilyVerdict,
+    total: u64,
+    passed: u64,
+    failed: u64,
+    unknown: u64,
+    invalid: u64,
+    reusable: bool,
+    reason_code: u64,
+    proof_identity: [byte; 32]
+}
+
+record SelectedProofInput {
+    observations: [ConsumerObservation; up_to 64],
+    count: u64,
+    overflow: bool
+}
