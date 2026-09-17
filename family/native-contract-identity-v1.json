@@ -4,13 +4,13 @@
   "revision": "1",
   "native_module": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs",
   "fullExternalContractIdentity": {
-    "status": "closed",
+    "status": "reopened",
     "authority": "MNCS-Commons family contract declarations plus owning repository schemas",
     "canonical_identity": {
       "verification_plan": "sha256(canonical-json-without-plan_id):hex-lowercase-v1",
-      "native_material": "mncs.commons.family.contracts.v1 identity-material functions; callers hash the returned typed material with structured_digest"
+      "native_material": "mncs.commons.family.contracts.v1 identity-material functions; callers currently hash the returned typed material with structured_digest, which is not yet proven equivalent to the external projection"
     },
-    "extension_rule": "unknown external fields remain identity-bearing until explicitly classified; presentation_extension and diagnostic_annotations are the currently declared non-semantic extensions",
+    "extension_rule": "unknown external fields remain identity-bearing until explicitly classified; presentation_extension and diagnostic_annotations are the currently declared non-semantic extensions. Native structured ingress currently drops unknown fields, so canonical cutover remains blocked until this boundary is reconciled.",
     "identity_fields": {
       "verification_plan": [
         "source.path", "source.sha256", "source.subject_identity",
@@ -64,6 +64,14 @@
       "presentation_extension",
       "diagnostic_annotations"
     ]
+  },
+  "phase6_revalidation": {
+    "corpus": "tests/fixtures/contract-identity-corpus-v1.json",
+    "runner": "tools/contract_identity_corpus.py",
+    "case_count": 10,
+    "parity_count": 0,
+    "mismatch_count": 10,
+    "finding": "structured_digest serializes the MNCS typed-value representation, including representation tags and nominal record metadata; the external authority hashes the contract JSON projection. These are distinct algorithms, not repository-local formatting differences."
   },
   "contracts": [
     "mncs.verification-plan/1",

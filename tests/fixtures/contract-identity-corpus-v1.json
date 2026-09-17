@@ -1,0 +1,18 @@
+{
+  "schema_version": "commons.contract-identity-corpus/1",
+  "external_algorithm": "sha256(canonical-json-contract-projection):hex-lowercase-v1",
+  "native_operation": "structured_digest(identity-material)",
+  "cases": [
+    {"name": "verification_plan", "native_type": "VerificationPlan"},
+    {"name": "semantic_impact", "native_type": "SemanticImpactContract"},
+    {"name": "test_inventory", "native_type": "TestInventoryContract"},
+    {"name": "semantic_edge", "native_type": "SemanticEdgeContract"},
+    {"name": "provider_declaration", "native_type": "ProviderDeclarationContract"},
+    {"name": "test_result", "native_type": "TestResultContract"},
+    {"name": "check_result", "native_type": "CheckResultContract"},
+    {"name": "receipt", "native_type": "ReceiptContract"},
+    {"name": "evidence_manifest", "native_type": "EvidenceManifestContract"},
+    {"name": "selected_proof", "native_type": "SelectedProofContract"}
+  ],
+  "runner": "tools/contract_identity_corpus.py --mncs <mncs>"
+}

@@ -1,0 +1,57 @@
+{
+  "affectedRepositories": [
+    "mncs-actions",
+    "mncs-debug",
+    "mncs-doctor",
+    "mncs-test"
+  ],
+  "capability": "authoritative-provider-descriptor-admission",
+  "contentDigest": "sha256:49acf5d8ba4931df251b53762da96cf01bd1a1d1e9f65df510d0742108077c7b",
+  "discoveredAt": "2026-09-17T00:00:00Z",
+  "discoveredBy": "mncs-actions",
+  "domain": "provider.admission",
+  "id": "MNCS-RUNTIME-356BE27FB865",
+  "identity": {
+    "capability": "authoritative-provider-descriptor-admission",
+    "domain": "provider.admission",
+    "reproducerSignature": "mncs-actions:phase6:authoritative-provider-descriptor-admission",
+    "target": "runtime"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": "This is narrower than the legacy no-in-process-call pressure: retained typed sessions already pass. It tracks authoritative admission of a provider selected at runtime, not generic dynamic linking or arbitrary code loading.",
+  "reproducer": {
+    "actual": "native/mncs/actions/family/v1.mncs imports mncs.test.provider.v2 and calls provider_v2.run_selected_batch directly. The Phase VI provider canary refuses a mismatched interface descriptor, but only for a statically linked application descriptor.",
+    "commands": [
+      "rg -n 'provider_v2|run_selected_batch' mncs-actions/native/mncs/actions/family/v1.mncs",
+      "python3 -m pytest -q mncs-test/tests/test_phase6_provider_generation.py"
+    ],
+    "expected": "Actions selects a provider only from authoritative family/provider declaration facts, and the runtime admits the exact descriptor/source/interface/revision before the same-session typed call.",
+    "hostLocus": "mncs-actions/native/mncs/actions/family/v1.mncs and the generic mncs run-app admission boundary",
+    "signature": "mncs-actions:phase6:authoritative-provider-descriptor-admission"
+  },
+  "requiredBehavior": "Given a Commons-selected ProviderDeclaration, the generic runtime must admit the declared provider into the consumer session, establish descriptor/content/source/interface/revision identities from trusted admitted material, refuse mismatches, and return a typed callable boundary without a provider-specific Actions import or subprocess semantic adapter.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {
+    "fallbackKind": "static-provider-import",
+    "hostBoundary": [
+      "descriptor",
+      "session",
+      "provider-revision"
+    ],
+    "nativeConversionBlocked": true,
+    "ownerLayer": "language/runtime",
+    "threatModel": "checked repository/source and content identity; no signing guarantee claimed"
+  },
+  "sourceRef": {
+    "path": "native/mncs/actions/family/v1.mncs",
+    "repository": "mncs-actions",
+    "startingRevision": "54d337af3"
+  },
+  "summary": "A native consumer can make a same-session typed provider call, but the current Actions path can only establish provider identity by statically importing mncs-test provider v2. A supplied descriptor is not yet an authoritative runtime selection and admission mechanism.",
+  "target": "runtime",
+  "title": "Native consumers lack authoritative provider descriptor admission",
+  "version": "1"
+}

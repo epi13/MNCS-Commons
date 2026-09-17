@@ -22,11 +22,11 @@ def _plan() -> dict:
     return value
 
 
-def test_identity_metadata_closes_the_real_contract_set() -> None:
+def test_identity_metadata_keeps_the_real_contract_set_under_revalidation() -> None:
     metadata = json.loads(
         (ROOT / "family/native-contract-identity-v1.json").read_text(encoding="utf-8")
     )
-    assert metadata["fullExternalContractIdentity"]["status"] == "closed"
+    assert metadata["fullExternalContractIdentity"]["status"] == "reopened"
     assert "mncs.verification-plan/1" in metadata["contracts"]
     assert "mncs.test-result/1" in metadata["contracts"]
     assert "mncs.check-result/1" in metadata["contracts"]

@@ -177,6 +177,9 @@
       "MNCS-TOOLING-D695B014F6DB",
       "MNCS-TOOLING-E920D54703E3"
     ],
+    "provider.admission": [
+      "MNCS-RUNTIME-356BE27FB865"
+    ],
     "type-system.generics": [
       "MNCS-LANG-019204D482CB",
       "MNCS-LANG-4EBBF1137974",

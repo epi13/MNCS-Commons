@@ -1,0 +1,122 @@
+mncs 0.18;
+
+// Test-only probe for the Phase VI contract identity corpus.  The probe is
+// intentionally generic: Commons supplies the typed contract and identity
+// material; the runtime supplies only the already-typed structured digest.
+module tests.native_contract_identity_probe;
+
+use mncs.commons.family.contracts.v1 as contracts;
+
+record ContractIdentityCorpus {
+    verification_plan: contracts.VerificationPlan,
+    semantic_impact: contracts.SemanticImpactContract,
+    test_inventory: contracts.TestInventoryContract,
+    semantic_edge: contracts.SemanticEdgeContract,
+    provider_declaration: contracts.ProviderDeclarationContract,
+    test_result: contracts.TestResultContract,
+    check_result: contracts.CheckResultContract,
+    receipt: contracts.ReceiptContract,
+    evidence_manifest: contracts.EvidenceManifestContract,
+    selected_proof: contracts.SelectedProofContract
+}
+
+record ContractIdentityDigests {
+    verification_plan: [byte; up_to 64],
+    semantic_impact: [byte; up_to 64],
+    test_inventory: [byte; up_to 64],
+    semantic_edge: [byte; up_to 64],
+    provider_declaration: [byte; up_to 64],
+    test_result: [byte; up_to 64],
+    check_result: [byte; up_to 64],
+    receipt: [byte; up_to 64],
+    evidence_manifest: [byte; up_to 64],
+    selected_proof: [byte; up_to 64]
+}
+
+fn verification_plan(value: contracts.VerificationPlan) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.verification_plan_identity_material(value));
+}
+
+fn semantic_impact(value: contracts.SemanticImpactContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.semantic_impact_identity_material(value));
+}
+
+fn test_inventory(value: contracts.TestInventoryContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.test_inventory_identity_material(value));
+}
+
+fn semantic_edge(value: contracts.SemanticEdgeContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.semantic_edge_identity_material(value));
+}
+
+fn provider_declaration(value: contracts.ProviderDeclarationContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.provider_declaration_identity_material(value));
+}
+
+fn test_result(value: contracts.TestResultContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.test_result_identity_material(value));
+}
+
+fn check_result(value: contracts.CheckResultContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.check_result_identity_material(value));
+}
+
+fn receipt(value: contracts.ReceiptContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.receipt_identity_material(value));
+}
+
+fn evidence_manifest(value: contracts.EvidenceManifestContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.evidence_manifest_identity_material(value));
+}
+
+fn selected_proof(value: contracts.SelectedProofContract) -> (result: [byte; up_to 64])
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return structured_digest(contracts.selected_proof_identity_material(value));
+}
+
+fn all(value: ContractIdentityCorpus) -> (result: ContractIdentityDigests)
+    capability contract_digest
+    effect structured_digest authorized_by contract_digest
+{
+    return ContractIdentityDigests {
+        verification_plan: structured_digest(contracts.verification_plan_identity_material(value.verification_plan)),
+        semantic_impact: structured_digest(contracts.semantic_impact_identity_material(value.semantic_impact)),
+        test_inventory: structured_digest(contracts.test_inventory_identity_material(value.test_inventory)),
+        semantic_edge: structured_digest(contracts.semantic_edge_identity_material(value.semantic_edge)),
+        provider_declaration: structured_digest(contracts.provider_declaration_identity_material(value.provider_declaration)),
+        test_result: structured_digest(contracts.test_result_identity_material(value.test_result)),
+        check_result: structured_digest(contracts.check_result_identity_material(value.check_result)),
+        receipt: structured_digest(contracts.receipt_identity_material(value.receipt)),
+        evidence_manifest: structured_digest(contracts.evidence_manifest_identity_material(value.evidence_manifest)),
+        selected_proof: structured_digest(contracts.selected_proof_identity_material(value.selected_proof))
+    };
+}

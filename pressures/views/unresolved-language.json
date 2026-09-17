@@ -1572,17 +1572,20 @@
     },
     {
       "affectedRepositories": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "capability": "legacy.ingest-p-001",
       "currentValidation": false,
       "domain": "identity",
       "fallbackLanguages": [
+        "python",
         "rust"
       ],
       "id": "MNCS-LANG-9DE65A412CF7",
       "reporters": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -1593,7 +1596,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1925,14 +1928,18 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
       "currentValidation": false,
       "domain": "language-semantics",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-D1947FFBA6D9",
       "reporters": [
+        "mncs-language",
         "mncs-store"
       ],
       "revalidationRequired": true,
@@ -1944,7 +1951,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
