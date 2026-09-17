@@ -3,6 +3,7 @@
   "repositories": {
     "mncs-actions": [
       "MNCS-LANG-52A5E0C72A39",
+      "MNCS-LANG-9DE65A412CF7",
       "MNCS-RUNTIME-356BE27FB865",
       "MNCS-TOOLING-0C870FCAFFEB",
       "MNCS-TOOLING-146FB6F4BBC6",

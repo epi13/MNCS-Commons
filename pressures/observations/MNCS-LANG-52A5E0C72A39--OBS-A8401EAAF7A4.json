@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0374ce4",
+    "validation": "mncs-test phase6 provider generation canary: 3 passed; same-session typed provider publication"
+  },
+  "contentDigest": "sha256:5bcb1282be3afa9c7491ab57d656f7b80bfb7002513c35f120ca25eaf739db5e",
+  "evidence": [
+    {
+      "id": "mncs-test:phase6-native-typed-provider",
+      "kind": "executable",
+      "ref": "tests/test_phase6_provider_generation.py::test_native_provider_dispatches_inventory_test_and_separates_check_identity",
+      "status": "PASS",
+      "summary": "One native application launch executes the inventory-bound provider and writes typed provider result/check artifacts with independent identities."
+    },
+    {
+      "id": "mncs-test:phase6-generated-inventory",
+      "kind": "executable",
+      "ref": "tools/check_generated_provider_inventory.py",
+      "status": "PASS",
+      "summary": "The generated dispatch source and metadata match compiler inventory identity, policy identity, and provider revision identity for seven tests."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-A8401EAAF7A4",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "revalidated-partially-satisfied",
+    "remainingGapPressure": "MNCS-RUNTIME-356BE27FB865"
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run the phase6 provider generation tests and compare the native provider call with the historical per-test subprocess reproducer.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "ce89a9f",
+    "path": "tests/test_phase6_provider_generation.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "The current canonical mncs-test provider still executes the compiler-inventory-bound test surface in one native session and publishes provider-owned typed TestResult and CheckResult artifacts. The external CLI/no-embed boundary and runtime-selected provider admission remain separate limitations.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "External compatibility invocation still uses host subprocess/JSON transport; descriptor-selected provider admission is tracked separately.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

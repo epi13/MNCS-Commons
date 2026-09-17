@@ -1572,6 +1572,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
         "mncs-ingest",
         "mncs-language"
       ],
@@ -1584,6 +1585,7 @@
       ],
       "id": "MNCS-LANG-9DE65A412CF7",
       "reporters": [
+        "mncs-actions",
         "mncs-ingest",
         "mncs-language"
       ],
@@ -1596,7 +1598,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0

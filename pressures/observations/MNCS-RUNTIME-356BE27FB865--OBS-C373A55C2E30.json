@@ -1,0 +1,66 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0374ce4",
+    "validation": "mncs-actions native suite: 6 passed; mncs-test provider canary: 3 passed"
+  },
+  "contentDigest": "sha256:88cd6d71f6482d37f3bbae3b553546ae9b003e7132975cfecaa925a254f26df3",
+  "evidence": [
+    {
+      "id": "mncs-actions:static-provider-import-current-main",
+      "kind": "source",
+      "ref": "native/mncs/actions/family/v1.mncs::use mncs.test.provider.v2 as provider_v2",
+      "status": "FAIL",
+      "summary": "Actions source still binds the provider module statically and cannot select another compatible provider without source changes."
+    },
+    {
+      "id": "mncs-actions:descriptor-mismatch-refusal-current-main",
+      "kind": "executable",
+      "ref": "mncs-actions/tests/test_native_actions.py::test_native_actions_rejects_mismatched_binding_and_propagates_failure",
+      "status": "PASS",
+      "summary": "The current native semantic core refuses a mismatched binding and propagates an admitted provider failure."
+    },
+    {
+      "id": "mncs-test:typed-session-provider-current-main",
+      "kind": "executable",
+      "ref": "mncs-test/tests/test_phase6_provider_generation.py::test_native_provider_dispatches_inventory_test_and_separates_check_identity",
+      "status": "PASS",
+      "summary": "The first production provider continues to execute by direct typed call in the native session."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-C373A55C2E30",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "revalidated-remains-blocking",
+    "legacyPressureDistinguishedFrom": [
+      "MNCS-LANG-52A5E0C72A39",
+      "MNCS-TOOLING-14E88C1C7431"
+    ]
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Inspect the Actions provider_v2 import and run the native descriptor mismatch/reuse/failure canaries; compare the static descriptor path with a provider declaration selected at runtime.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "967c918",
+    "path": "native/mncs/actions/family/v1.mncs",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "The synchronized native Actions path still directly imports mncs.test.provider.v2, but the current descriptor/interface mismatch canary remains fail-closed and same-session provider execution remains typed. The unresolved capability is generic authoritative descriptor/revision admission.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Static provider import and provider-specific native application descriptor remain; Python family orchestration remains the normal semantic path.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}
