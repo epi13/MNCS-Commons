@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "615ffc8",
+    "validation": "native provider batch canary with typed result publication"
+  },
+  "contentDigest": "sha256:f503d6e00288e3f54c7216d4adf07723d88f1d01d52d6713d30c8a3d363ff52f",
+  "evidence": [
+    {
+      "id": "mncs-test:native-typed-provider-call",
+      "kind": "executable",
+      "ref": "tests/test_phase6_provider_generation.py::test_native_provider_dispatches_inventory_test_and_separates_check_identity",
+      "status": "PASS",
+      "summary": "The native application invokes the compiler-inventory-bound provider and writes typed TestResult/CheckResult artifacts without a provider subprocess."
+    },
+    {
+      "id": "mncs-test:retained-session-history",
+      "kind": "consumer-verification",
+      "ref": "tests/test_runner.py::test_self_suite",
+      "status": "PASS",
+      "summary": "The existing retained embed batch path already establishes same-session typed composition for the self-suite."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-DC466B8F2178",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "reclassified-partially-satisfied",
+    "remainingGapPressure": "MNCS-RUNTIME-356BE27FB865"
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "Run tests/test_phase6_provider_generation.py and inspect the native provider application result; compare with the historical per-test subprocess claim.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "94bff74",
+    "path": "tests/test_phase6_provider_generation.py",
+    "repository": "mncs-test",
+    "workingTree": false
+  },
+  "summary": "The original claim that every MNCS invocation requires a fresh subprocess plus full compile is no longer true for the native provider path: one application launch performs typed provider execution and structured publication in the same session. External CLI launch, compilation, and dynamic provider admission remain separate boundaries.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The external CLI and no-embed fallback still use host subprocess/JSON transport; authoritative runtime-selected provider admission is tracked separately.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

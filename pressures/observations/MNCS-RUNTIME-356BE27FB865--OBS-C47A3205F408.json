@@ -1,0 +1,66 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "e51a3f897",
+    "validation": "Phase VI native provider descriptor canary and same-session typed provider work"
+  },
+  "contentDigest": "sha256:4165b04e795ef12d87a8f698af4dc7d2b85975044d6fc847e1f56496a13108a1",
+  "evidence": [
+    {
+      "id": "mncs-actions:static-provider-import",
+      "kind": "source",
+      "ref": "mncs-actions/native/mncs/actions/family/v1.mncs",
+      "status": "FAIL",
+      "summary": "Actions directly imports mncs.test.provider.v2 and invokes its typed batch function."
+    },
+    {
+      "id": "mncs-test:typed-session-provider-canary",
+      "kind": "executable",
+      "ref": "mncs-test/tests/test_phase6_provider_generation.py::test_native_provider_dispatches_inventory_test_and_separates_check_identity",
+      "status": "PASS",
+      "summary": "The admitted native application executes an inventory-bound provider call and emits provider-owned results with distinct test/check identities."
+    },
+    {
+      "id": "mncs-test:descriptor-mismatch-refusal",
+      "kind": "executable",
+      "ref": "mncs-test/tests/test_phase6_provider_generation.py::test_native_application_refuses_mismatched_interface_descriptor",
+      "status": "PASS",
+      "summary": "A mismatched interface identity is refused before execution, establishing the required fail-closed check for the current static descriptor path."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-C47A3205F408",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "new-precise-pressure",
+    "legacyPressureDistinguishedFrom": [
+      "MNCS-LANG-52A5E0C72A39",
+      "MNCS-TOOLING-14E88C1C7431"
+    ]
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Inspect Actions provider_v2 import and run the Phase VI mncs-test provider canary; compare the static provider binding with the required descriptor-selected flow.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "54d337af3",
+    "path": "native/mncs/actions/family/v1.mncs",
+    "repository": "mncs-actions",
+    "workingTree": true
+  },
+  "summary": "The provider canary proves typed same-session invocation and fail-closed interface mismatch handling, but the production-shaped Actions module still statically imports mncs.test.provider.v2. The missing capability is authoritative descriptor/revision admission, not an absent call boundary.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Static provider import and provider-specific native application descriptor; Python Actions orchestration remains the normal semantic path.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}

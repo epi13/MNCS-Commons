@@ -159,6 +159,101 @@
     },
     {
       "affectedRepositories": [
+        "mncs-ingest",
+        "mncs-language"
+      ],
+      "capability": "legacy.ingest-p-001",
+      "currentValidation": false,
+      "domain": "identity",
+      "fallbackLanguages": [
+        "python",
+        "rust"
+      ],
+      "id": "MNCS-LANG-9DE65A412CF7",
+      "reporters": [
+        "mncs-ingest",
+        "mncs-language"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No string/text value: open-vocabulary identity cannot round-trip",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-D1947FFBA6D9",
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No scatter-write into byte buffers; only whole-array functional construction",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-test"
+      ],
+      "capability": "authoritative-provider-descriptor-admission",
+      "currentValidation": false,
+      "domain": "provider.admission",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-RUNTIME-356BE27FB865",
+      "reporters": [
+        "mncs-actions"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocking",
+      "status": "discovered",
+      "target": "runtime",
+      "title": "Native consumers lack authoritative provider descriptor admission",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",

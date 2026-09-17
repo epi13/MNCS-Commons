@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "615ffc8",
+    "validation": "source-study lexical probe for bounded text literal"
+  },
+  "contentDigest": "sha256:ff2d747729e32d78bdb9de9d03cc45ca9d7ea0f79bd91e74129df199c59b5e9b",
+  "evidence": [
+    {
+      "id": "mncs-language:text-literal-lexical-rejection",
+      "kind": "executable",
+      "ref": "mncs source-study /tmp/phase6-text-literal.mncs",
+      "status": "FAIL",
+      "summary": "The compiler reports MNL002 for both quote characters and cannot form a typed text value."
+    },
+    {
+      "id": "mncs-language:text-view-substrate",
+      "kind": "source-audit",
+      "ref": "library/std/text_view.mncs; library/std/text_utf8.mncs; library/std/text_scan.mncs",
+      "status": "PASS",
+      "summary": "Existing modules provide bounded byte-view scanning and UTF-8 substrate operations, but no owned bounded text representation."
+    }
+  ],
+  "id": "MNCS-LANG-9DE65A412CF7--OBS-2C6B8671F290",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "revalidated-open",
+    "remainingQuestion": "compile-time byte/text literals may solve closed labels before a full bounded text value is justified"
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-LANG-9DE65A412CF7",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run mncs source-study on the phase6 text-literal probe returning \"mncs\" as [byte; up_to 64] and inspect MNL002 unsupported source character diagnostics.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "phase6-language-delivery",
+    "commit": "615ffc8",
+    "path": "library/std/text_view.mncs",
+    "repository": "mncs-language",
+    "workingTree": false
+  },
+  "summary": "Profile 0.18 still has no bounded text value or compile-time text/byte literal. The current text substrate operates on byte views; a direct string literal probe is rejected lexically, so schema and message spellings remain numeric byte arrays or host-owned text.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Applications spell closed schema labels and messages as raw byte arrays or keep open-vocabulary text in host projections.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}
