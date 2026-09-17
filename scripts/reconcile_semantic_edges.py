@@ -11,6 +11,7 @@ from typing import Any
 
 from mncs_commons.family_graph import (
     FamilyGraphError,
+    UNAVAILABLE_REGISTRY_IDENTITY,
     bind_declaration_evidence,
     generate_graph,
     validate_generated_provider_metadata,
@@ -169,7 +170,7 @@ def load_declarations(workspace: Path, *, commons_root: Path | None = None) -> t
     if coverage is None:
         participant_ids = sorted(discovered)
         coverage = {
-            "registry_identity": "unavailable",
+            "registry_identity": UNAVAILABLE_REGISTRY_IDENTITY,
             "registered_family_project_count": len(participant_ids),
             "classified_project_count": len(participant_ids),
             "semantic_graph_participant_count": len(participant_ids),
@@ -178,7 +179,7 @@ def load_declarations(workspace: Path, *, commons_root: Path | None = None) -> t
             "semantic_graph_participants": participant_ids,
             "explicit_nonparticipants": [],
             "unclassified_repositories": [],
-            "coverage_status": "complete",
+            "coverage_status": "incomplete",
             "topology_status": "complete_among_declared_participants",
         }
     return declarations, repositories, coverage

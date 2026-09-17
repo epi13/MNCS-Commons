@@ -54,3 +54,15 @@ def test_native_identity_rotates_when_contract_semantics_change() -> None:
 
     assert mutated["test_result"] != base["test_result"]
     assert mutated["check_result"] == base["check_result"]
+
+
+def test_nonsemantic_plan_extensions_do_not_rotate_identity() -> None:
+    from tools.contract_identity_corpus import build_corpus, external_identity
+
+    _, corpus, _ = build_corpus()
+    base = external_identity("verification_plan", corpus["verification_plan"])
+    extended = copy.deepcopy(corpus["verification_plan"])
+    extended["presentation_extension"] = {"note": "changed transport annotation"}
+    extended["diagnostic_annotations"] = ["different diagnostic wording"]
+
+    assert external_identity("verification_plan", extended) == base

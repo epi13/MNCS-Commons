@@ -32,6 +32,17 @@ def _plan() -> dict:
                 "selected_repositories": [],
                 "complete": True,
                 "limitations": [],
+                "coverage": {
+                    "registry_identity": "d" * 64,
+                    "registered_family_project_count": 0,
+                    "classified_project_count": 0,
+                    "semantic_graph_participant_count": 0,
+                    "explicit_nonparticipant_count": 0,
+                    "unclassified_project_count": 0,
+                    "unclassified_repositories": [],
+                    "coverage_status": "not_requested",
+                    "topology_status": "not_requested",
+                },
             },
         },
         "selection": {
