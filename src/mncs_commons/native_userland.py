@@ -71,6 +71,17 @@ def aggregate_native_userland_status(
                 "status": value["status"],
                 "canonical_entrypoint": value["canonical_entrypoint"],
                 "native_sources": value.get("native_sources", {}),
+                "native_application_descriptor": value.get("native_application_descriptor"),
+                "native_application_descriptors": value.get(
+                    "native_application_descriptors", {}
+                ),
+                "native_provider_descriptors": value.get(
+                    "native_provider_descriptors", {}
+                ),
+                "host_paths": value.get("host_paths", []),
+                "blocker": value.get(
+                    "blocker", value.get("next_migration_slice")
+                ),
                 "next_migration_slice": value.get("next_migration_slice"),
             }
         )

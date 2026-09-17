@@ -1,0 +1,48 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "7f49d37c45345e174357cabd6d211657ade46e75",
+    "validation": "process ABI and Debug replay focused canary"
+  },
+  "contentDigest": "sha256:6e209348700565315fe11a25fbe4ec0e69af170a3929acfdef4bf9497a8badfb",
+  "evidence": [
+    {
+      "id": "mncs-debug:phase4-process-replay",
+      "status": "PASS",
+      "summary": "Native Debug replay planning and process execution use the MNCS process effect; no independent Python replay subprocess implementation was restored."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-5DC50E462638",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "phase4-native-userland-2026-09",
+    "capabilityState": "available",
+    "consumerMigration": "open",
+    "workaround": "host diagnostic loop"
+  },
+  "observedAt": "2026-09-17T10:53:22Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating Phase IV canary recorded by this observation",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "5822ac67907ae7e32c5930f779e1350acc88a5e8",
+    "path": "tests/test_native_shadow.py",
+    "repository": "mncs-debug",
+    "workingTree": false
+  },
+  "summary": "The generic bounded process_run capability remains current and Debug replay continues to use it with explicit argv, bounded capture, deadline, and structured status. The legacy host diagnostic loop still owns some orchestration, so the consumer workaround remains active.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The language/runtime capability is available for this slice; consumer migration or full contract closure remains open.",
+    "removed": false
+  }
+}

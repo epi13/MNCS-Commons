@@ -2,6 +2,7 @@
   "generatedFrom": "commons.mncs.dev/family-pressure/v1",
   "repositories": {
     "mncs-actions": [
+      "MNCS-LANG-52A5E0C72A39",
       "MNCS-TOOLING-0C870FCAFFEB",
       "MNCS-TOOLING-146FB6F4BBC6",
       "MNCS-TOOLING-A74DFC47DDB6",

@@ -266,7 +266,7 @@
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -595,7 +595,7 @@
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -689,7 +689,7 @@
       "verificationSummary": {
         "affected": 3,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },

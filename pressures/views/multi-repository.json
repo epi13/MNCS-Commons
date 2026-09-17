@@ -123,6 +123,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
         "mncs-store",
         "mncs-test"
       ],
@@ -134,6 +135,7 @@
       ],
       "id": "MNCS-LANG-52A5E0C72A39",
       "reporters": [
+        "mncs-actions",
         "mncs-store",
         "mncs-test"
       ],
@@ -146,9 +148,9 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -576,7 +578,7 @@
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -732,7 +734,7 @@
       "verificationSummary": {
         "affected": 4,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -797,7 +799,7 @@
       "verificationSummary": {
         "affected": 3,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },

@@ -1,0 +1,53 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "7f49d37c45345e174357cabd6d211657ade46e75",
+    "validation": "Debug native shadow focused canary"
+  },
+  "contentDigest": "sha256:77cd10cce53bdb1eab6f6326e8f4d18104263ce8a54d861ef96fb8a820274fb2",
+  "evidence": [
+    {
+      "id": "mncs-debug:phase4-test-result-artifact-canary",
+      "status": "PASS",
+      "summary": "A real failing TestResult artifact is reduced to native EvidenceFacts; malformed execution artifacts fail closed."
+    }
+  ],
+  "id": "MNCS-TOOLING-146FB6F4BBC6--OBS-A8F2A01E7E2D",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "phase4-native-userland-2026-09",
+    "capabilityState": "available",
+    "consumerMigration": "partial",
+    "remainingArtifactViews": [
+      "trace",
+      "provenance",
+      "replay",
+      "minimization"
+    ]
+  },
+  "observedAt": "2026-09-17T10:53:22Z",
+  "pressureId": "MNCS-TOOLING-146FB6F4BBC6",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating Phase IV canary recorded by this observation",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "5822ac67907ae7e32c5930f779e1350acc88a5e8",
+    "path": "native-applications/debug-test-result.json",
+    "repository": "mncs-debug",
+    "workingTree": false
+  },
+  "summary": "Debug now decodes the actual mncs.test-result/1 wire shape through the generic typed artifact effect and derives the failure-anchor observation natively. Trace, provenance, and other artifact views remain a consumer migration slice.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The language/runtime capability is available for this slice; consumer migration or full contract closure remains open.",
+    "removed": false
+  }
+}
