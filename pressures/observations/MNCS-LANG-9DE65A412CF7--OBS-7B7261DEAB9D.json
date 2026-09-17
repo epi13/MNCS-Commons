@@ -1,0 +1,56 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0374ce4",
+    "validation": "native RAVEL/Actions schema-label audit after Commons-owned constants were dogfooded"
+  },
+  "contentDigest": "sha256:4cafeace8f33e904dc3c1c7cb6141e71530815b788cf8687050c5f4ce0ddc47e",
+  "evidence": [
+    {
+      "id": "mncs-actions:commons-schema-functions",
+      "kind": "source-and-executable",
+      "ref": "native/mncs/actions/family/v1.mncs::family_orchestrate_provider_app",
+      "status": "PASS",
+      "summary": "The normal production path consumes Commons-owned plan/edge/provider schema functions and provider-owned request/result/check schema functions."
+    },
+    {
+      "id": "mncs-actions:bounded-text-literal-still-absent",
+      "kind": "language-audit",
+      "ref": "native/mncs/actions/family/v1.mncs and native/mncs/ravel/planner/v1.mncs",
+      "status": "FAIL",
+      "summary": "Remaining labels and errors are encoded as numeric byte arrays; no bounded text value or compile-time byte/text literal was added."
+    }
+  ],
+  "id": "MNCS-LANG-9DE65A412CF7--OBS-7B7261DEAB9D",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "consumerPressureUse": "schema names, diagnostic labels, and bounded text identity",
+    "disposition": "partial-capability-revalidation"
+  },
+  "observedAt": "2026-09-17T00:00:00Z",
+  "pressureId": "MNCS-LANG-9DE65A412CF7",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "Audit native RAVEL, mncs-test, and mncs-actions sources for numeric ASCII arrays; compare the centralized schema functions with the remaining label/error literals and the legacy bounded-text reproducer.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "967c918",
+    "path": "native/mncs/actions/family/v1.mncs",
+    "repository": "mncs-actions",
+    "workingTree": false
+  },
+  "summary": "Commons-owned schema functions and provider-owned schema exports now remove repeated canonical schema labels from the normal Actions path, but native sources still contain raw byte-array labels for risk flags, errors, legacy shadows, and internal identifiers. MNCS still has no bounded text value or compile-time text literal for dynamic/open-vocabulary names.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Applications use bounded byte views, owned schema functions, and repeated numeric literals; open-vocabulary text remains host-side or span-based.",
+    "fallbackLanguage": "python",
+    "removed": false
+  }
+}
