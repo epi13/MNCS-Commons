@@ -19,6 +19,11 @@ from typing import Any, Mapping, Sequence
 
 PLAN_SCHEMA = "mncs.verification-plan/1"
 PLAN_ID_ALGORITHM = "sha256(canonical-json-without-plan_id):hex-lowercase-v1"
+# These are the only plan-level extension keys explicitly declared
+# non-semantic by the owning Commons contract. Unknown keys remain part of
+# identity until a contract revision names them here; wire compatibility is
+# therefore never mistaken for semantic identity by accident.
+NON_IDENTITY_PLAN_FIELDS = frozenset({"presentation_extension", "diagnostic_annotations"})
 
 VERIFICATION_LEVELS = (
     "changed_item",
@@ -99,7 +104,11 @@ class VerificationPlanError(ValueError):
 def canonical_plan_bytes(value: Mapping[str, Any]) -> bytes:
     """Encode a plan identity projection with the family-defined JSON rules."""
 
-    projection = {key: item for key, item in deepcopy(dict(value)).items() if not str(key).startswith("_")}
+    projection = {
+        key: item
+        for key, item in deepcopy(dict(value)).items()
+        if not str(key).startswith("_") and key not in NON_IDENTITY_PLAN_FIELDS
+    }
     projection.pop("plan_id", None)
     return json.dumps(
         projection,
