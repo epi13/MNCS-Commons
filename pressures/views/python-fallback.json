@@ -34,6 +34,7 @@
     {
       "affectedRepositories": [
         "mncs-actions",
+        "mncs-language",
         "mncs-store",
         "mncs-test"
       ],
@@ -46,6 +47,7 @@
       "id": "MNCS-LANG-52A5E0C72A39",
       "reporters": [
         "mncs-actions",
+        "mncs-language",
         "mncs-store",
         "mncs-test"
       ],
@@ -58,7 +60,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 3,
+        "affected": 4,
         "fail": 0,
         "pass": 2,
         "unknown": 0
@@ -227,30 +229,35 @@
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
+        "mncs-language",
         "mncs-test"
       ],
       "capability": "authoritative-provider-descriptor-admission",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "provider.admission",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-RUNTIME-356BE27FB865",
       "reporters": [
-        "mncs-actions"
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocking",
-      "status": "discovered",
+      "status": "resolved",
       "target": "runtime",
       "title": "Native consumers lack authoritative provider descriptor admission",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
-        "affected": 4,
+        "affected": 5,
         "fail": 0,
-        "pass": 0,
+        "pass": 5,
         "unknown": 0
       }
     },

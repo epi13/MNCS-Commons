@@ -1,0 +1,91 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Phase VII generic descriptor admission, typed provider calls, and canonical Actions/Debug canaries"
+  },
+  "contentDigest": "sha256:b1dfbdc7a1972e87cd9f4ead68d1ea1d5f7d9d0cee892fe19492394eaeb70ba3",
+  "evidence": [
+    {
+      "id": "mncs-test:generic-admitted-provider-v2",
+      "kind": "executable",
+      "ref": "native-applications/provider-admission-probe.json + provider-v2-admitted.json",
+      "status": "PASS",
+      "summary": "The descriptor-selected mncs-test provider was admitted and called through provider_call in a consumer that imports only the shared protocol."
+    },
+    {
+      "id": "mncs-test:generic-admitted-provider-failure",
+      "kind": "executable",
+      "ref": "native-applications/provider-failure-probe.json + provider-failure-admitted.json",
+      "status": "PASS",
+      "summary": "A second provider with different provider/interface/revision/inventory identities was admitted through the same generic boundary."
+    },
+    {
+      "id": "mncs-runtime:identity-mismatch-refusal",
+      "kind": "executable",
+      "ref": "mncs run-app provider-admission-probe with tampered interface descriptor",
+      "status": "PASS",
+      "summary": "Admission refused a descriptor/artifact interface mismatch before the consumer call."
+    },
+    {
+      "id": "mncs-actions:canonical-admitted-provider-pass",
+      "kind": "executable",
+      "ref": "native-applications/actions-family.json with provider-v2-admitted.json",
+      "status": "PASS",
+      "summary": "Actions selected the descriptor, admitted mncs-test, called it natively, and published canonical receipt/evidence/proof artifacts."
+    },
+    {
+      "id": "mncs-actions:canonical-admitted-provider-fail",
+      "kind": "executable",
+      "ref": "native-applications/actions-family.json with provider-failure-admitted.json",
+      "status": "PASS",
+      "summary": "Actions published a provider-owned FAIL result, FAIL receipt, EvidenceManifest, and SelectedFamilyProof."
+    },
+    {
+      "id": "mncs-debug:canonical-actions-lineage",
+      "kind": "executable",
+      "ref": "native-applications/debug-actions-failure.json",
+      "status": "PASS",
+      "summary": "Debug directly interpreted the five canonical Actions/provider artifacts, recomputed provider identities, and selected bounded Trace escalation."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-87A137CEAB8B",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "capability-available",
+    "doctorProviderSurface": "not applicable in Phase VII",
+    "providerFactsEstablished": [
+      "descriptor",
+      "source",
+      "interface",
+      "provider",
+      "revision",
+      "inventory"
+    ],
+    "sameSessionTypedComposition": true
+  },
+  "observedAt": "2026-09-18T03:48:26Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the mncs-test provider admission probe and failure-provider probe; run the native Actions application with the admitted descriptor; feed its canonical artifacts to mncs-debug.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "crates/mncs-embed/src/provider.rs and native family applications",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "Generic authoritative provider admission now establishes descriptor, source, interface, provider, revision, and inventory identities before a same-session typed call. Actions has no concrete mncs-test provider import; two different provider descriptors were admitted through the same runtime boundary, and the second provider produced the real FAIL artifact consumed by native Debug.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The static provider import and provider-specific runtime admission workaround are removed from the normal Actions native path.",
+    "removed": true
+  }
+}

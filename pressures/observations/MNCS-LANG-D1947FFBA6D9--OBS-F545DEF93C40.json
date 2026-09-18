@@ -1,0 +1,55 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Profile 0.18 bounded builders and native application consumers"
+  },
+  "contentDigest": "sha256:7518b0af3f2595a04123e18c4ff018239c9af6270555e308178043fd3e7a241d",
+  "evidence": [
+    {
+      "id": "mncs-native:bounded-builder-development-stack",
+      "kind": "consumer-retest",
+      "ref": "RAVEL, mncs-test, mncs-actions native bounded selection paths",
+      "status": "PASS",
+      "summary": "Development-stack compaction and selected-element materialization use shared bounded builders without host lists."
+    },
+    {
+      "id": "mncs-language:general-scatter-still-absent",
+      "kind": "language-audit",
+      "ref": "library/core/sequences/v1.mncs",
+      "status": "FAIL",
+      "summary": "No general mutable buffer or arbitrary scatter-write primitive was introduced."
+    }
+  ],
+  "id": "MNCS-LANG-D1947FFBA6D9--OBS-F545DEF93C40",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "boundedMaterializationAvailable": true,
+    "disposition": "partial-capability-revalidation",
+    "generalScatterAvailable": false
+  },
+  "observedAt": "2026-09-18T03:49:40Z",
+  "pressureId": "MNCS-LANG-D1947FFBA6D9",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the bounded builder backend suite and compare it with the legacy frame_generic/view-to-exact scatter reproducer.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "library/core/sequences/v1.mncs",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "Bounded filtering, materialization, runtime-length views, and capacity-checked functional pushes remain available and are used by RAVEL, mncs-test, and Actions. General indexed mutation, arbitrary scatter-write, and unrestricted view-to-exact construction remain absent.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use explicit bounded functional builders and retain the scatter pressure for future bulk construction work.",
+    "removed": false
+  }
+}

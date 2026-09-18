@@ -1,0 +1,63 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Profile 0.18 source audit after RAVEL/Actions/Debug canonical work"
+  },
+  "contentDigest": "sha256:e0dfc2ccd8434489164c4af3ed9a9a4927e93ee6797b7381784a3b238a04981e",
+  "evidence": [
+    {
+      "id": "mncs-language:bounded-text-literal-absent",
+      "kind": "executable",
+      "ref": "Profile 0.18 source parser/type registry",
+      "status": "FAIL",
+      "summary": "No compile-time bytes/text literal spelling with known bounded length is admitted."
+    },
+    {
+      "id": "mncs-native:owner-schema-constants",
+      "kind": "consumer-retest",
+      "ref": "Commons contract schema and provider protocol schema functions",
+      "status": "PASS",
+      "summary": "Canonical schemas remain owner-defined and imported rather than duplicated by applications."
+    },
+    {
+      "id": "mncs-native:raw-label-audit",
+      "kind": "source",
+      "ref": "RAVEL, Actions, Debug, mncs-test native sources",
+      "status": "FAIL",
+      "summary": "Several application labels/errors/provider names remain numeric ASCII arrays."
+    }
+  ],
+  "id": "MNCS-LANG-9DE65A412CF7--OBS-90FE1D834C48",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "compileTimeLiteralStillMissing": true,
+    "disposition": "revalidated-partial",
+    "profile": "0.18",
+    "runtimeOpenVocabularyStillSeparate": true
+  },
+  "observedAt": "2026-09-18T03:49:23Z",
+  "pressureId": "MNCS-LANG-9DE65A412CF7",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Audit native RAVEL, Actions, Debug, and provider sources for repeated numeric ASCII arrays; run the Profile 0.18 bounded-literal reproducer.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "native family sources and library/core text/sequence consumers",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "Bounded text ergonomics remain partially unresolved. Schema constants are owner-defined and no semantic Python projection is needed for the canonical path, but ordinary labels and errors still use large numeric byte arrays and no compile-time bounded bytes/text literal exists.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep owner-defined schema constants and explicit bounded byte arrays; do not introduce a general String value merely to improve source ergonomics.",
+    "removed": false
+  }
+}

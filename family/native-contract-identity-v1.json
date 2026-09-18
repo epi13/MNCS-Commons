@@ -4,13 +4,13 @@
   "revision": "1",
   "native_module": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs",
   "fullExternalContractIdentity": {
-    "status": "reopened",
+    "status": "closed",
     "authority": "MNCS-Commons family contract declarations plus owning repository schemas",
     "canonical_identity": {
       "verification_plan": "sha256(canonical-json-without-plan_id):hex-lowercase-v1",
       "native_material": "mncs.commons.family.contracts.v1 identity-material functions; language structured_digest hashes their type-directed canonical external projection"
     },
-    "extension_rule": "unknown external fields remain identity-bearing until explicitly classified; presentation_extension and diagnostic_annotations are the currently declared non-semantic extensions. Native structured ingress currently drops unknown fields, so canonical cutover remains blocked until this boundary is reconciled.",
+    "extension_rule": "identity-bearing native ingress uses the owner-declared extension policy: unknown fields are refused, while presentation_extension and diagnostic_annotations are admitted as non-semantic extensions. Permissive compatibility reads may still project richer documents, but canonical consumers use strict identity ingress.",
     "identity_fields": {
       "verification_plan": [
         "schema_version", "source.path", "source.sha256", "source.subject_identity",
@@ -83,6 +83,17 @@
     "parity_count": 10,
     "mismatch_count": 0,
     "finding": "all ten baseline identity-material cases match byte-for-byte after structured_digest was repaired to reuse the type-directed external contract projection; the VerificationPlan corpus now includes typed graph coverage, nested provenance dependencies, and the nested proof boundary. Closure remains reopened because unclassified external extension fields are still not retained by typed ingress."
+  },
+  "phase7_revalidation": {
+    "corpus_command": "python3 tools/contract_identity_corpus.py --mncs <mncs-language>/target/debug/mncs --require-parity",
+    "case_count": 10,
+    "parity_count": 10,
+    "mismatch_count": 0,
+    "identity_ingress_canary": "mncs-model structured::tests::identity_ingress_refuses_unknown_extensions_and_accepts_declared_nonsemantic",
+    "known_semantic_mutation": "rotates native and external identity",
+    "declared_nonsemantic_extension": "remains readable and identity-stable",
+    "unknown_extension": "refused before canonical identity is established",
+    "finding": "canonical native reads, native identity material, native writes, external validation, and the ten-case native/external corpus agree; unknown identity-bearing information is no longer silently discarded."
   },
   "contracts": [
     "mncs.verification-plan/1",

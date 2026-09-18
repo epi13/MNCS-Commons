@@ -1,0 +1,55 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Session.call_with_provider and native provider registry execute typed calls in one retained consumer session"
+  },
+  "contentDigest": "sha256:2bba487779fb682219ce7050bf5502a7dc287a5f8137a1af0d00581b4e7d0a32",
+  "evidence": [
+    {
+      "id": "mncs-runtime:retained-session-provider-call",
+      "kind": "executable",
+      "ref": "mncs-test/native/mncs/test/provider_admission_probe/v1.mncs",
+      "status": "PASS",
+      "summary": "A consumer session performed an admitted provider_call without a subprocess or JSON semantic adapter between the consumer and provider."
+    },
+    {
+      "id": "mncs-runtime:multi-provider-session-boundary",
+      "kind": "executable",
+      "ref": "mncs-test/native/mncs/test/provider_failure_probe/v1.mncs",
+      "status": "PASS",
+      "summary": "The same generic runtime boundary admitted a different provider implementation and retained typed composition."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-A2EBA2DC7634",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "native-capability-supersedes-original-reproducer",
+    "remainingConsumer": "mncs-store",
+    "supersededBy": "MNCS-RUNTIME-356BE27FB865"
+  },
+  "observedAt": "2026-09-18T03:48:46Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the provider admission probe and compare its single native consumer session/provider_call path with the retained external CLI wrappers.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "crates/mncs-embed/src/lib.rs and crates/mncs-embed/src/provider.rs",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "The original every-invocation subprocess/JSON limitation is no longer true for the native development stack: one consumer session admits providers and invokes typed interfaces directly. External compatibility CLIs and mncs-store remain separate migration surfaces.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Compatibility subprocess/JSON entrypoints remain for external callers and mncs-store until that consumer is independently migrated.",
+    "removed": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Phase VII scope review; Doctor native filesystem slice deferred"
+  },
+  "contentDigest": "sha256:ab0f59ac1b10b99aebf4574bbfbf17b2f7705600ac1a5a3650a7afa9630014f2",
+  "evidence": [
+    {
+      "id": "mncs-doctor:single-level-filesystem-surface",
+      "kind": "language-audit",
+      "ref": "mncs-language filesystem effect registry and Doctor discovery boundary",
+      "status": "FAIL",
+      "summary": "The current primitives do not expose multi-level listing navigation needed for a native recursive walker."
+    },
+    {
+      "id": "mncs-doctor:phase7-scope",
+      "kind": "consumer-retest",
+      "ref": "mncs-doctor native-userland-status.json",
+      "status": "PASS",
+      "summary": "Doctor was intentionally left host_bootstrap while the primary provider/canonical/debug path stabilized."
+    }
+  ],
+  "id": "MNCS-TOOLING-C5FD211E05C1--OBS-C5B85421915C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "disposition": "revalidated-open",
+    "nativeSliceDeferred": true,
+    "phase": "Phase VII secondary"
+  },
+  "observedAt": "2026-09-18T03:50:19Z",
+  "pressureId": "MNCS-TOOLING-C5FD211E05C1",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "Inspect the current filesystem effect registry and attempt a bounded multi-level traversal with child directory capabilities.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "path": "src/mncs_doctor/discovery.py and Rust filesystem surface",
+    "repository": "mncs-doctor",
+    "workingTree": false
+  },
+  "summary": "Recursive filesystem enumeration remains open. Current fs_list effects expose one-level entries and metadata, but no composable per-directory listing handle or bounded recursive walker has been added; Doctor remains host_bootstrap.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep recursive discovery in Doctor's Rust bootstrap until composable bounded directory traversal exists.",
+    "removed": false
+  }
+}

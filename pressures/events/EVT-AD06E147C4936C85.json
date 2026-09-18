@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:d47e00765f3704c9a1951c991716660d1238cb643ab527eb854d872b32defb23",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-87A137CEAB8B"
+  ],
+  "from": "discovered",
+  "id": "EVT-AD06E147C4936C85",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:50:50Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": null,
+  "reason": "Phase VII executable evidence confirms the generic descriptor admission boundary and its fail-closed identity checks.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

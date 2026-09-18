@@ -26,7 +26,7 @@ def test_identity_metadata_keeps_the_real_contract_set_under_revalidation() -> N
     metadata = json.loads(
         (ROOT / "family/native-contract-identity-v1.json").read_text(encoding="utf-8")
     )
-    assert metadata["fullExternalContractIdentity"]["status"] == "reopened"
+    assert metadata["fullExternalContractIdentity"]["status"] == "closed"
     assert "mncs.verification-plan/1" in metadata["contracts"]
     assert "mncs.test-result/1" in metadata["contracts"]
     assert "mncs.check-result/1" in metadata["contracts"]

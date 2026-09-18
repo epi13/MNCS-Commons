@@ -1,0 +1,27 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:fecef86034268e0c0aa859e0adb27cbaba2cc7422760ea70841c90065b43d1dd",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-87A137CEAB8B"
+  ],
+  "from": "implementing",
+  "id": "EVT-66EF97E39AF38769",
+  "implementation": {
+    "backends": [
+      "reference",
+      "research-bytecode",
+      "compiled"
+    ],
+    "profile": "0.18",
+    "ref": "mncs-language:mncs-embed::ProviderDescriptor+ProviderRegistry+provider_call"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:51:10Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": "EVT-8A1521649063EFDF",
+  "reason": "Phase VII implementation is executable on the pushed native runtime and has been exercised by Actions and Debug.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

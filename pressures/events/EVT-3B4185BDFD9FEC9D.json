@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:8fba148347e352fc581472cee9d5bf15f90728b27a741b2260b0a22b8970d125",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-3302B7BFFE84",
+    "MNCS-RUNTIME-356BE27FB865--OBS-36735B3AA545",
+    "MNCS-RUNTIME-356BE27FB865--OBS-4A138A23B8A0",
+    "MNCS-RUNTIME-356BE27FB865--OBS-6C3F82C45D2D"
+  ],
+  "from": "available",
+  "id": "EVT-3B4185BDFD9FEC9D",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:52:07Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": "EVT-66EF97E39AF38769",
+  "reason": "Begin closure verification across all affected repositories; Actions, mncs-test, Debug, and Doctor scope now have current PASS records.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

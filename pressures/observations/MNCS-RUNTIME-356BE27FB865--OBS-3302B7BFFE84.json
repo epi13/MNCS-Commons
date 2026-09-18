@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "canonical Actions FAIL artifact imported by native Debug"
+  },
+  "contentDigest": "sha256:b8383a13f768ad905af8cbd73de4957ae2e2fc38e95018396b6a69da7d8b6a57",
+  "evidence": [
+    {
+      "id": "mncs-debug:provider-lineage-consumer-verification",
+      "kind": "executable",
+      "ref": "native-applications/debug-actions-failure.json",
+      "status": "PASS",
+      "summary": "Native Debug recomputed protocol-owned provider result/check identities and preserved the admitted provider lineage through a real FAIL."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-3302B7BFFE84",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-18T03:51:48Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "native/mncs/debug/v1.mncs::actions_failure_artifact_app",
+    "repository": "mncs-debug",
+    "workingTree": true
+  },
+  "summary": "Debug directly consumes canonical Actions/provider artifacts; it does not require a provider-specific admission workaround and now validates provider result/check identity material natively.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}
