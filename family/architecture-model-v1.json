@@ -1,11 +1,12 @@
 {
   "schema_version": "commons.mncs.architecture-model/1",
-  "model_identity": "commons.mncs.architecture-model/1",
+  "schema_identity": "commons.mncs.architecture-model/1",
+  "content_identity": "sha256:28e2626037aad47f5f4cd14e8f4d7ecdbc8efca07fe8c46916aeedf35321f7ac",
   "policy": {
     "default_evolution": "in_place",
     "implementation_versions": "forbidden",
     "wire_versions": "explicit_only",
-    "shadow_required_fields": ["supersedes", "parity_event", "retirement_condition", "survivor"],
+    "shadow_required_fields": ["supersedes", "parity_event", "retirement_condition", "survivor", "retirement_direction", "parity_state", "retirement_state"],
     "context_layers": ["identity", "architecture", "contract", "delta", "implementation", "evidence"]
   },
   "capabilities": [
@@ -40,6 +41,7 @@
         {"path": "tools/mncs_test.py", "role": "differential_oracle"},
         {"path": "tools/generate_provider.py", "role": "adapter"}
       ],
+      "evidence": [{"path": "native/mncs/test/provider.mncs", "role": "semantic_authority"}],
       "shadow": null
     },
     {
@@ -59,10 +61,13 @@
       ],
       "shadow": {
         "path": "native/mncs/actions/family.mncs",
-        "supersedes": "host selected-consumer traversal and aggregate proof composition",
+        "supersedes": "host multi-edge selected-consumer traversal and family-level proof composition",
         "parity_event": "complete family application parity suite agrees on receipts, selections, and proof composition",
         "retirement_condition": "native application owns traversal, reuse, and aggregate proof composition; host remains transport only",
-        "survivor": "native/mncs/actions/family.mncs"
+        "survivor": "native/mncs/actions/family.mncs",
+        "retirement_direction": "shadow_survivor",
+        "parity_state": "pending",
+        "retirement_state": "active"
       }
     },
     {
@@ -75,8 +80,11 @@
         "path": "native/mncs/debug/debug.mncs",
         "supersedes": "host witness materialization and decision projection slice",
         "parity_event": "native witness, decision, and evidence fixtures match canonical debugger semantics",
-        "retirement_condition": "native debugger owns the full decision policy and host is only an explicit transport adapter",
-        "survivor": "mncs_debug/analysis.py"
+        "retirement_condition": "native debugger owns the full decision policy and host remains an explicit transport adapter",
+        "survivor": "native/mncs/debug/debug.mncs",
+        "retirement_direction": "shadow_survivor",
+        "parity_state": "pending",
+        "retirement_state": "active"
       }
     },
     {
@@ -90,7 +98,10 @@
         "supersedes": "Python plan construction and native planner transport mediation",
         "parity_event": "native planning is exercised through the canonical RAVEL path and differential fixtures agree",
         "retirement_condition": "Python remains only transport/oracle code; it no longer constructs canonical plans",
-        "survivor": "mncs/workspace/ravel/planning.mncs"
+        "survivor": "mncs/workspace/ravel/planning.mncs",
+        "retirement_direction": "canonical_survivor",
+        "parity_state": "achieved",
+        "retirement_state": "retired"
       }
     },
     {
@@ -102,12 +113,16 @@
         {"path": "src/ravel/generated/verification_policy.py", "role": "adapter"},
         {"path": "src/ravel/impact.py", "role": "adapter"}
       ],
+      "evidence": [{"path": "mncs/workspace/ravel/verification_policy.mncs", "role": "semantic_authority"}],
       "shadow": {
         "path": "src/ravel/impact.py",
         "supersedes": "Python verification-level selection for callers without the MNCS runtime",
         "parity_event": "all canonical RAVEL verification-plan fixtures use ravel.verification_policy and agree with the adapter",
         "retirement_condition": "all supported RAVEL callers execute the native policy; Python retains only transport and generated-binding adaptation",
-        "survivor": "mncs/workspace/ravel/verification_policy.mncs"
+        "survivor": "mncs/workspace/ravel/verification_policy.mncs",
+        "retirement_direction": "canonical_survivor",
+        "parity_state": "achieved",
+        "retirement_state": "retired"
       }
     },
     {

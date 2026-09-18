@@ -13,7 +13,7 @@
       "additionalProperties": false,
       "required": ["kind", "module_identity", "interface_identity", "generator_version", "binding_content_identity", "provider_fact_identity"],
       "properties": {
-        "kind": {"enum": ["language-owned-abi", "language-owned-export-manifest"]},
+        "kind": {"enum": ["language-owned-abi", "language-owned-export-manifest", "native-mncs-semantic-provider"]},
         "module_identity": {"type": "string", "minLength": 1},
         "interface_identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "typed_call_schema_version": {"const": "mncs.typed-call/1"},

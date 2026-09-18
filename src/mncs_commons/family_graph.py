@@ -19,7 +19,9 @@ GRAPH_SCHEMA = "commons.mncs.dev/family-semantic-edges/v1"
 DECLARATION_SCHEMA = "commons.mncs.semantic-contract-declarations/v1"
 VERIFICATION_MANIFEST_SCHEMA = "commons.mncs.family-verification-checks/v1"
 PROVIDER_METADATA_SCHEMA = "commons.mncs.generated-provider-metadata/v1"
-PROVIDER_AUTHORITY_KINDS = frozenset({"language-owned-abi", "language-owned-export-manifest"})
+PROVIDER_AUTHORITY_KINDS = frozenset(
+    {"language-owned-abi", "language-owned-export-manifest", "native-mncs-semantic-provider"}
+)
 VERIFICATION_RUNNERS = frozenset({"declaration", "mncs-test"})
 MAX_CHECK_TEST_IDENTITIES = 256
 MAX_CHECK_SELECTOR_LENGTH = 4096

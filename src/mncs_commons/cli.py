@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from .application import CommonsApplication, CompatibilityApplication
-from .architecture import load_architecture_model, validate_architecture_model
+from .architecture import architecture_query, load_architecture_model, validate_architecture_model
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
 from .lane_policy import LANES
@@ -214,9 +214,22 @@ def build_parser() -> argparse.ArgumentParser:
         "architecture", help="inspect the compact Commons-owned family architecture model"
     )
     architecture_commands = architecture.add_subparsers(dest="architecture_command", required=True)
-    architecture_commands.add_parser("show")
+    architecture_show = architecture_commands.add_parser("show")
+    architecture_show.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
     architecture_validate = architecture_commands.add_parser("validate")
     architecture_validate.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
+    architecture_capability = architecture_commands.add_parser("capability")
+    architecture_capability.add_argument("id")
+    architecture_capability.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
+    architecture_repository = architecture_commands.add_parser("repository")
+    architecture_repository.add_argument("repository")
+    architecture_repository.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
+    architecture_canonical = architecture_commands.add_parser("canonical")
+    architecture_canonical.add_argument("id")
+    architecture_canonical.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
+    architecture_changes = architecture_commands.add_parser("changes")
+    architecture_changes.add_argument("--since", required=True)
+    architecture_changes.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
 
     pressure = commands.add_parser(
         "pressure", help="operate the canonical family-wide development-pressure exchange"
@@ -831,6 +844,18 @@ def main(argv: list[str] | None = None) -> int:
             model = load_architecture_model(root)
             if args.architecture_command == "show":
                 _print(model)
+                return 0
+            if args.architecture_command == "capability":
+                _print(architecture_query(model, "capability", args.id))
+                return 0
+            if args.architecture_command == "repository":
+                _print(architecture_query(model, "repository", args.repository))
+                return 0
+            if args.architecture_command == "canonical":
+                _print(architecture_query(model, "canonical", args.id))
+                return 0
+            if args.architecture_command == "changes":
+                _print(architecture_query(model, "changes", args.since))
                 return 0
             result = validate_architecture_model(model, workspace_root=root)
             _print(result)
