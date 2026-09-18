@@ -506,6 +506,43 @@
     {
       "affectedRepositories": [
         "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test"
+      ],
+      "capability": "authoritative-provider-descriptor-admission",
+      "currentValidation": true,
+      "domain": "provider.admission",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-RUNTIME-356BE27FB865",
+      "reporters": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test"
+      ],
+      "revalidationRequired": false,
+      "severity": "blocking",
+      "status": "resolved",
+      "target": "runtime",
+      "title": "Native consumers lack authoritative provider descriptor admission",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 5,
+        "fail": 0,
+        "pass": 5,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
         "mncs-debug"
       ],
       "capability": "registered-debug-evidence-provider",

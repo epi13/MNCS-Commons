@@ -1,0 +1,63 @@
+{
+  "agent": "Luna Max",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "Profile 0.18 source-study and stdlib audit after Phase VII provider/canonical work"
+  },
+  "contentDigest": "sha256:05bca69af42728397a634a37e323583d2574251390a2e6ddbfaafcc349867b69",
+  "evidence": [
+    {
+      "id": "mncs-language:bounded-builder-width-audit",
+      "kind": "source",
+      "ref": "library/core/sequences/v1.mncs::ByteViewBuilder16, ByteViewBuilder64, ByteViewBuilder256",
+      "status": "FAIL",
+      "summary": "Three explicit capacities remain because generic record declarations are unavailable."
+    },
+    {
+      "id": "mncs-language:generic-record-profile-018",
+      "kind": "executable",
+      "ref": "cargo test -p mncs-cli --test profile_compat generic_record_declarations",
+      "status": "FAIL",
+      "summary": "Profile 0.18 still rejects generic record declarations; the improved diagnostic does not implement instantiation or backend support."
+    },
+    {
+      "id": "mncs-language:bounded-builder-consumers",
+      "kind": "consumer-retest",
+      "ref": "mncs-test, RAVEL, mncs-actions native bounded materialization",
+      "status": "PASS",
+      "summary": "The current explicit builders are sufficient for the development-stack bounded selections and do not justify regressing to host lists."
+    }
+  ],
+  "id": "MNCS-LANG-019204D482CB--OBS-901FD3E92160",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "decision": "defer-generic-records-until-cross-repository duplication or carried-state pressure exceeds compiler cost",
+    "disposition": "revalidated-open",
+    "profile": "0.18",
+    "separateWidthsRemaining": 3
+  },
+  "observedAt": "2026-09-18T03:49:06Z",
+  "pressureId": "MNCS-LANG-019204D482CB",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Inspect the three ByteViewBuilder record declarations and run the generic-record P-004 source-study reproducer under Profile 0.18.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "library/core/sequences/v1.mncs",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "The generic-record pressure remains real. ByteViewBuilder16, ByteViewBuilder64, and ByteViewBuilder256 still duplicate the same carried-state behavior; the current compiler does not admit one Nat-parameterized record builder.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep explicit bounded builder widths and preserve bounded capacity/functional-update semantics until generic records are implemented coherently.",
+    "removed": false
+  }
+}

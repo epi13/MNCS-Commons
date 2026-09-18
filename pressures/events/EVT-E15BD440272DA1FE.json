@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:3fc01c7465cfa8df3d327ceb922e00b4b8e32c92666253fbdd77fd33589b7cfd",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-87A137CEAB8B"
+  ],
+  "from": "confirmed",
+  "id": "EVT-E15BD440272DA1FE",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:50:56Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": "EVT-AD06E147C4936C85",
+  "reason": "The runtime contract is narrow and authoritative: descriptor-selected material is admitted generically, exact identities are established, and typed same-session calls are available without Actions-specific runtime code.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

@@ -2027,38 +2027,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-actions",
-        "mncs-debug",
-        "mncs-doctor",
-        "mncs-test"
-      ],
-      "capability": "authoritative-provider-descriptor-admission",
-      "currentValidation": false,
-      "domain": "provider.admission",
-      "fallbackLanguages": [
-        "python"
-      ],
-      "id": "MNCS-RUNTIME-356BE27FB865",
-      "reporters": [
-        "mncs-actions"
-      ],
-      "revalidationRequired": true,
-      "severity": "blocking",
-      "status": "discovered",
-      "target": "runtime",
-      "title": "Native consumers lack authoritative provider descriptor admission",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 4,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-021",

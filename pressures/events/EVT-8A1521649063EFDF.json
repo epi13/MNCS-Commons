@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:cb018c04c03ff4710b0cf71a7d329ddedc3c90fdbb07c6eaeb6fc8b2a500bd74",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-87A137CEAB8B"
+  ],
+  "from": "accepted",
+  "id": "EVT-8A1521649063EFDF",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:51:01Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": "EVT-E15BD440272DA1FE",
+  "reason": "Implement generic runtime descriptor admission and protocol-owned identity verification across the first production provider and a second provider.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

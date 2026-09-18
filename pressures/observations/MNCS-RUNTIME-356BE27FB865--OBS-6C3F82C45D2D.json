@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "provider-admission scope review"
+  },
+  "contentDigest": "sha256:b1501ce4677d5eafe310a45e0f2f1428d9c1a911a36e8bc237a8df6eda918049",
+  "evidence": [
+    {
+      "id": "mncs-doctor:provider-admission-not-applicable",
+      "kind": "scope-review",
+      "ref": "native-userland-status.json",
+      "status": "PASS",
+      "summary": "Doctor remains host_bootstrap and has no provider descriptor admission path that requires this capability."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-6C3F82C45D2D",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-18T03:51:58Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "path": "native-userland-status.json",
+    "repository": "mncs-doctor",
+    "workingTree": false
+  },
+  "summary": "Doctor has no provider-selection consumer in Phase VII; its provider-admission workaround surface is not applicable while the filesystem migration remains separately open.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -30,6 +30,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-004",
@@ -38,6 +39,7 @@
       "fallbackLanguages": [],
       "id": "MNCS-LANG-019204D482CB",
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -49,7 +51,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -820,6 +822,7 @@
     {
       "affectedRepositories": [
         "mncs-actions",
+        "mncs-language",
         "mncs-store",
         "mncs-test"
       ],
@@ -832,6 +835,7 @@
       "id": "MNCS-LANG-52A5E0C72A39",
       "reporters": [
         "mncs-actions",
+        "mncs-language",
         "mncs-store",
         "mncs-test"
       ],
@@ -844,7 +848,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 3,
+        "affected": 4,
         "fail": 0,
         "pass": 2,
         "unknown": 0

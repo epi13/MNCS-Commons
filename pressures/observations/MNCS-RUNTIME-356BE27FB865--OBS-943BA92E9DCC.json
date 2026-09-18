@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "d6e3d2f02a9c1031beef9fcb7427390b0a3a3691",
+    "validation": "provider descriptor admission and typed provider runtime probes"
+  },
+  "contentDigest": "sha256:076d7a640b37c4f549220fa75d303dfcc886e43d7375214b248e1b407a98977f",
+  "evidence": [
+    {
+      "id": "mncs-language:provider-runtime-verification",
+      "kind": "executable",
+      "ref": "crates/mncs-embed/src/provider.rs and mncs run-app admission probes",
+      "status": "PASS",
+      "summary": "Runtime admission establishes and checks provider facts before registering an identity-keyed typed provider."
+    }
+  ],
+  "id": "MNCS-RUNTIME-356BE27FB865--OBS-943BA92E9DCC",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-18T03:52:40Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "campaign/phase7-luna-max-20260917",
+    "path": "crates/mncs-embed/src/provider.rs and crates/mncs-cli/src/main.rs",
+    "repository": "mncs-language",
+    "workingTree": true
+  },
+  "summary": "The generic runtime/provider admission implementation itself passes descriptor identity, source digest, interface, revision, inventory, and same-session typed call checks.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

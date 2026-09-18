@@ -1,0 +1,26 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:ee530f5679a55db04ad0c1184b07842c3c90c6e218a51d12b0ca661636b75e13",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-RUNTIME-356BE27FB865--OBS-3302B7BFFE84",
+    "MNCS-RUNTIME-356BE27FB865--OBS-36735B3AA545",
+    "MNCS-RUNTIME-356BE27FB865--OBS-4A138A23B8A0",
+    "MNCS-RUNTIME-356BE27FB865--OBS-6C3F82C45D2D",
+    "MNCS-RUNTIME-356BE27FB865--OBS-943BA92E9DCC"
+  ],
+  "from": "verifying",
+  "id": "EVT-19095733E1C3CD5E",
+  "implementation": {
+    "consumerVerification": "mncs-actions+mncs-test+mncs-debug+mncs-doctor scope+mncs-language",
+    "ref": "mncs-language:mncs-embed::ProviderDescriptor+ProviderRegistry+provider_call"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-18T03:52:50Z",
+  "pressureId": "MNCS-RUNTIME-356BE27FB865",
+  "previousEvent": "EVT-3B4185BDFD9FEC9D",
+  "reason": "Resolved: generic descriptor admission establishes all declared provider facts before same-session typed execution; Actions consumes the authoritative declaration without a concrete provider import; the second-provider and real FAIL-to-Debug lineage prove the mechanism is not mncs-test-specific.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}
