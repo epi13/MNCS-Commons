@@ -1,0 +1,64 @@
+{
+  "affectedRepositories": [
+    "mncs-actions",
+    "mncs-commons",
+    "mncs-debug",
+    "mncs-doctor",
+    "mncs-language",
+    "mncs-language-service",
+    "mncs-test",
+    "ravel"
+  ],
+  "capability": "canonical-capability-ownership",
+  "contentDigest": "sha256:e3a8ac3c6dc9766e443f98280bf53de9f39ce90f5e79f778f32871669a9c00b2",
+  "discoveredAt": "2026-09-18T00:00:00Z",
+  "discoveredBy": "mncs-commons",
+  "domain": "architecture.autonomous-development",
+  "id": "MNCS-ECO-C1893173AD98",
+  "identity": {
+    "capability": "canonical-capability-ownership",
+    "domain": "architecture.autonomous-development",
+    "reproducerSignature": "mncs-family:campaign:chronological-implementation-proliferation",
+    "target": "ecosystem"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": "The family accumulated native shadows, chronological implementation modules, and host/generated adapters across locally safe migrations. This is an architecture and autonomous-development pressure, not evidence that generic language capability is missing.",
+  "reproducer": {
+    "actual": "Multiple repositories contain a mature implementation beside a native shadow or v1/v2 implementation source; agents can choose locally safe paths that create family-wide semantic duplication.",
+    "commands": [
+      "python scripts/validate_architecture_model.py",
+      "rg -n '(^|/)v[0-9]+\\.mncs$|native_shadow|implementation_versions' family native native-userland-status.json"
+    ],
+    "expected": "Every internal capability has one current semantic implementation, explicit owner, and an auditable convergence path for any temporary shadow.",
+    "signature": "mncs-family:campaign:chronological-implementation-proliferation"
+  },
+  "requiredBehavior": "Commons publishes a compact architecture model that identifies canonical owner/path, distinguishes implementation evolution from wire compatibility, and validates duplicate active implementations, unjustified chronological paths, ownership collisions, and shadow convergence fields.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "classification": "OPEN",
+    "campaign": "mncs-family-architectural-consolidation-2026-09",
+    "ownerLayer": "family-architecture",
+    "implementation": "commons/family/architecture-model-v1.json"
+  },
+  "sourceRef": {
+    "kind": "campaign-audit",
+    "repositories": [
+      "mncs-language",
+      "MNCS-Commons",
+      "mncs-test",
+      "mncs-debug",
+      "mncs-actions",
+      "RAVEL",
+      "mncs-language-service",
+      "mncs-doctor"
+    ],
+    "revision": "origin/main"
+  },
+  "summary": "Independent migration agents preserved behavior by layering native shadows and v1/v2 modules beside mature implementations. The family now needs machine-readable canonical ownership and retirement rules so safe local choices do not fork semantics.",
+  "target": "ecosystem",
+  "title": "Autonomous development accumulates duplicate capability implementations",
+  "version": "1"
+}

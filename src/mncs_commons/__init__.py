@@ -3,6 +3,7 @@
 __version__ = "0.5.0.dev1"
 
 from .application import CommonsApplication, CompatibilityApplication
+from .architecture import load_architecture_model, validate_architecture_model
 from .canonical import canonical_digest, canonical_json, identity_projection
 from .compatibility import CompatibilityStatus, ProducerContract, contracts
 from .exchange import ExchangeError, ExchangePolicy, ParticipantDescriptor
@@ -60,6 +61,8 @@ from .validation import ValidationReport, validate_event, validate_record
 __all__ = [
     "CommonsStore",
     "CommonsApplication",
+    "load_architecture_model",
+    "validate_architecture_model",
     "CommonsAdminClient",
     "CommonsClient",
     "CompatibilityApplication",

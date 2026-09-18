@@ -1,0 +1,144 @@
+{
+  "schema_version": "commons.mncs.architecture-model/1",
+  "model_identity": "commons.mncs.architecture-model/1",
+  "policy": {
+    "default_evolution": "in_place",
+    "implementation_versions": "forbidden",
+    "wire_versions": "explicit_only",
+    "shadow_required_fields": ["supersedes", "parity_event", "retirement_condition", "survivor"],
+    "context_layers": ["identity", "architecture", "contract", "delta", "implementation", "evidence"]
+  },
+  "capabilities": [
+    {
+      "id": "language.compiler-runtime",
+      "owner": "mncs-language",
+      "canonical": {"repository": "mncs-language", "path": "crates/mncs-compiler", "kind": "implementation"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "active_alternates": []
+    },
+    {
+      "id": "language.capability-index",
+      "owner": "mncs-language",
+      "canonical": {"repository": "mncs-language", "path": "docs/language-capabilities.json", "kind": "generated_projection"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "active_alternates": [],
+      "generator": "scripts/generate_language_capabilities.py"
+    },
+    {
+      "id": "commons.family-coordination",
+      "owner": "mncs-commons",
+      "canonical": {"repository": "mncs-commons", "path": "family/architecture-model-v1.json", "kind": "coordination-model"},
+      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["commons.mncs.architecture-model/1"]}},
+      "active_alternates": []
+    },
+    {
+      "id": "test.provider",
+      "owner": "mncs-test",
+      "canonical": {"repository": "mncs-test", "path": "native/mncs/test/provider.mncs", "kind": "implementation"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.test-provider-request/1", "mncs.test-provider-result/1"]}},
+      "active_alternates": [
+        {"path": "tools/mncs_test.py", "role": "differential_oracle"},
+        {"path": "tools/generate_provider.py", "role": "adapter"}
+      ],
+      "shadow": null
+    },
+    {
+      "id": "test.provider-protocol",
+      "owner": "mncs-test",
+      "canonical": {"repository": "mncs-test", "path": "native/mncs/test/provider_protocol/v1.mncs", "kind": "wire-contract"},
+      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["mncs.test-provider-request/1", "mncs.test-provider-result/1", "mncs.test-provider-check/1"]}},
+      "active_alternates": []
+    },
+    {
+      "id": "actions.family-verification",
+      "owner": "mncs-actions",
+      "canonical": {"repository": "mncs-actions", "path": "scripts/selective_family_verify.py", "kind": "host-boundary"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "active_alternates": [
+        {"path": "native/mncs/actions/family.mncs", "role": "shadow"}
+      ],
+      "shadow": {
+        "path": "native/mncs/actions/family.mncs",
+        "supersedes": "host selected-consumer traversal and aggregate proof composition",
+        "parity_event": "complete family application parity suite agrees on receipts, selections, and proof composition",
+        "retirement_condition": "native application owns traversal, reuse, and aggregate proof composition; host remains transport only",
+        "survivor": "native/mncs/actions/family.mncs"
+      }
+    },
+    {
+      "id": "debug.decision-policy",
+      "owner": "mncs-debug",
+      "canonical": {"repository": "mncs-debug", "path": "mncs_debug/analysis.py", "kind": "implementation"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.debug-capabilities/1"]}},
+      "active_alternates": [{"path": "native/mncs/debug/debug.mncs", "role": "shadow"}],
+      "shadow": {
+        "path": "native/mncs/debug/debug.mncs",
+        "supersedes": "host witness materialization and decision projection slice",
+        "parity_event": "native witness, decision, and evidence fixtures match canonical debugger semantics",
+        "retirement_condition": "native debugger owns the full decision policy and host is only an explicit transport adapter",
+        "survivor": "mncs_debug/analysis.py"
+      }
+    },
+    {
+      "id": "ravel.planning",
+      "owner": "ravel",
+      "canonical": {"repository": "ravel", "path": "mncs/workspace/ravel/planning.mncs", "kind": "implementation"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.verification-plan/1"]}},
+      "active_alternates": [{"path": "src/ravel/impact.py", "role": "differential_oracle"}],
+      "shadow": {
+        "path": "src/ravel/impact.py",
+        "supersedes": "Python plan construction and native planner transport mediation",
+        "parity_event": "native planning is exercised through the canonical RAVEL path and differential fixtures agree",
+        "retirement_condition": "Python remains only transport/oracle code; it no longer constructs canonical plans",
+        "survivor": "mncs/workspace/ravel/planning.mncs"
+      }
+    },
+    {
+      "id": "ravel.verification-policy",
+      "owner": "ravel",
+      "canonical": {"repository": "ravel", "path": "mncs/workspace/ravel/verification_policy.mncs", "kind": "implementation"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "active_alternates": [
+        {"path": "src/ravel/generated/verification_policy.py", "role": "adapter"},
+        {"path": "src/ravel/impact.py", "role": "adapter"}
+      ],
+      "shadow": {
+        "path": "src/ravel/impact.py",
+        "supersedes": "Python verification-level selection for callers without the MNCS runtime",
+        "parity_event": "all canonical RAVEL verification-plan fixtures use ravel.verification_policy and agree with the adapter",
+        "retirement_condition": "all supported RAVEL callers execute the native policy; Python retains only transport and generated-binding adaptation",
+        "survivor": "mncs/workspace/ravel/verification_policy.mncs"
+      }
+    },
+    {
+      "id": "language-service.language-knowledge-query",
+      "owner": "mncs-language-service",
+      "canonical": {"repository": "mncs-language-service", "path": "crates/service-core/src/language_knowledge.rs", "kind": "query-interface"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.language-capabilities/1"]}},
+      "active_alternates": []
+    },
+    {
+      "id": "doctor.language-knowledge-check",
+      "owner": "mncs-doctor",
+      "canonical": {"repository": "mncs-doctor", "path": "src/language_knowledge.rs", "kind": "diagnostic-consumer"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.language-capabilities/1"]}},
+      "active_alternates": []
+    }
+  ],
+  "generators": [
+    {
+      "id": "language.capability-index",
+      "owner": "mncs-language",
+      "path": "scripts/generate_language_capabilities.py",
+      "classification": "essential_deterministic_projection",
+      "retirement_condition": "none; replace only when compiler/library facts expose an equivalent authoritative projection"
+    },
+    {
+      "id": "test.provider-inventory",
+      "owner": "mncs-test",
+      "path": "tools/generate_provider.py",
+      "classification": "essential_deterministic_projection",
+      "retirement_condition": "remove only when the compiler can expose the same typed inventory binding without source generation"
+    }
+  ]
+}

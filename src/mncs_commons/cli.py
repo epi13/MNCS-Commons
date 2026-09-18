@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from .application import CommonsApplication, CompatibilityApplication
+from .architecture import load_architecture_model, validate_architecture_model
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
 from .lane_policy import LANES
@@ -208,6 +209,14 @@ def build_parser() -> argparse.ArgumentParser:
     family_health = family_commands.add_parser("health-sweep")
     family_health.add_argument("path")
     family_health.add_argument("observations", help="JSON array or path containing observations")
+
+    architecture = commands.add_parser(
+        "architecture", help="inspect the compact Commons-owned family architecture model"
+    )
+    architecture_commands = architecture.add_subparsers(dest="architecture_command", required=True)
+    architecture_commands.add_parser("show")
+    architecture_validate = architecture_commands.add_parser("validate")
+    architecture_validate.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
 
     pressure = commands.add_parser(
         "pressure", help="operate the canonical family-wide development-pressure exchange"
@@ -817,6 +826,15 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
             _print(application.family_coverage())
             return 0
+        if args.command == "architecture":
+            root = Path(getattr(args, "root", Path(__file__).resolve().parents[2]))
+            model = load_architecture_model(root)
+            if args.architecture_command == "show":
+                _print(model)
+                return 0
+            result = validate_architecture_model(model, workspace_root=root)
+            _print(result)
+            return 0 if result["valid"] else 2
         if args.command == "visibility":
             visibility_policy = VisibilityPolicy(Path(args.policy))
             if args.visibility_command == "set":

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commons.mncs.architecture-model/1",
+  "title": "MNCS family architecture model",
+  "type": "object",
+  "required": ["schema_version", "model_identity", "policy", "capabilities", "generators"],
+  "properties": {
+    "schema_version": {"const": "commons.mncs.architecture-model/1"},
+    "model_identity": {"const": "commons.mncs.architecture-model/1"},
+    "policy": {"type": "object"},
+    "capabilities": {"type": "array", "items": {"type": "object"}},
+    "generators": {"type": "array", "items": {"type": "object"}}
+  }
+}
