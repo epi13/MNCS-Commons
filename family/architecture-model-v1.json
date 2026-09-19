@@ -1,13 +1,18 @@
 {
   "schema_version": "commons.mncs.architecture-model/1",
   "schema_identity": "commons.mncs.architecture-model/1",
-  "content_identity": "sha256:28e2626037aad47f5f4cd14e8f4d7ecdbc8efca07fe8c46916aeedf35321f7ac",
+  "content_identity": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
   "policy": {
     "default_evolution": "in_place",
     "implementation_versions": "forbidden",
     "wire_versions": "explicit_only",
     "shadow_required_fields": ["supersedes", "parity_event", "retirement_condition", "survivor", "retirement_direction", "parity_state", "retirement_state"],
     "context_layers": ["identity", "architecture", "contract", "delta", "implementation", "evidence"]
+  },
+  "delta_history": {
+    "schema_version": "commons.mncs.architecture-delta-history/1",
+    "path": "family/architecture-delta-history-v1.json",
+    "retention": 8
   },
   "capabilities": [
     {
@@ -16,6 +21,14 @@
       "canonical": {"repository": "mncs-language", "path": "crates/mncs-compiler", "kind": "implementation"},
       "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
       "active_alternates": []
+    },
+    {
+      "id": "language.compiler-inventory",
+      "owner": "mncs-language",
+      "canonical": {"repository": "mncs-language", "path": "crates/mncs-compiler/src/inventory.rs", "kind": "introspection-interface"},
+      "versioning": {"implementation": "in_place", "compatibility": {"required": true, "wire_contracts": ["mncs.language-inventory/1", "mncs.declaration-inventory/1"]}},
+      "active_alternates": [],
+      "evidence": [{"path": "crates/mncs-compiler/src/inventory.rs", "role": "semantic_authority"}]
     },
     {
       "id": "language.capability-index",
@@ -57,14 +70,14 @@
       "canonical": {"repository": "mncs-actions", "path": "scripts/selective_family_verify.py", "kind": "host-boundary"},
       "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
       "active_alternates": [
-        {"path": "native/mncs/actions/family.mncs", "role": "shadow"}
+        {"path": "native/mncs/actions/traversal.mncs", "role": "shadow"}
       ],
       "shadow": {
-        "path": "native/mncs/actions/family.mncs",
+        "path": "native/mncs/actions/traversal.mncs",
         "supersedes": "host multi-edge selected-consumer traversal and family-level proof composition",
         "parity_event": "complete family application parity suite agrees on receipts, selections, and proof composition",
         "retirement_condition": "native application owns traversal, reuse, and aggregate proof composition; host remains transport only",
-        "survivor": "native/mncs/actions/family.mncs",
+        "survivor": "native/mncs/actions/traversal.mncs",
         "retirement_direction": "shadow_survivor",
         "parity_state": "pending",
         "retirement_state": "active"

@@ -68,3 +68,15 @@ def test_architecture_queries_are_progressive_and_content_addressed():
     assert len(json.dumps(full)) > len(json.dumps(targeted))
     assert unchanged["projection"]["mode"] == "unchanged"
     assert unchanged["projection"]["counts"]["capabilities"] == 0
+
+
+def test_architecture_queries_return_retained_identity_delta():
+    value = load_architecture_model(ROOT)
+    delta = architecture_query(
+        value,
+        "changes",
+        "sha256:28e2626037aad47f5f4cd14e8f4d7ecdbc8efca07fe8c46916aeedf35321f7ac",
+    )
+    assert delta["projection"]["mode"] == "delta"
+    assert delta["delta"]["from"].startswith("sha256:")
+    assert delta["delta"]["chain"][0]["current_content_identity"] == value["content_identity"]

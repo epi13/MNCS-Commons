@@ -1,0 +1,59 @@
+{
+  "affectedRepositories": [
+    "mncs-language",
+    "mncs-test",
+    "mncs-actions",
+    "mncs-debug",
+    "mncs-doctor",
+    "ravel"
+  ],
+  "capability": "generic-typed-callable-reflection",
+  "contentDigest": "sha256:7c1c11228587ec94559737e1c2b5d67cbfb2255abbb65df61705c29cd5b658e2",
+  "discoveredAt": "2026-09-18T00:00:00Z",
+  "discoveredBy": "mncs-test",
+  "domain": "callable.inventory",
+  "id": "MNCS-LANG-5E290D20B90B",
+  "identity": {
+    "target": "language",
+    "domain": "callable.inventory",
+    "capability": "generic-typed-callable-reflection",
+    "reproducerSignature": "mncs-test:phase:compiler-inventory-binding"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": "Compiler declaration/callable inventory now exposes stable identities and typed signature material. A generic reflective invocation boundary for arbitrary callable identities with heterogeneous signatures is still absent, so mncs-test retains a transparent generated binding adapter.",
+  "reproducer": {
+    "actual": "mncs-test/tools/generate_provider.py consumes mncs declaration-inventory and emits provider_inventory.mncs because provider.mncs cannot yet invoke a callable by identity with heterogeneous typed arguments.",
+    "commands": [
+      "mncs declaration-inventory tests/self_suite.mncs",
+      "python3 tools/generate_provider.py --mncs <compiler> --source tests/self_suite.mncs"
+    ],
+    "expected": "A generic runtime/MNCS binding accepts an authoritative callable identity plus typed invocation material, preserving declaration, function, test-case, source, and profile identities without consumer-specific dispatch generation.",
+    "hostLocus": "mncs-test/tools/generate_provider.py and native/mncs/test/provider_inventory.mncs",
+    "signature": "mncs-test:phase:compiler-inventory-binding"
+  },
+  "requiredBehavior": "Expose a bounded generic typed invocation surface for an inventory callable identity, with signature validation, exported-surface admission, source/profile identity binding, and fail-closed mismatch behavior.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "affectedSurface": [
+      "mncs-test",
+      "language-service",
+      "doctor",
+      "forge"
+    ],
+    "fallbackKind": "generated-callable-binding",
+    "nativeConversionBlocked": true,
+    "ownerLayer": "language/runtime"
+  },
+  "sourceRef": {
+    "path": "crates/mncs-compiler/src/inventory.rs",
+    "repository": "mncs-language",
+    "startingRevision": "origin/main"
+  },
+  "summary": "The compiler-owned inventory removes repository inference and test-name scraping, but the language/runtime cannot yet dynamically bind and invoke arbitrary heterogeneous callable identities. The remaining generator is transparent typed glue rather than a semantic test registry.",
+  "target": "language",
+  "title": "Generic callable inventory lacks reflective typed invocation binding",
+  "version": "1"
+}

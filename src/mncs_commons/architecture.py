@@ -19,6 +19,8 @@ from .family_registry import CANONICAL_FAMILY
 
 MODEL_SCHEMA_VERSION = "commons.mncs.architecture-model/1"
 ARCHITECTURE_SCHEMA_IDENTITY = MODEL_SCHEMA_VERSION
+DELTA_HISTORY_SCHEMA_VERSION = "commons.mncs.architecture-delta-history/1"
+DEFAULT_DELTA_HISTORY_PATH = "family/architecture-delta-history-v1.json"
 _CONTENT_PREFIX = "sha256:"
 _VERSIONED = re.compile(r"(?:^|/|\.)v\d+(?:\.|/|$)", re.IGNORECASE)
 _ROLES = {"adapter", "differential_oracle", "compatibility", "shadow", "implementation"}
@@ -55,14 +57,28 @@ def architecture_content_identity(value: Mapping[str, Any]) -> str:
     # Accepting this legacy field makes validation useful while a caller is
     # migrating an in-memory model, but it never contributes to the digest.
     payload.pop("model_identity", None)
+    # The loader attaches the sidecar history for query-time use.  It is
+    # deliberately excluded from the model identity because a delta entry
+    # cannot hash a model that contains a reference to its own identity.
+    payload.pop("_delta_history", None)
     return _CONTENT_PREFIX + hashlib.sha256(_canonical_bytes(payload)).hexdigest()
 
 
 def load_architecture_model(root: str | Path) -> dict[str, Any]:
-    path = Path(root) / "family/architecture-model-v1.json"
+    root_path = Path(root)
+    path = root_path / "family/architecture-model-v1.json"
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise ValueError("architecture model root must be an object")
+    history_config = value.get("delta_history", {})
+    history_path = DEFAULT_DELTA_HISTORY_PATH
+    if isinstance(history_config, Mapping) and isinstance(history_config.get("path"), str):
+        history_path = history_config["path"]
+    sidecar = root_path / history_path
+    if sidecar.is_file():
+        history = json.loads(sidecar.read_text(encoding="utf-8"))
+        if isinstance(history, dict):
+            value["_delta_history"] = history
     return value
 
 
@@ -221,13 +237,60 @@ def architecture_query(
                 ),
                 "since": value,
             }
+        history = model.get("_delta_history", {})
+        deltas = history.get("deltas", []) if isinstance(history, Mapping) else []
+        if isinstance(value, str) and isinstance(deltas, list):
+            chain: list[Mapping[str, Any]] = []
+            cursor = current
+            while cursor != value:
+                candidate = next(
+                    (
+                        item
+                        for item in reversed(deltas)
+                        if isinstance(item, Mapping) and item.get("current_content_identity") == cursor
+                    ),
+                    None,
+                )
+                if candidate is None:
+                    chain = []
+                    break
+                chain.append(candidate)
+                cursor = candidate.get("previous_content_identity")
+                if not isinstance(cursor, str) or len(chain) > len(deltas):
+                    chain = []
+                    break
+            if chain and cursor == value:
+                chain.reverse()
+                counts = {
+                    "deltas": len(chain),
+                    "capabilities": sum(
+                        len(item.get("changed_capabilities", []))
+                        for item in chain
+                    ),
+                    "alternates": sum(
+                        len(item.get("shadow_state_transitions", []))
+                        for item in chain
+                    ),
+                    "generators": 0,
+                }
+                return {
+                    "projection": _projection_envelope(
+                        model,
+                        mode="delta",
+                        layers=["identity", "delta"],
+                        counts=counts,
+                        complete=True,
+                    ),
+                    "since": value,
+                    "delta": {"from": value, "to": current, "mode": "delta", "chain": chain},
+                }
         full = _projection_envelope(
             model,
             mode="full",
             layers=["identity", "architecture", "contract", "delta", "implementation", "evidence"],
             counts=_projection_metrics(capabilities, generators),
             complete=True,
-            limitations=["historical architecture revisions are not retained locally; current projection is returned"],
+            limitations=["the requested architecture identity is outside the retained delta chain; current projection is returned"],
         )
         return {
             "projection": full,
@@ -272,6 +335,61 @@ def validate_architecture_model(
     if not isinstance(generators, list):
         errors.append("generators must be an array")
         generators = []
+    delta_history = value.get("delta_history")
+    if not isinstance(delta_history, Mapping):
+        errors.append("delta_history must be an object")
+        delta_history = {}
+    else:
+        if delta_history.get("schema_version") != DELTA_HISTORY_SCHEMA_VERSION:
+            errors.append(
+                "delta_history.schema_version must be commons.mncs.architecture-delta-history/1"
+            )
+        if not isinstance(delta_history.get("path"), str) or not delta_history.get("path"):
+            errors.append("delta_history.path is required")
+        retention = delta_history.get("retention")
+        if not isinstance(retention, int) or retention < 1:
+            errors.append("delta_history.retention must be a positive integer")
+    attached_history = value.get("_delta_history")
+    if attached_history is not None:
+        if not isinstance(attached_history, Mapping):
+            errors.append("attached architecture delta history must be an object")
+        else:
+            if attached_history.get("schema_version") != DELTA_HISTORY_SCHEMA_VERSION:
+                errors.append("architecture delta history has an unexpected schema")
+            history_deltas = attached_history.get("deltas")
+            retention = delta_history.get("retention", 0)
+            if not isinstance(history_deltas, list):
+                errors.append("architecture delta history deltas must be an array")
+            elif isinstance(retention, int) and len(history_deltas) > retention:
+                errors.append("architecture delta history exceeds its retention bound")
+            history_identity = attached_history.get("history_identity")
+            history_payload = {
+                key: item for key, item in attached_history.items() if key != "history_identity"
+            }
+            expected_history_identity = _CONTENT_PREFIX + hashlib.sha256(
+                _canonical_bytes(history_payload)
+            ).hexdigest()
+            if history_identity != expected_history_identity:
+                errors.append("architecture delta history identity is not content-addressed")
+            if isinstance(history_deltas, list):
+                for delta_index, delta in enumerate(history_deltas):
+                    if not isinstance(delta, Mapping):
+                        errors.append(f"architecture delta history deltas[{delta_index}] must be an object")
+                        continue
+                    for field in ("previous_content_identity", "current_content_identity"):
+                        if not isinstance(delta.get(field), str) or not delta.get(field):
+                            errors.append(f"architecture delta history deltas[{delta_index}] requires {field}")
+                    for field in (
+                        "changed_capabilities",
+                        "added_contracts",
+                        "removed_contracts",
+                        "ownership_changes",
+                        "shadow_state_transitions",
+                    ):
+                        if not isinstance(delta.get(field), list):
+                            errors.append(
+                                f"architecture delta history deltas[{delta_index}].{field} must be an array"
+                            )
     seen: dict[str, str] = {}
     owners: dict[str, set[str]] = {}
     canonical_claims: dict[tuple[object, object], str] = {}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "commons.mncs.architecture-delta-history/1",
+  "retention": 8,
+  "deltas": [
+    {
+      "previous_content_identity": "sha256:28e2626037aad47f5f4cd14e8f4d7ecdbc8efca07fe8c46916aeedf35321f7ac",
+      "current_content_identity": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
+      "changed_capabilities": [
+        "actions.family-verification",
+        "language.compiler-inventory"
+      ],
+      "added_contracts": [
+        "mncs.language-inventory/1",
+        "mncs.declaration-inventory/1"
+      ],
+      "removed_contracts": [],
+      "ownership_changes": [
+        {
+          "capability": "language.compiler-inventory",
+          "owner": "mncs-language",
+          "change": "compiler-owned introspection surface declared authoritative"
+        }
+      ],
+      "shadow_state_transitions": [
+        {
+          "capability": "actions.family-verification",
+          "change": "native multi-edge traversal shadow path declared at native/mncs/actions/traversal.mncs",
+          "state": "pending"
+        }
+      ]
+    }
+  ],
+  "history_identity": "sha256:dd2f278ae6365f2f38155fa578ab227134745818d9d33be253c6c695ee4238cb"
+}
