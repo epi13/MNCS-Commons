@@ -1,0 +1,55 @@
+{
+  "affectedRepositories": [
+    "mncs-doc"
+  ],
+  "capability": "source-preserving-document-regions",
+  "contentDigest": "sha256:b6aa0650302b543c00881390cb6a18629b7c28f810f87b6e916b4f4b592867fb",
+  "discoveredAt": "2026-09-19T00:00:00Z",
+  "discoveredBy": "mncs-doc",
+  "domain": "document.text",
+  "id": "MNCS-LANG-BC105FDA1446",
+  "identity": {
+    "target": "language",
+    "domain": "document.text",
+    "capability": "source-preserving-document-regions",
+    "reproducerSignature": "mncs-doc:document-region-v1"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": "The current native slice proves deterministic region-boundary validation only. It intentionally does not claim Unicode decoding, marker search, Markdown parsing, or filesystem publication.",
+  "reproducer": {
+    "attemptedProgram": "mncs 0.18; module mncs.doc.region; classify a bounded generated-region envelope",
+    "commands": [
+      "mncs abi native/mncs/doc/region.mncs",
+      "python3 tests/test_native_region.py"
+    ],
+    "expected": "A reusable document layer should provide source-preserving spans and deterministic replacement boundaries while leaving filesystem publication at the host boundary.",
+    "hostLocus": "mncs-doc/tools/project.py:replace_region and marker scanning",
+    "signature": "mncs-doc:document-region-v1"
+  },
+  "requiredBehavior": "Provide bounded source views, exact byte/scalar spans, lossless region replacement, and deterministic malformed-region diagnostics. Unicode-aware parsing and Markdown structural nodes are subsequent document slices, not implied by this record.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "affectedSurface": [
+      "mncs-doc"
+    ],
+    "fallbackKind": "temporary-document-adapter",
+    "fallbackLanguage": "python",
+    "hostBoundary": [
+      "filesystem"
+    ],
+    "nativeConversionBlocked": true,
+    "ownerLayer": "language/document-library"
+  },
+  "sourceRef": {
+    "path": "native/mncs/doc/region.mncs",
+    "repository": "mncs-doc",
+    "symbol": "mncs.doc.region::classify"
+  },
+  "summary": "The family documentation projector is a real text-transform workload, but its host implementation still performs marker search, source slicing, Markdown policy, and publication. Profile 0.18 can express the first bounded typed region decision; the reusable document/text surface remains open and is kept separate from Commons' dynamic registry projection pressure.",
+  "target": "language",
+  "title": "Source-preserving document regions need a reusable native text surface",
+  "version": "1"
+}

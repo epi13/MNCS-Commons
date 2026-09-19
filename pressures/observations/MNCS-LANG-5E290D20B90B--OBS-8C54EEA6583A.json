@@ -1,0 +1,75 @@
+{
+  "agent": null,
+  "compiler": {
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "declarationInventoryIdentity": "sha256:a64f73a6a174bf22ed0c5608d72a3ad72b1feaaab5ca562b7e22c0d071fe301b",
+    "inventoryIdentity": "sha256:e610453d5b7581c7da81eb8c1258a4beaeb02d4551e568b7b9684fc69a9d4186",
+    "profile": "0.18",
+    "repository": "mncs-language",
+    "revision": "dd02b5ef53b4dd6fe5415c3f6799153c3561421d"
+  },
+  "contentDigest": "sha256:357c02578fa31eaa9676ee775f91043d708d4101a0088af2e8ff56f78e1d1d51",
+  "evidence": [
+    {
+      "id": "mncs-test:profile-018-declaration-inventory",
+      "ref": "mncs-test/tests/self_suite.mncs",
+      "status": "PASS",
+      "summary": "Current Profile 0.18 inventory contains seven exported tests and callable identities including mncs:0.2:function:tests.self_suite::arithmetic; no generic callable-identity invocation command is exported."
+    },
+    {
+      "id": "mncs-test:generated-dispatch-remains",
+      "ref": "mncs-test/native/mncs/test/provider_inventory.mncs",
+      "status": "PASS",
+      "summary": "The consumer-specific typed dispatch artifact remains the active bounded workaround and is still needed to invoke the inventory entries with their exact result envelope."
+    }
+  ],
+  "id": "MNCS-LANG-5E290D20B90B--OBS-8C54EEA6583A",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "availableInvocationShapes": [
+      "module-function-args",
+      "static-test-identity"
+    ],
+    "callableCount": 7,
+    "declarationInventoryCount": 32,
+    "missingShape": "inventory-callable-identity-plus-heterogeneous-typed-arguments",
+    "narrowedMissingCapability": [
+      "identity-to-exported-callable resolution",
+      "signature-witness validation",
+      "bounded typed invocation envelope",
+      "source/profile/compiler inventory admission"
+    ],
+    "profileReproven": "0.18"
+  },
+  "observedAt": "2026-09-19T17:06:00Z",
+  "pressureId": "MNCS-LANG-5E290D20B90B",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "MNCS_LIBRARY_PATH=<mncs-language>/library:<mncs-test>/native <mncs-language>/target/debug/mncs declaration-inventory <mncs-test>/tests/self_suite.mncs; compare with the available run-app/call routes.",
+    "status": "PASS",
+    "summary": "The current compiler and profile prove the inventory side and preserve exact callable identities, while the missing identity-bound invocation surface is reproduced as an absent capability rather than a failed inventory."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "architectureIdentity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "commit": "dd02b5ef53b4dd6fe5415c3f6799153c3561421d",
+    "compilerInventoryIdentity": "sha256:e610453d5b7581c7da81eb8c1258a4beaeb02d4551e568b7b9684fc69a9d4186",
+    "declarationInventoryIdentity": "sha256:a64f73a6a174bf22ed0c5608d72a3ad72b1feaaab5ca562b7e22c0d071fe301b",
+    "path": "mncs-test/tests/self_suite.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "Profile 0.18 declaration-inventory succeeds for the canonical self-suite and returns seven exact exported callable identities with typed signatures. The only available execution routes remain module/function or static test identity; no bounded generic route accepts a callable identity plus a heterogeneous typed argument envelope. The generated provider therefore remains required.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep the compiler-inventory-bound generator and explicit typed MNCS provider dispatch until a generic identity-bound invocation descriptor is admitted by the compiler/runtime.",
+    "fallbackLanguage": "python",
+    "locations": [
+      "mncs-test/tools/generate_provider.py",
+      "mncs-test/native/mncs/test/provider_inventory.mncs"
+    ]
+  }
+}

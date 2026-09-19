@@ -260,7 +260,9 @@
       "capability": "generic-typed-callable-reflection",
       "currentValidation": false,
       "domain": "callable.inventory",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-5E290D20B90B",
       "reporters": [
         "mncs-test"
@@ -275,6 +277,37 @@
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 6,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-language"
+      ],
+      "capability": "dynamic_query_projection",
+      "currentValidation": true,
+      "domain": "data.registry",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-6643CDECCFEC",
+      "reporters": [
+        "mncs-commons",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "Dynamic registry projection cannot yet be native MNCS",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

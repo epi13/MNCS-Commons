@@ -43,7 +43,31 @@
         }
       ],
       "shadow_state_transitions": []
+    },
+    {
+      "previous_content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+      "current_content_identity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+      "changed_capabilities": ["actions.family-verification", "debug.decision-policy", "family.agent-context"],
+      "added_contracts": ["commons.mncs.family-agent-projection/1"],
+      "removed_contracts": [],
+      "ownership_changes": [],
+      "shadow_state_transitions": [
+        {"capability": "actions.family-verification", "change": "classification now distinguishes temporary host semantic policy from external process transport", "state": "pending"},
+        {"capability": "debug.decision-policy", "change": "classification now distinguishes temporary host semantic policy from external process transport", "state": "pending"}
+      ]
+    },
+    {
+      "previous_content_identity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+      "current_content_identity": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
+      "changed_capabilities": ["actions.family-verification", "debug.decision-policy"],
+      "added_contracts": [],
+      "removed_contracts": [],
+      "ownership_changes": [],
+      "shadow_state_transitions": [
+        {"capability": "actions.family-verification", "change": "native family admission, receipt reuse, traversal, and proof composition promoted; Python remains an explicit compatibility adapter", "state": "retired"},
+        {"capability": "debug.decision-policy", "change": "native outcome, sufficiency, escalation, and stop policy promoted; Python remains an artifact/protocol compatibility adapter", "state": "retired"}
+      ]
     }
   ],
-  "history_identity": "sha256:8827a152b9c05a8f7e687766fbd9f76423298f622199ea32da403d30212d4221"
+  "history_identity": "sha256:bedb8d4a6db8a084c266348bf1468ea39f5dbbad66ab8e20a38a7b9ca2457b54"
 }

@@ -1196,7 +1196,9 @@
       "capability": "generic-typed-callable-reflection",
       "currentValidation": false,
       "domain": "callable.inventory",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-5E290D20B90B",
       "reporters": [
         "mncs-test"
@@ -1780,6 +1782,35 @@
       "status": "confirmed",
       "target": "language",
       "title": "No concurrent error aggregation (P2, error model)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doc"
+      ],
+      "capability": "source-preserving-document-regions",
+      "currentValidation": false,
+      "domain": "document.text",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-BC105FDA1446",
+      "reporters": [
+        "mncs-doc"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Source-preserving document regions need a reusable native text surface",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",

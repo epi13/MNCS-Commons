@@ -50,6 +50,12 @@
     },
     {
       "authority": "descriptive-only",
+      "id": "mncs-doc",
+      "repository": "epi13/mncs-doc",
+      "role": "document capability workload"
+    },
+    {
+      "authority": "descriptive-only",
       "id": "mncs-debug",
       "repository": "epi13/mncs-debug",
       "role": "canonical debugger provider"

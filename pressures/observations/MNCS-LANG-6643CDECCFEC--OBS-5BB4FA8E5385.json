@@ -1,0 +1,64 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "component": "mncs-language",
+    "inventoryIdentity": "sha256:e610453d5b7581c7da81eb8c1258a4beaeb02d4551e568b7b9684fc69a9d4186",
+    "profile": "0.18",
+    "revision": "dd02b5ef53b4dd6fe5415c3f6799153c3561421d"
+  },
+  "contentDigest": "sha256:3ed79c855d9d0d302bcca7f4b8a924c60a3c32e3292177e921988d9130c47cf2",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-018-bounded-pressure-fold",
+      "ref": "mncs-language/pressures/repro/profile-018-bounded-typed-projection.mncs",
+      "status": "PASS",
+      "summary": "Native ABI elaboration succeeds for the bounded typed pressure projection probe; emitted callable identity is mncs:0.2:function:commons.pressure.profile_018_projection::project."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-5BB4FA8E5385",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "externalBoundaries": [
+      "filesystem-enumeration",
+      "git-provenance",
+      "clock",
+      "publication"
+    ],
+    "historicalDynamicReproducerPreserved": true,
+    "historicalProfile": "0.16",
+    "probeBound": 16,
+    "probeInterface": "commons.pressure.profile_018_projection::project"
+  },
+  "observedAt": "2026-09-19T17:05:07Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "MNCS_LIBRARY_PATH=<mncs-language>/library <mncs-language>/target/debug/mncs abi pressures/repro/profile-018-bounded-typed-projection.mncs",
+    "status": "PASS",
+    "summary": "The current compiler accepts the bounded typed projection probe with a typed [PressureRow; up_to 16] input and ProjectionSummary output. No dynamic JSON, map, set, or unbounded observation collection is required."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "architectureIdentity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "commit": "dd02b5ef53b4dd6fe5415c3f6799153c3561421d",
+    "compilerInventoryIdentity": "sha256:e610453d5b7581c7da81eb8c1258a4beaeb02d4551e568b7b9684fc69a9d4186",
+    "path": "../MNCS-Commons/pressures/repro/profile-018-bounded-typed-projection.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current Profile 0.18 compiles a bounded typed PressureRow batch, closed lifecycle enum, and deterministic native fold. This proves the primitive representation/fold slice only; the end-to-end PressureRegistry projection and external enumeration/publication remain host semantic work.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python still owns filesystem/Git/clock/JSON transport and the current PressureRegistry projection adapter; the native probe is not yet the Commons read surface.",
+    "fallbackLanguage": "python",
+    "locations": [
+      "MNCS-Commons/src/mncs_commons/pressure.py",
+      "MNCS-Commons/src/mncs_commons/family_projection.py"
+    ]
+  }
+}

@@ -26,7 +26,18 @@ def test_validator_rejects_unjustified_parallel_implementation():
 def test_validator_rejects_survivor_direction_contradiction():
     value = json.loads((ROOT / "family/architecture-model-v1.json").read_text())
     debug = next(item for item in value["capabilities"] if item["id"] == "debug.decision-policy")
-    debug["shadow"]["survivor"] = "mncs_debug/analysis.py"
+    # The current model has retired the Debug shadow.  Exercise the validator's
+    # legacy convergence rule with an explicitly injected, malformed record.
+    debug["shadow"] = {
+        "path": "mncs_debug/analysis.py",
+        "supersedes": "legacy semantic policy",
+        "parity_event": "legacy parity",
+        "retirement_condition": "legacy removal",
+        "survivor": "mncs_debug/analysis.py",
+        "retirement_direction": "canonical_survivor",
+        "parity_state": "pending",
+        "retirement_state": "active",
+    }
     result = validate_architecture_model(value)
     assert not result["valid"]
     assert any("survivor contradicts" in error for error in result["errors"])
@@ -35,7 +46,18 @@ def test_validator_rejects_survivor_direction_contradiction():
 def test_validator_rejects_achieved_shadow_that_is_still_active():
     value = json.loads((ROOT / "family/architecture-model-v1.json").read_text())
     actions = next(item for item in value["capabilities"] if item["id"] == "actions.family-verification")
-    actions["shadow"]["parity_state"] = "achieved"
+    # The current model has retired the Actions shadow.  Keep the test as a
+    # guard for malformed legacy records without reintroducing a live shadow.
+    actions["shadow"] = {
+        "path": "scripts/selective_family_verify.py",
+        "supersedes": "legacy semantic policy",
+        "parity_event": "legacy parity",
+        "retirement_condition": "legacy removal",
+        "survivor": "native/mncs/actions/family.mncs",
+        "retirement_direction": "canonical_survivor",
+        "parity_state": "achieved",
+        "retirement_state": "active",
+    }
     result = validate_architecture_model(value)
     assert not result["valid"]
     assert any("parity is achieved" in error for error in result["errors"])

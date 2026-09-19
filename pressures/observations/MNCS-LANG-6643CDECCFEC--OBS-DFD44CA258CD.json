@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "component": "mncs-language",
+    "profile": "0.18",
+    "revision": "dd02b5ef53b4dd6fe5415c3f6799153c3561421d"
+  },
+  "contentDigest": "sha256:56f10da7eb25ec7f2736ddc56f588c87923e95bc49369276db2d791fa11bb480",
+  "evidence": [
+    {
+      "id": "commons-profile-018-reproduction",
+      "status": "PASS",
+      "summary": "Current Commons bounded projection exposes typed rows and validated identities without reading raw sibling policy in Language Service."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-DFD44CA258CD",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true,
+    "historicalProfile": "0.16",
+    "validationScope": "profile-0.18-bounded-projection"
+  },
+  "observedAt": "2026-09-19T16:25:47Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "Run the current bounded Commons family agent projection against the 0.18 typed structured projection boundary; verify lifecycle classification and deterministic rows.",
+    "status": "PASS",
+    "summary": "Profile 0.18 re-proves the bounded typed classification/fold slice; the remaining host code is external enumeration/publication plus a bounded projection adapter."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "campaign/native-family-convergence-20260919",
+    "path": "src/mncs_commons/family_projection.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python retains filesystem/JSON transport and bounded projection assembly; native lifecycle and typed query kernels own reusable semantics.",
+    "fallbackLanguage": "python",
+    "locations": [
+      "src/mncs_commons/family_projection.py",
+      "src/mncs_commons/pressure.py"
+    ]
+  }
+}

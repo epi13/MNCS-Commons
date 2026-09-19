@@ -1057,7 +1057,9 @@
       "capability": "generic-typed-callable-reflection",
       "currentValidation": false,
       "domain": "callable.inventory",
-      "fallbackLanguages": [],
+      "fallbackLanguages": [
+        "python"
+      ],
       "id": "MNCS-LANG-5E290D20B90B",
       "reporters": [
         "mncs-test"
@@ -1106,7 +1108,8 @@
     },
     {
       "affectedRepositories": [
-        "mncs-commons"
+        "mncs-commons",
+        "mncs-language"
       ],
       "capability": "dynamic_query_projection",
       "currentValidation": true,
@@ -1116,7 +1119,8 @@
       ],
       "id": "MNCS-LANG-6643CDECCFEC",
       "reporters": [
-        "mncs-commons"
+        "mncs-commons",
+        "mncs-language"
       ],
       "revalidationRequired": false,
       "severity": "major",
@@ -1127,7 +1131,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1900,6 +1904,35 @@
       "status": "confirmed",
       "target": "language",
       "title": "No `exp`/`log`/real-power intrinsics",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doc"
+      ],
+      "capability": "source-preserving-document-regions",
+      "currentValidation": false,
+      "domain": "document.text",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-BC105FDA1446",
+      "reporters": [
+        "mncs-doc"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Source-preserving document regions need a reusable native text surface",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",

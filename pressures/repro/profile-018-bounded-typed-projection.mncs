@@ -1,0 +1,47 @@
+mncs 0.18;
+
+// Current-language reproof for the narrowed Commons pressure.  This probe
+// intentionally uses a closed enum and a bounded typed sequence; it does not
+// claim to provide dynamic JSON, filesystem enumeration, or an unbounded map.
+module commons.pressure.profile_018_projection;
+
+enum Lifecycle { DISCOVERED, CONFIRMED, RESOLVED }
+
+record PressureRow {
+    lifecycle: Lifecycle,
+    active: bool,
+    severity: u64
+}
+
+record ProjectionSummary {
+    total: u64,
+    active: u64,
+    confirmed: u64,
+    high_severity: u64
+}
+
+fn project(rows: [PressureRow; up_to 16]) -> (result: ProjectionSummary) {
+    iterate i over rows carrying summary: ProjectionSummary = ProjectionSummary {
+        total: 0,
+        active: 0,
+        confirmed: 0,
+        high_severity: 0
+    } {
+        let row: PressureRow = rows[i];
+        let next_total: u64 = summary.total +% 1;
+        let next_active: u64 = summary.active +% select(row.active, 1, 0);
+        let next_confirmed: u64 = summary.confirmed +% match row.lifecycle {
+            CONFIRMED => 1,
+            DISCOVERED => 0,
+            RESOLVED => 0
+        };
+        let next_high: u64 = summary.high_severity +% select(row.severity >= 3, 1, 0);
+        next summary = ProjectionSummary {
+            total: next_total,
+            active: next_active,
+            confirmed: next_confirmed,
+            high_severity: next_high
+        };
+    }
+    return summary;
+}

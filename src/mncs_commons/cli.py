@@ -13,6 +13,7 @@ from .application import CommonsApplication, CompatibilityApplication
 from .architecture import architecture_query, load_architecture_model, validate_architecture_model
 from .exchange import ExchangePolicy, ParticipantDescriptor
 from .io import load_document
+from .family_projection import projection_json
 from .lane_policy import LANES
 from .models import RecordKind
 from .pressure import TARGETS, PressureError, PressureRegistry, extract_pressure_markers
@@ -206,6 +207,13 @@ def build_parser() -> argparse.ArgumentParser:
     family_consistency = family_commands.add_parser("consistency")
     family_consistency.add_argument("standard")
     family_consistency.add_argument("atlas")
+    family_agent_context = family_commands.add_parser(
+        "agent-context", help="emit one validated bounded family-agent read projection"
+    )
+    family_agent_context.add_argument("--root", required=True)
+    family_agent_context.add_argument("--repository", required=True)
+    family_agent_context.add_argument("--since-architecture")
+    family_agent_context.add_argument("--max-items", type=int, default=32)
     family_health = family_commands.add_parser("health-sweep")
     family_health.add_argument("path")
     family_health.add_argument("observations", help="JSON array or path containing observations")
@@ -830,6 +838,16 @@ def main(argv: list[str] | None = None) -> int:
                 result = CommonsApplication.family_consistency(standard, atlas)
                 _print(result)
                 return 0 if result["valid"] else 2
+            if args.family_command == "agent-context":
+                print(
+                    projection_json(
+                        args.root,
+                        args.repository,
+                        since_architecture=args.since_architecture,
+                        max_items=args.max_items,
+                    )
+                )
+                return 0
             application = CommonsApplication(CommonsStore(args.path))
             if args.family_command == "health-sweep":
                 observations = _json_argument(args.observations)

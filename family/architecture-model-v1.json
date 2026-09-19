@@ -1,13 +1,28 @@
 {
   "schema_version": "commons.mncs.architecture-model/1",
   "schema_identity": "commons.mncs.architecture-model/1",
-  "content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+  "content_identity": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
   "policy": {
     "default_evolution": "in_place",
     "implementation_versions": "forbidden",
     "wire_versions": "explicit_only",
-    "shadow_required_fields": ["supersedes", "parity_event", "retirement_condition", "survivor", "retirement_direction", "parity_state", "retirement_state"],
-    "context_layers": ["identity", "architecture", "contract", "delta", "implementation", "evidence"]
+    "shadow_required_fields": [
+      "supersedes",
+      "parity_event",
+      "retirement_condition",
+      "survivor",
+      "retirement_direction",
+      "parity_state",
+      "retirement_state"
+    ],
+    "context_layers": [
+      "identity",
+      "architecture",
+      "contract",
+      "delta",
+      "implementation",
+      "evidence"
+    ]
   },
   "delta_history": {
     "schema_version": "commons.mncs.architecture-delta-history/1",
@@ -18,94 +33,227 @@
     {
       "id": "language.compiler-runtime",
       "owner": "mncs-language",
-      "canonical": {"repository": "mncs-language", "path": "crates/mncs-compiler", "kind": "implementation"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "canonical": {
+        "repository": "mncs-language",
+        "path": "crates/mncs-compiler",
+        "kind": "canonical-host-bootstrap",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "compiler-bootstrap",
+          "semantic_role": "host-bootstrap"
+        }
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": []
+        }
+      },
       "active_alternates": []
     },
     {
       "id": "language.compiler-inventory",
       "owner": "mncs-language",
-      "canonical": {"repository": "mncs-language", "path": "crates/mncs-compiler/src/inventory.rs", "kind": "introspection-interface"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": true, "wire_contracts": ["mncs.language-inventory/1", "mncs.declaration-inventory/1"]}},
+      "canonical": {
+        "repository": "mncs-language",
+        "path": "crates/mncs-compiler/src/inventory.rs",
+        "kind": "introspection-interface"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": [
+            "mncs.language-inventory/1",
+            "mncs.declaration-inventory/1"
+          ]
+        }
+      },
       "active_alternates": [],
-      "evidence": [{"path": "crates/mncs-compiler/src/inventory.rs", "role": "semantic_authority"}]
+      "evidence": [
+        {
+          "path": "crates/mncs-compiler/src/inventory.rs",
+          "role": "semantic_authority"
+        }
+      ]
     },
     {
       "id": "language.capability-index",
       "owner": "mncs-language",
-      "canonical": {"repository": "mncs-language", "path": "docs/language-capabilities.json", "kind": "generated_projection"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "canonical": {
+        "repository": "mncs-language",
+        "path": "docs/language-capabilities.json",
+        "kind": "generated_projection"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": []
+        }
+      },
       "active_alternates": [],
       "generator": "scripts/generate_language_capabilities.py"
     },
     {
       "id": "commons.family-coordination",
       "owner": "mncs-commons",
-      "canonical": {"repository": "mncs-commons", "path": "family/architecture-model-v1.json", "kind": "coordination-model"},
-      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["commons.mncs.architecture-model/1"]}},
+      "canonical": {
+        "repository": "mncs-commons",
+        "path": "family/architecture-model-v1.json",
+        "kind": "coordination-model"
+      },
+      "versioning": {
+        "implementation": "contract_identity",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": [
+            "commons.mncs.architecture-model/1"
+          ]
+        }
+      },
       "active_alternates": []
     },
     {
       "id": "test.provider",
       "owner": "mncs-test",
-      "canonical": {"repository": "mncs-test", "path": "native/mncs/test/provider.mncs", "kind": "implementation"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.test-provider-request/1", "mncs.test-provider-result/1"]}},
+      "canonical": {
+        "repository": "mncs-test",
+        "path": "native/mncs/test/provider.mncs",
+        "kind": "implementation"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": [
+            "mncs.test-provider-request/1",
+            "mncs.test-provider-result/1"
+          ]
+        }
+      },
       "active_alternates": [
-        {"path": "tools/mncs_test.py", "role": "differential_oracle"},
-        {"path": "tools/generate_provider.py", "role": "adapter"}
+        {
+          "path": "tools/mncs_test.py",
+          "role": "differential_oracle"
+        },
+        {
+          "path": "tools/generate_provider.py",
+          "role": "adapter"
+        }
       ],
-      "evidence": [{"path": "native/mncs/test/provider.mncs", "role": "semantic_authority"}],
+      "evidence": [
+        {
+          "path": "native/mncs/test/provider.mncs",
+          "role": "semantic_authority"
+        }
+      ],
       "shadow": null
     },
     {
       "id": "test.provider-protocol",
       "owner": "mncs-test",
-      "canonical": {"repository": "mncs-test", "path": "native/mncs/test/provider_protocol/v1.mncs", "kind": "wire-contract"},
-      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["mncs.test-provider-request/1", "mncs.test-provider-result/1", "mncs.test-provider-check/1"]}},
+      "canonical": {
+        "repository": "mncs-test",
+        "path": "native/mncs/test/provider_protocol/v1.mncs",
+        "kind": "wire-contract"
+      },
+      "versioning": {
+        "implementation": "contract_identity",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": [
+            "mncs.test-provider-request/1",
+            "mncs.test-provider-result/1",
+            "mncs.test-provider-check/1"
+          ]
+        }
+      },
       "active_alternates": []
     },
     {
       "id": "actions.family-verification",
       "owner": "mncs-actions",
-      "canonical": {"repository": "mncs-actions", "path": "scripts/selective_family_verify.py", "kind": "host-boundary"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "canonical": {
+        "repository": "mncs-actions",
+        "path": "native/mncs/actions/family.mncs",
+        "kind": "native-module",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": []
+        }
+      },
       "active_alternates": [
-        {"path": "native/mncs/actions/traversal.mncs", "role": "shadow"}
-      ],
-      "shadow": {
-        "path": "native/mncs/actions/traversal.mncs",
-        "supersedes": "host multi-edge selected-consumer traversal and family-level proof composition",
-        "parity_event": "complete family application parity suite agrees on receipts, selections, and proof composition",
-        "retirement_condition": "native application owns traversal, reuse, and aggregate proof composition; host remains transport only",
-        "survivor": "native/mncs/actions/traversal.mncs",
-        "retirement_direction": "shadow_survivor",
-        "parity_state": "pending",
-        "retirement_state": "active"
-      }
+        {
+          "path": "scripts/selective_family_verify.py",
+          "role": "adapter"
+        }
+      ]
     },
     {
       "id": "debug.decision-policy",
       "owner": "mncs-debug",
-      "canonical": {"repository": "mncs-debug", "path": "mncs_debug/analysis.py", "kind": "implementation"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.debug-capabilities/1"]}},
-      "active_alternates": [{"path": "native/mncs/debug/debug.mncs", "role": "shadow"}],
-      "shadow": {
+      "canonical": {
+        "repository": "mncs-debug",
         "path": "native/mncs/debug/debug.mncs",
-        "supersedes": "host witness materialization and decision projection slice",
-        "parity_event": "native witness, decision, and evidence fixtures match canonical debugger semantics",
-        "retirement_condition": "native debugger owns the full decision policy and host remains an explicit transport adapter",
-        "survivor": "native/mncs/debug/debug.mncs",
-        "retirement_direction": "shadow_survivor",
-        "parity_state": "pending",
-        "retirement_state": "active"
-      }
+        "kind": "native-module",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": [
+            "mncs.debug-capabilities/1"
+          ]
+        }
+      },
+      "active_alternates": [
+        {
+          "path": "mncs_debug/analysis.py",
+          "role": "adapter"
+        }
+      ]
     },
     {
       "id": "ravel.planning",
       "owner": "ravel",
-      "canonical": {"repository": "ravel", "path": "mncs/workspace/ravel/planning.mncs", "kind": "implementation"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.verification-plan/1"]}},
-      "active_alternates": [{"path": "src/ravel/impact.py", "role": "differential_oracle"}],
+      "canonical": {
+        "repository": "ravel",
+        "path": "mncs/workspace/ravel/planning.mncs",
+        "kind": "implementation"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": [
+            "mncs.verification-plan/1"
+          ]
+        }
+      },
+      "active_alternates": [
+        {
+          "path": "src/ravel/impact.py",
+          "role": "differential_oracle"
+        }
+      ],
       "shadow": {
         "path": "src/ravel/impact.py",
         "supersedes": "Python plan construction and native planner transport mediation",
@@ -120,13 +268,34 @@
     {
       "id": "ravel.verification-policy",
       "owner": "ravel",
-      "canonical": {"repository": "ravel", "path": "mncs/workspace/ravel/verification_policy.mncs", "kind": "implementation"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": []}},
+      "canonical": {
+        "repository": "ravel",
+        "path": "mncs/workspace/ravel/verification_policy.mncs",
+        "kind": "implementation"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": []
+        }
+      },
       "active_alternates": [
-        {"path": "src/ravel/generated/verification_policy.py", "role": "adapter"},
-        {"path": "src/ravel/impact.py", "role": "adapter"}
+        {
+          "path": "src/ravel/generated/verification_policy.py",
+          "role": "adapter"
+        },
+        {
+          "path": "src/ravel/impact.py",
+          "role": "adapter"
+        }
       ],
-      "evidence": [{"path": "mncs/workspace/ravel/verification_policy.mncs", "role": "semantic_authority"}],
+      "evidence": [
+        {
+          "path": "mncs/workspace/ravel/verification_policy.mncs",
+          "role": "semantic_authority"
+        }
+      ],
       "shadow": {
         "path": "src/ravel/impact.py",
         "supersedes": "Python verification-level selection for callers without the MNCS runtime",
@@ -141,22 +310,58 @@
     {
       "id": "language-service.language-knowledge-query",
       "owner": "mncs-language-service",
-      "canonical": {"repository": "mncs-language-service", "path": "crates/service-core/src/language_knowledge.rs", "kind": "query-interface"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.language-capabilities/1"]}},
+      "canonical": {
+        "repository": "mncs-language-service",
+        "path": "crates/service-core/src/language_knowledge.rs",
+        "kind": "query-interface"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": [
+            "mncs.language-capabilities/1"
+          ]
+        }
+      },
       "active_alternates": []
     },
     {
       "id": "family.agent-context",
       "owner": "mncs-language-service",
-      "canonical": {"repository": "mncs-language-service", "path": "crates/service-core/src/family_context.rs", "kind": "bounded-query-interface"},
-      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["mncs.family-agent-context/1"]}},
+      "canonical": {
+        "repository": "mncs-language-service",
+        "path": "crates/service-core/src/family_context.rs",
+        "kind": "bounded-query-interface"
+      },
+      "versioning": {
+        "implementation": "contract_identity",
+        "compatibility": {
+          "required": true,
+          "wire_contracts": [
+            "mncs.family-agent-context/1"
+          ]
+        }
+      },
       "active_alternates": []
     },
     {
       "id": "doctor.language-knowledge-check",
       "owner": "mncs-doctor",
-      "canonical": {"repository": "mncs-doctor", "path": "src/language_knowledge.rs", "kind": "diagnostic-consumer"},
-      "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.language-capabilities/1"]}},
+      "canonical": {
+        "repository": "mncs-doctor",
+        "path": "src/language_knowledge.rs",
+        "kind": "diagnostic-consumer"
+      },
+      "versioning": {
+        "implementation": "in_place",
+        "compatibility": {
+          "required": false,
+          "wire_contracts": [
+            "mncs.language-capabilities/1"
+          ]
+        }
+      },
       "active_alternates": []
     }
   ],

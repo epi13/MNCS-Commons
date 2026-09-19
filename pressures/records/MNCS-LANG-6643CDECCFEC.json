@@ -3,7 +3,7 @@
     "mncs-commons"
   ],
   "capability": "dynamic_query_projection",
-  "contentDigest": "sha256:76215e5de9fcde28b73bd556390a56bd3c1f6e16e4aa54eeb1b9c4fff09a38b4",
+  "contentDigest": "sha256:f913c4f6cca82c84fafbe2144698733af3823c18f49b3613a7a829c8faeaa534",
   "discoveredAt": "2026-09-13T08:30:00Z",
   "discoveredBy": "mncs-commons",
   "domain": "data.registry",
@@ -15,17 +15,22 @@
     "target": "language"
   },
   "initialStatus": "discovered",
-  "languageProfile": "0.16",
+  "languageProfile": "0.18",
+  "historicalEvidence": {
+    "languageProfile": "0.16",
+    "reproducer": "dynamic JSON records, dynamic strings/maps/sets, and an unbounded observation map",
+    "preserved": true
+  },
   "legacyIds": [],
   "notes": "The closed lifecycle and classification laws are moved to src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs. This record tracks the remaining dynamic projection boundary, not unavoidable filesystem transport.",
   "reproducer": {
-    "attemptedProgram": "mncs 0.16; module commons.pressure.projection; query dynamic JSON records by target/domain/status and fold an unbounded observation map",
+    "attemptedProgram": "mncs 0.18; module commons.pressure.projection; ingest bounded typed pressure rows and fold typed lifecycle observations",
     "command": "mncs source-study <probe>",
-    "expected": "The capability is not representable as a general native MNCS program with current collections, dynamic text, JSON, and host-effect boundaries.",
+    "expected": "Profile 0.18 can express bounded typed classification and folding. It does not make unbounded dynamic JSON/maps or external filesystem enumeration native; those remain explicit host boundaries.",
     "hostLocus": "src/mncs_commons/pressure.py:PressureRegistry.projections/query/validate/generate_views",
     "signature": "commons-pressure-dynamic-registry-projection-v1"
   },
-  "requiredBehavior": "A native Commons semantic layer should classify pressure projections, fold bounded event/observation collections, and expose deterministic query predicates over structured records without re-implementing the rules in a host language.",
+  "requiredBehavior": "A native Commons semantic layer should classify bounded typed pressure rows, fold lifecycle observations, and expose deterministic query predicates over structured records without re-implementing those rules in a host language. Filesystem enumeration, Git provenance, and publication may remain host boundaries.",
   "schema": "commons.mncs.dev/family-pressure/v1",
   "severity": "major",
   "signals": {
@@ -45,7 +50,7 @@
     "repository": "mncs-commons",
     "symbol": "PressureRegistry.projections/query/validate/generate_views"
   },
-  "summary": "PressureRegistry query, validation, relationship folding, and deterministic view materialization operate over unbounded JSON records, dynamic strings, maps/sets, and append-only event collections. Current MNCS can express the closed lifecycle decision kernel, but cannot host this dynamic projection semantics without a Python adapter.",
+  "summary": "The old Profile 0.16 reproducer overclaimed a need for a Python-style dynamic object model. Against Profile 0.18, the closed lifecycle/classification and bounded typed query slice are representable; the remaining pressure is the missing reusable bounded structured-record projection plus external enumeration/publication boundaries, not dynamic registry semantics as a whole.",
   "target": "language",
   "title": "Dynamic registry projection cannot yet be native MNCS",
   "version": "1"

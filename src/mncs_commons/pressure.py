@@ -278,6 +278,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-geometry": "mncs-geometry",
         "mncs-math": "mncs-math",
         "mncs-physics": "mncs-physics",
+        "mncs-doc": "mncs-doc",
         "mncs-test": "mncs-test",
         "mncs-debug": "mncs-debug",
         "mncs-actions": "mncs-actions",
@@ -308,6 +309,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-test",
         "mncs-debug",
         "mncs-actions",
+        "mncs-doc",
     ):
         aliases[project_id] = project_id
     aliases.update(
