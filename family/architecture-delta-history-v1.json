@@ -28,7 +28,22 @@
           "state": "pending"
         }
       ]
+    },
+    {
+      "previous_content_identity": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
+      "current_content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+      "changed_capabilities": ["family.agent-context"],
+      "added_contracts": ["mncs.family-agent-context/1"],
+      "removed_contracts": [],
+      "ownership_changes": [
+        {
+          "capability": "family.agent-context",
+          "owner": "mncs-language-service",
+          "change": "bounded family context projection declared; source facts remain owned by language, Commons, and repository manifests"
+        }
+      ],
+      "shadow_state_transitions": []
     }
   ],
-  "history_identity": "sha256:dd2f278ae6365f2f38155fa578ab227134745818d9d33be253c6c695ee4238cb"
+  "history_identity": "sha256:8827a152b9c05a8f7e687766fbd9f76423298f622199ea32da403d30212d4221"
 }

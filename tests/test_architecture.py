@@ -79,4 +79,4 @@ def test_architecture_queries_return_retained_identity_delta():
     )
     assert delta["projection"]["mode"] == "delta"
     assert delta["delta"]["from"].startswith("sha256:")
-    assert delta["delta"]["chain"][0]["current_content_identity"] == value["content_identity"]
+    assert delta["delta"]["chain"][-1]["current_content_identity"] == value["content_identity"]

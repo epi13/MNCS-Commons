@@ -28,6 +28,10 @@ table and adopts the ecosystem agent contract bound in mncs-actions
   mncs-language as development-pressure evidence; fix upstream, re-run that
   suite, then resume here. Never grow a Commons-local substitute that hides
   a genuine stdlib gap.
+- Language Service may compose a bounded `family_agent_context` packet from
+  Commons facts, but Commons remains the sole owner of family architecture,
+  pressure lifecycle, and convergence evidence. Do not create a second family
+  registry or move application semantics into the context projection.
 - Linux-only behavior must be labeled as such; platform-specific
   assumptions are pressure on MNCS semantics, not Commons policy.
 - `PASS`, `FAIL`, and `UNKNOWN` stay distinct end to end; coordination

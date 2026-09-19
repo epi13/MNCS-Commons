@@ -3,6 +3,9 @@
     "actions.debug-provider": [
       "MNCS-TOOLING-0C870FCAFFEB"
     ],
+    "architecture.autonomous-development": [
+      "MNCS-ECO-C1893173AD98"
+    ],
     "backend": [
       "MNCS-LANG-21A2AA307869",
       "MNCS-LANG-4719D1B72215",
@@ -19,6 +22,9 @@
     ],
     "bootstrap.storage": [
       "MNCS-TOOLING-14E88C1C7431"
+    ],
+    "callable.inventory": [
+      "MNCS-LANG-5E290D20B90B"
     ],
     "compiler.artifact-export-contract": [
       "MNCS-LANG-59894A2D6A3D"

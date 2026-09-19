@@ -65,6 +65,40 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-commons",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-language-service",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "canonical-capability-ownership",
+      "currentValidation": false,
+      "domain": "architecture.autonomous-development",
+      "fallbackLanguages": [],
+      "id": "MNCS-ECO-C1893173AD98",
+      "reporters": [
+        "mncs-commons"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "ecosystem",
+      "title": "Autonomous development accumulates duplicate capability implementations",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 8,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-numerics"
       ],
@@ -211,6 +245,38 @@
         "affected": 2,
         "fail": 0,
         "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "generic-typed-callable-reflection",
+      "currentValidation": false,
+      "domain": "callable.inventory",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-5E290D20B90B",
+      "reporters": [
+        "mncs-test"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Generic callable inventory lacks reflective typed invocation binding",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 6,
+        "fail": 0,
+        "pass": 0,
         "unknown": 0
       }
     },

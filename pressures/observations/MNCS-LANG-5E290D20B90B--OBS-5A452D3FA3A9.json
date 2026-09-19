@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "inventoryIdentity": "sha256:e610453d5b7581c7da81eb8c1258a4beaeb02d4551e568b7b9684fc69a9d4186",
+    "repository": "mncs-language",
+    "revision": "3a9005c7a7a064cbaf00c4968ce1802dbb76b52e",
+    "sourceIdentity": "sha256:67a05605857cfb633e454a626a87300b4ef135eea8f19dd1f256eda84e37b6ed"
+  },
+  "contentDigest": "sha256:1c954adb1911e35da392b1fc321c23fce1a9d5d65971788a915ec350de9154b3",
+  "evidence": [
+    {
+      "id": "mncs-language:capability-index:sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+      "kind": "current-capability-identity",
+      "ref": "mncs-language/docs/language-capabilities.json",
+      "status": "UNKNOWN",
+      "summary": "Profile 0.18 declaration kinds identify functions and tests as callable declarations, but the index exposes no dynamic callable value or reflective typed invocation capability."
+    }
+  ],
+  "id": "MNCS-LANG-5E290D20B90B--OBS-5A452D3FA3A9",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "availableInvocationShapes": [
+      "module-function-args",
+      "static-test-identity"
+    ],
+    "callableInventoryCount": 7,
+    "missingShape": "authoritative-callable-identity-plus-heterogeneous-typed-arguments"
+  },
+  "observedAt": "2026-09-18T00:00:00Z",
+  "pressureId": "MNCS-LANG-5E290D20B90B",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "MNCS_LIBRARY_PATH=mncs-test/native:mncs-language/library mncs-language/target/debug/mncs declaration-inventory mncs-test/tests/self_suite.mncs -> valid inventory with 7 exported test callables. The available mncs call route requires --module and --function; mncs test --test-identity selects static test declarations and accepts no heterogeneous callable-argument binding.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "architectureIdentity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+    "capabilityIdentity": "sha256:8dab5b8f673a2d79d27f1f90eebb14500483e9942cd1b06b105458bf96385294",
+    "commit": "3a9005c7a7a064cbaf00c4968ce1802dbb76b52e",
+    "path": "docs/language-capabilities.json",
+    "repository": "mncs-language"
+  },
+  "summary": "Current Profile 0.18 verification confirms compiler inventory admission and typed signature material, but no generic MNCS callable-identity invocation surface. The test provider therefore retains transparent generated typed dispatch.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The compiler-inventory-bound generator emits explicit typed MNCS dispatch. It is not a semantic registry and remains fail-closed on inventory/signature identity mismatch."
+  }
+}
