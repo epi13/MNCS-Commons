@@ -1,0 +1,32 @@
+{
+  "schema_version": "mncs-family.repository-manifest/v0alpha1",
+  "repository": "mncs-commons",
+  "revision": 1,
+  "manifest_location": "in-repository",
+  "authority": {
+    "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
+  },
+  "organization": {
+    "layout": "mncs.repository-layout/1",
+    "surfaces": [
+      {"path": "family/architecture-model-v1.json", "class": "canonical", "authority": "mncs-commons"},
+      {"path": "pressures/records/", "class": "canonical", "authority": "mncs-commons"},
+      {"path": "pressures/views/", "class": "generated", "note": "Bounded projections; never edit by hand."},
+      {"path": "src/mncs_commons/", "class": "host-boundary", "note": "Coordination, transport, archival, and projection machinery."},
+      {"path": "src/mncs_commons/mesh/mncs/", "class": "canonical", "note": "Native semantic kernels where the current profile permits them."}
+    ]
+  },
+  "contracts": {
+    "provides": [
+      {"contract": "family-architecture", "version": "1", "kind": "coordination-model", "stability": "experimental", "fingerprint_sources": ["family/architecture-model-v1.json", "family/architecture-delta-history-v1.json"]},
+      {"contract": "pressure-registry", "version": "1", "kind": "development-pressure-coordination", "stability": "experimental", "fingerprint_sources": ["pressures/records/", "pressures/views/"]},
+      {"contract": "record-store-api", "version": "0.5.0.dev1", "kind": "protocol", "stability": "experimental", "fingerprint_sources": ["src/mncs_commons/store.py", "schemas/"]}
+    ],
+    "consumes": [
+      {"contract": "mncds.development-record-schema", "envelope": {"op": "any"}, "required": false}
+    ],
+    "tests": [
+      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api"], "obligation": "self", "command": {"argv": ["python3", "-m", "unittest", "discover", "-s", "tests"]}}
+    ]
+  }
+}

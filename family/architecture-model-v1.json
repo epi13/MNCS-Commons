@@ -1,7 +1,7 @@
 {
   "schema_version": "commons.mncs.architecture-model/1",
   "schema_identity": "commons.mncs.architecture-model/1",
-  "content_identity": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
+  "content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
   "policy": {
     "default_evolution": "in_place",
     "implementation_versions": "forbidden",
@@ -143,6 +143,13 @@
       "owner": "mncs-language-service",
       "canonical": {"repository": "mncs-language-service", "path": "crates/service-core/src/language_knowledge.rs", "kind": "query-interface"},
       "versioning": {"implementation": "in_place", "compatibility": {"required": false, "wire_contracts": ["mncs.language-capabilities/1"]}},
+      "active_alternates": []
+    },
+    {
+      "id": "family.agent-context",
+      "owner": "mncs-language-service",
+      "canonical": {"repository": "mncs-language-service", "path": "crates/service-core/src/family_context.rs", "kind": "bounded-query-interface"},
+      "versioning": {"implementation": "contract_identity", "compatibility": {"required": true, "wire_contracts": ["mncs.family-agent-context/1"]}},
       "active_alternates": []
     },
     {
