@@ -70,8 +70,9 @@
     },
     {
       "id": "mncs-commons",
-      "state": "explicit_nonparticipant",
-      "reason": "Commons owns graph coordination but does not declare a joined consumer edge in its own generated graph."
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the authoritative architecture and pressure projection contracts consumed by family tooling."
     },
     {
       "id": "mncs-harness",

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mncs.dev/schemas/family/mncs-verification-obligation-plan-1.schema.json",
+  "title": "MNCS Verification Obligation Plan v1",
+  "description": "RAVEL's identity-bound obligation/evidence selection projection. It never grants PASS; providers establish evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "obligation_plan_id", "verification_plan_id", "source", "impact_identity", "inventory", "obligations", "evidence", "stop"],
+  "properties": {
+    "schema_version": {"const": "mncs.verification-obligation-plan/1"},
+    "obligation_plan_id": {"$ref": "#/$defs/identity"},
+    "verification_plan_id": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/identity"}},
+      "additionalProperties": true
+    },
+    "impact_identity": {"type": "string", "minLength": 1},
+    "impact": {
+      "type": "object",
+      "required": ["guarantee_domains", "change_kinds", "roots"],
+      "properties": {
+        "guarantee_domains": {"$ref": "#/$defs/strings"},
+        "change_kinds": {"$ref": "#/$defs/strings"},
+        "roots": {"$ref": "#/$defs/strings"}
+      },
+      "additionalProperties": false
+    },
+    "inventory": {
+      "type": "object",
+      "required": ["repository", "revision", "identity"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "revision": {"type": "integer", "minimum": 1},
+        "identity": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "obligations": {"type": "array", "items": {"$ref": "#/$defs/selectedObligation"}},
+    "excluded": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["identity", "lifecycle", "reason"],
+        "properties": {
+          "identity": {"type": "string", "minLength": 1},
+          "lifecycle": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "stop": {
+      "type": "object",
+      "required": ["sufficient_to_stop", "required_obligation_identities", "new_execution_required", "escalation_reasons", "boundary"],
+      "properties": {
+        "sufficient_to_stop": {"type": "boolean"},
+        "required_obligation_identities": {"$ref": "#/$defs/strings"},
+        "new_execution_required": {"$ref": "#/$defs/strings"},
+        "escalation_reasons": {"$ref": "#/$defs/strings"},
+        "boundary": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "identity": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "strings": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "executor": {
+      "type": "object",
+      "required": ["provider", "kind", "entrypoint"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "minLength": 1},
+        "entrypoint": {"type": "string", "minLength": 1},
+        "declaration_identities": {"$ref": "#/$defs/strings"},
+        "test_case_identities": {"$ref": "#/$defs/strings"}
+      },
+      "additionalProperties": true
+    },
+    "selectedObligation": {
+      "type": "object",
+      "required": ["identity", "status", "lifecycle", "guarantee_domain", "evidence_role", "reason", "evidence_identities", "test_case_identities"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "status": {"enum": ["required", "current", "new_execution_required", "stale", "contradictory", "selection_unresolved", "escalation_required", "not_selected"]},
+        "lifecycle": {"type": "string", "minLength": 1},
+        "guarantee_domain": {"type": "string", "minLength": 1},
+        "evidence_role": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence_identities": {"$ref": "#/$defs/strings"},
+        "test_case_identities": {"$ref": "#/$defs/strings"},
+        "executor": {"$ref": "#/$defs/executor"}
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["status", "evidence_identity"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "UNKNOWN"]},
+        "evidence_identity": {"type": "string", "minLength": 1},
+        "obligation_identity": {"type": "string", "minLength": 1},
+        "subject_identity": {"type": "string", "minLength": 1},
+        "subject_fingerprint": {"type": "string", "minLength": 1},
+        "definition_identity": {"type": "string", "minLength": 1},
+        "verifier_identity": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

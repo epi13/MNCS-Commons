@@ -120,6 +120,9 @@ record SemanticImpactContract {
     risk_flags: [[byte; up_to 128]; up_to 32],
     complete: bool,
     limitations: [[byte; up_to 1024]; up_to 64],
+    guarantee_domains: [[byte; up_to 128]; up_to 16],
+    change_kinds: [[byte; up_to 128]; up_to 16],
+    classification_schema_version: [byte; up_to 64],
     cross_repository: CrossRepositoryContract
 }
 
@@ -343,6 +346,9 @@ record SemanticImpactIdentityMaterial {
     risk_flags: [[byte; up_to 128]; up_to 32],
     complete: bool,
     limitations: [[byte; up_to 1024]; up_to 64],
+    guarantee_domains: [[byte; up_to 128]; up_to 16],
+    change_kinds: [[byte; up_to 128]; up_to 16],
+    classification_schema_version: [byte; up_to 64],
     cross_repository: CrossRepositoryContract
 }
 
@@ -457,6 +463,9 @@ fn semantic_impact_identity_material(impact: SemanticImpactContract) -> (result:
         risk_flags: impact.risk_flags,
         complete: impact.complete,
         limitations: impact.limitations,
+        guarantee_domains: impact.guarantee_domains,
+        change_kinds: impact.change_kinds,
+        classification_schema_version: impact.classification_schema_version,
         cross_repository: impact.cross_repository
     };
 }

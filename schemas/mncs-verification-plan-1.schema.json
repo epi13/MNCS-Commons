@@ -115,6 +115,9 @@
         "direct_dependents": {"$ref": "#/$defs/strings"},
         "test_identities": {"$ref": "#/$defs/strings"},
         "risk_flags": {"type": "array", "uniqueItems": true, "items": {"enum": ["abi_boundary", "effect_semantics", "high_connectivity", "public_contract", "shared_type", "truncated", "unknown_root"]}},
+        "guarantee_domains": {"type": "array", "uniqueItems": true, "items": {"enum": ["semantic", "parser_front_end", "type_system", "compiler", "runtime", "backend_portability", "integration", "family_contract"]}},
+        "change_kinds": {"type": "array", "uniqueItems": true, "items": {"enum": ["private_implementation", "public_contract", "shared_type", "parser_semantics", "type_system", "effect_capability", "abi", "runtime_semantics", "backend_lowering", "language_profile", "canonical_fixture", "cross_repository_contract", "unknown"]}},
+        "classification_schema_version": {"const": "mncs.semantic-impact-classification/1"},
         "complete": {"type": "boolean"},
         "limitations": {"type": "array", "items": {"type": "string"}},
         "cross_repository": {"$ref": "#/$defs/cross_repository"}
