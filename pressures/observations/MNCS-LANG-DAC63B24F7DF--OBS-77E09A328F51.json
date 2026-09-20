@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:f1b8849e3f78548b95794c6f6e9d31f244db5e5084b7e105b4a863fdd66400bc",
+  "evidence": [
+    {
+      "id": "mncs-service-reconcile-20260920",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-DAC63B24F7DF--OBS-77E09A328F51",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T21:45:45Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "clean current full Service research/WASM differential: 455 checks passed; old pins removed",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

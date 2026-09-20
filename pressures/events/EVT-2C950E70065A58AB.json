@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:436aab3c84147c226686ee1026b09effdf4cc358b0205cb35911495279ede3e0",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-DAC63B24F7DF--OBS-C4E6DA287FCA"
+  ],
+  "from": "discovered",
+  "id": "EVT-2C950E70065A58AB",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:42Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "previousEvent": null,
+  "reason": "Current PASS observation confirms the capability boundary.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

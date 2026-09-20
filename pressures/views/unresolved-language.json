@@ -6,10 +6,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-003",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-00276ACEE99A",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -34,10 +38,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-004",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-019204D482CB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language",
         "mncs-numerics"
@@ -62,10 +70,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-006",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "integrity.hashing",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-02A891E03B9E",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-02A891E03B9E--OBS-45CC31589B4E",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No cryptographic digests (P1, hashing, stdlib)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -89,10 +105,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-001",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-0973D3173B88",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-0973D3173B88--OBS-613D6C72C8FD",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No concurrency primitives (P0, concurrency, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -116,12 +140,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-003",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-0BB8D555BA98",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-0BB8D555BA98--OBS-FB08F0F8FEA9",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No UTF-8 scalar semantics in MNCS."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -145,10 +177,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-018",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-0E9B8377967C",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-0E9B8377967C--OBS-988106CDE76D",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Chained `a.b.c[i]` projections do not parse."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -172,10 +212,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-0EEA4F938BAB",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-0EEA4F938BAB--OBS-36AA6A3E9A50",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No memory-mapped / zero-copy view primitive (RFC 0009 design pressure)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -199,10 +247,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-001",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-11473A6AEAC0",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -226,10 +278,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-011",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-14C2480BB865",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-14C2480BB865--OBS-D485F2B7E960",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No text type."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -253,10 +313,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-004.no-streaming-or-incremental-hash-api-single-shot-digests-over-64-byte-views-only",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-162B2B90388C",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-162B2B90388C--OBS-BB45C214A279",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No streaming or incremental hash API; single-shot digests over ≤64-byte views only."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -277,40 +345,17 @@
     },
     {
       "affectedRepositories": [
-        "mncs-ingest"
-      ],
-      "capability": "legacy.ingest-p-012",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-18566C5C28A9",
-      "reporters": [
-        "mncs-ingest"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "+ reserved for tranche C–H findings.",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-numerics"
       ],
       "capability": "legacy.p-003",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-18E3AA414F9E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -334,10 +379,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-008",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-1DF6AF1E90DB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -361,10 +410,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-012",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-21A2AA307869",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -388,10 +441,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-011",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-2585924D3133",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-2585924D3133--OBS-841B941975EC",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Coarse traversal diagnostics (P3, diagnostics, compiler)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -415,10 +476,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-006",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-2622C5BA89E5",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-2622C5BA89E5--OBS-C3015CD13994",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Strict `select` forces defensive clamping (partially relieved)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -442,10 +511,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-003",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-270D33E72EA5",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-270D33E72EA5--OBS-E7C09EA7C20A",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No filesystem effects (P0, filesystem, language/runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -469,10 +546,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-014",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-289DEF6E2837",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -496,10 +577,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-001",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-2B19F2A16ACB",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-2416D27FFF99",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No task/spawn/channel runtime primitives."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -523,10 +612,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-013",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-2FFA2BD654BA",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-2FFA2BD654BA--OBS-864776764950",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: Ambient obligations hold verdicts at UNKNOWN."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -550,10 +647,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-015",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-3125AEBBC1C3",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-3125AEBBC1C3--OBS-19E3277AA1CA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No relation values or graph traversal (P3, semantics)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -577,10 +682,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-019",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-31EB67112747",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-31EB67112747--OBS-F34DDCC267F0",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Corpus boundary is exact on scalar signedness."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -604,10 +717,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-002.no-view-width-subsumption-forces-widest-view-boundary-signatures",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-3214070482A7",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-3214070482A7--OBS-16D3088B865F",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No view-width subsumption forces widest-view boundary signatures."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -631,10 +752,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-019.host-read-grants-are-single-file-64-byte-whole-content-snapshots",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-33AF43744393",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-33AF43744393--OBS-4B4E81323829",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: host_read grants are single-file, ≤64-byte, whole-content snapshots."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -658,10 +787,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-004",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-36E17B6769E9",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-36E17B6769E9--OBS-70BC642F7F98",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Counted-iteration ceiling and nesting bound."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -685,10 +822,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-007",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-3E1FBC01A96F",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-3E1FBC01A96F--OBS-E8BFF85F9FE2",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Nested module failures hide inner diagnostics."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -712,10 +857,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-018",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4093EC3401AC",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-4093EC3401AC--OBS-2627A7F38854",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No storage-compaction / generation-GC effects (P2, persistence)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -736,40 +889,21 @@
     },
     {
       "affectedRepositories": [
-        "mncs-store"
-      ],
-      "capability": "legacy.p2-001.single-shot-digest-realization-bound-64-b-with-no-incremental-api",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-4130BB4C42C3",
-      "reporters": [
-        "mncs-store"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "Single-shot digest realization bound (64 B) with no incremental API",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-002",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-438BF5EE1996",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-438BF5EE1996--OBS-6AE5A6A0941C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No arbitrary view sub-slicing (partially relieved by 0.14)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -793,10 +927,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-002",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-45EB8C1C6D6D",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-45EB8C1C6D6D--OBS-AAD7F17CE087",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No socket/TCP/UDP/network effects."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -820,10 +962,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-004",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-470A89615EFE",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -847,10 +993,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
+      "classification": "BACKEND_ONLY",
       "currentValidation": false,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4719D1B72215",
+      "reconciliation": {
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-4719D1B72215--OBS-A93BDCD25A5B",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "The current issue is a backend realization/portability boundary, not absence of the source contract: C11 backend traps on large-but-valid u32 checked products (backend divergence)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -874,12 +1028,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-009",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4ACDC59C3AD1",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-4ACDC59C3AD1--OBS-6A9F6DE34721",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Fixed windows + counts cross every boundary."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -903,10 +1065,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-014",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4C5043BF6AD4",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-4C5043BF6AD4--OBS-74DDD66F6B9C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Grants are whole-program CLI flags."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -930,12 +1100,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-010",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4E8D16B49738",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-031616828BA3",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Reference-execution cost per call (partially relieved)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -956,33 +1134,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-store"
-      ],
-      "capability": "legacy.p1-005.max-sequence-bound-64-caps-value-chunk-and-manifest-sizes",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-4EC58934F8DB",
-      "reporters": [
-        "mncs-store"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
@@ -991,10 +1142,18 @@
         "ravel"
       ],
       "capability": "callable.identity-reflective-typed-invocation",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "callable.inventory",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4F28CEEA0AD8",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-4F28CEEA0AD8--OBS-46310124F82C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-language",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No identity-bound reflective invocation for heterogeneous typed callables."
+      },
       "reporters": [
         "mncs-language",
         "mncs-test"
@@ -1019,10 +1178,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-010",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-51DC701BCE74",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -1046,10 +1209,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-006",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-51E6839084CB",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-51E6839084CB--OBS-64476F358A81",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Immutable values only: no ownership transfer."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1073,10 +1244,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.records",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-532C63CD5EA3",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-532C63CD5EA3--OBS-DAB679C2EABD",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Record nominal identities are brittle at the process boundary."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1100,10 +1279,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-017",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-53AB6362399B",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-53AB6362399B--OBS-CEC195E64CF5",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Effects are declarations, not values."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1127,12 +1314,20 @@
         "mncs-index"
       ],
       "capability": "legacy.press-007",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-53E07BB00417",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-53E07BB00417--OBS-BDEB6078C6A6",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No watching or clocks (P1, watch/time, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1153,44 +1348,21 @@
     },
     {
       "affectedRepositories": [
-        "mncs-language",
-        "mncs-store"
-      ],
-      "capability": "filesystem.no-follow-metadata-inspection",
-      "currentValidation": true,
-      "domain": "io.filesystem",
-      "fallbackLanguages": [
-        "python"
-      ],
-      "id": "MNCS-LANG-55F049FD8869",
-      "reporters": [
-        "mncs-language",
-        "mncs-store"
-      ],
-      "revalidationRequired": false,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "No no-follow directory metadata inspection",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "failed",
-      "verificationSummary": {
-        "affected": 2,
-        "fail": 1,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-010",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-574813EA04B7",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-574813EA04B7--OBS-F67D8A09AB32",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: Per-call process invocation cost (P2, performance/tooling)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1214,10 +1386,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-010",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5A9472D38CCB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -1241,10 +1417,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-009",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5A94DFD0A049",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -1268,10 +1448,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-013.host-cannot-invoke-generic-functions-no-type-arguments-at-the-process-boundary",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5B2AD8F659B6",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-5B2AD8F659B6--OBS-667CF96C6FDE",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: Host cannot invoke generic functions (no type arguments at the process boundary)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1295,10 +1483,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-013",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5C6229CA836E",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-5C6229CA836E--OBS-7A23079B29B4",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No durable compare-and-swap for publication (P1, synchronization/persistence, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1322,10 +1518,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-020.no-typed-error-vocabulary-at-the-process-boundary-u64-status-codes-instead",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-649A6B6FA08E",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-649A6B6FA08E--OBS-B09FB11FA91F",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No typed-error vocabulary at the process boundary (u64 status codes instead)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1350,12 +1554,16 @@
         "mncs-language"
       ],
       "capability": "dynamic_query_projection",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "data.registry",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-6643CDECCFEC",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-commons",
         "mncs-language"
@@ -1380,10 +1588,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-016",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-6644617F0DD3",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-6644617F0DD3--OBS-35AB5008EAA7",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Invariants are boolean functions, not proofs."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1407,10 +1623,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-016",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-6CE2CD2EB82B",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -1433,38 +1653,19 @@
       "affectedRepositories": [
         "mncs-index"
       ],
-      "capability": "legacy.press-009",
-      "currentValidation": false,
-      "domain": "control-flow.iteration",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-6D53020635CD",
-      "reporters": [
-        "mncs-index"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Nested iteration rejected (P3, semantics, compiler)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "unknown",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 1
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-index"
-      ],
       "capability": "legacy.press-019",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-6E87ED0AD91C",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-6E87ED0AD91C--OBS-E5CEC2DEAF9F",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No fabric partition/merge/worker-loss semantics (P2, distribution)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1488,10 +1689,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-007.observation-granularity-64-b-reads-one-root-per-capability",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-7181F1DBC345",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-7181F1DBC345--OBS-A63D216D0595",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Observation granularity: 64 B reads, one root per capability."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1515,10 +1724,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-008",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-721E238C2591",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-721E238C2591--OBS-A1E7AAA35A82",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No stdlib distribution for downstream crates."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -1542,10 +1759,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-012",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-74330424E2FF",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-74330424E2FF--OBS-11DDC57165DA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Reserved words collide with service vocabulary."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1569,10 +1794,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-012",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-7610973D3A68",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-7610973D3A68--OBS-057095875103",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No cancellation semantics (P2, runtime, language)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1597,12 +1830,16 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-007",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-770B42F56E6C",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-test",
         "mncs-web"
@@ -1627,10 +1864,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-007",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-7EE649AA6711",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-7EE649AA6711--OBS-3C224E878B94",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Finite match has no wildcard."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1654,10 +1899,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-015",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8230261A9F13",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -1681,10 +1930,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-016",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8303385C7CBD",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-8303385C7CBD--OBS-20CCBC006298",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No durable-commit effects (P1, persistence, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -1708,10 +1965,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-003",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-846B20062550",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-846B20062550--OBS-74C23EFD19E2",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: 64-byte transport chunk forces app-level reassembly."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -1735,10 +2000,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-005",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-88C97B4EEEB1",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-88C97B4EEEB1--OBS-59A1B22B3017",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Folds have no dead-iteration protection."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -1762,10 +2035,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-011",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8930A60B60E0",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -1789,10 +2066,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-012.no-view-width-subsumption-byte-up-to-8-is-not-a-byte-up-to-64",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8D86843C5F1C",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-8D86843C5F1C--OBS-A3DA811DBDD5",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No view-width subsumption: `[byte; up_to 8]` is not a `[byte; up_to 64]`."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1816,10 +2101,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8F49A242F22D",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-8F49A242F22D--OBS-74E53E9C508E",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Step-cost and boundary-crossing pressure at store scale."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1843,10 +2136,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-98891488DFA6",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-98891488DFA6--OBS-9D6864B97203",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Single-result functions force parse-then-project access patterns."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1872,6 +2173,7 @@
         "mncs-language"
       ],
       "capability": "legacy.ingest-p-001",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "identity",
       "fallbackLanguages": [
@@ -1879,6 +2181,13 @@
         "rust"
       ],
       "id": "MNCS-LANG-9DE65A412CF7",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-9DE65A412CF7--OBS-1A717ECE1FBA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No string/text value: open-vocabulary identity cannot round-trip."
+      },
       "reporters": [
         "mncs-actions",
         "mncs-ingest",
@@ -1904,10 +2213,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-006.in-language-generation-scans-bound-at-23-records",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "type-system.records",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-9EFB17CE75B3",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-9EFB17CE75B3--OBS-68BA90E6E37C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: In-language generation scans bound at 23 records."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1931,10 +2248,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A0C3744B0B9A",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-A0C3744B0B9A--OBS-ABFE7E737D16",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Append-only host_write cannot express store file semantics."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -1958,10 +2283,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-006",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A24150CD4D89",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -1985,10 +2314,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-005",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A246BB2BA905",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-A246BB2BA905--OBS-9E28AF90809C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Traversal-domain and unbounded-data gaps (P2, stdlib)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -2012,10 +2349,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-009",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A341270CEEAA",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -2039,10 +2380,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-020",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A4265D62562B",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-A4265D62562B--OBS-07162B3EB60B",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Step budgets are host-declared fuel, opaque in-language."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2066,10 +2415,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-b02.host-effects-realized-only-by-research-bytecode-compiled-backends-refuse-silentl",
+      "classification": "BACKEND_ONLY",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A89E82F1C80D",
+      "reconciliation": {
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-A89E82F1C80D--OBS-4DB9993E570A",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "The current issue is a backend realization/portability boundary, not absence of the source contract: Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2093,10 +2450,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-021.checked-arithmetic-obligations-have-no-discharge-path-for-input-bounded-values",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-AED76C32EC2E",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-AED76C32EC2E--OBS-5CCA440C2CF1",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Checked-arithmetic obligations have no discharge path for input-bounded values."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2120,10 +2485,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-011",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-B01123582951",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-B01123582951--OBS-88908AA08D67",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Stdlib scans/readers are width-monomorphic."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -2147,10 +2520,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-008",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-B613462C9EB6",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-B613462C9EB6--OBS-3025A1611D8B",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No concurrent error aggregation (P2, error model)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -2174,10 +2555,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-017",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-BA0CEB347965",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -2201,12 +2586,16 @@
         "mncs-doc"
       ],
       "capability": "source-preserving-document-regions",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "document.text",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-BC105FDA1446",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doc"
       ],
@@ -2230,10 +2619,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-018",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-C20E8604EB31",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -2257,12 +2650,20 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-009",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-CA1B30E77141",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-CA1B30E77141--OBS-E53F396608E4",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Single untyped host stream per capability."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2286,10 +2687,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-010",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-CA4CA715976F",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-CA4CA715976F--OBS-3DF01585FF14",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No recursive types: error causality truncated."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2313,10 +2722,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-015.no-unique-identity-issuance-primitive-objectid-serials-are-host-issued",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "identity",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-CD0DEF98FD10",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-CD0DEF98FD10--OBS-4C640D378675",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No unique-identity issuance primitive (ObjectId serials are host-issued)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2341,12 +2758,20 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-006.no-scatter-write-into-byte-buffers-only-whole-array-functional-construction",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-D1947FFBA6D9",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-D1947FFBA6D9--OBS-F24FE6720B73",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No scatter-write into byte buffers; only whole-array functional construction."
+      },
       "reporters": [
         "mncs-language",
         "mncs-store"
@@ -2371,10 +2796,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-015",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "effects",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-D1F8531E3172",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-D1F8531E3172--OBS-9D4EB638A020",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No timer/sleep/randomness effects."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2398,10 +2831,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-002",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-D60929B65373",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-D60929B65373--OBS-7F83C3368578",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No synchronization primitives (P0, synchronization, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -2425,10 +2866,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-017",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-D8D0F1F3CF2F",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-D8D0F1F3CF2F--OBS-8F9A473E0DA9",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No snapshot-handle / lease / epoch primitives (P1, synchronization/persistence)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -2449,40 +2898,21 @@
     },
     {
       "affectedRepositories": [
-        "mncs-service"
-      ],
-      "capability": "legacy.svc-p-021",
-      "currentValidation": false,
-      "domain": "backend",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-DAC63B24F7DF",
-      "reporters": [
-        "mncs-service"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "WASM backend unsound for service-shaped code (shifting)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "failed",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 1,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-017.no-path-string-type-layout-names-are-unrepresentable-in-language",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E06C0D4EC0D1",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-E06C0D4EC0D1--OBS-F97DC459D6AE",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No path/string type: layout names are unrepresentable in-language."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2506,10 +2936,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-002",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "type-system.records",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E0ECD53CAE1F",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -2533,10 +2967,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-014",
+      "classification": "CONSUMER_DEBT",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E5C253732BF2",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-E5C253732BF2--OBS-B063F50A6613",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Unbounded text plumbing for rich extraction (P2, stdlib)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -2560,10 +3002,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-005",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-EA78D653D3ED",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-EA78D653D3ED--OBS-3BA69FFBB6D5",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Acyclic calls: retry loops cannot live in-language."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2587,10 +3037,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-003.no-generic-boundary-functions-forces-per-width-tail-families",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-ECDA8EDB6183",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-ECDA8EDB6183--OBS-5FC5E95B2438",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No generic boundary functions forces per-width tail families."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2614,10 +3072,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-004",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-EF689917D8CD",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-EF689917D8CD--OBS-AE410729DCAA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No finite maps; keyword tables are linear chains (partially relieved)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -2641,10 +3107,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-005",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-F43CBD64717D",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -2668,10 +3138,18 @@
         "mncs-service"
       ],
       "capability": "legacy.svc-p-008",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-F47AB612ECB6",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-F47AB612ECB6--OBS-8307B5AC50E1",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No virtual clock."
+      },
       "reporters": [
         "mncs-service"
       ],
@@ -2695,10 +3173,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-011.wrapping-operator-literal-inference-is-position-sensitive-mne117-mne119",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-FF5CADADD439",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-FF5CADADD439--OBS-37CC0493AC92",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Wrapping-operator literal inference is position-sensitive (MNE117/MNE119)."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -2718,6 +3204,17 @@
       }
     }
   ],
+  "reconciliation": {
+    "classificationCounts": {
+      "BACKEND_ONLY": 2,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
+      "CONSUMER_DEBT": 16,
+      "PARTIALLY_RESOLVED": 26,
+      "STILL_REPRODUCES": 15,
+      "UNRECONCILED": 23
+    },
+    "unreconciled": 23
+  },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "unresolved-language"
 }

@@ -6,12 +6,16 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0006",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-COMPILER-38B9F401EC5C",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -35,6 +39,7 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0005",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -42,6 +47,9 @@
         "rust"
       ],
       "id": "MNCS-COMPILER-6AA9F9765B5B",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -65,12 +73,16 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0002",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-COMPILER-9E5BAB7F55A8",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -94,12 +106,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-003",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-0BB8D555BA98",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-0BB8D555BA98--OBS-FB08F0F8FEA9",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No UTF-8 scalar semantics in MNCS."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -123,12 +143,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-009",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4ACDC59C3AD1",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-4ACDC59C3AD1--OBS-6A9F6DE34721",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Fixed windows + counts cross every boundary."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -152,12 +180,20 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-010",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4E8D16B49738",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-031616828BA3",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Reference-execution cost per call (partially relieved)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -181,12 +217,20 @@
         "mncs-index"
       ],
       "capability": "legacy.press-007",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-53E07BB00417",
+      "reconciliation": {
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-53E07BB00417--OBS-BDEB6078C6A6",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-index",
+        "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No watching or clocks (P1, watch/time, runtime)."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -212,6 +256,7 @@
         "mncs-language"
       ],
       "capability": "legacy.ingest-p-001",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "identity",
       "fallbackLanguages": [
@@ -219,6 +264,13 @@
         "rust"
       ],
       "id": "MNCS-LANG-9DE65A412CF7",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-9DE65A412CF7--OBS-1A717ECE1FBA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No string/text value: open-vocabulary identity cannot round-trip."
+      },
       "reporters": [
         "mncs-actions",
         "mncs-ingest",
@@ -247,6 +299,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-010",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -254,6 +307,9 @@
         "rust"
       ],
       "id": "MNCS-TOOLING-146FB6F4BBC6",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -280,12 +336,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-013",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-2658866CECD9",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -309,12 +369,16 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-001",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-2C138B2DFDA5",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language-service"
       ],
@@ -338,12 +402,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-006",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-2D28F38056A1",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -367,12 +435,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-016",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-38C5CB10CDBC",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -396,12 +468,16 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-003",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-4790E16F393E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language-service"
       ],
@@ -425,12 +501,16 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-005",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-5A9222A18BA7",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language-service"
       ],
@@ -454,12 +534,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-020",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-71B72613B11B",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -483,12 +567,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-004",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-7A39DE2CEB8F",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -512,12 +600,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-014",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-9455B428D003",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -542,6 +634,7 @@
         "ravel"
       ],
       "capability": "legacy.doc-p-019",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "type-system.records",
       "fallbackLanguages": [
@@ -549,6 +642,9 @@
         "rust"
       ],
       "id": "MNCS-TOOLING-992CEBD1BB97",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor",
         "ravel"
@@ -576,6 +672,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-011",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -583,6 +680,9 @@
         "rust"
       ],
       "id": "MNCS-TOOLING-B665F138D324",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -609,12 +709,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-009",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-B9ED716B4A9A",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -639,6 +743,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-008",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
@@ -646,6 +751,9 @@
         "rust"
       ],
       "id": "MNCS-TOOLING-C5FD211E05C1",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor",
         "mncs-test"
@@ -672,12 +780,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-015",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-CB736AB5B3F0",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -703,12 +815,16 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-006",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "type-system.generics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-CBD9615A7A1A",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language-service"
       ],
@@ -732,12 +848,16 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-002",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-D66F67A67198",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language-service"
       ],
@@ -761,12 +881,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-002",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-D695B014F6DB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -791,6 +915,7 @@
         "mncs-test"
       ],
       "capability": "legacy.doc-p-001",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -798,6 +923,9 @@
         "rust"
       ],
       "id": "MNCS-TOOLING-E920D54703E3",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor",
         "mncs-test"
@@ -822,12 +950,16 @@
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-012",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "identity",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-TOOLING-F648D3B062B3",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-doctor"
       ],
@@ -847,6 +979,14 @@
       }
     }
   ],
+  "reconciliation": {
+    "classificationCounts": {
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
+      "PARTIALLY_RESOLVED": 4,
+      "UNRECONCILED": 23
+    },
+    "unreconciled": 23
+  },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "rust-fallback"
 }

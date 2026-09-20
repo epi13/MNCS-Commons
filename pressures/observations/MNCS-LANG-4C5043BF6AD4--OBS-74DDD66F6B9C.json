@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:f5b98b911d135e5e47e80e8f68afadcac5b853c55d048d0fe497017a1fe230a1",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-4c5043bf6ad4",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-4C5043BF6AD4--OBS-74DDD66F6B9C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-4C5043BF6AD4",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Grants are whole-program CLI flags.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

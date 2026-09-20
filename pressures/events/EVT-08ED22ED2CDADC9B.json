@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:b8185e41376b6b343b2bc5e7382e8911dc5e15c933fea2156a32bf8041673655",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "confirmed",
+  "id": "EVT-08ED22ED2CDADC9B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:37Z",
+  "pressureId": "MNCS-LANG-18566C5C28A9",
+  "previousEvent": "EVT-78D5BBE69BCCB016",
+  "reason": "Placeholder imported for a reserved tranche; it is not a current reproducible language pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

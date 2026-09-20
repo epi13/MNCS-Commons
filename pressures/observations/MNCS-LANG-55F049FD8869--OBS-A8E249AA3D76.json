@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:bdfbfa98ed23991c2e9254e633f02ff4c8dd4639b47067eef1e333be96f58732",
+  "evidence": [
+    {
+      "id": "mncs-store-reconcile-20260920",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-A8E249AA3D76",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T21:45:41Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Store publication uses fs_entry_size_at through one retained application artifact",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

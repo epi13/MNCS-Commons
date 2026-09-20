@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:e1a6404ef2c26832f4ad7676d908ae1a77390d6b4525980e6997c2aa73c4b17c",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-55F049FD8869--OBS-72B564F9DA21"
+  ],
+  "from": "accepted",
+  "id": "EVT-65E15291E7083909",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:40Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "previousEvent": "EVT-453EBFAE3BAD9175",
+  "reason": "Consumer migration and language-owned regression are complete; record the delivered implementation.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

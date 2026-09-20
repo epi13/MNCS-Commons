@@ -1,0 +1,16 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:aab679f5635056ea5436c19452584bc457b0ff09dff3a0ef1da8df1d5b8591eb",
+  "details": {
+    "reason": "Both records describe the same single-shot/incremental hashing gap; the narrower realization record is not a second authority."
+  },
+  "evidenceRefs": [],
+  "id": "EVT-9335B9783E677DC7",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-20T21:45:36Z",
+  "relation": "duplicate_of",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-4130BB4C42C3",
+  "targetPressure": "MNCS-LANG-162B2B90388C",
+  "version": "1"
+}

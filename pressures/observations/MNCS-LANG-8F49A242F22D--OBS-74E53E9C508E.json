@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:54250b79f0a45c804e9005dce1d64fce4883fe4f9547c9c1e8c445032e729b5a",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-8f49a242f22d",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-74E53E9C508E",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Step-cost and boundary-crossing pressure at store scale.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

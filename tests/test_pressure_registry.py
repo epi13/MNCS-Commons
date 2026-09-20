@@ -121,6 +121,42 @@ def test_existing_pressure_accumulates_another_repository_and_candidates(tmp_pat
     assert registry.validate().valid
 
 
+def test_reconciliation_is_materialized_from_append_only_observation_metadata(tmp_path: Path) -> None:
+    registry = PressureRegistry(tmp_path / "pressures")
+    created = registry.add(pressure_spec())
+    pressure = created["id"]
+    registry.observe(
+        pressure,
+        {
+            "repository": "mncs-store",
+            "observedAt": "2026-09-13T00:00:00Z",
+            "summary": "The old reproducer still fails.",
+            "reproduction": {"status": "PASS", "instructions": "run the case"},
+            "metadata": {"classification": "still_real"},
+        },
+    )
+    registry.observe(
+        pressure,
+        {
+            "repository": "mncs-store",
+            "observedAt": "2026-09-14T00:00:00Z",
+            "summary": "The capability is available; the adapter still uses its shim.",
+            "reproduction": {"status": "PASS", "instructions": "run the case"},
+            "metadata": {"classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED"},
+        },
+    )
+
+    row = registry.query()[0]
+    assert row["classification"] == "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED"
+    assert row["reconciliation"]["repository"] == "mncs-store"
+    generated = registry.generate_views()
+    assert generated["valid"]
+    view = json.loads((registry.views_dir / "unresolved-language.json").read_text())
+    assert view["reconciliation"]["classificationCounts"] == {
+        "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1
+    }
+
+
 def test_alias_and_canonical_verifications_share_one_current_repository_state(
     tmp_path: Path,
 ) -> None:

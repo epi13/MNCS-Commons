@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:75e9ae8f12ea76e9f59d3b696170edb6dd379cb3b780702ef93137f223c3cda7",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-b613462c9eb6",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-B613462C9EB6--OBS-3025A1611D8B",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "STILL_REPRODUCES",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-B613462C9EB6",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "146136e",
+    "repository": "mncs-index",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No concurrent error aggregation (P2, error model).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

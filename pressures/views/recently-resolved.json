@@ -6,10 +6,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0013",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-360418A1CF7A",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -33,10 +37,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0008",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-48E3919FB30E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -60,10 +68,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0010",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-4924C0E45913",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -88,10 +100,14 @@
         "mncs-language"
       ],
       "capability": "structured-compile-failure-debug-artifact",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "debugging.diagnostics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-94428E41EEAC",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-debug",
         "mncs-language"
@@ -119,10 +135,14 @@
         "mncs-language-service"
       ],
       "capability": "semantic-operation-source-spans",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "debugging.source-maps",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-E445EECC9F96",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-debug",
         "mncs-forge",
@@ -149,10 +169,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0012",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-E75581FDA823",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -176,10 +200,18 @@
         "mncs-index"
       ],
       "capability": "legacy.press-004",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-337C9F6113E9",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-337C9F6113E9--OBS-45AF6C8EECE8",
+        "observedAt": "2026-09-20T19:02:22Z",
+        "repository": "mncs-index",
+        "summary": "Integer bitwise operators and the prior Index digest/scan consumer migration are already covered by current family evidence; the historical 0.8 reproducer remains pinned only for compatibility."
+      },
       "reporters": [
         "mncs-index"
       ],
@@ -204,10 +236,14 @@
         "mncs-language"
       ],
       "capability": "packed-bounded-view-lifetime",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "backend.region-reclamation",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4219A56741DB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-atlas",
         "mncs-language"
@@ -232,10 +268,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-493C32111AA5",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -259,10 +299,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-002",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4EBBF1137974",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -287,10 +331,14 @@
         "mncs-language"
       ],
       "capability": "nested-cell-address-normalization",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "backend.wasm-address-typing",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4F3798658F55",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-atlas",
         "mncs-language"
@@ -312,14 +360,57 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "filesystem.no-follow-metadata-inspection",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-55F049FD8869",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-55F049FD8869--OBS-72B564F9DA21",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-language",
+        "summary": "Current clean consumer revalidation completed the generic capability migration."
+      },
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "No no-follow directory metadata inspection",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-harness",
         "mncs-language"
       ],
       "capability": "source-level-function-export-resolution",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "compiler.artifact-export-contract",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-59894A2D6A3D",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-harness",
         "mncs-language"
@@ -344,10 +435,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-006",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-76B88EDA0119",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -371,10 +466,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-7BA2DA8A378E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -398,10 +497,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-007",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-817B22E99A6B",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -425,10 +528,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-001",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A14DAEC8E40F",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -453,10 +560,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-009.no-over-bool-mne121",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A29B3EFA5B73",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler",
         "mncs-store"
@@ -478,13 +589,52 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-021",
+      "classification": "RESOLVED",
+      "currentValidation": false,
+      "domain": "backend",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-DAC63B24F7DF",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-DAC63B24F7DF--OBS-C4E6DA287FCA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current clean consumer revalidation completed the generic capability migration."
+      },
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "WASM backend unsound for service-shaped code (shifting)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-numerics"
       ],
       "capability": "legacy.p-005",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E86F0E121743",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -508,10 +658,14 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-008",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-EC8EB0FE5556",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-numerics"
       ],
@@ -539,12 +693,16 @@
         "mncs-test"
       ],
       "capability": "authoritative-provider-descriptor-admission",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "provider.admission",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-RUNTIME-356BE27FB865",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -573,10 +731,14 @@
         "mncs-debug"
       ],
       "capability": "registered-debug-evidence-provider",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "actions.debug-provider",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-0C870FCAFFEB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug"
@@ -604,10 +766,14 @@
         "mncs-test"
       ],
       "capability": "structured-test-failure-debug-witness",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "debugging.test-handoff",
       "fallbackLanguages": [],
       "id": "MNCS-VERIFY-54B12B4A78DF",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -639,10 +805,14 @@
         "ravel"
       ],
       "capability": "minimum-sufficient-verification-plan",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "verification.scope-selection",
       "fallbackLanguages": [],
       "id": "MNCS-VERIFY-CF7230C4396D",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-commons",
@@ -667,6 +837,13 @@
       }
     }
   ],
+  "reconciliation": {
+    "classificationCounts": {
+      "RESOLVED": 3,
+      "UNRECONCILED": 22
+    },
+    "unreconciled": 22
+  },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"
 }

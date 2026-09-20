@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:22402b2e892e8656b08bb55f4ee70e4d34feadd49e8dbfae3c9c194fc593e28c",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-4ec58934f8db",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-4EC58934F8DB--OBS-303DA04F8EBD",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "OBSOLETE",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-4EC58934F8DB",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "The historical wording is no longer true against current Profile 0.18; any remaining limit is narrower and separately tracked: MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

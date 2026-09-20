@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:7f0b5e845da2c98c5aa03578d4c36aba5392bd3252b0fbd1bb308ab2e80133e6",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-2585924d3133",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-2585924D3133--OBS-841B941975EC",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CONSUMER_DEBT",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-2585924D3133",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "146136e",
+    "repository": "mncs-index",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Coarse traversal diagnostics (P3, diagnostics, compiler).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

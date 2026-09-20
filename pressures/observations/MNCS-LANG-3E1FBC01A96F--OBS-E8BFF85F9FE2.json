@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:697177bc3e515ba099e79cdef243782c119a30c6250837896db1093ef4cac39c",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-3e1fbc01a96f",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-3E1FBC01A96F--OBS-E8BFF85F9FE2",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CONSUMER_DEBT",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-3E1FBC01A96F",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "abf35ab",
+    "repository": "mncs-ingest",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Nested module failures hide inner diagnostics.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

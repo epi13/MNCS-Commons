@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:02a5dddb598aa6b92175a525c6b39125f9d9b790e3e4fc10afb818187fbd4acb",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-6e87ed0ad91c",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-6E87ED0AD91C--OBS-E5CEC2DEAF9F",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CONSUMER_DEBT",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-6E87ED0AD91C",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "146136e",
+    "repository": "mncs-index",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No fabric partition/merge/worker-loss semantics (P2, distribution).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

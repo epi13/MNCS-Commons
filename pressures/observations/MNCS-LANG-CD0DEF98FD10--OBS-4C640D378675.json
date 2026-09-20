@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:9d65be148f7c6f0c95170694ef52867b645d9fce90e1069c68428e9575cb6c8e",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-cd0def98fd10",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-CD0DEF98FD10--OBS-4C640D378675",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CONSUMER_DEBT",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-CD0DEF98FD10",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: No unique-identity issuance primitive (ObjectId serials are host-issued).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

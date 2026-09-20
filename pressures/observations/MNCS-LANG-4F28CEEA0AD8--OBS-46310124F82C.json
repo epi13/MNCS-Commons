@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:0ccd7aeefb484280f7de5a9ccb28afbeeba7f4f1f2447fd78174ab967d6840e1",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-4f28ceea0ad8",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-46310124F82C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "STILL_REPRODUCES",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "be2996e",
+    "repository": "mncs-language",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No identity-bound reflective invocation for heterogeneous typed callables.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

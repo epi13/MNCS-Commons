@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:49ce5b136b126a760a65f622003a75f3fd8064dbd59b7a3cfd51f63f8942fae5",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-55F049FD8869--OBS-72B564F9DA21"
+  ],
+  "from": "confirmed",
+  "id": "EVT-453EBFAE3BAD9175",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:39Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "previousEvent": "EVT-2F2F758925D6F4B0",
+  "reason": "Accept the current generic capability as the owning resolution.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

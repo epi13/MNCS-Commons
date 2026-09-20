@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:e6cdb21c3b09f0d15b6a5cae4bb4e4146477366b91773c3125407928a1735121",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "discovered",
+  "id": "EVT-66A03BFACA4EA4E2",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:37Z",
+  "pressureId": "MNCS-LANG-4130BB4C42C3",
+  "previousEvent": null,
+  "reason": "Duplicate of the retained incremental hashing pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "duplicate",
+  "version": "1"
+}

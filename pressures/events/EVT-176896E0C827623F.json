@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:9a9b3d3554271368cf765d43dfa5c334ef6bc05eaf39b05487a5e33fb629aaca",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "discovered",
+  "id": "EVT-176896E0C827623F",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:38Z",
+  "pressureId": "MNCS-LANG-4EC58934F8DB",
+  "previousEvent": null,
+  "reason": "The 64-byte premise is obsolete: current Profile 0.13+ raises the sequence ceiling to 1024 and Store records above 64 bytes compile and execute. Remaining hash/streaming limits are tracked separately.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

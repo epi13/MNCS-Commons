@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:b99777473ae89ac430479681a364fd430c52877eeb4fecf778fb7e0f210489ca",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-a89e82f1c80d",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-A89E82F1C80D--OBS-4DB9993E570A",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "BACKEND_ONLY",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-A89E82F1C80D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "The current issue is a backend realization/portability boundary, not absence of the source contract: Host effects realized only by research-bytecode; compiled backends refuse (silently shape-shifted).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}
