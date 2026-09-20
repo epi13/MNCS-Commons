@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:a3292951842e21cee1d82320997aadd978b7682c485efb343a0f71f26058d2de",
+  "evidence": [
+    {
+      "id": "mncs-store:profile-0.18:host-lifecycle-audit",
+      "kind": "consumer-audit",
+      "ref": "tests/store_phase1a.py",
+      "status": "FAIL",
+      "summary": "os.replace/os.fsync/os.listdir/os.remove remain on the ordinary lifecycle path"
+    }
+  ],
+  "id": "MNCS-LIB-C1263916C3C2--OBS-2DA69383B311",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:58:22Z",
+  "pressureId": "MNCS-LIB-C1263916C3C2",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Profile 0.18 capability exists, but the current store lifecycle still executes publication and durability mechanics in Python.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

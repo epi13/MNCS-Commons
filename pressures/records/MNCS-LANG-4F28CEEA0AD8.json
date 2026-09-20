@@ -1,0 +1,42 @@
+{
+  "affectedRepositories": [
+    "mncs-actions",
+    "mncs-debug",
+    "mncs-doctor",
+    "mncs-language",
+    "mncs-test",
+    "ravel"
+  ],
+  "capability": "callable.identity-reflective-typed-invocation",
+  "contentDigest": "sha256:d837755a20e424bbcf88a97ad3714cb76049bc8011c5321217019a475e01ebab",
+  "discoveredAt": "2026-09-20T15:12:59Z",
+  "discoveredBy": "mncs-test",
+  "domain": "callable.inventory",
+  "id": "MNCS-LANG-4F28CEEA0AD8",
+  "identity": {
+    "capability": "callable.identity-reflective-typed-invocation",
+    "domain": "callable.inventory",
+    "reproducerSignature": "mncs-test:profile-0.18:identity-callable-binding",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-test:profile-0.18:identity-callable-binding"
+  },
+  "requiredBehavior": "Expose a fail-closed generic invocation surface accepting an authoritative exported callable identity, interface/signature identity, typed argument material, and applicable generic arguments while preserving capability admission and returning a bounded typed result.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-embed/src/lib.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Profile 0.18 supports host invocation by module/function name and explicit generic type arguments, but it does not expose a bounded identity-bound invocation membrane that validates a compiler callable identity and heterogeneous typed argument material without consumer-specific dispatch generation.",
+  "target": "language",
+  "title": "No identity-bound reflective invocation for heterogeneous typed callables",
+  "version": "1"
+}

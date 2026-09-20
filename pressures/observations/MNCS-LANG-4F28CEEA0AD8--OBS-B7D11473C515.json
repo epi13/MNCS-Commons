@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:e5368d1db2c6d042c40d5202d534e357f7bacfa10f0f7f8a2869aa5e4c4f593c",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:host-named-generic-entrypoints",
+      "kind": "conformance",
+      "ref": "crates/mncs-cli/tests/host_generic_entrypoints.rs",
+      "status": "PASS",
+      "summary": "Named generic entrypoints with explicit type_arguments work across declared backends."
+    },
+    {
+      "id": "mncs-test:provider-inventory-generated-dispatch",
+      "kind": "consumer-reproducer",
+      "ref": "tools/generate_provider.py",
+      "status": "FAIL",
+      "summary": "The provider still generates identity matchers and static calls because callable identities cannot be invoked directly with heterogeneous typed signatures."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-B7D11473C515",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T15:12:59Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "run the current host-generic entrypoint conformance and inspect the declaration-inventory-to-provider path; the named module/function route passes, but no callable-identity plus typed-material route exists",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "The current typed-call ABI resolves module/function targets and explicit generic type arguments, while declaration-inventory exposes stable callable and signature identities. The runtime has no identity-targeted heterogeneous typed invocation surface; mncs-test still requires transparent generated selector dispatch.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "mncs-test generates native provider_inventory.mncs from the compiler declaration inventory; the generator is transparent typed glue, not semantic test policy."
+  }
+}

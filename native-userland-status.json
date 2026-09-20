@@ -6,7 +6,8 @@
   "native_sources": {
     "family-artifact-wire": "src/mncs_commons/mesh/mncs/commons/family/artifact/v1.mncs",
     "family-evidence": "src/mncs_commons/mesh/mncs/commons/family/evidence/v1.mncs",
-    "family-contracts": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs"
+    "family-contracts": "src/mncs_commons/mesh/mncs/commons/family/contracts/v1.mncs",
+    "family-obligations": "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"
   },
   "fullExternalContractIdentity": "family/native-contract-identity-v1.json",
   "native_shadow_slices": [
@@ -16,7 +17,8 @@
   "canonical_mncs_surfaces": [
     "pressure lifecycle semantics",
     "family identity normalization",
-    "semantic graph and verification contracts"
+    "semantic graph and verification contracts",
+    "obligation lifecycle/status/executor contract law"
   ],
-  "next_migration_slice": "native family contract consumers and canonical identity digest parity"
+  "next_migration_slice": "native obligation identity reduction and persistent pressure projection"
 }

@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.verification-obligation-inventory/v1",
   "repository": "mncs-commons",
-  "revision": 1,
+  "revision": 2,
   "obligations": [
     {
       "identity": "mncs-commons.family-projection.conformance",
@@ -31,7 +31,7 @@
       "lifecycle": "permanent",
       "scope": "consumer",
       "subjects": ["mncs.verification-obligation-plan/1"],
-      "invalidation_dependencies": ["src/mncs_commons/obligation_plan.py", "schemas/mncs-verification-obligation-plan-1.schema.json"],
+      "invalidation_dependencies": ["src/mncs_commons/obligation_plan.py", "schemas/mncs-verification-obligation-plan-1.schema.json", "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"],
       "executor": {
         "provider": "mncs-commons",
         "kind": "compile_experiment",
@@ -41,6 +41,26 @@
         "subject_fields": ["impact_identity", "source_identity"],
         "definition_fields": ["inventory_identity", "plan_identity"],
         "execution_fields": ["evidence_identity"]
+      }
+    },
+    {
+      "identity": "mncs-commons.obligation-contract.native-laws",
+      "title": "Native obligation contract laws preserve lifecycle exclusion and execution status semantics",
+      "guarantee_domain": "family_contract",
+      "evidence_role": "canonical_regression",
+      "lifecycle": "permanent",
+      "scope": "family",
+      "subjects": ["mncs.commons.family.obligations.v1"],
+      "invalidation_dependencies": ["src/mncs_commons/mesh/mncs/commons/family/obligations.mncs", "tests/fixtures/native-obligation-contract-probe.mncs"],
+      "executor": {
+        "provider": "mncs-commons",
+        "kind": "compile_experiment",
+        "entrypoint": "tests/test_native_obligation_contract.py"
+      },
+      "evidence_identity": {
+        "subject_fields": ["native_contract_identity"],
+        "definition_fields": ["lifecycle_vocabulary", "status_vocabulary"],
+        "execution_fields": ["result_identity"]
       }
     }
   ]

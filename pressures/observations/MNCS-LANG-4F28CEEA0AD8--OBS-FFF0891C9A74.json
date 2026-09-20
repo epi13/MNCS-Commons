@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:eac02ade8c881a777e55f146e904871cff1c1da28cd09e916532508ab3ae14e3",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:host-named-generic-entrypoints",
+      "kind": "conformance",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-FFF0891C9A74",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T15:14:06Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Profile 0.18 named module/function typed calls and explicit generic type arguments pass, but no callable-identity plus heterogeneous typed-argument boundary is exported.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

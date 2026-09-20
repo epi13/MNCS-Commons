@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:718cb26f48d15e5160ca9917e42efbe634852fa59e8173838a216c195c1798c2",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:fs-metadata-inventory-audit",
+      "kind": "capability-inventory",
+      "ref": "docs/language-capabilities.json",
+      "status": "FAIL",
+      "summary": "fs_list and fs_write are present; metadata/no-follow inspection is absent."
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-D709CBA9193F",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T14:57:44Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "attempt a bounded no-follow metadata query for a directory entry under an explicit fs_root grant",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Current filesystem conformance proves listing and mutation, but no fs metadata/no-follow primitive is present in the capability inventory.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "mncs-store relies on Python os.stat/listdir behavior for metadata and recovery scans."
+  }
+}

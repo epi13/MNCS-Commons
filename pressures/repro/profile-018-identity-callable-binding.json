@@ -1,0 +1,53 @@
+{
+  "title": "No identity-bound reflective invocation for heterogeneous typed callables",
+  "target": "language",
+  "domain": "callable.inventory",
+  "capability": "callable.identity-reflective-typed-invocation",
+  "summary": "Profile 0.18 supports host invocation by module/function name and explicit generic type arguments, but it does not expose a bounded identity-bound invocation membrane that validates a compiler callable identity and heterogeneous typed argument material without consumer-specific dispatch generation.",
+  "requiredBehavior": "Expose a fail-closed generic invocation surface accepting an authoritative exported callable identity, interface/signature identity, typed argument material, and applicable generic arguments while preserving capability admission and returning a bounded typed result.",
+  "reproducer": {
+    "signature": "mncs-test:profile-0.18:identity-callable-binding"
+  },
+  "severity": "major",
+  "discoveredBy": "mncs-test",
+  "affectedRepositories": ["mncs-language", "mncs-test", "mncs-actions", "mncs-debug", "mncs-doctor", "ravel"],
+  "languageProfile": "0.18",
+  "sourceRef": {
+    "repository": "mncs-language",
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-embed/src/lib.rs"
+  },
+  "observation": {
+    "repository": "mncs-language",
+    "languageProfile": "0.18",
+    "compiler": {
+      "backend": "mncs-research-bytecode",
+      "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+    },
+    "summary": "The current typed-call ABI resolves module/function targets and explicit generic type arguments, while declaration-inventory exposes stable callable and signature identities. The runtime has no identity-targeted heterogeneous typed invocation surface; mncs-test still requires transparent generated selector dispatch.",
+    "reproduction": {
+      "status": "FAIL",
+      "instructions": "run the current host-generic entrypoint conformance and inspect the declaration-inventory-to-provider path; the named module/function route passes, but no callable-identity plus typed-material route exists"
+    },
+    "evidence": [
+      {
+        "id": "mncs-language:profile-0.18:host-named-generic-entrypoints",
+        "kind": "conformance",
+        "ref": "crates/mncs-cli/tests/host_generic_entrypoints.rs",
+        "status": "PASS",
+        "summary": "Named generic entrypoints with explicit type_arguments work across declared backends."
+      },
+      {
+        "id": "mncs-test:provider-inventory-generated-dispatch",
+        "kind": "consumer-reproducer",
+        "ref": "tools/generate_provider.py",
+        "status": "FAIL",
+        "summary": "The provider still generates identity matchers and static calls because callable identities cannot be invoked directly with heterogeneous typed signatures."
+      }
+    ],
+    "workaround": {
+      "active": true,
+      "description": "mncs-test generates native provider_inventory.mncs from the compiler declaration inventory; the generator is transparent typed glue, not semantic test policy."
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:357dc614d67c7d8485d979eb3d2b8cd1ae6836e0cc1b8fce125f8b680203eb0f",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "discovered",
+  "id": "EVT-2E7DAC6BF2B7A7D2",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T15:13:23Z",
+  "pressureId": "MNCS-LANG-5E290D20B90B",
+  "previousEvent": null,
+  "reason": "Reframed to MNCS-LANG-4F28CEEA0AD8 after current Profile 0.18 host-generic entrypoint conformance; the old broad title no longer describes the remaining gap.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

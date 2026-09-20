@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-commons",
-  "revision": 4,
+  "revision": 5,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
@@ -17,7 +17,8 @@
       {"path": "src/mncs_commons/architecture.py", "class": "canonical", "authority": "mncs-commons", "note": "Canonical architecture model validation/query semantics.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "filesystem", "semantic_role": "canonical-host-semantic"}},
       {"path": "src/mncs_commons/remote.py", "class": "host-boundary", "note": "Remote protocol transport adapter.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "protocol", "semantic_role": "platform-adapter"}},
       {"path": "src/mncs_commons/http_server.py", "class": "host-boundary", "note": "HTTP service transport adapter.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "protocol", "semantic_role": "platform-adapter"}},
-      {"path": "src/mncs_commons/mesh/mncs/", "class": "canonical", "note": "Native semantic kernels where the current profile permits them.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}}
+      {"path": "src/mncs_commons/mesh/mncs/", "class": "canonical", "note": "Native semantic kernels where the current profile permits them.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}},
+      {"path": "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs", "class": "canonical", "authority": "mncs-commons", "note": "Shared native obligation lifecycle/status/executor contract law consumed by RAVEL and mncs-test.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}}
     ]
   },
   "verification": {
@@ -26,7 +27,7 @@
   },
   "contracts": {
     "provides": [
-      {"contract": "family-architecture", "version": "1", "kind": "coordination-model", "stability": "experimental", "fingerprint_sources": ["family/architecture-model-v1.json", "family/architecture-delta-history-v1.json"]},
+      {"contract": "family-architecture", "version": "1", "kind": "coordination-model", "stability": "experimental", "fingerprint_sources": ["family/architecture-model-v1.json", "family/architecture-delta-history-v1.json", "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"]},
       {"contract": "pressure-registry", "version": "1", "kind": "development-pressure-coordination", "stability": "experimental", "fingerprint_sources": ["pressures/records/", "pressures/views/"]},
       {"contract": "record-store-api", "version": "0.5.0.dev1", "kind": "protocol", "stability": "experimental", "fingerprint_sources": ["src/mncs_commons/store.py", "schemas/"]}
     ],
@@ -34,7 +35,7 @@
       {"contract": "mncds.development-record-schema", "envelope": {"op": "any"}, "required": false}
     ],
     "tests": [
-      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api"], "obligation": "self", "command": {"argv": ["python3", "-m", "unittest", "discover", "-s", "tests"]}}
+      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api", "native-obligation-contract-law"], "obligation": "self", "command": {"argv": ["python3", "-m", "unittest", "discover", "-s", "tests"]}}
     ]
   }
 }

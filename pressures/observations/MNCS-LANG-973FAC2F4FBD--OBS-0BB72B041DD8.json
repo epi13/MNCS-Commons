@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:6d0b52429a84543e8b005ebd2ed4ba28efce7edbc21b1bce0b8e6cdac08fd914",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:namespace-mutation-family",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "cargo test -q -p mncs-cli --test pressure_fs_mutation: 6 passed"
+    }
+  ],
+  "id": "MNCS-LANG-973FAC2F4FBD--OBS-0BB72B041DD8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:56:32Z",
+  "pressureId": "MNCS-LANG-973FAC2F4FBD",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+    "repository": "mncs-language",
+    "test": "pressure_fs_mutation"
+  },
+  "summary": "Profile 0.18 revalidation: rename, mkdir, delete, and bounded directory listing execute; no-follow metadata inspection is not provided by the current primitive set.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:80cf81abcbfe67bbe09f97ad2d64787e4409f84d34dec91c7815fbe8d03f937b",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:durable-sync-family",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "cargo test -q -p mncs-cli --test pressure_fs_mutation: 6 passed"
+    }
+  ],
+  "id": "MNCS-LANG-FDCBC01300B8--OBS-FF6036001679",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:56:32Z",
+  "pressureId": "MNCS-LANG-FDCBC01300B8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+    "repository": "mncs-language",
+    "test": "pressure_fs_mutation"
+  },
+  "summary": "Profile 0.18 revalidation: fs_sync_at provides an explicit bounded barrier receipt; its durability guarantee remains backend/policy scoped and mncs-store has not cut over.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

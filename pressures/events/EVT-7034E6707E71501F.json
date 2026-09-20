@@ -1,0 +1,16 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:8fc9ac0e95278d2746ec7a9e1e6602742f410b2421bae09191e9897a089ea654",
+  "details": {
+    "reason": "Profile 0.18 closes the language capability gap; remaining work is the consumer cutover."
+  },
+  "evidenceRefs": [],
+  "id": "EVT-7034E6707E71501F",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-20T14:57:56Z",
+  "relation": "reframes",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-8AF4BC50DDB4",
+  "targetPressure": "MNCS-LIB-C1263916C3C2",
+  "version": "1"
+}

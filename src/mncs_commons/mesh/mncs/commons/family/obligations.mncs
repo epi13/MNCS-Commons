@@ -1,0 +1,172 @@
+mncs 0.18;
+
+// mncs.commons.family.obligations.v1
+//
+// Native contract vocabulary for the verification-obligation inventory and
+// plan.  JSON loading, repository files, and evidence transport remain host
+// adapters; these finite domains and bounded records are the shared semantic
+// shape consumed by RAVEL and Test.  RAVEL still owns the decision to select
+// an obligation.  Commons owns the contract law which makes that decision
+// inspectable and identity-stable.
+module mncs.commons.family.obligations.v1;
+
+enum ObligationLifecycle { permanent, transitional, scheduled, reference_only, retired }
+enum GuaranteeDomain {
+    semantic,
+    parser_front_end,
+    type_system,
+    compiler,
+    runtime,
+    backend_portability,
+    integration,
+    family_contract
+}
+enum EvidenceRole {
+    canonical_regression,
+    conformance,
+    differential_oracle,
+    migration_parity,
+    pressure_reproducer,
+    historical_reference
+}
+enum ExecutorKind {
+    native_first_class_test,
+    compile_experiment,
+    diagnostic_test,
+    backend_check,
+    differential_oracle,
+    migration_parity,
+    external_integration
+}
+enum EvidenceVerdict { PASS, FAIL, UNKNOWN }
+enum ObligationStatus {
+    required,
+    current,
+    new_execution_required,
+    stale,
+    contradictory,
+    selection_unresolved,
+    escalation_required,
+    not_selected
+}
+
+record ObligationExecutor {
+    provider: [byte; up_to 1024],
+    kind: ExecutorKind,
+    entrypoint: [byte; up_to 1024],
+    declaration_identities: [[byte; up_to 1024]; up_to 64],
+    test_case_identities: [[byte; up_to 1024]; up_to 64]
+}
+
+record ObligationFact {
+    identity: [byte; up_to 1024],
+    lifecycle: ObligationLifecycle,
+    guarantee_domain: GuaranteeDomain,
+    evidence_role: EvidenceRole,
+    subjects: [[byte; up_to 1024]; up_to 256],
+    invalidation_dependencies: [[byte; up_to 1024]; up_to 256],
+    executor: ObligationExecutor
+}
+
+record EvidenceFact {
+    obligation_identity: [byte; up_to 1024],
+    evidence_identity: [byte; up_to 1024],
+    status: EvidenceVerdict,
+    subject_identity: [byte; up_to 1024],
+    subject_fingerprint: [byte; up_to 1024],
+    definition_identity: [byte; up_to 1024]
+}
+
+record CompilerTestFact {
+    declaration_identity: [byte; up_to 1024],
+    test_case_identity: [byte; up_to 1024],
+    function_identity: [byte; up_to 1024]
+}
+
+record SelectedObligation {
+    identity: [byte; up_to 1024],
+    status: ObligationStatus,
+    lifecycle: ObligationLifecycle,
+    guarantee_domain: GuaranteeDomain,
+    evidence_role: EvidenceRole,
+    reason: [byte; up_to 1024],
+    evidence_identities: [[byte; up_to 1024]; up_to 256],
+    test_case_identities: [[byte; up_to 1024]; up_to 256],
+    executor: ObligationExecutor
+}
+
+record ExcludedObligation {
+    identity: [byte; up_to 1024],
+    lifecycle: ObligationLifecycle,
+    reason: [byte; up_to 1024]
+}
+
+record ObligationStop {
+    sufficient_to_stop: bool,
+    required_obligation_identities: [[byte; up_to 1024]; up_to 256],
+    new_execution_required: [[byte; up_to 1024]; up_to 256],
+    escalation_reasons: [[byte; up_to 1024]; up_to 64],
+    boundary: [byte; up_to 1024]
+}
+
+record ObligationPlanKernel {
+    obligations: [SelectedObligation; up_to 256],
+    excluded: [ExcludedObligation; up_to 256],
+    stop: ObligationStop
+}
+
+fn obligation_inventory_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 45, 102, 97, 109, 105, 108, 121, 46, 118, 101, 114, 105, 102, 105, 99, 97, 116, 105, 111, 110, 45, 111, 98, 108, 105, 103, 97, 116, 105, 111, 110, 45, 105, 110, 118, 101, 110, 116, 111, 114, 121, 47, 118, 49];
+}
+
+fn obligation_plan_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 118, 101, 114, 105, 102, 105, 99, 97, 116, 105, 111, 110, 45, 112, 108, 97, 110, 47, 49];
+}
+
+// Contract law shared by planners and providers. RAVEL decides which
+// impacted obligations to select; consumers agree here on lifecycle
+// eligibility and on which evidence states require execution.
+fn lifecycle_is_active(value: ObligationLifecycle) -> (result: bool) {
+    return match value {
+        ObligationLifecycle.permanent => true,
+        ObligationLifecycle.transitional => true,
+        ObligationLifecycle.scheduled => false,
+        ObligationLifecycle.reference_only => false,
+        ObligationLifecycle.retired => false
+    };
+}
+
+fn lifecycle_is_ordinary_excluded(value: ObligationLifecycle) -> (result: bool) {
+    return match value {
+        ObligationLifecycle.permanent => false,
+        ObligationLifecycle.transitional => false,
+        ObligationLifecycle.scheduled => true,
+        ObligationLifecycle.reference_only => true,
+        ObligationLifecycle.retired => true
+    };
+}
+
+fn executor_is_native_test(value: ExecutorKind) -> (result: bool) {
+    return match value {
+        ExecutorKind.native_first_class_test => true,
+        ExecutorKind.compile_experiment => false,
+        ExecutorKind.diagnostic_test => false,
+        ExecutorKind.backend_check => false,
+        ExecutorKind.differential_oracle => false,
+        ExecutorKind.migration_parity => false,
+        ExecutorKind.external_integration => false
+    };
+}
+
+fn status_requires_execution(value: ObligationStatus) -> (result: bool) {
+    return match value {
+        ObligationStatus.required => false,
+        ObligationStatus.current => false,
+        ObligationStatus.new_execution_required => true,
+        ObligationStatus.stale => true,
+        ObligationStatus.contradictory => true,
+        ObligationStatus.selection_unresolved => true,
+        ObligationStatus.escalation_required => true,
+        ObligationStatus.not_selected => false
+    };
+}

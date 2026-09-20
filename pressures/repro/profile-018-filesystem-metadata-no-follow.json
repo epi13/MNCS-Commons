@@ -1,0 +1,46 @@
+{
+  "title": "No no-follow directory metadata inspection",
+  "target": "language",
+  "domain": "io.filesystem",
+  "capability": "filesystem.no-follow-metadata-inspection",
+  "summary": "Profile 0.18 provides bounded listing, entry names, kinds, mutation, and sync. The remaining filesystem gap is an explicit no-follow metadata query with file type, size, and symlink-safe inspection semantics.",
+  "requiredBehavior": "Expose a capability-gated, bounded metadata/no-follow inspection operation whose result preserves unknown or unsupported platform states and cannot follow an untrusted path or symlink.",
+  "reproducer": {
+    "signature": "mncs-store:profile-0.18:fs-metadata-no-follow"
+  },
+  "severity": "major",
+  "discoveredBy": "mncs-store",
+  "affectedRepositories": ["mncs-language", "mncs-store"],
+  "languageProfile": "0.18",
+  "sourceRef": {
+    "repository": "mncs-language",
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-model/src/fs_resource.rs"
+  },
+  "observation": {
+    "repository": "mncs-language",
+    "languageProfile": "0.18",
+    "compiler": {
+      "backend": "mncs-research-bytecode",
+      "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+    },
+    "summary": "Current filesystem conformance proves listing and mutation, but no fs metadata/no-follow primitive is present in the capability inventory.",
+    "reproduction": {
+      "status": "FAIL",
+      "instructions": "attempt a bounded no-follow metadata query for a directory entry under an explicit fs_root grant"
+    },
+    "evidence": [
+      {
+        "id": "mncs-language:profile-0.18:fs-metadata-inventory-audit",
+        "kind": "capability-inventory",
+        "ref": "docs/language-capabilities.json",
+        "status": "FAIL",
+        "summary": "fs_list and fs_write are present; metadata/no-follow inspection is absent."
+      }
+    ],
+    "workaround": {
+      "active": true,
+      "description": "mncs-store relies on Python os.stat/listdir behavior for metadata and recovery scans."
+    }
+  }
+}

@@ -5,7 +5,8 @@
   "canonical_mncs_surfaces": [
     "pressure lifecycle semantics",
     "family identity normalization",
-    "semantic graph and verification contracts"
+    "semantic graph and verification contracts",
+    "obligation lifecycle/status/executor contract law"
   ],
   "native_userland_status_aggregation": {
     "entrypoint": "mncs_commons.native_userland.aggregate_native_userland_status",
@@ -34,14 +35,20 @@
       "area": "Python CLI and compatibility migration tools",
       "classification": "small_application_refactor",
       "eliminating_capability": "direct native pressure and family modules"
+    },
+    {
+      "area": "obligation inventory/plan identity reduction",
+      "classification": "temporary_host_semantic",
+      "eliminating_capability": "native bounded identity-material construction and digest contract"
     }
   ],
   "existing_pressures": [
-    "MNCS-LANG-973FAC2F4FBD",
+    "MNCS-LIB-C1263916C3C2",
     "MNCS-TOOLING-2658866CECD9",
     "MNCS-TOOLING-146FB6F4BBC6",
-    "MNCS-LANG-52A5E0C72A39"
+    "MNCS-LANG-52A5E0C72A39",
+    "MNCS-LANG-4F28CEEA0AD8"
   ],
   "migration_order": 6,
-  "next_native_slice": "native pressure projection over a runtime-backed persistent store"
+  "next_native_slice": "native obligation identity reduction followed by pressure projection over a runtime-backed persistent store"
 }

@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:ff512145f10fc28833ce25307887be9910c48d6266ec442caba02cf1c2a997ef",
+  "evidence": [
+    {
+      "id": "mncs-test:provider-inventory-generated-dispatch",
+      "kind": "consumer-reproducer",
+      "status": "FAIL"
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-3933B274C547",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T15:14:12Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "mncs-test still requires generated provider_inventory.mncs identity matchers and static calls for the heterogeneous test surface.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:d55e4b17ce1a81a85524bccaec7adb72e90a5df3bd9550bea9db923fba14a320",
+  "details": {
+    "reason": "Profile 0.18 exposes the sync primitive; remaining work is consumer durability cutover."
+  },
+  "evidenceRefs": [],
+  "id": "EVT-25CFDDCD50DC9B83",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-20T14:57:57Z",
+  "relation": "reframes",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-FDCBC01300B8",
+  "targetPressure": "MNCS-LIB-C1263916C3C2",
+  "version": "1"
+}

@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:ec39355dbf967b3b3c048e04c7617d97f40ab809b6dd09405f923d1e5b09c915",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:file-write-family",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "cargo test -q -p mncs-cli --test pressure_fs_mutation: 6 passed"
+    }
+  ],
+  "id": "MNCS-LANG-8AF4BC50DDB4--OBS-12CDEC3445B0",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:56:31Z",
+  "pressureId": "MNCS-LANG-8AF4BC50DDB4",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+    "repository": "mncs-language",
+    "test": "pressure_fs_mutation"
+  },
+  "summary": "Profile 0.18 revalidation: fs_create_file, positioned write, and append execute with explicit fs_root grants; mncs-store still uses Python lifecycle mechanics.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

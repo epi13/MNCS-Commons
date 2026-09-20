@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:1761870fc3123cc5e13ed155db049aa20cc2d108d11657d1ead71992561f663f",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-8E4C1C18F659500C",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T14:57:59Z",
+  "pressureId": "MNCS-LANG-71DAE5A34032",
+  "previousEvent": "EVT-E1F5D8E3B2B83544",
+  "reason": "Profile 0.18 closes the primitive capability gap; remaining work is consumer publication cutover.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

@@ -1,0 +1,38 @@
+{
+  "affectedRepositories": [
+    "mncs-language",
+    "mncs-store"
+  ],
+  "capability": "filesystem.no-follow-metadata-inspection",
+  "contentDigest": "sha256:3c72e6d4d83b9097bbf11a8f776a65faf2b68ede1c04cad06ba6a6b5821e6aec",
+  "discoveredAt": "2026-09-20T14:57:44Z",
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LANG-55F049FD8869",
+  "identity": {
+    "capability": "filesystem.no-follow-metadata-inspection",
+    "domain": "io.filesystem",
+    "reproducerSignature": "mncs-store:profile-0.18:fs-metadata-no-follow",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-store:profile-0.18:fs-metadata-no-follow"
+  },
+  "requiredBehavior": "Expose a capability-gated, bounded metadata/no-follow inspection operation whose result preserves unknown or unsupported platform states and cannot follow an untrusted path or symlink.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-model/src/fs_resource.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Profile 0.18 provides bounded listing, entry names, kinds, mutation, and sync. The remaining filesystem gap is an explicit no-follow metadata query with file type, size, and symlink-safe inspection semantics.",
+  "target": "language",
+  "title": "No no-follow directory metadata inspection",
+  "version": "1"
+}

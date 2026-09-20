@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:ffa4142464098b11060b13f14449edf3eb39d6a1d2f80840405ad217de8a38ca",
+  "evidence": [
+    {
+      "id": "mncs-commons:profile-0.18:pressure-store-audit",
+      "kind": "consumer-audit",
+      "ref": "src/mncs_commons/pressure.py",
+      "status": "FAIL",
+      "summary": "filesystem-backed pressure registry and generated views remain host-owned"
+    }
+  ],
+  "id": "MNCS-LIB-C1263916C3C2--OBS-E68EBF35BF53",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:58:22Z",
+  "pressureId": "MNCS-LIB-C1263916C3C2",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "2001a2ac52ad24b71998d38321cf6ec639cc86af",
+    "path": "src/mncs_commons/pressure.py",
+    "repository": "MNCS-Commons"
+  },
+  "summary": "Commons pressure persistence and materialized-view lifecycle remains Python filesystem/JSON authority; the native contract kernel does not yet own store publication.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

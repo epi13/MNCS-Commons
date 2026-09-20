@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:4614d639fd9b6a5628f92d427ff662ebeb80077b975425688c5b5ac7e0a874f7",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-1ED7E8336EDB0C95",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T14:57:58Z",
+  "pressureId": "MNCS-LANG-8AF4BC50DDB4",
+  "previousEvent": "EVT-CCAA1D6A45E3A4AB",
+  "reason": "Profile 0.18 closes the language capability gap; remaining work is the consumer cutover.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

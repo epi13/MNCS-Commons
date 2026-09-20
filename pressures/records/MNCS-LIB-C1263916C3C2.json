@@ -1,0 +1,38 @@
+{
+  "affectedRepositories": [
+    "mncs-commons",
+    "mncs-store"
+  ],
+  "capability": "consumer.mncs-store.native-persistence-cutover",
+  "contentDigest": "sha256:60398682409092a73cd016c7c25bf230ecc69057ec5560ddf562055ba2b9576d",
+  "discoveredAt": "2026-09-20T14:57:20Z",
+  "discoveredBy": "mncs-store",
+  "domain": "io.filesystem",
+  "id": "MNCS-LIB-C1263916C3C2",
+  "identity": {
+    "capability": "consumer.mncs-store.native-persistence-cutover",
+    "domain": "io.filesystem",
+    "reproducerSignature": "mncs-store:profile-0.18:native-persistence-cutover",
+    "target": "library"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-store:profile-0.18:native-persistence-cutover"
+  },
+  "requiredBehavior": "Move store persistence lifecycle policy and publication sequencing to MNCS using the current typed filesystem capabilities; retain host code only for external filesystem/process transport and explicit platform limitations.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Profile 0.18 now provides bounded file mutation, rename, directory creation, listing, deletion, and sync primitives. The remaining pressure is consumer cutover: mncs-store still makes its persistence lifecycle and publication path ordinary Python execution.",
+  "target": "library",
+  "title": "mncs-store persistence lifecycle still uses host publication mechanics",
+  "version": "1"
+}

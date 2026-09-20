@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:b45e306680a260fc38226bdd2e1517b569960f389146d0bba42935e648e9d8e5",
+  "evidence": [
+    {
+      "id": "mncs-store:profile-0.18:metadata-workaround",
+      "kind": "consumer-audit",
+      "ref": "tests/store_phase2.py",
+      "status": "FAIL",
+      "summary": "os.listdir and host metadata inspection remain ordinary recovery behavior"
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-0D71A9BAE43F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:58:39Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase2.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Current store recovery still uses Python metadata/listing behavior because the no-follow metadata capability is absent.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

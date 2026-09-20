@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:eea8564e2d66c16b923dcd41934b8d31db26cbe35aff47e1367d65e106ff555e",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-A1D13624FE9EA595",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T14:58:00Z",
+  "pressureId": "MNCS-LANG-973FAC2F4FBD",
+  "previousEvent": "EVT-51DEC6CD8D2B50EE",
+  "reason": "Profile 0.18 closes rename/mkdir/listing portions; the remaining gap is precise no-follow metadata inspection.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

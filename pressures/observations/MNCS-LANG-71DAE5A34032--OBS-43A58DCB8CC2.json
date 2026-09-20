@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:a0654c42a535afd82147860364e3f4e08eb6504a1cf9231bd6934b95ebd617cd",
+  "evidence": [
+    {
+      "id": "mncs-language:profile-0.18:atomic-publication-family",
+      "kind": "language-test",
+      "ref": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+      "status": "PASS",
+      "summary": "cargo test -q -p mncs-cli --test pressure_fs_mutation: 6 passed"
+    }
+  ],
+  "id": "MNCS-LANG-71DAE5A34032--OBS-43A58DCB8CC2",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T14:56:32Z",
+  "pressureId": "MNCS-LANG-71DAE5A34032",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "9be98699baae1fb73651953ced2c49bd8f03342f",
+    "path": "crates/mncs-cli/tests/pressure_fs_mutation.rs",
+    "repository": "mncs-language",
+    "test": "pressure_fs_mutation"
+  },
+  "summary": "Profile 0.18 revalidation: atomic same-root rename, namespace mutation, and explicit sync barrier execute; consumer publication cutover remains outstanding.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

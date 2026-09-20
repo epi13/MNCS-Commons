@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:d30a76136709bb7455feba637f1a1a808866b9d1f989ec5dea1c4620585f241b",
+  "evidence": [
+    {
+      "id": "mncs-store:profile-0.18:host-lifecycle-audit",
+      "kind": "consumer-audit",
+      "ref": "tests/store_phase1a.py",
+      "status": "FAIL",
+      "summary": "Host publication and durability helpers remain in the consumer lifecycle."
+    }
+  ],
+  "id": "MNCS-LIB-C1263916C3C2--OBS-CC3D5ACD412F",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T14:57:20Z",
+  "pressureId": "MNCS-LIB-C1263916C3C2",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "inspect the current store lifecycle and run its persistence tests against the Profile 0.18 capability boundary",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Current consumer audit still finds os.replace, os.fsync, os.listdir, os.remove, and exclusive-create helpers on the ordinary store lifecycle path; the language capability is available but not consumed canonically.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Python store driver remains the ordinary publication and durability implementation while native consumer cutover is pending."
+  }
+}
