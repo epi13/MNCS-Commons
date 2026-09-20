@@ -1,0 +1,33 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:b6df03741b919c0c38a3cc5e8ca99677d36819c85780d95b7de4978df436ec19",
+  "details": {
+    "backendEvidence": "current Profile 0.18 integer bitwise conformance and consumer differential tests pass",
+    "consumerMigration": "replaced xor-free multiply-add/shift hashing with standard FNV-1a XOR/multiply in MNCS",
+    "oldReproducer": "mncs-index:PRESS-004",
+    "ownerRegression": "tests/test_language_probes.py::test_int_bitwise_u64_fixed_slice7 plus tests/test_kernels.py and tests/test_differential.py",
+    "workaround": "removed"
+  },
+  "evidenceRefs": [
+    "MNCS-LANG-337C9F6113E9--OBS-06F395058E18"
+  ],
+  "from": "verifying",
+  "id": "EVT-444BEF654CB06D62",
+  "implementation": {
+    "capability": "integer-bitwise-operators",
+    "modules": [
+      "mncs.index.digest.v2",
+      "mncs.index.scan.v2"
+    ],
+    "profile": "0.18",
+    "ref": "mncs-index@1a242b0b9a838d84ac0b3f67dcdb8f70611f34cf"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T16:47:05Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "previousEvent": "EVT-9F4FEC066177C147",
+  "reason": "Current Profile 0.18 consumer verification passes and the mncs-index workaround has been removed; the native owner regression is retained.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

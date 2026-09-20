@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:76a09a9b2fee51fef4124d8489befe6355d890828e035444545c6f7124518123",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-337C9F6113E9--OBS-06F395058E18"
+  ],
+  "from": "confirmed",
+  "id": "EVT-32785ADF8B086453",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T16:46:29Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "previousEvent": "EVT-63E12A4F9FAEDC50",
+  "reason": "Current consumer migration confirms the language capability is sufficient for this pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

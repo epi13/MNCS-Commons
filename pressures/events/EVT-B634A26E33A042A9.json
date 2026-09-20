@@ -1,0 +1,27 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:faecee62db56d932015db2bc646ee19260e88a151d4e6fe95e163e1d45795bbc",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-337C9F6113E9--OBS-06F395058E18"
+  ],
+  "from": "implementing",
+  "id": "EVT-B634A26E33A042A9",
+  "implementation": {
+    "capability": "integer-bitwise-operators",
+    "modules": [
+      "mncs.index.digest.v2",
+      "mncs.index.scan.v2"
+    ],
+    "profile": "0.18",
+    "ref": "mncs-index@1a242b0b9a838d84ac0b3f67dcdb8f70611f34cf"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T16:46:41Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "previousEvent": "EVT-08567DB3DA0FE949",
+  "reason": "Profile 0.18 already implements integer bitwise operators across the declared integer widths; this record is available for consumer verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

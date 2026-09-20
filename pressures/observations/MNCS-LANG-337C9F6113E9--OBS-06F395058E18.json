@@ -1,0 +1,70 @@
+{
+  "agent": null,
+  "compiler": {
+    "commands": [
+      "python3 -m pytest -q tests/test_language_probes.py -k 'bitwise or xor'",
+      "python3 -m pytest -q tests/test_kernels.py tests/test_differential.py",
+      "python3 -m pytest -q tests/test_failure.py"
+    ],
+    "commit": "1a242b0b9a838d84ac0b3f67dcdb8f70611f34cf",
+    "kind": "repository-verification",
+    "paths": [
+      "tests/test_language_probes.py::test_int_bitwise_u64_fixed_slice7",
+      "tests/test_kernels.py",
+      "tests/test_differential.py",
+      "tests/test_failure.py",
+      "src/digest.mncs",
+      "src/scan.mncs"
+    ],
+    "repository": "mncs-index",
+    "toolchain": "mncs-language Profile 0.18"
+  },
+  "contentDigest": "sha256:41e8e78363f946715ead29384425d52f83416f307e812a860a900d872830aeb0",
+  "evidence": [
+    {
+      "id": "mncs-index-bitwise-native-conformance-2026-09-20",
+      "ref": "mncs-index@1a242b0b9a838d84ac0b3f67dcdb8f70611f34cf",
+      "status": "PASS",
+      "summary": "Profile 0.18 accepts integer XOR/AND/OR; mncs-index digest.v2 and scan.v2 execute the FNV-1a xor-fold and pass the 65-test kernel/differential slice plus the typed failure-path test."
+    }
+  ],
+  "id": "MNCS-LANG-337C9F6113E9--OBS-06F395058E18",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T16:46:04Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commands": [
+      "python3 -m pytest -q tests/test_language_probes.py -k 'bitwise or xor'",
+      "python3 -m pytest -q tests/test_kernels.py tests/test_differential.py",
+      "python3 -m pytest -q tests/test_failure.py"
+    ],
+    "commit": "1a242b0b9a838d84ac0b3f67dcdb8f70611f34cf",
+    "kind": "repository-verification",
+    "paths": [
+      "tests/test_language_probes.py::test_int_bitwise_u64_fixed_slice7",
+      "tests/test_kernels.py",
+      "tests/test_differential.py",
+      "tests/test_failure.py",
+      "src/digest.mncs",
+      "src/scan.mncs"
+    ],
+    "repository": "mncs-index",
+    "toolchain": "mncs-language Profile 0.18"
+  },
+  "summary": "Current Profile 0.18 reproducer and migrated mncs-index digest/scan consumers pass; the xor-free host-era algorithm and consumer workaround are removed.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:cef6a827ece868ae874f41e3bf5cd34a65f0d4afca524d91efed7a2aa50b8aa0",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-337C9F6113E9--OBS-06F395058E18"
+  ],
+  "from": "accepted",
+  "id": "EVT-08567DB3DA0FE949",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T16:46:35Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "previousEvent": "EVT-32785ADF8B086453",
+  "reason": "Consumer migration is the implementation of the now-available integer bitwise capability; no additional language change is required.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

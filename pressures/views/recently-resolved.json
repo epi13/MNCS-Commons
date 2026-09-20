@@ -173,6 +173,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-index"
+      ],
+      "capability": "legacy.press-004",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-337C9F6113E9",
+      "reporters": [
+        "mncs-index"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Integer bitwise operators missing (P2, semantics, compiler)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-atlas",
         "mncs-language"
       ],

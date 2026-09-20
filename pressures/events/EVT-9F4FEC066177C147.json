@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:19f9ea2e0a766bc2784ae9d961d666d25bd8447ae4ea7af926d813dad9232c60",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-337C9F6113E9--OBS-06F395058E18"
+  ],
+  "from": "available",
+  "id": "EVT-9F4FEC066177C147",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T16:46:59Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "previousEvent": "EVT-B634A26E33A042A9",
+  "reason": "The implemented Profile 0.18 capability has been exercised by the affected consumer and is ready for final closure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}
