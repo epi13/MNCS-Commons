@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-003",
+  "contentDigest": "sha256:54c62de91237702df74ff7616c585901ee86435771a6ed28df0b863b0b7f4727",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-846B20062550",
+  "identity": {
+    "capability": "legacy.svc-p-003",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-003",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-003",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:715160f1545ff09f6c1a45493ca86bf07a14b1e0b6bd33be1fdfb8e75048a535",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-003 — 64-byte transport chunk forces app-level reassembly\n\n- **Affected component:** `src/svc/framing.mncs`.\n- **Intended design:** frames sized by the protocol (headers plus\n  payloads up to a few KB), with the transport chunking beneath them.\n- **Observed behavior:** `host_read` delivers at most 64 bytes per\n  call; sequences cap at 64 elements (`MNE182` family); `host_write`\n  appends at most the 64-byte view per call. Payloads above 56 bytes\n  cannot cross in one frame.\n- **Reproducer:** `src/svc/framing.mncs` (`max_payload` 56) and\n  `candidate_frame_rejects` (OVERSIZED rank 5 for a 57-byte payload).\n- **Workaround used:** 61-byte max frame (4 header + 56 payload + 1\n  checksum); multi-chunk reassembly deferred to an explicit sequence\n  design.\n- **Why undesirable:** every protocol must reinvent chunking; larger\n  payloads (compiler artifacts, model weights, index pages) are the\n  normal case for the planned compiler service.\n- **Desired capability:** wider bounded views (e.g. 4 KiB chunks) or a\n  first-class streaming/chunk-sequence effect with reassembly semantics.\n- **Performance impact:** per-chunk call overhead and copy-per-chunk in\n  `widen`; measured step counts in run artifacts (`target/svc-test/`).\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-003"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-003",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-003: 64-byte transport chunk forces app-level reassembly.",
+  "target": "language",
+  "title": "64-byte transport chunk forces app-level reassembly",
+  "version": "1"
+}

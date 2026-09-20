@@ -1,0 +1,54 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:be836ca4acb342c06878a31358f7dd22e584d31ac57b7a1f48269b862e035d63",
+  "evidence": [
+    {
+      "id": "mncs-index:typed-store-relations",
+      "kind": "native-substrate",
+      "ref": "tests/test_store_projection.py",
+      "status": "PASS",
+      "summary": "Typed relation records are decoded, indexed, destroyed, rebuilt, and queried with generation freshness."
+    },
+    {
+      "id": "mncs-index:language-relation-values",
+      "kind": "language-boundary",
+      "ref": "native-userland-audit.json",
+      "status": "FAIL",
+      "summary": "The host projection adapter still owns adjacency/order structures; the language does not own a general relation value."
+    }
+  ],
+  "id": "MNCS-LANG-3125AEBBC1C3--OBS-E5ADE0601DC4",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "partially_resolved",
+    "legacy_id": "PRESS-015",
+    "native_relation_values": false,
+    "store_relation_input_native": true
+  },
+  "observedAt": "2026-09-20T19:02:26Z",
+  "pressureId": "MNCS-LANG-3125AEBBC1C3",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "run the Store projection rebuild/freshness proof and compare it with the legacy native relation-value requirement",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "146136e",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-index"
+  },
+  "summary": "Store relations are now first-class typed inputs to the Index projection, but relation/table values and fully native traversal remain language pressures.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use the disposable host Index projection over Store typed records.",
+    "removed": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-019",
+  "contentDigest": "sha256:a7f0065c85170fa45fa19f0bc431a444083202ed0964ef69ef86a42bd2a37e0a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-31EB67112747",
+  "identity": {
+    "capability": "legacy.svc-p-019",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-019",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-019",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:2fae0914a29d3fc531d95c0cfdf835f3c222f164e6f82959140240c1581aa46f",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-019 — Corpus boundary is exact on scalar signedness\n\n- **Affected component:** `tools/svc_test.py`, `tests/corpora/queue.json`.\n- **Intended design:** `5000` means 5000; the toolchain coerces or\n  reports a precise, actionable error.\n- **Observed behavior:** passing `{\"integer\": {\"value\": 5000,\n  \"type\": {\"bits\": 64, \"signed\": true}}}` for a `u64` parameter yields\n  `invalid_request` with a precise message (`expected u64\n  (integer:unsigned:64) but received integer(value=5000, type=i64)`).\n  The behavior is correct; the error message is good.\n- **Workaround used:** exact `signed: false` encodings in corpora;\n  static suite does not yet check signedness (noted as future work).\n- **Why undesirable:** only a footgun, well-signposted. Listed so a\n  future corpus-lint (SVC-P-013's desired verdict work) covers it.\n- **Priority:** P2. **Status:** observation."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-019"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-019",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-019: Corpus boundary is exact on scalar signedness.",
+  "target": "language",
+  "title": "Corpus boundary is exact on scalar signedness",
+  "version": "1"
+}

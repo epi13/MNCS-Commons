@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:124ca03ad81c82ccb3b600eb482ada060a821782c7c30ea8fbc3a89dd2615862",
+  "evidence": [
+    {
+      "id": "mncs-service:bounded-effects",
+      "kind": "profile-revalidation",
+      "ref": "native-userland-audit.json",
+      "status": "PASS",
+      "summary": "Current profiles provide the bounded effect vocabulary used by the substrate proof."
+    },
+    {
+      "id": "mncs-service:grant-realization",
+      "kind": "host-boundary",
+      "ref": "tools/native_protocol.py",
+      "status": "FAIL",
+      "summary": "Grant realization and platform transport remain external."
+    }
+  ],
+  "id": "MNCS-LANG-4C5043BF6AD4--OBS-45F66689B8CA",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "bounded_effect_semantics": true,
+    "classification": "partially_resolved",
+    "realization_host_side": true
+  },
+  "observedAt": "2026-09-20T18:59:54Z",
+  "pressureId": "MNCS-LANG-4C5043BF6AD4",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "run the native protocol proof with explicit grants and inspect effect realization",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c18c7d8",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-service"
+  },
+  "summary": "Current bounded filesystem and process effects are sufficient for the native protocol proof, but capability grant realization remains a host boundary.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The host adapter admits the artifact and supplies explicit process/filesystem grants.",
+    "removed": false
+  }
+}

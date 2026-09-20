@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-005",
+  "contentDigest": "sha256:1422c562a974d361fd72d88f51f264133ce263d346d12f70a1887546a68b6536",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-EA78D653D3ED",
+  "identity": {
+    "capability": "legacy.svc-p-005",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-005",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-005",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:cbe5b3d76f5ebaab71f5df68b911e07c30fa6c41198d868392baeb13871439de",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-005 — Acyclic calls: retry loops cannot live in-language\n\n- **Affected component:** `src/svc/retry.mncs`,\n  `examples/retry_client.mncs`.\n- **Intended design:** `retry_loop(policy, op)` that attempts, backs\n  off, and returns the terminal outcome — the loop in-language, driven\n  by effects.\n- **Observed behavior:** calls must be acyclic (profile 0.3\n  `acyclic_calls`); there is no `while`, and bounded iteration cannot\n  carry effectful steps with early exit driven by runtime values beyond\n  its static bound. A retry loop over an *unbounded* (policy-bounded\n  but runtime-decided) attempt sequence is inexpressible.\n- **Reproducer:** `examples/retry_client.mncs` — three attempts are\n  straight-line code; the fourth would need another source line.\n- **Workaround used:** policy as data (`delay_for`, `should_retry`);\n  the loop lives in the host driver.\n- **Why undesirable:** every caller re-implements loop discipline\n  (attempt counting, escalation on exit); a bug in any driver silently\n  changes retry semantics while the policy *looks* shared.\n- **Desired capability:** bounded effectful loops (fuel- or\n  policy-bounded `while` with explicit termination evidence) or\n  first-class retry combinators in the runtime.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-005"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-005",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-005: Acyclic calls: retry loops cannot live in-language.",
+  "target": "language",
+  "title": "Acyclic calls: retry loops cannot live in-language",
+  "version": "1"
+}

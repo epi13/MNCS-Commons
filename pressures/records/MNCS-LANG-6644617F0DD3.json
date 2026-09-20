@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-016",
+  "contentDigest": "sha256:69b3dfa92bb29d6e10c02aabdfe2801c1c940bf476254941deb528d59d87f02c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-6644617F0DD3",
+  "identity": {
+    "capability": "legacy.svc-p-016",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-016",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-016",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:a854f887f4707665aabe410cd4ae65e0e1a5ce67bacb142355714938de2de181",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-016 — Invariants are boolean functions, not proofs\n\n- **Affected component:** `src/svc/queue.mncs` (`valid`),\n  `src/svc/worker.mncs` (`valid`), `src/svc/contract.mncs`.\n- **Intended design:** `valid(q)` discharged statically: admit/dequeue\n  preserve it by proof, and the corpus checks the interesting\n  *transitions*, not the invariant itself.\n- **Observed behavior:** the proof kernel (`mncs.core.proof_*`) handles\n  proof *terms* and admission, not program verification; there is no\n  `maintains valid` annotation, no pre/postconditions, no induction\n  over iteration. Corpora re-check `valid` after sequences instead.\n- **Workaround used:** `valid` as a boolean function asserted in\n  corpora after every operation sequence; transition-table tests as\n  packed candidates.\n- **Why undesirable:** coverage is by example, not by argument; a\n  missed sequence is a missed invariant violation.\n- **Desired capability:** lightweight `requires`/`ensures` with\n  automated discharge for bounded functions, reusing the existing\n  obligation machinery (which already tracks per-operation facts).\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-016"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-016",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-016: Invariants are boolean functions, not proofs.",
+  "target": "language",
+  "title": "Invariants are boolean functions, not proofs",
+  "version": "1"
+}

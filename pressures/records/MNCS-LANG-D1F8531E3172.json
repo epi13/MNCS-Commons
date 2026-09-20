@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-015",
+  "contentDigest": "sha256:f2ab374ffaa2755d6c396d7aed05cb8ae9f5b5634c4f5e53ae3d67e4761ae286",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "effects",
+  "id": "MNCS-LANG-D1F8531E3172",
+  "identity": {
+    "capability": "legacy.svc-p-015",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-015",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-015",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:9ca305d0665725ac4c2546770b92f123c043cbef6fa9543d33e952e4b339df12",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-015 — No timer/sleep/randomness effects\n\n- **Affected component:** `src/svc/retry.mncs`.\n- **Intended design:** `sleep(delay)` between attempts; jittered\n  backoff from a randomness capability.\n- **Observed behavior:** no timer or randomness effects through 0.13\n  (delays are computed data; the host sleeps). Deterministic corpora\n  are the upside: every delay is exactly asserted.\n- **Workaround used:** delays as pure values; jitter explicitly\n  deferred (documented in module header as dishonest without a\n  randomness capability).\n- **Why undesirable:** thundering-herd risk without jitter; the host\n  driver must be trusted to actually wait the computed delay (the\n  language cannot observe whether it did).\n- **Desired capability:** timer + randomness capabilities with\n  deterministic corpus modes (scripted time, seeded RNG).\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-015"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-015",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-015: No timer/sleep/randomness effects.",
+  "target": "language",
+  "title": "No timer/sleep/randomness effects",
+  "version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-012",
+  "contentDigest": "sha256:3d34ec00378cf0e90a5008521d6271337f046774ef63b10293e1bd605f1c2fea",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-74330424E2FF",
+  "identity": {
+    "capability": "legacy.svc-p-012",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-012",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-012",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:3f7723f4745b07b769a81956ae0111cd091de3f4cb59a3028131632c6ca4262a",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-012 — Reserved words collide with service vocabulary\n\n- **Affected component:** `src/svc/lifecycle.mncs` (`fail` ->\n  `mark_failed`), `src/svc/queue.mncs` (`next` -> `admitted_q`),\n  `src/svc/config.mncs` (`over` -> `lay`).\n- **Intended design:** `fail`, `next`, `over` as ordinary function and\n  binding names in service code.\n- **Observed behavior:** `fail` is the failure-terminator keyword\n  (`MNP059`-family refusal as a fn name); `next` opens the\n  iteration-step clause and cannot bind (`MNP050` cascade); `over`\n  opens traversal and cannot be a parameter name (`MNP024` cascade).\n  Profile 0.13 contextualized `next` for *field* positions only.\n- **Workaround used:** renames (`mark_failed`, `admitted_q`, `lay`).\n- **Why undesirable:** ergonomics only, but it bites exactly the words\n  service code reaches for first; each rename is a paper cut in review.\n- **Desired capability:** contextual reservation for `fail`/`over` as\n  done for `next` fields, or a documented reserved-word list early in\n  service onboarding docs.\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-012"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-012",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-012: Reserved words collide with service vocabulary.",
+  "target": "language",
+  "title": "Reserved words collide with service vocabulary",
+  "version": "1"
+}

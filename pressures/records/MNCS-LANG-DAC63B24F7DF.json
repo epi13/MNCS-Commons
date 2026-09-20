@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-021",
+  "contentDigest": "sha256:b85c7a3205b1c9cb4b30eb73439d9411a2c241a2d19b2fd4c318421d3ce3bd6a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "backend",
+  "id": "MNCS-LANG-DAC63B24F7DF",
+  "identity": {
+    "capability": "legacy.svc-p-021",
+    "domain": "backend",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-021",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-021",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:8af5d853dab6fea1491543aa367d2b56ceb446752cbac0b53c682a0eda178eba",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-021 — WASM backend unsound for service-shaped code (shifting)\n\n- **Affected component:** wasm runs of `lifecycle:reject`,\n  `queue:shed`, `worker:flow/reap`, `observe:stream`,\n  `service:admit/complete`, `ex_minimal_service`,\n  `ex_worker_service`, `ex_graceful_shutdown` (binary-dependent set);\n  `tests/probes/wasm_match_records.mncs` (differential canary).\n- **Intended design:** ordinary service code — admission paths, drain\n  receipts, snapshots, transition batteries — executing identically on\n  every backend.\n- **Observed behavior:** `mncs-research-bytecode` returns the\n  source-semantic value on every run; `mncs-portable-wasm-mvp`\n  returns wrong values or traps, and the divergence SET shifts\n  between compiler builds. Three failure modes observed:\n  1. wrong-value `-1` (assertion trip): lifecycle:reject,\n     queue:shed, worker:flow/reap, service:complete, ex_minimal,\n     ex_worker, ex_graceful;\n  2. wrong-value pack corruption: observe:stream returns 222222 for\n     111212;\n  3. backend trap: service:admit ends `runtime_failure` with\n     `backend trap: out-of-bounds memory load`.\n  Bisected 2026-09-11 over nine probe programs: plain spread updates,\n  local accept/refusal mimics, and enum-plus-match routing to one\n  shared callee all agree; `match` arms building sequence-holding\n  records (inline or via distinct callees) with an earlier live\n  record read after diverge — but the exact divergent set moves with\n  the build (see below), so the trigger family is broader than one\n  shape and the backend is best described as unsound-under-surgery\n  rather than one neat miscompile.\n- **Build dependence (the key finding):** identical sources and\n  corpora produce different wasm verdicts under different\n  `target/debug/mncs` binaries, all built 2026-09-10 from a dirty\n  tree with in-flight `crates/mncs-codegen/src/wasm.rs` changes\n  (a peer agent's session rebuilding roughly every 10 minutes):\n  - 07:33 build: backpressure/worker/graceful/retry examples diverge\n    (-1), everything else agrees;\n  - 19:30 build: probe agrees again, backpressure/retry agree, but\n    lifecycle:reject, queue:shed, worker, observe, service,\n    minimal newly diverge (including an OOB trap);\n  - 19:43 build (`sha256 0ff46ac8…`, pinned for this run): same\n    10-case divergence set as 19:30 (see `WASM_KNOWN_DIVERGENT`).\n  A full suite run that straddles a rebuild executes different cases\n  under different compilers — garbage verdicts. The harness now\n  records the binary hash/mtime in its header and aborts when the\n  binary changes mid-run.\n- **Reproducer:** `tests/probes/wasm_match_records.mncs` +\n  `tests/corpora/probe_wasm_match_records.json` (self-contained, no\n  imports; research expects `[1]`). It diverged under the 19:30\n  build and agrees under 0ff46ac8 — kept as a canary either way.\n- **Compiler diagnostic:** none for wrong values (silent, exit code 1\n  with verdict FAIL — the binary couples exit code to verdict, 0\n  otherwise; the harness parses stdout regardless). The trap case\n  reports `backend trap: out-of-bounds memory load`.\n- **Workaround used:** NONE in service code — restructuring service\n  logic around a moving backend target would contort the\n  architecture and hide the bug. Instead the harness pins each\n  divergent wasm case (`WASM_KNOWN_DIVERGENT` in `tools/svc_test.py`,\n  labeled with the pinning binary hash): research gates semantics;\n  a wasm run matching its pin passes as \"divergence pinned\"; a wasm\n  run that stops matching (fixed or newly broken) fails loudly so\n  pins are re-observed and re-based, never silently stale.\n- **Why pinning instead of avoidance:** the trigger family is what\n  natural service code looks like; avoiding it means writing worse\n  services — and the set moves per build anyway, so avoidance cannot\n  even target it.\n- **Desired capability:** stabilize and fix the wasm backend (verify\n  against pristine HEAD, bisect the wasm.rs delta), then add\n  differential research-vs-wasm execution to language CI so silent\n  wrong-value regressions cannot land.\n- **Safety impact:** critical — silent wrong values in admission and\n  drain paths are the worst failure mode a service framework can\n  inherit. Nothing may gate on wasm observations until this closes;\n  research is the only semantic authority in the meantime.\n- **Priority:** P0. **Status:** open."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-021"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-021",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-021: WASM backend unsound for service-shaped code (shifting).",
+  "target": "language",
+  "title": "WASM backend unsound for service-shaped code (shifting)",
+  "version": "1"
+}

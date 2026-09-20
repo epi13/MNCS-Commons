@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-007",
+  "contentDigest": "sha256:10a4e66c83da1bb585ded48d8ea038b17db7b4e0e351b4b1c94496eb03be3b1c",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-7EE649AA6711",
+  "identity": {
+    "capability": "legacy.svc-p-007",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-007",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-007",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:6c5183b7607cbbdbdce0e93f8452e03038cf913c1f55a944055ca86ebb501796",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-007 — Finite match has no wildcard\n\n- **Affected component:** `src/svc/lifecycle.mncs` (9-arm matches),\n  `src/svc/errors.mncs`, `src/svc/observe.mncs`.\n- **Intended design:** total matching with a checked catch-all for\n  \"all other phases behave identically\" (e.g. nine arms where seven\n  return the same verdict).\n- **Observed behavior:** a bare `_` on a finite/enum subject is a\n  *variant pattern* (a type may declare a variant literally named `_`),\n  so catch-alls are rejected (`MNE138`/`MNE140`); integer subjects do\n  get `MNE140`-checked `_` defaults. Every lifecycle transition spells\n  all nine arms.\n- **Reproducer:** the first lifecycle probe failed with `MNE138,\n  MNE140` on an `is_ready` wildcard; expanding to nine arms fixed it\n  (development history, 2026-09-11).\n- **Workaround used:** fully expanded matches everywhere (~9 arms × 12\n  transitions in lifecycle alone).\n- **Why undesirable:** verbosity hides the interesting arms; adding a\n  tenth phase requires editing every match by hand (good totality, bad\n  ergonomics — the compiler *could* check a wildcard exhaustively).\n- **Desired capability:** an exhaustiveness-checked wildcard for finite\n  subjects (reject the wildcard only when it would hide a missing arm,\n  never silently).\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-007"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-007",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-007: Finite match has no wildcard.",
+  "target": "language",
+  "title": "Finite match has no wildcard",
+  "version": "1"
+}

@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:e43a9416f3b9afef1310a4024295ff2f2cc7927f75f73ca9f69386e5253aaae6",
+  "evidence": [
+    {
+      "id": "mncs-service:static-suite",
+      "kind": "canonical-regression",
+      "ref": "tools/svc_test.py --suite static",
+      "status": "PASS",
+      "summary": "The static corpus and protocol declarations pass."
+    },
+    {
+      "id": "mncs-service:wasm-differential",
+      "kind": "backend-differential",
+      "ref": "tools/svc_test.py",
+      "status": "FAIL",
+      "summary": "The existing WASM divergence remains pinned rather than silently skipped."
+    }
+  ],
+  "id": "MNCS-LANG-DAC63B24F7DF--OBS-260622CA5730",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "still_real",
+    "research_bytecode_proof": true,
+    "wasm_resolved": false
+  },
+  "observedAt": "2026-09-20T18:59:56Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "run tools/svc_test.py --suite static and the scheduled backend differential suite",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c18c7d8",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-service"
+  },
+  "summary": "The pinned WASM differential remains an active service pressure; the local retained research-bytecode protocol proof does not resolve backend divergence.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep the backend differential scheduled and pinned.",
+    "removed": false
+  }
+}

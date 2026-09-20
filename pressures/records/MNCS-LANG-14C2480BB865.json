@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-011",
+  "contentDigest": "sha256:229d3b12e8adc94d9789d4b0b7a63a9f58b6ce1fd091c71e84344e3c9321afd1",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-14C2480BB865",
+  "identity": {
+    "capability": "legacy.svc-p-011",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-011",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-011",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:2eb74fd47116b5f49bfe5776e8e88d5225e70d50152b237f6bfffef6b08ca260",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-011 — No text type\n\n- **Affected component:** `src/svc/config.mncs`, `src/svc/contract.mncs`,\n  `src/svc/observe.mncs`.\n- **Intended design:** service names, operation names, config keys, and\n  human-readable notes as bounded text values.\n- **Observed behavior:** no string type; text is `[byte; up_to 64]`\n  views with producer-attested validity (`mncs.std.text_*`). Config\n  keys and service names are u64 hashes by convention.\n- **Workaround used:** u64 ids everywhere; human rendering is a host\n  projection outside the language.\n- **Why undesirable:** misrouted ids are silent (no type distinction\n  between a service id and an op id); config files cannot be parsed\n  in-language, so the parse adapter is untrusted host code.\n- **Desired capability:** bounded text with distinct nominal wrappers\n  (or at minimum distinct u64 newtypes) so id kinds do not mix.\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-011"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-011",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-011: No text type.",
+  "target": "language",
+  "title": "No text type",
+  "version": "1"
+}
