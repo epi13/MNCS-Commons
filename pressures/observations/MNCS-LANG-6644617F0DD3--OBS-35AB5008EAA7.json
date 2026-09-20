@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:07b1a893a118f5cdfb995612c5c913b79bc60c65df5c1e6550ca9b7f1d406898",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-6644617f0dd3",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-6644617F0DD3--OBS-35AB5008EAA7",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CONSUMER_DEBT",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-6644617F0DD3",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Invariants are boolean functions, not proofs.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

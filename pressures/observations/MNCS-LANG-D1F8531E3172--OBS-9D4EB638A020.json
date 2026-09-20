@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:d821b3c00ec57d06075b3ff4f292427bd8b6559685aa4fac9da5d9c09a12606b",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-d1f8531e3172",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-D1F8531E3172--OBS-9D4EB638A020",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-D1F8531E3172",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No timer/sleep/randomness effects.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

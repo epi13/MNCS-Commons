@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:bb27e8fb0e91f8721f57525f614ffae463bc32528da4380b537ac47ff7cfa9a6",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-4719d1b72215",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-4719D1B72215--OBS-A93BDCD25A5B",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "BACKEND_ONLY",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-4719D1B72215",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "The current issue is a backend realization/portability boundary, not absence of the source contract: C11 backend traps on large-but-valid u32 checked products (backend divergence).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

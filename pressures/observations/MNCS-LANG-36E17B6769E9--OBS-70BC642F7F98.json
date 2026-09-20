@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:751ee2e3a19e8b00c44da76ea2fb85c484a48a0d65e6238b92702a00ef60ba6d",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-36e17b6769e9",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-36E17B6769E9--OBS-70BC642F7F98",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-36E17B6769E9",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Counted-iteration ceiling and nesting bound.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

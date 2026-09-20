@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:2e2a1dcb4f41438207d819bbd6f2b0bbef48b77667b5635d860f9cdd8859150f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-DAC63B24F7DF--OBS-C4E6DA287FCA"
+  ],
+  "from": "available",
+  "id": "EVT-C357ED0ACDDDCB1A",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:44Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "previousEvent": "EVT-AC5EFC4F956842C0",
+  "reason": "Run the owning consumer verification before closure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

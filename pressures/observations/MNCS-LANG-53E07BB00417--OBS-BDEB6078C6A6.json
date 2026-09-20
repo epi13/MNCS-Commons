@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:b729a168d77ef0a93ca0300e4a407de0d76c4dcbdaf4e691f35f1c3508be166d",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-53e07bb00417",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-53E07BB00417--OBS-BDEB6078C6A6",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-53E07BB00417",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "146136e",
+    "repository": "mncs-index",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: No watching or clocks (P1, watch/time, runtime).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

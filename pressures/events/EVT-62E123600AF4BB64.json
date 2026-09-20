@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:365c484e5dac6b67222caa3488ce1bf77aa294ae98a4efaef2b4b0a3432fd434",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-DAC63B24F7DF--OBS-77E09A328F51"
+  ],
+  "from": "verifying",
+  "id": "EVT-62E123600AF4BB64",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:45Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "previousEvent": "EVT-C357ED0ACDDDCB1A",
+  "reason": "Clean current origin/main-derived compiler builds agree on every former service-shaped divergence case; the pin workaround is retired.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

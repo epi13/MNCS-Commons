@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:f152fcaf525b44f11fae048d47e1a97a26872589411142432b98d0df08b4e90e",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-ca4ca715976f",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-CA4CA715976F--OBS-3DF01585FF14",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "STILL_REPRODUCES",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-CA4CA715976F",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "bda49d6",
+    "repository": "mncs-service",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No recursive types: error causality truncated.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

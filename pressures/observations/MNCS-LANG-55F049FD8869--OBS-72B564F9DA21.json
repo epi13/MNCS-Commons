@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:c5be1237468a6843ab88e0d227a4ca2831c118bc79ed3bdd33f98b77f67cb76f",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-55f049fd8869",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-72B564F9DA21",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "be2996e",
+    "repository": "mncs-language",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current clean consumer revalidation completed the generic capability migration.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

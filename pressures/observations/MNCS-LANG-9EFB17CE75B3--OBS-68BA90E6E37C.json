@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:93fda3175431deb522720df5057df7f3e4b847a8b5cd0b27d18d65b0fef8547d",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-9efb17ce75b3",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-9EFB17CE75B3--OBS-68BA90E6E37C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-9EFB17CE75B3",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: In-language generation scans bound at 23 records.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

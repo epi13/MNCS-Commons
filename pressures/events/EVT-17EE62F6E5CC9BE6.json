@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:d807243f945b3adcb72e02963df5f68ec65583f897b8dbe2270ced8a3facbba6",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-55F049FD8869--OBS-2AF4946B0533",
+    "MNCS-LANG-55F049FD8869--OBS-A8E249AA3D76"
+  ],
+  "from": "verifying",
+  "id": "EVT-17EE62F6E5CC9BE6",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:42Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "previousEvent": "EVT-E8F942574192BB1A",
+  "reason": "Profile 0.18 exposes the missing typed no-follow metadata and Store has migrated its publication check.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

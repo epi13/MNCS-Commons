@@ -63,6 +63,30 @@ STATUSES = frozenset(
 )
 TERMINAL_STATUSES = frozenset({"resolved", "duplicate", "rejected", "superseded", "obsolete"})
 EVIDENCE_STATUSES = frozenset({"PASS", "FAIL", "UNKNOWN"})
+# These are deliberately projection vocabulary, not lifecycle states.  A
+# pressure remains append-only and its lifecycle still answers whether the
+# declaration is open; reconciliation answers what the latest current
+# evidence says about the declaration's relationship to today's language.
+RECONCILIATION_CLASSES = frozenset(
+    {
+        "STILL_REPRODUCES",
+        "PARTIALLY_RESOLVED",
+        "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "BACKEND_ONLY",
+        "CONSUMER_DEBT",
+        "OBSOLETE",
+        "DUPLICATE",
+        "RESOLVED",
+        "UNRECONCILED",
+    }
+)
+_RECONCILIATION_ALIASES = {
+    "still_real": "STILL_REPRODUCES",
+    "still_reproduces": "STILL_REPRODUCES",
+    "partially_resolved": "PARTIALLY_RESOLVED",
+    "resolved_upstream": "RESOLVED",
+    "reframed": "PARTIALLY_RESOLVED",
+}
 RELATIONS = frozenset(
     {
         "duplicate_of",
@@ -209,6 +233,41 @@ def _current_verifications(
         if repository is not None:
             current[repository] = item
     return current
+
+
+def _reconciliation(projection_observations: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    """Materialize the latest explicit pressure reconciliation.
+
+    Reconciliation is evidence metadata carried by append-only observations;
+    it is never inferred from a PASS/FAIL result or used as a lifecycle
+    transition.  Older campaign observations used lowercase labels, so the
+    projection normalizes those aliases without rewriting historical files.
+    """
+
+    candidates: list[tuple[datetime, str, str, Mapping[str, Any]]] = []
+    for item in projection_observations:
+        metadata = item.get("metadata")
+        if not isinstance(metadata, Mapping):
+            continue
+        raw = metadata.get("classification")
+        if not isinstance(raw, str):
+            continue
+        normalized = _RECONCILIATION_ALIASES.get(raw.strip().lower(), raw.strip().upper())
+        if normalized not in RECONCILIATION_CLASSES or normalized == "UNRECONCILED":
+            continue
+        candidates.append(
+            (_instant_key(item.get("observedAt")), str(item.get("id", "")), normalized, item)
+        )
+    if not candidates:
+        return {"classification": "UNRECONCILED"}
+    _when, observation_id, classification, item = max(candidates, key=lambda value: (value[0], value[1]))
+    return {
+        "classification": classification,
+        "observationId": observation_id,
+        "observedAt": item.get("observedAt"),
+        "repository": item.get("repository"),
+        "summary": item.get("summary", ""),
+    }
 
 
 def _text(value: object, field: str, *, required: bool = True, maximum: int = 4096) -> str | None:
@@ -1228,6 +1287,7 @@ class PressureRegistry:
             if isinstance(workaround, Mapping) and workaround:
                 workarounds.append(item)
         current_verifications = _current_verifications(relevant_observations)
+        reconciliation = _reconciliation(relevant_observations)
         data.update(
             {
                 "status": state if not diagnostics else "conflicted",
@@ -1240,6 +1300,7 @@ class PressureRegistry:
                     for _, item in sorted(current_verifications.items(), key=lambda pair: pair[0])
                 ],
                 "workarounds": sorted(workarounds, key=lambda item: str(item.get("id", ""))),
+                "reconciliation": reconciliation,
                 "implementation": next(
                     (
                         copy.deepcopy(dict(item.get("implementation", {})))
@@ -1771,6 +1832,7 @@ class PressureRegistry:
                 _is_current_validation(item) for item in projection.observations
             )
             verification_summary = data["verificationSummary"]
+            reconciliation = copy.deepcopy(data.get("reconciliation", {"classification": "UNRECONCILED"}))
             verification_state = _verification_state(
                 int(verification_summary["affected"]),
                 int(verification_summary["pass"]),
@@ -1798,6 +1860,8 @@ class PressureRegistry:
                     "reporters": data["reporters"],
                     "verificationSummary": verification_summary,
                     "verificationState": verification_state,
+                    "reconciliation": reconciliation,
+                    "classification": reconciliation["classification"],
                     "unresolved": data["unresolved"],
                     "fallbackLanguages": sorted(fallback_languages),
                     "currentValidation": current_validation,
@@ -1857,11 +1921,22 @@ class PressureRegistry:
             "needs-revalidation": {"needs_revalidation": True},
         }
         for name, selector in selectors.items():
+            pressures = self.query(**selector)
+            classification_counts: dict[str, int] = {}
+            for pressure in pressures:
+                classification = str(pressure.get("classification", "UNRECONCILED"))
+                classification_counts[classification] = classification_counts.get(classification, 0) + 1
             payload = {
                 "schema": "commons.mncs.dev/family-pressure-view/v1",
                 "view": name,
                 "generatedFrom": PRESSURE_SCHEMA,
-                "pressures": self.query(**selector),
+                "pressures": pressures,
+                "reconciliation": {
+                    "classificationCounts": {
+                        key: classification_counts[key] for key in sorted(classification_counts)
+                    },
+                    "unreconciled": classification_counts.get("UNRECONCILED", 0),
+                },
             }
             _write_json(self.views_dir / f"{name}.json", payload)
             views[name] = payload

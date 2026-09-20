@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:8e4e7394d8476ff49c66dac903e73729fe0d808a4ac0d7e47c563952e58ca983",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "confirmed",
+  "id": "EVT-B4AB99E52D4493DA",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:38Z",
+  "pressureId": "MNCS-LANG-6D53020635CD",
+  "previousEvent": "EVT-C9EE2DB0570FD652",
+  "reason": "The broad nested-iteration rejection is obsolete as written: current language supports the bounded two-level iteration used by current consumers. Any deeper work-product ceiling is a narrower future pressure.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

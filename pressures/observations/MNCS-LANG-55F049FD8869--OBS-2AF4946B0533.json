@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:d5e8a7062a1379e0ec2ee00b37e36bfa8ef502ada24a0713ae5cec466a62a0e2",
+  "evidence": [
+    {
+      "id": "mncs-language-reconcile-20260920",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-2AF4946B0533",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T21:45:41Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "be2996e",
+    "repository": "mncs-language",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "fs metadata parser/elaboration and CLI no-follow regression",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

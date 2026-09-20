@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:b64c3f55ee5e464b631256db61f6e2a5ae207e75028db4b40243f23be13b29db",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-574813ea04b7",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-574813EA04B7--OBS-F67D8A09AB32",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-574813EA04B7",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "UNKNOWN"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "146136e",
+    "repository": "mncs-index",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "The generic capability is present in current language/runtime/stdlib facts; the named consumer has not migrated: Per-call process invocation cost (P2, performance/tooling).",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

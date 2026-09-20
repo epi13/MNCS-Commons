@@ -1,0 +1,46 @@
+{
+  "agent": "codex-luna-max",
+  "compiler": {
+    "mncs-language": "be2996e"
+  },
+  "contentDigest": "sha256:6e389562d08acb6e45d9a5b3d4e1b1a6e67f9cb178aedac53a0a963e9778909c",
+  "evidence": [
+    {
+      "id": "reconcile-20260920-mncs-lang-d1947ffba6d9",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-D1947FFBA6D9--OBS-F24FE6720B73",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current Profile 0.18 consumer reconciliation",
+    "classification": "STILL_REPRODUCES",
+    "currentRefs": {
+      "mncs-index": "146136e",
+      "mncs-ingest": "abf35ab",
+      "mncs-language": "be2996e",
+      "mncs-service": "bda49d6",
+      "mncs-store": "08c5562"
+    }
+  },
+  "observedAt": "2026-09-20T23:00:00Z",
+  "pressureId": "MNCS-LANG-D1947FFBA6D9",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the current consumer-specific evidence listed in the campaign ledger",
+    "status": "PASS"
+  },
+  "runId": "pressure-reconcile-2026-09-20",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "08c5562",
+    "repository": "mncs-store",
+    "scope": "pressure-reconciliation-2026-09-20"
+  },
+  "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No scatter-write into byte buffers; only whole-array functional construction.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

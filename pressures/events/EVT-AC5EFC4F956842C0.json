@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:87b6744ea11b1ea7fe5e31cba573d52bed3d717c72f07b92acb22fa513a0f59d",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-DAC63B24F7DF--OBS-C4E6DA287FCA"
+  ],
+  "from": "implementing",
+  "id": "EVT-AC5EFC4F956842C0",
+  "implementation": {
+    "kind": "language-runtime-capability",
+    "ref": "mncs-language:be2996e"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T21:45:44Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "previousEvent": "EVT-59FB12C725B36E59",
+  "reason": "The generic capability is available to current consumers.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

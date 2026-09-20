@@ -6,10 +6,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0008",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-48E3919FB30E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -33,10 +37,14 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0014",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-BABFB889D075",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-compiler"
       ],
@@ -60,10 +68,14 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-001",
+      "classification": "UNRECONCILED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-11473A6AEAC0",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-web"
       ],
@@ -87,10 +99,18 @@
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-002",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-438BF5EE1996",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-438BF5EE1996--OBS-6AE5A6A0941C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-ingest",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: No arbitrary view sub-slicing (partially relieved by 0.14)."
+      },
       "reporters": [
         "mncs-ingest"
       ],
@@ -115,10 +135,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-71DAE5A34032",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language",
         "mncs-store"
@@ -145,12 +169,16 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-8AF4BC50DDB4",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-commons",
         "mncs-language",
@@ -177,10 +205,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-973FAC2F4FBD",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language",
         "mncs-store"
@@ -205,10 +237,18 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-004.append-only-host-write-cannot-express-store-file-semantics",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A0C3744B0B9A",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-A0C3744B0B9A--OBS-ABFE7E737D16",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-store",
+        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Append-only host_write cannot express store file semantics."
+      },
       "reporters": [
         "mncs-store"
       ],
@@ -233,10 +273,14 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-FDCBC01300B8",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-language",
         "mncs-store"
@@ -265,12 +309,16 @@
         "mncs-test"
       ],
       "capability": "authoritative-provider-descriptor-admission",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "provider.admission",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-RUNTIME-356BE27FB865",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
@@ -300,10 +348,14 @@
         "mncs-language"
       ],
       "capability": "deterministic-scheduler-effect-replay",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "debugging.replay",
       "fallbackLanguages": [],
       "id": "MNCS-RUNTIME-6382A1A44458",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-debug"
       ],
@@ -330,10 +382,14 @@
         "mncs-language-service"
       ],
       "capability": "safe-suspension-and-resume",
+      "classification": "UNRECONCILED",
       "currentValidation": true,
       "domain": "debugging.sessions",
       "fallbackLanguages": [],
       "id": "MNCS-RUNTIME-A32B31916255",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
       "reporters": [
         "mncs-debug"
       ],
@@ -353,6 +409,13 @@
       }
     }
   ],
+  "reconciliation": {
+    "classificationCounts": {
+      "PARTIALLY_RESOLVED": 2,
+      "UNRECONCILED": 10
+    },
+    "unreconciled": 10
+  },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"
 }
