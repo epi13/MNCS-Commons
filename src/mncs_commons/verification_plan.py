@@ -43,6 +43,35 @@ RISK_FLAGS = (
     "unknown_root",
 )
 
+GUARANTEE_DOMAINS = (
+    "semantic",
+    "parser_front_end",
+    "type_system",
+    "compiler",
+    "runtime",
+    "backend_portability",
+    "integration",
+    "family_contract",
+)
+
+IMPACT_CHANGE_KINDS = (
+    "private_implementation",
+    "public_contract",
+    "shared_type",
+    "parser_semantics",
+    "type_system",
+    "effect_capability",
+    "abi",
+    "runtime_semantics",
+    "backend_lowering",
+    "language_profile",
+    "canonical_fixture",
+    "cross_repository_contract",
+    "unknown",
+)
+
+IMPACT_CLASSIFICATION_SCHEMA = "mncs.semantic-impact-classification/1"
+
 ESCALATION_REASONS = (
     "abi_boundary_changed",
     "canonical_fixture_changed",
@@ -253,6 +282,16 @@ def validate_plan(
     _strings(impact.get("direct_dependents"), "impact.direct_dependents")
     _strings(impact.get("test_identities"), "impact.test_identities")
     _strings(impact.get("risk_flags"), "impact.risk_flags", allowed=RISK_FLAGS)
+    if "guarantee_domains" in impact:
+        _strings(impact.get("guarantee_domains"), "impact.guarantee_domains", allowed=GUARANTEE_DOMAINS)
+    if "change_kinds" in impact:
+        _strings(impact.get("change_kinds"), "impact.change_kinds", allowed=IMPACT_CHANGE_KINDS)
+    if "classification_schema_version" in impact and impact.get("classification_schema_version") != IMPACT_CLASSIFICATION_SCHEMA:
+        raise VerificationPlanError(
+            "SCHEMA_UNSUPPORTED",
+            "impact.classification_schema_version",
+            f"must be {IMPACT_CLASSIFICATION_SCHEMA}",
+        )
     if not isinstance(impact.get("complete"), bool):
         raise VerificationPlanError("TYPE_BOOLEAN", "impact.complete", "must be boolean")
     _strings(impact.get("limitations"), "impact.limitations")

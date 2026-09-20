@@ -1,0 +1,47 @@
+{
+  "schema_version": "mncs-family.verification-obligation-inventory/v1",
+  "repository": "mncs-commons",
+  "revision": 1,
+  "obligations": [
+    {
+      "identity": "mncs-commons.family-projection.conformance",
+      "title": "Family architecture and pressure projections remain identity-bound",
+      "guarantee_domain": "family_contract",
+      "evidence_role": "conformance",
+      "lifecycle": "permanent",
+      "scope": "family",
+      "subjects": ["mncs.family-architecture/1", "mncs.pressure-registry/1"],
+      "invalidation_dependencies": ["src/mncs_commons/family_projection.py", "src/mncs_commons/pressure.py"],
+      "executor": {
+        "provider": "mncs-commons",
+        "kind": "external_integration",
+        "entrypoint": "python3 -m unittest discover -s tests"
+      },
+      "evidence_identity": {
+        "subject_fields": ["projection_identity", "registry_identity"],
+        "definition_fields": ["architecture_schema_identity", "pressure_schema_identity"],
+        "execution_fields": ["validation_identity"]
+      }
+    },
+    {
+      "identity": "mncs-commons.obligation-plan.transport",
+      "title": "Obligation plans preserve typed status, evidence, and stop semantics",
+      "guarantee_domain": "family_contract",
+      "evidence_role": "conformance",
+      "lifecycle": "permanent",
+      "scope": "consumer",
+      "subjects": ["mncs.verification-obligation-plan/1"],
+      "invalidation_dependencies": ["src/mncs_commons/obligation_plan.py", "schemas/mncs-verification-obligation-plan-1.schema.json"],
+      "executor": {
+        "provider": "mncs-commons",
+        "kind": "compile_experiment",
+        "entrypoint": "tests/test_obligation_plan.py"
+      },
+      "evidence_identity": {
+        "subject_fields": ["impact_identity", "source_identity"],
+        "definition_fields": ["inventory_identity", "plan_identity"],
+        "execution_fields": ["evidence_identity"]
+      }
+    }
+  ]
+}

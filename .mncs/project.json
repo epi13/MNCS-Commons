@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-commons",
-  "revision": 3,
+  "revision": 4,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
@@ -19,6 +19,10 @@
       {"path": "src/mncs_commons/http_server.py", "class": "host-boundary", "note": "HTTP service transport adapter.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "protocol", "semantic_role": "platform-adapter"}},
       {"path": "src/mncs_commons/mesh/mncs/", "class": "canonical", "note": "Native semantic kernels where the current profile permits them.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}}
     ]
+  },
+  "verification": {
+    "schema_version": "mncs-family.verification-obligation-inventory/v1",
+    "obligation_inventory": ".mncs/verification-obligations.json"
   },
   "contracts": {
     "provides": [
