@@ -75,6 +75,30 @@
       "reason": "Publishes the authoritative architecture and pressure projection contracts consumed by family tooling."
     },
     {
+      "id": "mncs-ingest",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the repository-owned typed handoff contract for provenance-preserving normalization."
+    },
+    {
+      "id": "mncs-store",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the repository-owned durable typed-state contract and consumes normalized handoffs."
+    },
+    {
+      "id": "mncs-index",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the repository-owned derived-index contract over Store state."
+    },
+    {
+      "id": "mncs-service",
+      "state": "participant",
+      "declaration_path": "family-semantic-contracts-v1.json",
+      "reason": "Publishes the repository-owned resident query contract over Store and Index."
+    },
+    {
       "id": "mncs-harness",
       "state": "explicit_nonparticipant",
       "reason": "The harness has no repository-owned semantic graph declaration at this synchronization point."

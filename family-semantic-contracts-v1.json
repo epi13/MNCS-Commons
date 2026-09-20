@@ -16,5 +16,42 @@
       "evidence": "src/mncs_commons/pressure.py"
     }
   ],
-  "consumes": []
+  "consumes": [
+    {
+      "contract_identity": "mncs.store.persistent-state/1",
+      "contract_revision": "1",
+      "consumer_identity": "mncs-commons:store-projection",
+      "evidence": "docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md",
+      "verification": {
+        "check_identity": "mncs-commons:store-projection",
+        "executor": "mncs-commons",
+        "surface": "typed-store-state-to-pressure-authority",
+        "evidence": "family-verification-checks-v1.json"
+      }
+    },
+    {
+      "contract_identity": "mncs.index.derived-index/1",
+      "contract_revision": "1",
+      "consumer_identity": "mncs-commons:index-projection",
+      "evidence": "docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md",
+      "verification": {
+        "check_identity": "mncs-commons:index-projection",
+        "executor": "mncs-commons",
+        "surface": "derived-index-to-pressure-view",
+        "evidence": "family-verification-checks-v1.json"
+      }
+    },
+    {
+      "contract_identity": "mncs.service.resident-query/1",
+      "contract_revision": "1",
+      "consumer_identity": "mncs-commons:resident-query",
+      "evidence": "docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md",
+      "verification": {
+        "check_identity": "mncs-commons:resident-query",
+        "executor": "mncs-commons",
+        "surface": "bounded-query-to-authoritative-pressure-state",
+        "evidence": "family-verification-checks-v1.json"
+      }
+    }
+  ]
 }

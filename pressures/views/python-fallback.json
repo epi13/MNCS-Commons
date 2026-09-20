@@ -346,9 +346,9 @@
       "verificationState": "failed",
       "verificationSummary": {
         "affected": 2,
-        "fail": 2,
+        "fail": 1,
         "pass": 0,
-        "unknown": 0
+        "unknown": 1
       }
     },
     {

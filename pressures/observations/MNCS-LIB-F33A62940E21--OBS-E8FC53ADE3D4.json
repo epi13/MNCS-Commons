@@ -1,0 +1,56 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:9ca4a5fe4b35b5a1ab850aa4e22dccf8f601feea762fb98d474e0f2a5c1d70cc",
+  "evidence": [
+    {
+      "id": "mncs-store:typed-substrate:retained-session",
+      "kind": "native-substrate",
+      "ref": "tests/test_native_substrate.py::test_retained_session_reuses_one_session",
+      "status": "PASS",
+      "summary": "Multiple Store semantic operations use one retained session."
+    },
+    {
+      "id": "mncs-store:typed-substrate:vertical-path",
+      "kind": "integration",
+      "ref": "tools/vertical_path.py",
+      "status": "PASS",
+      "summary": "The Commons pressure vertical path reports one retained Store session with repeated semantic batches."
+    }
+  ],
+  "id": "MNCS-LIB-F33A62940E21--OBS-E8FC53ADE3D4",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "canonical_json_internal": false,
+    "classification": "partially_resolved",
+    "scope": "focused typed substrate and vertical path",
+    "semantic_batch_count": 182,
+    "semantic_call_count": 284,
+    "session_count": 9
+  },
+  "observedAt": "2026-09-20T18:45:00Z",
+  "pressureId": "MNCS-LIB-F33A62940E21",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "run tests/test_native_substrate.py and inspect RetainedEngine metrics",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7a92b10",
+    "path": "tests/retained_session.py",
+    "repository": "mncs-store"
+  },
+  "summary": "The focused typed-substrate path now admits one retained mncs-embed session and reuses it across Store semantic batches; the broader legacy lifecycle matrix remains CLI-backed as a differential/reference path.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The legacy Store lifecycle/reference matrix remains subprocess and JSON transport backed; the retained adapter is the adopted focused path.",
+    "removed": false
+  }
+}

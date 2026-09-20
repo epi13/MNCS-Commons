@@ -1,0 +1,62 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:8e1306f3c62c08d8ebf74e737bf728117972dab45de481c1d22c194251519422",
+  "evidence": [
+    {
+      "id": "mncs-store:native-publication-admission",
+      "kind": "native-substrate",
+      "ref": "tests/test_native_substrate.py::test_publication_rejects_invalid_inputs",
+      "status": "PASS",
+      "summary": "Native publication admission rejects invalid content/root/durability/recovery combinations."
+    },
+    {
+      "id": "mncs-store:native-publication-effect",
+      "kind": "native-substrate",
+      "ref": "tests/test_native_substrate.py::test_native_publication_effect_is_explicitly_granted",
+      "status": "PASS",
+      "summary": "The versioned Profile 0.16 publication effect performs the bounded file sequence under an explicit fs_root grant."
+    },
+    {
+      "id": "mncs-store:ordinary-generation-publication",
+      "kind": "lifecycle-audit",
+      "ref": "tests/store_phase2.py",
+      "status": "FAIL",
+      "summary": "The ordinary multi-chunk generation and current-pointer publication path still delegates file placement, directory durability, recovery scans, and host mechanics to Python."
+    }
+  ],
+  "id": "MNCS-LIB-C1263916C3C2--OBS-311FB5763321",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "partially_resolved",
+    "effectful_publication_proof": true,
+    "json_canonical_internal": false,
+    "native_admission": true,
+    "ordinary_generation_cutover": false
+  },
+  "observedAt": "2026-09-20T18:46:00Z",
+  "pressureId": "MNCS-LIB-C1263916C3C2",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "run tests/test_native_substrate.py and then audit the ordinary StorePhase2 generation publication path",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7a92b10",
+    "path": "src/store/publication.mncs",
+    "repository": "mncs-store"
+  },
+  "summary": "The native publication admission decision and a granted effectful create/write/sync/rename/sync proof now pass. The ordinary multi-chunk generation/current-pointer lifecycle still uses host filesystem mechanics, so the persistence cutover is partial.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Host StorePhase2 lifecycle remains the reference implementation for large generation publication while the native effect path is extended safely.",
+    "removed": false
+  }
+}

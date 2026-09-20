@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:f0342d9e78962f36a0fd09fb4325afaf49914609fa434bf7c8575ea6798e6b00",
+  "evidence": [
+    {
+      "id": "mncs-store:metadata-boundary",
+      "kind": "lifecycle-audit",
+      "ref": "tests/store_phase2.py",
+      "status": "FAIL",
+      "summary": "Recovery and reclamation still use host metadata/listing behavior."
+    },
+    {
+      "id": "mncs-store:typed-slice-unblocked",
+      "kind": "scope-decision",
+      "ref": "docs/PROFILE-0.18-RECONCILIATION.md",
+      "status": "PASS",
+      "summary": "The missing metadata capability does not block the typed Store slice and remains an explicit follow-up."
+    }
+  ],
+  "id": "MNCS-LANG-55F049FD8869--OBS-5A8BD65178BA",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "still_real",
+    "native_change_required": false,
+    "typed_slice_blocked": false
+  },
+  "observedAt": "2026-09-20T18:47:00Z",
+  "pressureId": "MNCS-LANG-55F049FD8869",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "attempt a bounded no-follow metadata query for a directory entry under an explicit fs_root grant",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7a92b10",
+    "path": "tests/store_phase2.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Store can proceed with typed persistence without this capability, but safe ordinary recovery still requires host metadata/listing behavior; no bounded no-follow metadata primitive was added in this tranche.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Host metadata and no-follow safety checks remain outside the current native typed slice.",
+    "removed": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.verification-obligation-inventory/v1",
   "repository": "mncs-commons",
-  "revision": 2,
+  "revision": 3,
   "obligations": [
     {
       "identity": "mncs-commons.family-projection.conformance",
@@ -62,6 +62,18 @@
         "definition_fields": ["lifecycle_vocabulary", "status_vocabulary"],
         "execution_fields": ["result_identity"]
       }
+    },
+    {
+      "identity": "mncs-commons.substrate-topology.reconcile",
+      "title": "Store, Ingest, Index, and Service participate through repository-owned declarations",
+      "guarantee_domain": "family_contract",
+      "evidence_role": "conformance",
+      "lifecycle": "permanent",
+      "scope": "family",
+      "subjects": ["mncs.family-architecture/1", "mncs.store.persistent-state/1", "mncs.index.derived-index/1", "mncs.service.resident-query/1"],
+      "invalidation_dependencies": ["src/mncs_commons/family_registry.py", "family/participation-v1.json", "family/semantic-edges-v1.json"],
+      "executor": {"provider": "mncs-commons", "kind": "external_integration", "entrypoint": "scripts/reconcile_semantic_edges.py"},
+      "evidence_identity": {"subject_fields": ["declaration_identity", "edge_identity"], "definition_fields": ["registry_revision"], "execution_fields": ["reconciliation_identity"]}
     }
   ]
 }
