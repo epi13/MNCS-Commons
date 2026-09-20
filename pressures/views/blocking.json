@@ -125,16 +125,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No atomic publication, namespace mutation, or durability barrier",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -158,16 +158,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 3,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -187,16 +187,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No atomic rename, directory creation/iteration, or file metadata",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -243,16 +243,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No durable-sync barrier distinct from userspace buffering",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },

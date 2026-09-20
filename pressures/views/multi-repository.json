@@ -157,6 +157,39 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "callable.identity-reflective-typed-invocation",
+      "currentValidation": true,
+      "domain": "callable.inventory",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4F28CEEA0AD8",
+      "reporters": [
+        "mncs-language",
+        "mncs-test"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No identity-bound reflective invocation for heterogeneous typed callables",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 6,
+        "fail": 2,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-atlas",
         "mncs-language"
       ],
@@ -206,16 +239,47 @@
       ],
       "revalidationRequired": false,
       "severity": "major",
-      "status": "verifying",
+      "status": "obsolete",
       "target": "language",
       "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "failed",
       "verificationSummary": {
         "affected": 4,
-        "fail": 0,
+        "fail": 1,
         "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "capability": "filesystem.no-follow-metadata-inspection",
+      "currentValidation": true,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-55F049FD8869",
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No no-follow directory metadata inspection",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 1,
+        "pass": 0,
         "unknown": 0
       }
     },
@@ -267,12 +331,12 @@
       "reporters": [
         "mncs-test"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
-      "status": "discovered",
+      "status": "obsolete",
       "target": "language",
       "title": "Generic callable inventory lacks reflective typed invocation binding",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
@@ -329,16 +393,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No atomic publication, namespace mutation, or durability barrier",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -393,16 +457,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 3,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -422,16 +486,16 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No atomic rename, directory creation/iteration, or file metadata",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -545,15 +609,46 @@
       ],
       "revalidationRequired": false,
       "severity": "blocker",
-      "status": "available",
+      "status": "obsolete",
       "target": "language",
       "title": "No durable-sync barrier distinct from userspace buffering",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "capability": "consumer.mncs-store.native-persistence-cutover",
+      "currentValidation": true,
+      "domain": "io.filesystem",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LIB-C1263916C3C2",
+      "reporters": [
+        "mncs-commons",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "discovered",
+      "target": "library",
+      "title": "mncs-store persistence lifecycle still uses host publication mechanics",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 2,
         "pass": 0,
         "unknown": 0
       }

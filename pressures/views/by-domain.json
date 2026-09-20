@@ -24,6 +24,7 @@
       "MNCS-TOOLING-14E88C1C7431"
     ],
     "callable.inventory": [
+      "MNCS-LANG-4F28CEEA0AD8",
       "MNCS-LANG-5E290D20B90B"
     ],
     "compiler.artifact-export-contract": [
@@ -84,6 +85,9 @@
       "MNCS-TOOLING-9E7E149C94D9",
       "MNCS-TOOLING-F648D3B062B3"
     ],
+    "integration": [
+      "MNCS-LIB-F33A62940E21"
+    ],
     "integrity.hashing": [
       "MNCS-LANG-02A891E03B9E"
     ],
@@ -91,9 +95,11 @@
       "MNCS-COMPILER-38B9F401EC5C",
       "MNCS-LANG-270D33E72EA5",
       "MNCS-LANG-33AF43744393",
+      "MNCS-LANG-55F049FD8869",
       "MNCS-LANG-8AF4BC50DDB4",
       "MNCS-LANG-973FAC2F4FBD",
       "MNCS-LANG-A0C3744B0B9A",
+      "MNCS-LIB-C1263916C3C2",
       "MNCS-TOOLING-2658866CECD9",
       "MNCS-TOOLING-2D28F38056A1",
       "MNCS-TOOLING-3E59A6102945",
