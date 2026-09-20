@@ -1,0 +1,66 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "cf905a15e9206bd452fae6d80804a8f1684fd77e319d7e5a5c7db29564b30916"
+  },
+  "contentDigest": "sha256:03d12b809acb0c42e642f6b8daa3238f4cd71342917cc0326c59139782d8b9f2",
+  "evidence": [
+    {
+      "id": "mncs-store:vertical:semantic-state-roundtrip",
+      "kind": "native-substrate",
+      "ref": "mncs-service/tools/vertical_path.py",
+      "status": "PASS",
+      "summary": "A Commons pressure handoff and 164-byte typed semantic-state payload round-trip through Store close/reopen without JSON as the internal canonical value."
+    },
+    {
+      "id": "mncs-store:vertical:relationship-provenance-feed",
+      "kind": "native-substrate",
+      "ref": "mncs-store/tests/test_native_substrate.py",
+      "status": "PASS",
+      "summary": "The same path persists four typed relation records, one provenance record, and a Store commit feed consumed by disposable Index state."
+    },
+    {
+      "id": "mncs-store:vertical:ordinary-generation-publication",
+      "kind": "lifecycle-audit",
+      "ref": "mncs-store/tests/store_phase2.py",
+      "status": "UNKNOWN",
+      "summary": "Ordinary multi-chunk generation/current-pointer publication still retains the documented host filesystem boundary."
+    }
+  ],
+  "id": "MNCS-LIB-C1263916C3C2--OBS-3A6C46163A9D",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "partially_resolved",
+    "index_destroy_rebuild": true,
+    "json_canonical_internal": false,
+    "native_admission": true,
+    "ordinary_generation_cutover": false,
+    "provenance_count": 1,
+    "relation_count": 4,
+    "semantic_state_round_trip": true,
+    "service_restart_query": true
+  },
+  "observedAt": "2026-09-20T20:00:00Z",
+  "pressureId": "MNCS-LIB-C1263916C3C2",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "run mncs-service/tools/vertical_path.py and audit the ordinary StorePhase2 generation publication path",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c4f08fe",
+    "path": "src/store/semantic_state.mncs",
+    "repository": "mncs-store"
+  },
+  "summary": "The Commons pressure vertical path now persists a typed semantic-state payload with source/lifecycle/severity codes and evidence/supersession set identities, then reads the same bytes after Store close/reopen. Native publication admission remains proven, while ordinary large generation publication remains host-backed.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The native typed substrate is used for the bounded vertical path; StorePhase2 remains the host-backed reference for larger filesystem publication and recovery mechanics.",
+    "removed": false
+  }
+}
