@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:e13d62a2c42a473b5828ebe9dfd3494cf40851a8605816e701d3eb102632051d",
+  "evidence": [
+    {
+      "id": "mncs-store:test_lifecycle_u32_roundtrip",
+      "kind": "consumer-reproducer",
+      "status": "PASS",
+      "summary": "Round-trip behavior passes while Engine.invocations remains subprocess-batched."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-5BC2C9477B3C",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T15:25:12Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py",
+    "repository": "mncs-store"
+  },
+  "summary": "The current Profile 0.18 lifecycle round-trip passes, but mncs-store Engine still executes each semantic batch through a fresh mncs experiment subprocess with JSON transport; the retained in-process embed session is not consumed.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

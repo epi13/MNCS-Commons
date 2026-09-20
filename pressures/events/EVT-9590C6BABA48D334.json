@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:50232bce9c7412dce52887d579e0f2fb8a61ddf2ee8e5ee5e0d0b82f45a215bf",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "verifying",
+  "id": "EVT-9590C6BABA48D334",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-20T15:25:44Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "previousEvent": "EVT-064DFF63227B412B",
+  "reason": "mncs-embed now provides a retained in-process typed session; the remaining current failure is the mncs-store consumer cutover recorded as MNCS-LIB-F33A62940E21.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "obsolete",
+  "version": "1"
+}

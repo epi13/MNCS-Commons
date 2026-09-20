@@ -1,0 +1,53 @@
+{
+  "title": "mncs-store persistence driver still lacks retained in-process MNCS session",
+  "target": "library",
+  "domain": "integration",
+  "capability": "consumer.mncs-store.embedded-session-cutover",
+  "summary": "Profile 0.18 and mncs-embed provide retained in-process typed sessions, but mncs-store still routes each semantic batch through a fresh CLI experiment and JSON corpus. The remaining gap is consumer integration, not absence of all in-process execution support.",
+  "requiredBehavior": "Use a retained in-process typed MNCS session or stable embedding boundary for store semantic calls, while retaining host code only for filesystem/process transport and explicit platform effects.",
+  "reproducer": {
+    "signature": "mncs-store:profile-0.18:embedded-session-cutover"
+  },
+  "severity": "major",
+  "discoveredBy": "mncs-store",
+  "affectedRepositories": ["mncs-store"],
+  "languageProfile": "0.18",
+  "sourceRef": {
+    "repository": "mncs-store",
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py"
+  },
+  "observation": {
+    "repository": "mncs-store",
+    "languageProfile": "0.18",
+    "compiler": {
+      "backend": "mncs-research-bytecode",
+      "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+    },
+    "summary": "The current lifecycle round-trip passes, but the Engine still launches fresh mncs experiment subprocesses and serializes JSON for every semantic batch; mncs-embed's retained Session is not used by the store consumer.",
+    "reproduction": {
+      "status": "FAIL",
+      "instructions": "run tests/test_lifecycle.py::test_u32_roundtrip_close_reopen and inspect Engine.run/call_many in tests/store_phase1a.py"
+    },
+    "evidence": [
+      {
+        "id": "mncs-store:test_lifecycle_u32_roundtrip",
+        "kind": "consumer-reproducer",
+        "ref": "tests/test_lifecycle.py::test_u32_roundtrip_close_reopen",
+        "status": "PASS",
+        "summary": "Round-trip semantics pass; the test remains subprocess/JSON-bound and took 17m13s on the current debug toolchain."
+      },
+      {
+        "id": "mncs-language:mncs-embed:retained-session",
+        "kind": "capability-conformance",
+        "ref": "crates/mncs-embed/tests/embedding.rs",
+        "status": "PASS",
+        "summary": "The retained in-process typed session capability exists and passes its current embedding test."
+      }
+    ],
+    "workaround": {
+      "active": true,
+      "description": "mncs-store batches calls through the CLI and JSON corpus transport to amortize process and compile cost."
+    }
+  }
+}

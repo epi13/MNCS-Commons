@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:2294199a166bdcca95c11057ad7a50c699993305968fc796bd9c9081b6224461",
+  "evidence": [
+    {
+      "id": "mncs-store:test_lifecycle_u32_roundtrip",
+      "kind": "consumer-reproducer",
+      "ref": "tests/test_lifecycle.py::test_u32_roundtrip_close_reopen",
+      "status": "PASS",
+      "summary": "Round-trip semantics pass; the test remains subprocess/JSON-bound and took 17m13s on the current debug toolchain."
+    },
+    {
+      "id": "mncs-language:mncs-embed:retained-session",
+      "kind": "capability-conformance",
+      "ref": "crates/mncs-embed/tests/embedding.rs",
+      "status": "PASS",
+      "summary": "The retained in-process typed session capability exists and passes its current embedding test."
+    }
+  ],
+  "id": "MNCS-LIB-F33A62940E21--OBS-9BF62DD04FEB",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-20T15:25:37Z",
+  "pressureId": "MNCS-LIB-F33A62940E21",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "run tests/test_lifecycle.py::test_u32_roundtrip_close_reopen and inspect Engine.run/call_many in tests/store_phase1a.py",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "The current lifecycle round-trip passes, but the Engine still launches fresh mncs experiment subprocesses and serializes JSON for every semantic batch; mncs-embed's retained Session is not used by the store consumer.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "mncs-store batches calls through the CLI and JSON corpus transport to amortize process and compile cost."
+  }
+}

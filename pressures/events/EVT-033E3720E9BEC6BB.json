@@ -1,0 +1,14 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:3c1e49d43a3b5ec479f19c9f03d513c8f42c7a5f3fdd8ec3a6b83ecb5011c8cd",
+  "details": {},
+  "evidenceRefs": [],
+  "id": "EVT-033E3720E9BEC6BB",
+  "kind": "PressureRelation",
+  "occurredAt": "2026-09-20T15:25:44Z",
+  "relation": "reframes",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "sourcePressure": "MNCS-LANG-52A5E0C72A39",
+  "targetPressure": "MNCS-LIB-F33A62940E21",
+  "version": "1"
+}

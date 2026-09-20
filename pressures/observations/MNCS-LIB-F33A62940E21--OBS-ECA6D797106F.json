@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:df21c25032033e00c4673d55cc2dc0f7df644409a95183ccd2c96a4358481e81",
+  "evidence": [
+    {
+      "id": "mncs-store:test_lifecycle_u32_roundtrip",
+      "kind": "consumer-reproducer",
+      "status": "PASS",
+      "summary": "Lifecycle round-trip passes while the Engine remains subprocess/JSON-bound."
+    }
+  ],
+  "id": "MNCS-LIB-F33A62940E21--OBS-ECA6D797106F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-20T15:25:53Z",
+  "pressureId": "MNCS-LIB-F33A62940E21",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Round-trip behavior passes, but the current store Engine still invokes fresh mncs experiment subprocesses with JSON corpora; mncs-embed retained sessions are not consumed.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "affectedRepositories": [
+    "mncs-store"
+  ],
+  "capability": "consumer.mncs-store.embedded-session-cutover",
+  "contentDigest": "sha256:12d9bb24f6f8a47220924bd49758e5a6d000c67702e6e1b20fcd7ca3e4f7ee39",
+  "discoveredAt": "2026-09-20T15:25:37Z",
+  "discoveredBy": "mncs-store",
+  "domain": "integration",
+  "id": "MNCS-LIB-F33A62940E21",
+  "identity": {
+    "capability": "consumer.mncs-store.embedded-session-cutover",
+    "domain": "integration",
+    "reproducerSignature": "mncs-store:profile-0.18:embedded-session-cutover",
+    "target": "library"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-store:profile-0.18:embedded-session-cutover"
+  },
+  "requiredBehavior": "Use a retained in-process typed MNCS session or stable embedding boundary for store semantic calls, while retaining host code only for filesystem/process transport and explicit platform effects.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "8640fd3776ba414471c1920c4453889e28b51ab7",
+    "path": "tests/store_phase1a.py",
+    "repository": "mncs-store"
+  },
+  "summary": "Profile 0.18 and mncs-embed provide retained in-process typed sessions, but mncs-store still routes each semantic batch through a fresh CLI experiment and JSON corpus. The remaining gap is consumer integration, not absence of all in-process execution support.",
+  "target": "library",
+  "title": "mncs-store persistence driver still lacks retained in-process MNCS session",
+  "version": "1"
+}
