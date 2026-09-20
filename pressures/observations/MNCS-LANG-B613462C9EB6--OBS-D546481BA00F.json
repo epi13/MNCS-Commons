@@ -1,0 +1,52 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:be626240ede3eba71028b144d54d3bcd3e72592473ba1a883f1d8a4eae03a296",
+  "evidence": [
+    {
+      "id": "mncs-index:store-projection-boundary",
+      "kind": "scope-reclassification",
+      "ref": "docs/STORE_PROJECTION.md",
+      "status": "PASS",
+      "summary": "Store projection owns neither task failure aggregation nor cancellation semantics."
+    },
+    {
+      "id": "mncs-index:concurrent-error-aggregation",
+      "kind": "language-boundary",
+      "ref": "native-userland-audit.json",
+      "status": "FAIL",
+      "summary": "The legacy concurrent error aggregation pressure remains real."
+    }
+  ],
+  "id": "MNCS-LANG-B613462C9EB6--OBS-D546481BA00F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "still_real",
+    "legacy_id": "PRESS-008"
+  },
+  "observedAt": "2026-09-20T19:02:24Z",
+  "pressureId": "MNCS-LANG-B613462C9EB6",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "run the current Index failure aggregation reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "146136e",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-index"
+  },
+  "summary": "Concurrent error aggregation and cancellation semantics remain outside the Store projection scope and are not relabeled as resolved.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use the existing host failure tree/reference behavior.",
+    "removed": false
+  }
+}

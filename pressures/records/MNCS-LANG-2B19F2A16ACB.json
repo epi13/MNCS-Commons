@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-001",
+  "contentDigest": "sha256:9b5d852658bf800dab8a32b72215c94fc79b929162bb089afe07fa9e7b4a7c49",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-2B19F2A16ACB",
+  "identity": {
+    "capability": "legacy.svc-p-001",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-001",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-001",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:02cf888ac8196896b97c97a83390c2c3f887883c24aecb08156725b541c3df46",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-001 — No task/spawn/channel runtime primitives\n\n- **Affected component:** `src/svc/worker.mncs`, `src/svc/service.mncs`,\n  `examples/worker_service.mncs`, the host runtime simulator\n  (`docs/rfcs/0002-*.md`, `tools/svc_test.py`).\n- **Intended design:** worker pools that actually schedule: dispatch a\n  job token onto a slot and have the runtime run it, with cancellation\n  propagation, join, and child-failure policy enforced by the language.\n- **Observed behavior:** the language has no threads, no spawn, no\n  async, no preemption. `mncs.std.task.v1` and `mncs.std.scope.v1`\n  explicitly document that they own only the *source-semantics* half\n  (lifecycle values, acceptance verdicts); execution is a host concern.\n  There is no executor in the toolchain that runs two MNCS functions\n  concurrently.\n- **Reproducer:** `src/svc/worker.mncs` — the entire pool is a record\n  updated by straight-line calls; `tools/svc_test.py` plays scheduler.\n- **Workaround used:** pools as explicit scheduling *state* stepped by\n  the host harness. Dispatch/settle/reap are total functions; the loop\n  lives outside the language.\n- **Why undesirable:** scheduling policy (fairness, wakeups, deadlock\n  freedom) cannot be expressed or tested in-language; every service\n  re-implements the driver loop ad hoc; cancellation is cooperative by\n  convention only.\n- **Desired capability:** spawned tasks with join handles, structured\n  scopes with cancellation propagation, and a scheduler contract the\n  language can reason about (at minimum: what interleavings are\n  possible, what `join` guarantees).\n- **Safety impact:** high — unstructured host-driven stepping is where\n  use-after-retire and lost-wakeup bugs will hide.\n- **Priority:** P0. **Status:** open."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-001",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-001: No task/spawn/channel runtime primitives.",
+  "target": "language",
+  "title": "No task/spawn/channel runtime primitives",
+  "version": "1"
+}

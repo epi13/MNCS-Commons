@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-018",
+  "contentDigest": "sha256:646761214e4a8851c10668c2a51649f2af0489a3366e130ee9fb84a5e015d2dc",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-0E9B8377967C",
+  "identity": {
+    "capability": "legacy.svc-p-018",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-018",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-018",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:3cff899a10f0c4feb53f969661f7161896b5445e160d20cc1e636feac9b1530e",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-018 — Chained `a.b.c[i]` projections do not parse\n\n- **Affected component:** `src/svc/worker.mncs`\n  (`candidate_worker_reap`).\n- **Intended design:** `r0.pool.slots[1]` — project through two\n  records, then index.\n- **Observed behavior:** `MNP054` parse refusal at the second `[`;\n  `a.b` and `a[i]` parse, `a.b[i]` (field-then-index through a double\n  projection) does not.\n- **Reproducer:** `let kept: Worker = r0.pool.slots[1];` failed;\n  binding `let swept: Pool = r0.pool;` first parses.\n- **Workaround used:** intermediate bindings before indexing.\n- **Why undesirable:** minor ergonomics; deeper compositions (service\n  snapshots over nested state) will accumulate boilerplate bindings.\n- **Desired capability:** full projection/index chaining in the\n  expression grammar.\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-018"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-018",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-018: Chained `a.b.c[i]` projections do not parse.",
+  "target": "language",
+  "title": "Chained `a.b.c[i]` projections do not parse",
+  "version": "1"
+}

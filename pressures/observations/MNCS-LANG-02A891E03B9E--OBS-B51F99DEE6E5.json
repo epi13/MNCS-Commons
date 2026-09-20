@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:ed2c38178dd764bc598111f56ee288fc4ee7d11fbe9077251daeb550ac3a2a1e",
+  "evidence": [
+    {
+      "id": "mncs-index:store-feed-projection",
+      "kind": "native-substrate",
+      "ref": "tests/test_store_projection.py",
+      "status": "PASS",
+      "summary": "The disposable Store-backed relation projection rebuilds with explicit freshness."
+    },
+    {
+      "id": "mncs-index:cryptographic-digest",
+      "kind": "language-boundary",
+      "ref": "native-userland-audit.json",
+      "status": "FAIL",
+      "summary": "The remaining Index-specific digest authority pressure is not resolved by the Store feed."
+    }
+  ],
+  "id": "MNCS-LANG-02A891E03B9E--OBS-B51F99DEE6E5",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "still_real",
+    "legacy_id": "PRESS-006",
+    "store_projection_scope_does_not_resolve_digest": true
+  },
+  "observedAt": "2026-09-20T19:02:23Z",
+  "pressureId": "MNCS-LANG-02A891E03B9E",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "run the Index digest/canonical projection reproducer against current Profile 0.18",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "146136e",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-index"
+  },
+  "summary": "The Store-backed relation projection is generation-aware, but Index-specific cryptographic digest and canonical projection work remains outside this slice.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Retain the existing bounded digest/canonical projection path and scheduled host/reference work.",
+    "removed": false
+  }
+}

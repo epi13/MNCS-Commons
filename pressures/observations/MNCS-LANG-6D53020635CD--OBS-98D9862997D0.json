@@ -1,0 +1,54 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:91b332ce1dc42806fd4edfebc9680298d976682deced1509889afe3e1a4f5552",
+  "evidence": [
+    {
+      "id": "mncs-index:nested-iteration-profile011",
+      "kind": "language-conformance",
+      "ref": "tests/test_language_probes.py",
+      "status": "PASS",
+      "summary": "The current positive Profile 0.11 nested iteration probe passes."
+    },
+    {
+      "id": "mncs-index:nested-iteration-profile08",
+      "kind": "historical-compatibility",
+      "ref": "pressure/reproducers/nested-iterate.mncs",
+      "status": "FAIL",
+      "summary": "The intentionally pinned Profile 0.8 negative reproducer remains rejected."
+    }
+  ],
+  "id": "MNCS-LANG-6D53020635CD--OBS-98D9862997D0",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "reframed",
+    "current_profile_support": true,
+    "historical_negative_pinned": true,
+    "legacy_id": "PRESS-009"
+  },
+  "observedAt": "2026-09-20T19:02:25Z",
+  "pressureId": "MNCS-LANG-6D53020635CD",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "run the profile 0.11 positive and profile 0.8 negative nested-iteration probes",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "146136e",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-index"
+  },
+  "summary": "Two-level nested iteration is available from Profile 0.11; the lower-profile 0.8 negative reproducer remains historical evidence and is not a reason to rewrite frozen Index kernels.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The current Index kernels do not need a migration; the old source profile remains a compatibility fixture.",
+    "removed": true
+  }
+}

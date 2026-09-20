@@ -1,0 +1,54 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:5fefeedcb4b7ab56a0aa15e8314144ab81eb0a69614c33f1a1d3d2590503ef17",
+  "evidence": [
+    {
+      "id": "mncs-ingest:native-vocabulary-authority",
+      "kind": "native-substrate",
+      "ref": "tests/mncs_authority.rs",
+      "status": "PASS",
+      "summary": "Current classification and canonical status decisions execute through native Ingest vocabulary policy."
+    },
+    {
+      "id": "mncs-ingest:table-distribution",
+      "kind": "scope-reclassification",
+      "ref": "docs/LANGUAGE_PRESSURE.md",
+      "status": "UNKNOWN",
+      "summary": "Stdlib distribution and zero-copy staging remain separate pressures and are not folded into a new map authority."
+    }
+  ],
+  "id": "MNCS-LANG-EF689917D8CD--OBS-64D47A70520D",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "reframed",
+    "generic_map_pressure_opened": false,
+    "legacy_id": "INGEST-P-004",
+    "native_semantic_policy": true
+  },
+  "observedAt": "2026-09-20T19:02:20Z",
+  "pressureId": "MNCS-LANG-EF689917D8CD",
+  "repository": "mncs-ingest",
+  "reproduction": {
+    "instructions": "re-run the current Ingest authority tests and distinguish native bounded table semantics from stdlib distribution and view-slicing concerns",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "abf35ab",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-ingest"
+  },
+  "summary": "The old finite-map pressure is reframed for this tranche: bounded native vocabulary and handoff policy are now the semantic authority, while table distribution and zero-copy view reuse remain separate follow-up concerns.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Retain bounded tables and vendoring at the external adapter boundary while distribution/view capabilities remain scoped.",
+    "removed": false
+  }
+}

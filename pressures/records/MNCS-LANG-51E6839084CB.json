@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-006",
+  "contentDigest": "sha256:e13e7e98351dc8e5aa66b0f178d46bb93f0b3724bf1df710b684fa8137a85f5a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-51E6839084CB",
+  "identity": {
+    "capability": "legacy.svc-p-006",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-006",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-006",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:0f267de245f99183f549f87d2b26328d49a26b6ca0eaf0ccf1cdbbab7f38084b",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-006 — Immutable values only: no ownership transfer\n\n- **Affected component:** `src/svc/queue.mncs`, `src/svc/worker.mncs`.\n- **Intended design:** enqueue transfers a request payload into the\n  queue; dequeue transfers it to a worker — move semantics with no\n  copies, checked by the compiler.\n- **Observed behavior:** sequences and records are immutable values;\n  `replace` builds a new array per write (channel.v1 precedent). There\n  is no borrow/move vocabulary (RFC 0009 explicitly unresolved), so\n  every \"transfer\" is a copy by semantics, and payloads cannot be\n  *moved* at all — only referenced by id with bytes held host-side.\n- **Reproducer:** `admit_evict` + `shift_slots` in `src/svc/queue.mncs`\n  copy up to 8 envelopes per dequeue; payloads are `id` tokens by\n  design (see module header).\n- **Workaround used:** token architecture: the queue owns order and\n  pressure; host buffers own bytes.\n- **Why undesirable:** copies scale with queue depth on every dequeue;\n  the token split means the compiler cannot check that a payload outlives\n  its token (lifetime gap documented in code, enforced nowhere).\n- **Desired capability:** move/borrow semantics for bounded values, or\n  at minimum a lifetime relationship between a token and its backing\n  buffer that the compiler checks.\n- **Performance impact:** O(depth) envelope copies per dequeue; step\n  counts per case pinned in run artifacts.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-006"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-006",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-006: Immutable values only: no ownership transfer.",
+  "target": "language",
+  "title": "Immutable values only: no ownership transfer",
+  "version": "1"
+}

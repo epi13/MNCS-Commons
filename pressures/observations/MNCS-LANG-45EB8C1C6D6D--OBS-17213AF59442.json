@@ -1,0 +1,52 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:99afdef4ea92dbefe5f0013868b7c58171eb8bfc32915fd297fa8b86662d3063",
+  "evidence": [
+    {
+      "id": "mncs-service:local-stdio",
+      "kind": "scope-decision",
+      "ref": "docs/LOCAL_RESIDENT_SERVICE.md",
+      "status": "PASS",
+      "summary": "The local transport is explicit and bounded."
+    },
+    {
+      "id": "mncs-service:network-effects",
+      "kind": "runtime-boundary",
+      "ref": "docs/LANGUAGE_PRESSURES.md",
+      "status": "FAIL",
+      "summary": "Networking remains a genuine runtime pressure."
+    }
+  ],
+  "id": "MNCS-LANG-45EB8C1C6D6D--OBS-17213AF59442",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "still_real",
+    "networking_required_for_first_slice": false
+  },
+  "observedAt": "2026-09-20T18:59:51Z",
+  "pressureId": "MNCS-LANG-45EB8C1C6D6D",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "attempt a bounded socket or network effect under the current service profile",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c18c7d8",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-service"
+  },
+  "summary": "The first service is intentionally local stdio; no socket or network effect was added.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use the explicit local stdio adapter.",
+    "removed": false
+  }
+}

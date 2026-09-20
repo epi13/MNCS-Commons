@@ -76,10 +76,10 @@
       "title": "No cryptographic digests (P1, hashing, stdlib)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "failed",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -142,6 +142,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-018",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-0E9B8377967C",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Chained `a.b.c[i]` projections do not parse",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
@@ -184,6 +211,33 @@
       "status": "confirmed",
       "target": "language",
       "title": "No socket/network capability in the language",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-011",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-14C2480BB865",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No text type",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -439,6 +493,60 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-001",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-2B19F2A16ACB",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No task/spawn/channel runtime primitives",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "unknown",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 1
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-013",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-2FFA2BD654BA",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Ambient obligations hold verdicts at UNKNOWN",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-015",
@@ -454,6 +562,33 @@
       "status": "confirmed",
       "target": "language",
       "title": "No relation values or graph traversal (P3, semantics)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "unknown",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 1
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-019",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-31EB67112747",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Corpus boundary is exact on scalar signedness",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -508,6 +643,33 @@
       "status": "discovered",
       "target": "language",
       "title": "host_read grants are single-file, ≤64-byte, whole-content snapshots",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-004",
+      "currentValidation": false,
+      "domain": "control-flow.iteration",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-36E17B6769E9",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Counted-iteration ceiling and nesting bound",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -628,6 +790,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-002",
+      "currentValidation": false,
+      "domain": "effects",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-45EB8C1C6D6D",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No socket/TCP/UDP/network effects",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 1,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-web"
       ],
       "capability": "legacy.web-p-004",
@@ -711,6 +900,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-014",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4C5043BF6AD4",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Grants are whole-program CLI flags",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "unknown",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 1
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-ingest"
       ],
       "capability": "legacy.ingest-p-010",
@@ -730,12 +946,12 @@
       "title": "Reference-execution cost per call (partially relieved)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "unknown",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
         "pass": 0,
-        "unknown": 0
+        "unknown": 1
       }
     },
     {
@@ -827,6 +1043,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-006",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-51E6839084CB",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Immutable values only: no ownership transfer",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
@@ -842,6 +1085,33 @@
       "status": "discovered",
       "target": "language",
       "title": "Record nominal identities are brittle at the process boundary",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-017",
+      "currentValidation": false,
+      "domain": "effects",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-53AB6362399B",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Effects are declarations, not values",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -1107,6 +1377,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-016",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-6644617F0DD3",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Invariants are boolean functions, not proofs",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-numerics"
       ],
       "capability": "legacy.p-016",
@@ -1151,12 +1448,12 @@
       "title": "Nested iteration rejected (P3, semantics, compiler)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "unknown",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
         "pass": 0,
-        "unknown": 0
+        "unknown": 1
       }
     },
     {
@@ -1242,6 +1539,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-012",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-74330424E2FF",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Reserved words collide with service vocabulary",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-012",
@@ -1300,6 +1624,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-007",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-7EE649AA6711",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Finite match has no wildcard",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-numerics"
       ],
       "capability": "legacy.p-015",
@@ -1342,6 +1693,33 @@
       "status": "confirmed",
       "target": "language",
       "title": "No durable-commit effects (P1, persistence, runtime)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-003",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-846B20062550",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "64-byte transport chunk forces app-level reassembly",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -1658,6 +2036,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-020",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-A4265D62562B",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Step budgets are host-declared fuel, opaque in-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-b02.host-effects-realized-only-by-research-bytecode-compiled-backends-refuse-silentl",
@@ -1756,10 +2161,10 @@
       "title": "No concurrent error aggregation (P2, error model)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "failed",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -1849,6 +2254,62 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-009",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-CA1B30E77141",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Single untyped host stream per capability",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-010",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-CA4CA715976F",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No recursive types: error causality truncated",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 1,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-015.no-unique-identity-issuance-primitive-objectid-serials-are-host-issued",
@@ -1907,6 +2368,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-015",
+      "currentValidation": false,
+      "domain": "effects",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-D1F8531E3172",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No timer/sleep/randomness effects",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-002",
@@ -1955,6 +2443,33 @@
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-021",
+      "currentValidation": false,
+      "domain": "backend",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-DAC63B24F7DF",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "WASM backend unsound for service-shaped code (shifting)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -2042,6 +2557,33 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-005",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-EA78D653D3ED",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Acyclic calls: retry loops cannot live in-language",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p2-003.no-generic-boundary-functions-forces-per-width-tail-families",
@@ -2086,12 +2628,12 @@
       "title": "No finite maps; keyword tables are linear chains (partially relieved)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "unknown",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
         "pass": 0,
-        "unknown": 0
+        "unknown": 1
       }
     },
     {
@@ -2111,6 +2653,33 @@
       "status": "confirmed",
       "target": "language",
       "title": "Integer literals coerce only on the right of binary ops",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-008",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-F47AB612ECB6",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No virtual clock",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",

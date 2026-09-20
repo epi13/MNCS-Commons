@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-009",
+  "contentDigest": "sha256:e786f4f11d0e3cdc424fab01299c7afd28fb7166c01dbe6737e28658c179415d",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-CA1B30E77141",
+  "identity": {
+    "capability": "legacy.svc-p-009",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-009",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-009",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:aba5cac330c2d1e7ee2c68aac4b4612ab2c0971b33a0a56453ac8466e2b21c0e",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-009 — Single untyped host stream per capability\n\n- **Affected component:** `examples/echo_service.mncs`,\n  `examples/observable_service.mncs`.\n- **Intended design:** named channels: one capability yielding framed\n  requests, another emitting typed events, multiplexed without\n  hand-rolled framing.\n- **Observed behavior:** `host_read()` takes no arguments and returns\n  one blob; `host_write(view)` appends one blob. One stream per\n  capability; multiplexing is the application's framing problem.\n- **Workaround used:** `svc.framing` as the multiplexer; op ids route.\n- **Why undesirable:** every service re-implements demux; a malformed\n  stream head can stall all logical channels behind it (head-of-line\n  blocking with no language-visible streams).\n- **Desired capability:** multiple named byte streams per capability,\n  or channel endpoints as grantable values.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-009"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-009",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-009: Single untyped host stream per capability.",
+  "target": "language",
+  "title": "Single untyped host stream per capability",
+  "version": "1"
+}

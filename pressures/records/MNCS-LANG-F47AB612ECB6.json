@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-008",
+  "contentDigest": "sha256:e35e5747ec344acef103455b03596b2be5229ebe0fe8f54c60aee2226fab604f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-F47AB612ECB6",
+  "identity": {
+    "capability": "legacy.svc-p-008",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-008",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-008",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:9421d8a1daa89287fa27343d85539756364ade8209f27af203721c38761bfb48",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-008 — No virtual clock\n\n- **Affected component:** `src/svc/time.mncs`,\n  `examples/graceful_shutdown.mncs`, `tools/svc_test.py`.\n- **Intended design:** deterministic virtual-time tests: advance a fake\n  clock, fire deadlines, assert drain behavior without sleeping.\n- **Observed behavior:** `clock_read()` is wall time behind\n  `--grant-time <capability>`; no mock/parameterized grant exists.\n  The observable-service test must accept wall-clock nondeterminism\n  (plausibility window instead of exact instants).\n- **Reproducer:** `tools/svc_test.py` observable assertions use a\n  `[t0-5000, t1+5000]` window; `examples/graceful_shutdown.mncs`\n  threads `now` as a plain argument to stay deterministic.\n- **Workaround used:** pure time functions over explicit instants\n  (`svc.time`); virtual instants as arguments; wall clock only at the\n  effect edge.\n- **Why undesirable:** any logic that reads time internally (timeouts\n  inside pool reap driven by grants) cannot be tested deterministically\n  end-to-end.\n- **Desired capability:** effect parameterization — grant a clock\n  *value* or script per capability so corpora pin instants exactly.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-008"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-008",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-008: No virtual clock.",
+  "target": "language",
+  "title": "No virtual clock",
+  "version": "1"
+}

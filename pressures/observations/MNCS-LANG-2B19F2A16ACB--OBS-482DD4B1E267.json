@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:403395baa47f00916feaf8725f81812881b331ecb916d7b9bd8406f4d10e9045",
+  "evidence": [
+    {
+      "id": "mncs-service:task-channel-semantics",
+      "kind": "profile-revalidation",
+      "ref": "native-userland-audit.json",
+      "status": "PASS",
+      "summary": "The bounded protocol and existing task/channel vocabulary express deterministic admission and lifecycle decisions."
+    },
+    {
+      "id": "mncs-service:runtime-concurrency",
+      "kind": "runtime-boundary",
+      "ref": "docs/LANGUAGE_PRESSURES.md",
+      "status": "FAIL",
+      "summary": "Real task scheduling and concurrent execution remain external."
+    }
+  ],
+  "id": "MNCS-LANG-2B19F2A16ACB--OBS-482DD4B1E267",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "partially_resolved",
+    "native_contract": true,
+    "runtime_concurrency": false
+  },
+  "observedAt": "2026-09-20T18:59:50Z",
+  "pressureId": "MNCS-LANG-2B19F2A16ACB",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "run the current service native suite and inspect the host resident driver boundary",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c18c7d8",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-service"
+  },
+  "summary": "Task and channel state-machine semantics remain usable for bounded decisions, but the resident service still relies on a host driver for real scheduling and concurrent runtime execution.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Host resident loop and scheduler remain the runtime realization.",
+    "removed": false
+  }
+}

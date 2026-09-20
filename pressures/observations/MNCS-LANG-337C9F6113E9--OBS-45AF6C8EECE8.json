@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:10cc2e7834b651022a5cb75cb98dc1f48d0d2238c4b72d2f547d191d0cc6fabd",
+  "evidence": [
+    {
+      "id": "mncs-index:bitwise-consumer-cutover",
+      "kind": "consumer-conformance",
+      "ref": "tests/test_language_probes.py",
+      "status": "PASS",
+      "summary": "Current Profile 0.18 bitwise behavior and migrated Index digest/scan consumers pass."
+    }
+  ],
+  "id": "MNCS-LANG-337C9F6113E9--OBS-45AF6C8EECE8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "resolved_upstream",
+    "historical_profile_reproducer": true,
+    "legacy_id": "PRESS-004"
+  },
+  "observedAt": "2026-09-20T19:02:22Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "run the existing bitwise/digest consumer conformance slice",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "146136e",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-index"
+  },
+  "summary": "Integer bitwise operators and the prior Index digest/scan consumer migration are already covered by current family evidence; the historical 0.8 reproducer remains pinned only for compatibility.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "No xor-free host workaround remains on the migrated consumer path.",
+    "removed": true
+  }
+}

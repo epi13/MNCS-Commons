@@ -1,0 +1,52 @@
+{
+  "agent": null,
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "revision": "9be98699baae1fb73651953ced2c49bd8f03342f"
+  },
+  "contentDigest": "sha256:941ff3e9eeb3288fc68f11f9fe5c733503982da3c61ded2e980946c2a85c223e",
+  "evidence": [
+    {
+      "id": "mncs-service:flat-protocol",
+      "kind": "scope-decision",
+      "ref": "src/svc/store_index_protocol.mncs",
+      "status": "PASS",
+      "summary": "The bounded protocol is explicit and does not fabricate recursive value support."
+    },
+    {
+      "id": "mncs-service:recursive-values",
+      "kind": "language-boundary",
+      "ref": "docs/LANGUAGE_PRESSURES.md",
+      "status": "FAIL",
+      "summary": "Generic recursive protocol values remain absent."
+    }
+  ],
+  "id": "MNCS-LANG-CA4CA715976F--OBS-729EE44EF093",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "bounded_first_contract": true,
+    "classification": "still_real"
+  },
+  "observedAt": "2026-09-20T18:59:53Z",
+  "pressureId": "MNCS-LANG-CA4CA715976F",
+  "repository": "mncs-service",
+  "reproduction": {
+    "instructions": "attempt to express a generic recursive request or response value in the current service profile",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "c18c7d8",
+    "path": "native-userland-audit.json",
+    "repository": "mncs-service"
+  },
+  "summary": "The first service contract stays flat and bounded because generic recursive protocol values remain unavailable.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use flat bounded calls and external JSON projection.",
+    "removed": false
+  }
+}

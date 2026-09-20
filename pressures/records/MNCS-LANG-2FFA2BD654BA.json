@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-013",
+  "contentDigest": "sha256:74f18bf3cc16595d6c4dd2bdf0cbeadf98f0cb985b20cb3fcecd2042a908209a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-2FFA2BD654BA",
+  "identity": {
+    "capability": "legacy.svc-p-013",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-013",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-013",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:18205b6f94be28c6cea69cd3dc07db39ccc665f35dab6861f08bfd679f968d02",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-013 — Ambient obligations hold verdicts at UNKNOWN\n\n- **Affected component:** `tools/svc_test.py` (gate design), all corpora.\n- **Intended design:** a green suite reports PASS; a red case reports\n  FAIL.\n- **Observed behavior:** every module compiles with retained\n  `body:machine-intent` obligations (CMP301, conservative fallback —\n  even `mncs.std.clock.v1` shows them), and `experiment run` reports\n  top-level `UNKNOWN` with `compilation retained required unresolved\n  obligations` although every case returns and every `expected` value\n  is met (`expectation_met: true`). `--validation-profile\n  artifact-build` adds a second unresolved reason instead of clearing.\n- **Reproducer:** any corpus run, e.g. `tests/corpora/lifecycle.json`:\n  3/3 `expectation_met: true`, verdict UNKNOWN.\n- **Workaround used:** the harness gates on per-case `status ==\n  returned` plus `expectation_met`, and separately asserts\n  cross-backend agreement. The top-level verdict is recorded, not\n  gated.\n- **Why undesirable:** CI-style consumers must reimplement verdict\n  semantics; a *real* breakage (wrong value) and ambient obligations\n  both surface as \"not PASS\", eroding trust in the gate.\n- **Desired capability:** verdicts that distinguish \"all observations\n  matched, obligations deferred\" from \"observation mismatch\" —\n  distinct statuses or a machine-readable breakdown the harness can\n  gate on without string-matching reason lists.\n- **Priority:** P1. **Status:** observation."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-013"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-013",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-013: Ambient obligations hold verdicts at UNKNOWN.",
+  "target": "language",
+  "title": "Ambient obligations hold verdicts at UNKNOWN",
+  "version": "1"
+}

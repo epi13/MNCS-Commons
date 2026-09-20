@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-004",
+  "contentDigest": "sha256:0ab9bfb6b31f237ff912104b341161784c25f8dbe431ca1569510aad8eefdf29",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "control-flow.iteration",
+  "id": "MNCS-LANG-36E17B6769E9",
+  "identity": {
+    "capability": "legacy.svc-p-004",
+    "domain": "control-flow.iteration",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-004",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-004",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:90302a577f65e48fd95f065ea908ef87cfba69aafcf095a77148b8ef099d4def",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-004 — Counted-iteration ceiling and nesting bound\n\n- **Affected component:** `src/svc/queue.mncs`, `src/svc/worker.mncs`,\n  `src/svc/retry.mncs`.\n- **Intended design:** scans over the full backing array (8 slots\n  today, larger pools later) and retry walks bounded by policy.\n- **Observed behavior:** counted loops bind `1..=32` (`MNE142`);\n  nesting past two levels is refused (`MNE147`); traversal covers\n  `len(data)` up to the 64-element sequence bound. Pools wider than 32\n  slots cannot be scanned by counted loops at all.\n- **Reproducer:** `delay_for` in `src/svc/retry.mncs` always runs 6\n  steps and masks inactive ones — the bound is static, the work is\n  constant regardless of `attempt`.\n- **Workaround used:** fixed 8-slot arrays with traversal loops;\n  shift caps (`shift_cap: 6`) keep exponential math inside the static\n  bound; `max_attempts > 32` is a config error (code 6).\n- **Why undesirable:** constant-work loops burn steps (visible in\n  `steps` per case); pool capacity is architecture, not policy, and it\n  is dictated by elaboration ceilings.\n- **Desired capability:** wider (or policy-parameterized) iteration\n  bounds with cost accounting the service can budget, not a fixed 32.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-004"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-004",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-004: Counted-iteration ceiling and nesting bound.",
+  "target": "language",
+  "title": "Counted-iteration ceiling and nesting bound",
+  "version": "1"
+}

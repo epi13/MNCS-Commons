@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-017",
+  "contentDigest": "sha256:86d1d8f7569ba1d74d7d7340255dc1bc187ca9de8335ec9737bd7ce5f83d55ca",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "effects",
+  "id": "MNCS-LANG-53AB6362399B",
+  "identity": {
+    "capability": "legacy.svc-p-017",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-017",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-017",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:68817231822283dddcc38a3bf6ebf38888b61ac600a8c43cb9541699625afe16",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-017 — Effects are declarations, not values\n\n- **Affected component:** `src/svc/contract.mncs` (`pure` bit).\n- **Intended design:** contracts that name their effects precisely\n  (`reads store X`, `emits kind 2`, `no effects`) so routers can shed,\n  cache, and replay by rule.\n- **Observed behavior:** effects are function-header declarations\n  (`effect host_write authorized_by ledger`) visible to the compiler\n  but not reified as values a contract could carry. `Op.pure` is one\n  coarse bit by necessity.\n- **Workaround used:** the `pure` bit plus out-of-band knowledge.\n- **Why undesirable:** routers cannot distinguish \"pure but\n  rate-limited\" from \"pure and freely replayable\"; shedding may drop\n  cacheable work or replay effectful work.\n- **Desired capability:** effect sets as inspectable values (or a\n  compiler query the contract builder can call) with subsumption.\n- **Priority:** P2. **Status:** open."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-017"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-017",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-017: Effects are declarations, not values.",
+  "target": "language",
+  "title": "Effects are declarations, not values",
+  "version": "1"
+}

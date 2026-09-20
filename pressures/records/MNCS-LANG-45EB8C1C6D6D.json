@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-002",
+  "contentDigest": "sha256:bd50994a02767585eba90033745b215d48e22df08c761c26ed1674207628228f",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "effects",
+  "id": "MNCS-LANG-45EB8C1C6D6D",
+  "identity": {
+    "capability": "legacy.svc-p-002",
+    "domain": "effects",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-002",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-002",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:6cc5aaaf67936b3d00945a3d4e6992f9155b1584ef6a0fb6e6bb770e9c7f1511",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-002 — No socket/TCP/UDP/network effects\n\n- **Affected component:** `examples/echo_service.mncs`,\n  `src/svc/framing.mncs`.\n- **Intended design:** a TCP listener accepting framed connections with\n  per-connection lifecycle, limits, timeouts, and graceful drain.\n- **Observed behavior:** no network effects exist in any profile\n  through 0.13. The only byte-moving intrinsics are `host_read` /\n  `host_write` (bounded blobs behind file-backed grants), plus\n  granted-filesystem observation (`fs_*`). `mncs.std.platform.v1`\n  describes platform facts, not sockets.\n- **Reproducer:** `examples/echo_service.mncs` — the \"transport\" is a\n  grant file; the codec is real but the socket is simulated.\n- **Workaround used:** host-boundary transport: the harness feeds\n  request bytes via `--grant-read` and collects ledger bytes via\n  `--grant-write`. Framing, admission, and handling stay in-language.\n- **Why undesirable:** connection lifecycle, backpressure across a real\n  socket, partial reads/writes, and listener limits cannot be exercised;\n  the echo example proves the codec, not the networking.\n- **Desired capability:** capability-scoped socket effects (listen /\n  accept / read / write / close with explicit grants), or an explicit\n  statement that network realizations stay host-side behind a contract\n  like `mncs.std.channel.v1`.\n- **Priority:** P0. **Status:** open."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-002",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-002: No socket/TCP/UDP/network effects.",
+  "target": "language",
+  "title": "No socket/TCP/UDP/network effects",
+  "version": "1"
+}

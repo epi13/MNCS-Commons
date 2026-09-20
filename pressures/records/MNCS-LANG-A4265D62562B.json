@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-020",
+  "contentDigest": "sha256:3d3ba93739f1e5662b3ec74378f19740050e9b53f863b415f9be597a5ab23fea",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-A4265D62562B",
+  "identity": {
+    "capability": "legacy.svc-p-020",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-020",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-020",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:1e6108c457005ce3e879b6c4a2d585268a6a929f78f86c24818bfc6a2d40466c",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-020 — Step budgets are host-declared fuel, opaque in-language\n\n- **Affected component:** all corpora (`step_budget`), `tools/svc_test.py`.\n- **Intended design:** services budget work explicitly: a drain sweep\n  declares its step envelope and the language reports consumption\n  against it.\n- **Observed behavior:** `step_budget` is a per-case host integer;\n  exhaustion surfaces as `budget_exhausted` (framing needed 65536\n  where 4096 sufficed for lifecycle); results report `steps` used but\n  no function can observe remaining fuel. Budgets were tuned by trial\n  (see corpus headers).\n- **Workaround used:** per-corpus budgets with headroom; `steps`\n  recorded in run artifacts for future tuning.\n- **Measured (2026-09-11, identical cases both backends):** step units\n  are backend-specific, not portable. research-bytecode vs\n  portable-wasm-mvp steps: config 473/4610 (9.7x), queue-flow\n  1007/8263 (8.2x), retry 1680/10523 (6.3x), framing-roundtrip\n  6881/125625 (18.3x), service-admit 3201/28615 (8.9x). Observations\n  agree byte-for-byte in every case; only the cost units differ.\n  Budgets must therefore target the most expensive backend, and\n  `steps` cannot compare costs across backends today.\n- **Why undesirable:** trial-and-error budgets rot (code changes shift\n  consumption silently); services cannot shed load based on remaining\n  fuel.\n- **Desired capability:** in-language fuel query and/or compiler-derived\n  step bounds per function so budgets become assertions, not guesses.\n- **Performance impact:** direct — step counts are the only cost model\n  available, and they are currently write-only.\n- **Priority:** P2. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-020"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-020",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-020: Step budgets are host-declared fuel, opaque in-language.",
+  "target": "language",
+  "title": "Step budgets are host-declared fuel, opaque in-language",
+  "version": "1"
+}

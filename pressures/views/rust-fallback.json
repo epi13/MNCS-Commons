@@ -168,12 +168,12 @@
       "title": "Reference-execution cost per call (partially relieved)",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "unknown",
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
         "pass": 0,
-        "unknown": 0
+        "unknown": 1
       }
     },
     {

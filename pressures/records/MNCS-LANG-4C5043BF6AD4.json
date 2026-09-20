@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-014",
+  "contentDigest": "sha256:b612dbf2f5eb091d4afe682d56c4cb3942378432b6a263f552772a07e3492430",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-4C5043BF6AD4",
+  "identity": {
+    "capability": "legacy.svc-p-014",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-014",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-014",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:5d0a26ce079af4fdbb3d1901b9109fdaa7cb8a379c3c9ec2f10e3cccf84ef445",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-014 — Grants are whole-program CLI flags\n\n- **Affected component:** `examples/echo_service.mncs`,\n  `tools/svc_test.py` grant scenarios.\n- **Intended design:** per-connection authority: accept a connection,\n  mint a scoped capability for exactly that peer, revoke on close.\n- **Observed behavior:** grants are process flags\n  (`--grant-read cap=path`, `--grant-time cap`, ...); every call with\n  the same capability shares one file/clock; no minting, attenuation,\n  or revocation exists in-language.\n- **Workaround used:** one capability per stream role; revocation by\n  process exit.\n- **Why undesirable:** connection-scoped authority, multi-tenant\n  isolation, and credential lifetimes cannot be modeled — the exact\n  properties a service framework must enforce.\n- **Desired capability:** first-class grantable values with attenuate /\n  revoke, or an explicit capability-object design in a near profile.\n- **Safety impact:** high — ambient-by-flag authority is one confused\n  caller away from cross-tenant reads.\n- **Priority:** P1. **Status:** open."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-014"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-014",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-014: Grants are whole-program CLI flags.",
+  "target": "language",
+  "title": "Grants are whole-program CLI flags",
+  "version": "1"
+}

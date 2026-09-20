@@ -1,0 +1,51 @@
+{
+  "affectedRepositories": [
+    "mncs-service"
+  ],
+  "capability": "legacy.svc-p-010",
+  "contentDigest": "sha256:767ecdaf2319a2a06ed08ac124ecce9f5793109c0e40e14a2eb5a273d411773a",
+  "discoveredAt": null,
+  "discoveredBy": "mncs-service",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-CA4CA715976F",
+  "identity": {
+    "capability": "legacy.svc-p-010",
+    "domain": "language-semantics",
+    "reproducerSignature": "legacy:mncs-service:SVC-P-010",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacy": {
+    "historicalStatus": null,
+    "legacyId": "SVC-P-010",
+    "repository": "mncs-service",
+    "sourceDigest": "sha256:c7184ade04df170018680a13244731c1f0ba0ecb64d9141eda1142ddee21a990",
+    "sourceLedgerDigest": "sha256:30c43acbbb91e8cd111837af5ead32ed97b93cd6a066c607dcffddd22840271d",
+    "sourceLedgerPath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourcePath": "mncs-service:LANGUAGE_PRESSURES.md",
+    "sourceText": "## SVC-P-010 — No recursive types: error causality truncated\n\n- **Affected component:** `src/svc/errors.mncs`.\n- **Intended design:** causal chains (`caused_by` links) so a worker\n  timeout inside a drain inside a deployment reads as one traceable\n  value.\n- **Observed behavior:** no recursive/nested-variable types; records\n  are flat and fixed. An `Error` carries `{class, code, attempts}` —\n  one link.\n- **Workaround used:** escalating codes preserve the *latest* cause;\n  history beyond one link is reconstructed from the event stream.\n- **Why undesirable:** programmatic root-cause analysis must join the\n  event ledger; the error value alone underdetermines the cause.\n- **Desired capability:** bounded recursive types (depth-capped cause\n  chains) or a first-class causal annotation the toolchain preserves.\n- **Priority:** P1. **Status:** worked-around."
+  },
+  "legacyIds": [
+    "mncs-service:SVC-P-010"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "legacy:mncs-service:SVC-P-010",
+    "text": ""
+  },
+  "requiredBehavior": "Legacy pressure imported; required behavior requires confirmation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {
+    "migration": "legacy-markdown"
+  },
+  "sourceRef": {
+    "kind": "legacy-markdown",
+    "path": "mncs-service:LANGUAGE_PRESSURES.md"
+  },
+  "summary": "Imported legacy pressure SVC-P-010: No recursive types: error causality truncated.",
+  "target": "language",
+  "title": "No recursive types: error causality truncated",
+  "version": "1"
+}

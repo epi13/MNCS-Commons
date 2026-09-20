@@ -291,6 +291,35 @@
     },
     {
       "affectedRepositories": [
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-009",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-CA1B30E77141",
+      "reporters": [
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Single untyped host stream per capability",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-store"
       ],
