@@ -197,6 +197,43 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
+        "mncs-web"
+      ],
+      "capability": "legacy.web-p-003",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-00276ACEE99A",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-00276ACEE99A--OBS-1456B4941C38",
+        "observedAt": "2026-09-21T06:13:08Z",
+        "repository": "mncs-web",
+        "summary": "RESOLVED: Profile 0.14 copy_span is available and mncs-web has removed its per-byte encoder/staging workaround."
+      },
+      "reporters": [
+        "mncs-language",
+        "mncs-web"
+      ],
+      "revalidationRequired": false,
+      "severity": "minor",
+      "status": "resolved",
+      "target": "language",
+      "title": "No bulk span-copy primitive (replace-per-byte emission)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-004",
@@ -905,7 +942,7 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "RESOLVED": 15,
+      "RESOLVED": 16,
       "UNRECONCILED": 10
     },
     "unreconciled": 10

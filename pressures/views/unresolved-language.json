@@ -4,43 +4,6 @@
     {
       "affectedRepositories": [
         "mncs-language",
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-003",
-      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
-      "currentValidation": true,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-00276ACEE99A",
-      "reconciliation": {
-        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
-        "observationId": "MNCS-LANG-00276ACEE99A--OBS-C89C57432B64",
-        "observedAt": "2026-09-21T05:12:00Z",
-        "repository": "mncs-language",
-        "summary": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED: Current MNCS Language exposes the required capability, but the named consumer has not yet migrated or has no current checkout in this workspace."
-      },
-      "reporters": [
-        "mncs-language",
-        "mncs-web"
-      ],
-      "revalidationRequired": false,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "No bulk span-copy primitive (replace-per-byte emission)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 2,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-004",
@@ -3341,7 +3304,7 @@
   "reconciliation": {
     "classificationCounts": {
       "BACKEND_ONLY": 6,
-      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 29,
       "STILL_REPRODUCES": 30

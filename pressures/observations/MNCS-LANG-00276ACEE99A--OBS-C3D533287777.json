@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:862f67b47e6b665b0f32be3d952e8f75c0de1d11f770ffdd5b0f4cb27201c4f2",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:copy-span:pressure-span-copy",
+      "kind": "language-conformance",
+      "ref": "mncs-language@0e28c9c:crates/mncs-cli/tests/pressure_span_copy.rs",
+      "status": "PASS",
+      "summary": "Profile 0.14 copy_span conformance covers exact/view sources, overlap, zero length, element widths, deterministic traps, and all five executable backends."
+    }
+  ],
+  "id": "MNCS-LANG-00276ACEE99A--OBS-C3D533287777",
+  "kind": "verification",
+  "languageProfile": "0.14",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T06:13:08Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-cli/tests/pressure_span_copy.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current mncs-language Profile 0.14 provides the canonical bounded copy_span operation used by the migrated web consumer.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

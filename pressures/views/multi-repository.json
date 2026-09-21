@@ -115,17 +115,17 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-003",
-      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-00276ACEE99A",
       "reconciliation": {
-        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
-        "observationId": "MNCS-LANG-00276ACEE99A--OBS-C89C57432B64",
-        "observedAt": "2026-09-21T05:12:00Z",
-        "repository": "mncs-language",
-        "summary": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED: Current MNCS Language exposes the required capability, but the named consumer has not yet migrated or has no current checkout in this workspace."
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-00276ACEE99A--OBS-1456B4941C38",
+        "observedAt": "2026-09-21T06:13:08Z",
+        "repository": "mncs-web",
+        "summary": "RESOLVED: Profile 0.14 copy_span is available and mncs-web has removed its per-byte encoder/staging workaround."
       },
       "reporters": [
         "mncs-language",
@@ -133,16 +133,16 @@
       ],
       "revalidationRequired": false,
       "severity": "minor",
-      "status": "confirmed",
+      "status": "resolved",
       "target": "language",
       "title": "No bulk span-copy primitive (replace-per-byte emission)",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -2507,10 +2507,9 @@
   "reconciliation": {
     "classificationCounts": {
       "BACKEND_ONLY": 4,
-      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
       "OBSOLETE": 6,
       "PARTIALLY_RESOLVED": 5,
-      "RESOLVED": 13,
+      "RESOLVED": 14,
       "STILL_REPRODUCES": 17,
       "UNRECONCILED": 21
     },
