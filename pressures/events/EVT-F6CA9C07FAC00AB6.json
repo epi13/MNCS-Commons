@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:d561be69d43ca5fb527748a2504b39964e394b7d5b48138ebdbc5061f08fa187",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-00276ACEE99A--OBS-1456B4941C38"
+  ],
+  "from": "accepted",
+  "id": "EVT-F6CA9C07FAC00AB6",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-21T06:13:10Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "previousEvent": "EVT-DE5F3276EC958EFF",
+  "reason": "Migrate mncs-web encoder and parser staging to the canonical Profile 0.14 copy_span operation.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

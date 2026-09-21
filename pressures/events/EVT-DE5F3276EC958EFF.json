@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:54e6679cb7ad93452e388c70e542d2592ea35670a3951cb32867f44d64b1f6ed",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-00276ACEE99A--OBS-1456B4941C38"
+  ],
+  "from": "confirmed",
+  "id": "EVT-DE5F3276EC958EFF",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-21T06:13:09Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "previousEvent": "EVT-97BE7AC9603F9F9E",
+  "reason": "Current language capability and controlled consumer migration establish an actionable closure path.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

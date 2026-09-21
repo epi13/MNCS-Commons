@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "consumer-suite"
+  },
+  "contentDigest": "sha256:0425cfc6c7d85dad8ecb46d66f78af108b174ed4e55ffda1f74f8216278de1d1",
+  "evidence": [
+    {
+      "id": "campaign:mncs-web:copy-span-migration:consumer-suite",
+      "kind": "consumer-test-suite",
+      "ref": "mncs-web@ac09edc:tests/test_encoder.py tests/test_fragmentation.py",
+      "status": "PASS",
+      "summary": "13 focused encoder/fragmentation tests passed on mncs-research-bytecode in 40m50s after replacing per-byte staging/emission with copy_span."
+    }
+  ],
+  "id": "MNCS-LANG-00276ACEE99A--OBS-EEEDD5F8A8AE",
+  "kind": "verification",
+  "languageProfile": "0.14",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true,
+    "suite": "13 passed in 2450.70s"
+  },
+  "observedAt": "2026-09-21T06:13:08Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "repository": "mncs-web",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "ac09edc",
+    "path": "src/web/encode.mncs;src/web/parser.mncs",
+    "repository": "mncs-web"
+  },
+  "summary": "mncs-web main migrated encoder emission and parser staging to copy_span; the 13-test consumer suite passes.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

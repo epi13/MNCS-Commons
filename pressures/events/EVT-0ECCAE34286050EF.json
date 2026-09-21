@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-web",
+  "contentDigest": "sha256:d05f256565ae4fe202f057f36f6cdbc548ecc41071bd1b540af51de3c8e1645e",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-00276ACEE99A--OBS-EEEDD5F8A8AE"
+  ],
+  "from": "available",
+  "id": "EVT-0ECCAE34286050EF",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-21T06:13:11Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "previousEvent": "EVT-5557CC5EE1D43399",
+  "reason": "The controlled consumer migration is landed on mncs-web main and is ready for closure verification.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

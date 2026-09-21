@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-web",
+  "contentDigest": "sha256:97912c80a00f2226eb9183ba2f2808b8a53cbfdd6d669e007b673e33098f2ede",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-00276ACEE99A--OBS-C3D533287777",
+    "MNCS-LANG-00276ACEE99A--OBS-EEEDD5F8A8AE"
+  ],
+  "from": "verifying",
+  "id": "EVT-C6357B12FD854F0C",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-21T06:13:11Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "previousEvent": "EVT-0ECCAE34286050EF",
+  "reason": "Every affected repository has PASS verification and the per-byte workaround is removed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

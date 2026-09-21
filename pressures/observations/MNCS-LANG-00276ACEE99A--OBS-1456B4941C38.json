@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-consumer-verification"
+  },
+  "contentDigest": "sha256:af374e1e5e64cf379464d04f3d5fee5cb06d04efee8ace6d10a10d7f7a0761dd",
+  "evidence": [
+    {
+      "id": "campaign:mncs-web:copy-span-migration:current-main",
+      "kind": "consumer-migration",
+      "ref": "mncs-web@ac09edc:src/web/encode.mncs;src/web/parser.mncs",
+      "status": "PASS",
+      "summary": "The controlled web consumer now uses the singular language-owned copy_span capability."
+    }
+  ],
+  "id": "MNCS-LANG-00276ACEE99A--OBS-1456B4941C38",
+  "kind": "reconciliation",
+  "languageProfile": "0.14",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "RESOLVED",
+    "consumerMain": "ac09edc",
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T06:13:08Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "repository": "mncs-web",
+  "reproduction": {
+    "instructions": "Run source-study for src/web/*.mncs and the focused encoder/fragmentation consumer suite.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "ac09edc",
+    "path": "src/web/encode.mncs;src/web/parser.mncs",
+    "repository": "mncs-web"
+  },
+  "summary": "RESOLVED: Profile 0.14 copy_span is available and mncs-web has removed its per-byte encoder/staging workaround.",
+  "version": "1",
+  "workaround": {
+    "description": "Per-byte replace loops were removed from emit_span and stage_append.",
+    "removed": true
+  }
+}

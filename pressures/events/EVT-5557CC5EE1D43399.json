@@ -1,0 +1,21 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:e420a7b9131b1c728245097138f098ea2a689362eb03d6825221bc86a42e8b74",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-00276ACEE99A--OBS-C3D533287777"
+  ],
+  "from": "implementing",
+  "id": "EVT-5557CC5EE1D43399",
+  "implementation": {
+    "ref": "mncs-language@0e28c9c:Profile-0.14-copy_span"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-21T06:13:10Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "previousEvent": "EVT-F6CA9C07FAC00AB6",
+  "reason": "The language-owned copy_span capability is available and its cross-backend contract is tested.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}
