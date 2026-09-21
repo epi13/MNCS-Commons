@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:13e9e0413174c3c3a2f43a57635b0f11c5fba048c0169e455b85770da032886d",
+  "evidence": [
+    {
+      "id": "mncs-language-service:resident-socket-generation-test",
+      "kind": "test",
+      "ref": "crates/service-core/tests/integration.rs",
+      "status": "PASS",
+      "summary": "LSP/MCP-compatible remote clients share the same resident generation and event cursor."
+    }
+  ],
+  "id": "MNCS-TOOLING-2C138B2DFDA5--OBS-25BF55FB37B8",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-semantic-observation-20260921",
+    "classification": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-21T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-2C138B2DFDA5",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Run the resident socket integration and edit one document; compare reused unchanged snapshots with the changed document's full frontend analysis.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "campaign/continuous-semantic-observation-20260921",
+    "path": "crates/service-core/src/queries.rs"
+  },
+  "summary": "The resident service now reuses whole-document snapshots and dependency fingerprints, publishes exact generation-bound semantic deltas, and rejects late frontend results. Whole-document frontend invalidation remains: changed documents are still re-analyzed from scratch.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Fingerprint-bound resident snapshots, dependency invalidation, and post-analysis generation checks."
+  }
+}
