@@ -1,0 +1,35 @@
+{
+  "affectedRepositories": [
+    "mncs-forge",
+    "mncs-store"
+  ],
+  "capability": "continuous_supervisor_startup",
+  "contentDigest": "sha256:481d7962aa75115aeced33175576e21c5706780832586f91d9bbab4113e2c23d",
+  "discoveredAt": "2026-09-21T17:49:31Z",
+  "discoveredBy": "mncs-forge",
+  "domain": "tooling.verification-orchestration",
+  "id": "MNCS-TOOLING-CC5E9CCFA538",
+  "identity": {
+    "capability": "continuous_supervisor_startup",
+    "domain": "tooling.verification-orchestration",
+    "reproducerSignature": "continuous-supervisor.store-recovery-startup.v1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "path": "mncs-forge:src/mncs_forge/continuous.py",
+    "signature": "continuous-supervisor.store-recovery-startup.v1"
+  },
+  "requiredBehavior": "A resident continuous development supervisor should reach declared event dispatch within a bounded developer-facing latency while retaining Store-backed evidence semantics and without a private cache authority.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "The continuous supervisor is generation-bound and declaration-driven, but Forge startup and Store recovery can dominate the edit-to-verification path for minutes before a queued micro or selected verification begins.",
+  "target": "tooling",
+  "title": "Store-backed continuous supervision startup dominates edit feedback",
+  "version": "1"
+}
