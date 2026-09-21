@@ -195,7 +195,7 @@ def test_blocked_lane_requires_blockers_and_shared_core_requests_are_structured(
 
 def test_family_registry_covers_canonical_roster_and_safe_lanes() -> None:
     registry = family_registry()
-    assert len(registry["projects"]) == 21
+    assert len(registry["projects"]) == 25
     assert {item["id"] for item in registry["projects"]} >= {
         "mncs-language-service",
         "mncs-tui",
@@ -211,14 +211,14 @@ def test_family_coverage_keeps_no_task_projects_visible(tmp_path) -> None:
     app = _application(tmp_path)
     app.submit_work(_request("work:coverage", lane="REPO_HYGIENE"))
     coverage = app.family_coverage()
-    assert coverage["projectCount"] == 21
+    assert coverage["projectCount"] == 25
     projects = {item["projectId"]: item for item in coverage["projects"]}
     assert projects["mncs-language"]["considered"] is True
     assert projects["mncs-language"]["state"] == CoverageState.NEEDS_REVIEW.value
     assert projects["mncs-language"]["work"] == []
     assert coverage["atlas"]["schedulingAuthority"] is False
     hygiene = next(item for item in coverage["lanes"] if item["lane"] == "REPO_HYGIENE")
-    assert hygiene["represented"] == hygiene["eligible"] == 21
+    assert hygiene["represented"] == hygiene["eligible"] == 25
 
 
 def _proposal(work_id: str, *, capability: str, repository: str = "mncs-language"):
@@ -417,7 +417,7 @@ def test_exact_cross_source_roster_and_aliases() -> None:
     }
     result = CommonsApplication.family_consistency(standard, atlas)
     assert result["valid"] is True
-    assert result["canonicalProjectCount"] == 21
+    assert result["canonicalProjectCount"] == 25
     atlas["projects"][0]["repository"] = "https://github.com/example/wrong-repository"
     assert CommonsApplication.family_consistency(standard, atlas)["valid"] is False
 
