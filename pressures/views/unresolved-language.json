@@ -402,17 +402,17 @@
         "mncs-web"
       ],
       "capability": "legacy.web-p-012",
-      "classification": "BACKEND_ONLY",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": true,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-21A2AA307869",
       "reconciliation": {
-        "classification": "BACKEND_ONLY",
-        "observationId": "MNCS-LANG-21A2AA307869--OBS-24650DF82244",
-        "observedAt": "2026-09-21T05:12:00Z",
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-21A2AA307869--OBS-C168EEC9FA6F",
+        "observedAt": "2026-09-21T07:20:00Z",
         "repository": "mncs-language",
-        "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
+        "summary": "PARTIALLY_RESOLVED: the eager inactive-lane source-address failure is fixed and the former 13-live trigger returns on all five backends; C11, LLVM, and Cranelift still exhaust their bounded native arena on larger 37+ live-chunk cases."
       },
       "reporters": [
         "mncs-language",
@@ -3303,10 +3303,10 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "BACKEND_ONLY": 6,
+      "BACKEND_ONLY": 5,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
       "CONSUMER_DEBT": 16,
-      "PARTIALLY_RESOLVED": 29,
+      "PARTIALLY_RESOLVED": 30,
       "STILL_REPRODUCES": 30
     },
     "unreconciled": 0
