@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:e7a92e34f173eda937b94d72e7d1014b7c4c325640a48c64184878fb0f0a6c26",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-52A5E0C72A39:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-embed/src/lib.rs",
+      "status": "PASS",
+      "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
+    }
+  ],
+  "id": "MNCS-LANG-52A5E0C72A39--OBS-ABA8E2E6F36A",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "OBSOLETE",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-52A5E0C72A39",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at crates/mncs-embed/src/lib.rs; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-embed/src/lib.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt.",
+  "version": "1",
+  "workaround": {
+    "description": "Historical workaround is not an active language requirement.",
+    "removed": "not_needed"
+  }
+}

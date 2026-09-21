@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:69fd543c3103107c0761e602eaf104cf93a2c06b4086c98d6df2884267a3024e",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-A29B3EFA5B73:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-model/src/body.rs",
+      "status": "PASS",
+      "summary": "Current canonical boolean equality is represented and checked by the model/body path; the historical absence of bool equality is closed."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-BCEAE95F3FA8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-model/src/body.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current canonical boolean equality is represented and checked by the model/body path; the historical absence of bool equality is closed.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

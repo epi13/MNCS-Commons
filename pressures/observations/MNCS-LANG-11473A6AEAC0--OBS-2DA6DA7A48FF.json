@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:40249e7e91418319f8be370d76c0862c6e9600bc2c3798257c73fd342cb816b1",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-11473A6AEAC0:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:docs/language-capabilities.json",
+      "status": "PASS",
+      "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
+    }
+  ],
+  "id": "MNCS-LANG-11473A6AEAC0--OBS-2DA6DA7A48FF",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "STILL_REPRODUCES",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-11473A6AEAC0",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at docs/language-capabilities.json; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "docs/language-capabilities.json",
+    "repository": "mncs-language"
+  },
+  "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation.",
+  "version": "1",
+  "workaround": {
+    "description": "The remaining workaround or boundary is still active.",
+    "removed": false
+  }
+}

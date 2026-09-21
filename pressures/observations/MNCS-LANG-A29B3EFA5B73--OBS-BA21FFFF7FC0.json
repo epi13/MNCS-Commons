@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:e21408db991b7d9030b8689e70b9239e14fa09666f53c8be63bdd167265de3fb",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-A29B3EFA5B73:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-compiler/src/frontend.rs",
+      "status": "PASS",
+      "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
+    }
+  ],
+  "id": "MNCS-LANG-A29B3EFA5B73--OBS-BA21FFFF7FC0",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "RESOLVED",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-A29B3EFA5B73",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at crates/mncs-compiler/src/frontend.rs; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-compiler/src/frontend.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces.",
+  "version": "1",
+  "workaround": {
+    "description": "Historical workaround is not an active language requirement.",
+    "removed": "not_needed"
+  }
+}

@@ -327,37 +327,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-003",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-00276ACEE99A",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "No bulk span-copy primitive (replace-per-byte emission)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-006",
@@ -535,37 +504,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-001",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-11473A6AEAC0",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "blocker",
-      "status": "confirmed",
-      "target": "language",
-      "title": "No socket/network capability in the language",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-service"
       ],
       "capability": "legacy.svc-p-011",
@@ -624,68 +562,6 @@
       "status": "discovered",
       "target": "language",
       "title": "No streaming or incremental hash API; single-shot digests over ≤64-byte views only",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-008",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-1DF6AF1E90DB",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "No traits/interfaces for transport abstraction",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-012",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "backend",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-21A2AA307869",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Native backends trap past small feed-staging counts",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -1188,37 +1064,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-004",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "control-flow.iteration",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-470A89615EFE",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Bounded iteration always pays the static capacity",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
@@ -1359,37 +1204,6 @@
         "fail": 0,
         "pass": 0,
         "unknown": 1
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-010",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-51DC701BCE74",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "No growable buffers (fixed capacities are structural)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
       }
     },
     {
@@ -1559,37 +1373,6 @@
       "status": "confirmed",
       "target": "language",
       "title": "Per-call process invocation cost (P2, performance/tooling)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-009",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-5A94DFD0A049",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Bounds obligations stay UNKNOWN (proof/contracts ceiling)",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -2057,37 +1840,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-011",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "backend",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-8930A60B60E0",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-012.no-view-width-subsumption-byte-up-to-8-is-not-a-byte-up-to-64",
@@ -2305,37 +2057,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-006",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "type-system.views",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-A24150CD4D89",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Bounded views cannot be narrowed (known; new cost evidence)",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-005",
@@ -2540,39 +2261,6 @@
       "verificationSummary": {
         "affected": 1,
         "fail": 1,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-doc"
-      ],
-      "capability": "source-preserving-document-regions",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "document.text",
-      "fallbackLanguages": [
-        "python"
-      ],
-      "id": "MNCS-LANG-BC105FDA1446",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-doc"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "Source-preserving document regions need a reusable native text surface",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
         "pass": 0,
         "unknown": 0
       }
@@ -2865,37 +2553,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-002",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "type-system.records",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-E0ECD53CAE1F",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Exact-array record fields cannot borrow as bounded views",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-index"
       ],
       "capability": "legacy.press-014",
@@ -3032,37 +2689,6 @@
         "fail": 0,
         "pass": 0,
         "unknown": 1
-      }
-    },
-    {
-      "affectedRepositories": [
-        "mncs-web"
-      ],
-      "capability": "legacy.web-p-005",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-F43CBD64717D",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-web"
-      ],
-      "revalidationRequired": true,
-      "severity": "minor",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Integer literals coerce only on the right of binary ops",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
       }
     },
     {
@@ -3787,9 +3413,9 @@
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 26,
       "STILL_REPRODUCES": 14,
-      "UNRECONCILED": 42
+      "UNRECONCILED": 30
     },
-    "unreconciled": 42
+    "unreconciled": 30
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "needs-revalidation"

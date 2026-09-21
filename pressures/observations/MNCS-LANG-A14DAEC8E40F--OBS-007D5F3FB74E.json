@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:1478f7d76882b5a5d04198ad5ad11bb8b6ba0684ef601769e596033e1697d47f",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-A14DAEC8E40F:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-codegen/src/scalar.rs",
+      "status": "PASS",
+      "summary": "Current scalar lowering handles float SequenceReplace through the canonical representation; the historical native miscompile is not reproduced."
+    }
+  ],
+  "id": "MNCS-LANG-A14DAEC8E40F--OBS-007D5F3FB74E",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-A14DAEC8E40F",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-codegen/src/scalar.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current scalar lowering handles float SequenceReplace through the canonical representation; the historical native miscompile is not reproduced.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

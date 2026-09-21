@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:807f494bf387314b88b1784e5a399df02c3275b9e06c3f6d1768c81d9a6084a1",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-8930A60B60E0:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-codegen/src",
+      "status": "PASS",
+      "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
+    }
+  ],
+  "id": "MNCS-LANG-8930A60B60E0--OBS-765F4D5245AA",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "BACKEND_ONLY",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-8930A60B60E0",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at crates/mncs-codegen/src; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-codegen/src",
+    "repository": "mncs-language"
+  },
+  "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct.",
+  "version": "1",
+  "workaround": {
+    "description": "The remaining workaround or boundary is still active.",
+    "removed": false
+  }
+}

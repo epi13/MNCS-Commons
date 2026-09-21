@@ -207,10 +207,10 @@
       "id": "MNCS-LANG-337C9F6113E9",
       "reconciliation": {
         "classification": "RESOLVED",
-        "observationId": "MNCS-LANG-337C9F6113E9--OBS-45AF6C8EECE8",
-        "observedAt": "2026-09-20T19:02:22Z",
+        "observationId": "MNCS-LANG-337C9F6113E9--OBS-916D83C986F9",
+        "observedAt": "2026-09-21T05:12:00Z",
         "repository": "mncs-index",
-        "summary": "Integer bitwise operators and the prior Index digest/scan consumer migration are already covered by current family evidence; the historical 0.8 reproducer remains pinned only for compatibility."
+        "summary": "Index now uses the singular mncs.index.digest and mncs.index.scan identities; the canonical module migration and 72 focused bridge/differential/failure tests pass."
       },
       "reporters": [
         "mncs-index"
@@ -236,13 +236,17 @@
         "mncs-language"
       ],
       "capability": "packed-bounded-view-lifetime",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "backend.region-reclamation",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4219A56741DB",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-4219A56741DB--OBS-C6AEAEF4BDB2",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
         "mncs-atlas",
@@ -265,18 +269,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-493C32111AA5",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-493C32111AA5--OBS-C9C4AFE618FC",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-store"
       ],
       "revalidationRequired": false,
@@ -288,26 +298,32 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-002",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4EBBF1137974",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-4EBBF1137974--OBS-0E290CB004FE",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -319,9 +335,9 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -331,13 +347,17 @@
         "mncs-language"
       ],
       "capability": "nested-cell-address-normalization",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "backend.wasm-address-typing",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-4F3798658F55",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-4F3798658F55--OBS-BF6E3041FC80",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
         "mncs-atlas",
@@ -403,13 +423,17 @@
         "mncs-language"
       ],
       "capability": "source-level-function-export-resolution",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "compiler.artifact-export-contract",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-59894A2D6A3D",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-59894A2D6A3D--OBS-ABC7C72F3C94",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
         "mncs-harness",
@@ -432,18 +456,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-006",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-76B88EDA0119",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-76B88EDA0119--OBS-508B28D4470E",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -455,26 +485,32 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-7BA2DA8A378E",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-7BA2DA8A378E--OBS-A103E998D904",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-store"
       ],
       "revalidationRequired": false,
@@ -486,26 +522,32 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-007",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-817B22E99A6B",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-817B22E99A6B--OBS-C2739DC0F5BC",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -517,26 +559,32 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-001",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A14DAEC8E40F",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-A14DAEC8E40F--OBS-824A530BAAC7",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -548,28 +596,34 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
         "mncs-compiler",
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "legacy.p1-009.no-over-bool-mne121",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A29B3EFA5B73",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-A29B3EFA5B73--OBS-BA21FFFF7FC0",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
         "mncs-compiler",
+        "mncs-language",
         "mncs-store"
       ],
       "revalidationRequired": false,
@@ -581,9 +635,9 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
-        "pass": 2,
+        "pass": 3,
         "unknown": 0
       }
     },
@@ -624,18 +678,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-005",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E86F0E121743",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-E86F0E121743--OBS-F719BB4CFFFE",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -647,26 +707,32 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-008",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-EC8EB0FE5556",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-EC8EB0FE5556--OBS-6C184696CC5A",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "RESOLVED: Focused current-language and consumer verification evidence; the historical claim no longer reproduces."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -678,9 +744,9 @@
       "valid": true,
       "verificationState": "ready",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 1,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -839,10 +905,10 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "RESOLVED": 3,
-      "UNRECONCILED": 22
+      "RESOLVED": 15,
+      "UNRECONCILED": 10
     },
-    "unreconciled": 22
+    "unreconciled": 10
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"

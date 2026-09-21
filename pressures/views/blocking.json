@@ -65,21 +65,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-001",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-11473A6AEAC0",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-11473A6AEAC0--OBS-2DA6DA7A48FF",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocker",
       "status": "confirmed",
       "target": "language",
@@ -88,7 +94,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -135,13 +141,17 @@
         "mncs-store"
       ],
       "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-71DAE5A34032",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-71DAE5A34032--OBS-532558341B3C",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-language",
@@ -169,7 +179,7 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
@@ -177,7 +187,11 @@
       ],
       "id": "MNCS-LANG-8AF4BC50DDB4",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-8AF4BC50DDB4--OBS-D5DA8DE2A28C",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-commons",
@@ -205,13 +219,17 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-973FAC2F4FBD",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-973FAC2F4FBD--OBS-D82A3CEA978D",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-language",
@@ -273,13 +291,17 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-002.no-durable-sync-barrier-distinct-from-userspace-buffering",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-FDCBC01300B8",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-FDCBC01300B8--OBS-BB67002D6DB6",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-language",
@@ -411,10 +433,12 @@
   ],
   "reconciliation": {
     "classificationCounts": {
+      "OBSOLETE": 4,
       "PARTIALLY_RESOLVED": 2,
-      "UNRECONCILED": 10
+      "STILL_REPRODUCES": 1,
+      "UNRECONCILED": 5
     },
-    "unreconciled": 10
+    "unreconciled": 5
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"

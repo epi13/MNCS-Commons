@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:2026db57882fb427c610d6bb3dda550fa71d914018e9fc42a9b7950ca051321b",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-493C32111AA5:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-model/src/body.rs",
+      "status": "PASS",
+      "summary": "Current byte comparison semantics are implemented in the canonical model/body path; the historical asymmetric comparison claim is covered by current language evidence."
+    }
+  ],
+  "id": "MNCS-LANG-493C32111AA5--OBS-6F8F26DC6E55",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-493C32111AA5",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-model/src/body.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current byte comparison semantics are implemented in the canonical model/body path; the historical asymmetric comparison claim is covered by current language evidence.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

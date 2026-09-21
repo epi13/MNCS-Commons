@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:5dadef33021724b6579052a6e7a09adbaf467305f393ec62cb396d2368e5affc",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-4EBBF1137974:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:examples/source/pressure-host-generics.mncs",
+      "status": "PASS",
+      "summary": "The current generic host-seeding pressure reproducer compiles against the canonical generic path; the historical repeated-spelling loss is no longer an active language requirement."
+    }
+  ],
+  "id": "MNCS-LANG-4EBBF1137974--OBS-A2F11AE6D36F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-4EBBF1137974",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "examples/source/pressure-host-generics.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "The current generic host-seeding pressure reproducer compiles against the canonical generic path; the historical repeated-spelling loss is no longer an active language requirement.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

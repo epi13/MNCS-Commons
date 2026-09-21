@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:25dd68015fa28b4ac95ef8fd38eb301a9c3e2992989de5cb1b42fc1f5db341c9",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-E86F0E121743:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-compiler/src/frontend.rs",
+      "status": "PASS",
+      "summary": "Current structural dimension handling is present in the canonical frontend path; the historical dimension-equality limitation is no longer active."
+    }
+  ],
+  "id": "MNCS-LANG-E86F0E121743--OBS-1577E497F621",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-E86F0E121743",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-compiler/src/frontend.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current structural dimension handling is present in the canonical frontend path; the historical dimension-equality limitation is no longer active.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
