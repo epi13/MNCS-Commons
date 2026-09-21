@@ -369,7 +369,7 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-001",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -377,7 +377,11 @@
       ],
       "id": "MNCS-TOOLING-2C138B2DFDA5",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-2C138B2DFDA5--OBS-45916A3BCCE3",
+        "observedAt": "2026-09-21T17:12:37Z",
+        "repository": "mncs-language-service",
+        "summary": "Landed resident snapshots, dependency fingerprints, generation-bound semantic deltas, and late-result rejection; the reproducer still confirms changed documents use whole-document frontend analysis."
       },
       "reporters": [
         "mncs-language-service"
@@ -982,10 +986,10 @@
   "reconciliation": {
     "classificationCounts": {
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
-      "PARTIALLY_RESOLVED": 4,
-      "UNRECONCILED": 23
+      "PARTIALLY_RESOLVED": 5,
+      "UNRECONCILED": 22
     },
-    "unreconciled": 23
+    "unreconciled": 22
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "rust-fallback"

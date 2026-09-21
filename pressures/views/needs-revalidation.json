@@ -2830,7 +2830,7 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-001",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -2838,7 +2838,11 @@
       ],
       "id": "MNCS-TOOLING-2C138B2DFDA5",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-2C138B2DFDA5--OBS-45916A3BCCE3",
+        "observedAt": "2026-09-21T17:12:37Z",
+        "repository": "mncs-language-service",
+        "summary": "Landed resident snapshots, dependency fingerprints, generation-bound semantic deltas, and late-result rejection; the reproducer still confirms changed documents use whole-document frontend analysis."
       },
       "reporters": [
         "mncs-language-service"
@@ -3182,6 +3186,37 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language-service"
+      ],
+      "capability": "resident_event_cursor_resume",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.event-delivery",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-BAC23EF05BCC",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-language-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Resident workspace event cursors are bounded and not restart-durable",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-003",
@@ -3249,13 +3284,17 @@
         "mncs-language-service"
       ],
       "capability": "legacy.ls-p-004",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-D4F5C2B7B4C7",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-D4F5C2B7B4C7--OBS-448713FC07F6",
+        "observedAt": "2026-09-21T17:12:45Z",
+        "repository": "mncs-language-service",
+        "summary": "Landed generation checks prevent superseded analysis from publishing current evidence, while ReferenceCompiler remains synchronous and Forge coalesces queued work and discards stale provider results."
       },
       "reporters": [
         "mncs-language-service"
@@ -3411,11 +3450,11 @@
       "BACKEND_ONLY": 2,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
       "CONSUMER_DEBT": 16,
-      "PARTIALLY_RESOLVED": 26,
+      "PARTIALLY_RESOLVED": 28,
       "STILL_REPRODUCES": 14,
-      "UNRECONCILED": 30
+      "UNRECONCILED": 29
     },
-    "unreconciled": 30
+    "unreconciled": 29
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "needs-revalidation"

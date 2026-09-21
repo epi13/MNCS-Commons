@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:e542a81b871dc8d1bea9121fa7b5f255fa4a737359d6f30116fd988b81e702f2",
+  "evidence": [
+    {
+      "id": "mncs-language-service:landed-supersession-guard",
+      "kind": "commit",
+      "ref": "a0f7ffde064c950580af98d4eaa8032c71b89925",
+      "status": "PASS",
+      "summary": "Late analysis is generation-checked; continuous Forge reports stale work separately from current PASS."
+    }
+  ],
+  "id": "MNCS-TOOLING-D4F5C2B7B4C7--OBS-448713FC07F6",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-semantic-observation-20260921",
+    "classification": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-21T17:12:45Z",
+  "pressureId": "MNCS-TOOLING-D4F5C2B7B4C7",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Issue successive edits while analysis is in flight and assert that only the current generation can publish evidence.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "a0f7ffde064c950580af98d4eaa8032c71b89925",
+    "path": "crates/service-core/src/queries.rs"
+  },
+  "summary": "Landed generation checks prevent superseded analysis from publishing current evidence, while ReferenceCompiler remains synchronous and Forge coalesces queued work and discards stale provider results.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Post-analysis generation guard plus Forge queue coalescing, provider cancellation where supported, and stale-result suppression."
+  }
+}

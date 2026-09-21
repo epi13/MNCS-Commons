@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c1790967269955291508c767a8e5f9f061208a7c97d63a31e7009d5060579d9a",
+  "evidence": [
+    {
+      "id": "mncs-language-service:late-analysis-generation-guard",
+      "kind": "test",
+      "ref": "crates/service-core/src/queries.rs",
+      "status": "PASS",
+      "summary": "The post-analysis generation guard refuses stale publication."
+    }
+  ],
+  "id": "MNCS-TOOLING-D4F5C2B7B4C7--OBS-63ECF7ECF80D",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-semantic-observation-20260921",
+    "classification": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-21T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-D4F5C2B7B4C7",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Issue successive edits while analysis is in flight; assert that old snapshots are discarded and the current generation alone remains authoritative.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "campaign/continuous-semantic-observation-20260921",
+    "path": "crates/service-core/src/queries.rs"
+  },
+  "summary": "Superseded analyses are now prevented from publishing current events or evidence by generation checks, but ReferenceCompiler frontend work remains synchronous and cannot be interrupted. Forge can cancel/coalesce queued work and discard stale provider results; true frontend cancellation remains open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Post-analysis generation guard plus Forge queued-job coalescing and stale-result suppression."
+  }
+}

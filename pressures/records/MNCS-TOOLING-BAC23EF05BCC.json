@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-language-service"
+  ],
+  "capability": "resident_event_cursor_resume",
+  "contentDigest": "sha256:c9642832613db7295283d1dcd0e1c2e83d9ca5ce39e545f0a00096292f85a719",
+  "discoveredAt": "2026-09-21T00:00:00Z",
+  "discoveredBy": "mncs-language-service",
+  "domain": "tooling.event-delivery",
+  "id": "MNCS-TOOLING-BAC23EF05BCC",
+  "identity": {
+    "capability": "resident_event_cursor_resume",
+    "domain": "tooling.event-delivery",
+    "reproducerSignature": "resident-event-cursor.restart-resume.v1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "path": "mncs-language-service:crates/service-core/src/events.rs",
+    "signature": "resident-event-cursor.restart-resume.v1"
+  },
+  "requiredBehavior": "A machine client can resume or explicitly reconcile a resident workspace event stream across host restart without treating absent history as current PASS.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "The resident service now exposes compact generation-bound events and a bounded cursor, but the cursor is in-memory and a host restart requires a fresh status reconciliation rather than guaranteed resume.",
+  "target": "tooling",
+  "title": "Resident workspace event cursors are bounded and not restart-durable",
+  "version": "1"
+}

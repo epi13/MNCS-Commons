@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:51520ae6adcc17113a9cc289683fac88d0480e11508f5fe67c3d4d3c77c085f7",
+  "evidence": [
+    {
+      "id": "mncs-language-service:landed-resident-invalidation",
+      "kind": "commit",
+      "ref": "a0f7ffde064c950580af98d4eaa8032c71b89925",
+      "status": "PASS",
+      "summary": "Resident clients share workspace generations and compact event projections; whole-document frontend invalidation remains explicit."
+    }
+  ],
+  "id": "MNCS-TOOLING-2C138B2DFDA5--OBS-45916A3BCCE3",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-semantic-observation-20260921",
+    "classification": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-21T17:12:37Z",
+  "pressureId": "MNCS-TOOLING-2C138B2DFDA5",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Run the resident integration tests and compare unchanged snapshot reuse with the changed document frontend path.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "a0f7ffde064c950580af98d4eaa8032c71b89925",
+    "path": "crates/service-core/src/queries.rs"
+  },
+  "summary": "Landed resident snapshots, dependency fingerprints, generation-bound semantic deltas, and late-result rejection; the reproducer still confirms changed documents use whole-document frontend analysis.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Resident snapshot/dependency reuse and generation checks narrow invalidation without claiming frontend incrementality."
+  }
+}
