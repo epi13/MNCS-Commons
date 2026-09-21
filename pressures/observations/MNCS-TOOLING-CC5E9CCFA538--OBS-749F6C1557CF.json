@@ -1,0 +1,47 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:9071cc1d279f08f571e9f9d55552b05437fcbe2e3e9005933b723d874b291b51",
+  "evidence": [
+    {
+      "id": "mncs-forge:continuous-demo-wall-time",
+      "kind": "measurement",
+      "ref": "docs/development-evidence/continuous-semantic-observation-2026-09.md",
+      "status": "PASS",
+      "summary": "End-to-end demonstrations completed with Store-backed wall times of 263.00s and 309.29s."
+    },
+    {
+      "id": "mncs-forge:store-recovery-timeout",
+      "kind": "run",
+      "ref": "src/mncs_forge/continuous.py",
+      "status": "UNKNOWN",
+      "summary": "A micro-only run did not reach verifier dispatch before Store recovery was interrupted after more than five minutes."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-749F6C1557CF",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-semantic-observation-20260921",
+    "classification": "OPEN"
+  },
+  "observedAt": "2026-09-21T17:49:31Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the controlled continuous supervisor with a Store-backed root and measure process start through first event dispatch; compare resident Language Service request latency separately.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "e16853a653ba778e392aaa9aa23319492a121fcd",
+    "path": "src/mncs_forge/continuous.py"
+  },
+  "summary": "Controlled Safe-repair and selected-test demonstrations completed, but Store-backed runs took 263.00s and 309.29s; a fresh micro-only run remained in Store recovery for more than five minutes before cancellation.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep Language Service resident and reuse exact evidence identities; do not create a second persistence authority or weaken UNKNOWN semantics."
+  }
+}

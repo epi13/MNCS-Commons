@@ -429,6 +429,38 @@
         "pass": 0,
         "unknown": 0
       }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-forge",
+        "mncs-store"
+      ],
+      "capability": "continuous_supervisor_startup",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.verification-orchestration",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-CC5E9CCFA538",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-forge"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocking",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Store-backed continuous supervision startup dominates edit feedback",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
     }
   ],
   "reconciliation": {
@@ -436,9 +468,9 @@
       "OBSOLETE": 4,
       "PARTIALLY_RESOLVED": 2,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 5
+      "UNRECONCILED": 6
     },
-    "unreconciled": 5
+    "unreconciled": 6
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"

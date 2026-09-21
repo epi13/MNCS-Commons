@@ -219,6 +219,9 @@
     "tooling.event-delivery": [
       "MNCS-TOOLING-BAC23EF05BCC"
     ],
+    "tooling.verification-orchestration": [
+      "MNCS-TOOLING-CC5E9CCFA538"
+    ],
     "type-system.generics": [
       "MNCS-LANG-019204D482CB",
       "MNCS-LANG-4EBBF1137974",
