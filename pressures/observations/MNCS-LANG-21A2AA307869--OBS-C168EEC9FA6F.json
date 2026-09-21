@@ -1,0 +1,64 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "772db68",
+    "validation": "copy-span-boundary-and-web-staging-revalidation"
+  },
+  "contentDigest": "sha256:7f3ecb2dbc20bf5e4a4497f5b73edf723ce41761e48d11a34b16f88beb901deb",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:wasm-copy-span-boundary:main",
+      "kind": "compiler-regression",
+      "ref": "mncs-language@772db68:crates/mncs-codegen/src/lower.rs",
+      "status": "PASS",
+      "summary": "Inactive SequenceCopy source lanes are clamped before the load; the external-view large-offset regression passes on all five executable backends."
+    },
+    {
+      "id": "campaign:mncs-web:WEB-P-012:13-live-five-backends",
+      "kind": "consumer-reproducer",
+      "ref": "mncs-web@c4384b9:repro/feed-chunk-trap.py",
+      "status": "PASS",
+      "summary": "The 5-live control and former 13-live trigger return on research bytecode, portable WASM, C11, LLVM, and Cranelift."
+    },
+    {
+      "id": "campaign:mncs-web:WEB-P-012:uncapped-native-arena",
+      "kind": "consumer-matrix",
+      "ref": "mncs-web@c4384b9:tests/test_fragmentation.py",
+      "status": "FAIL",
+      "summary": "The uncapped 1/5/64 chunk matrix returned 6 cases and hit named MNCS_RSRC_EXHAUSTED on 9 larger C11/LLVM/Cranelift cases; the WASM matrix passed."
+    }
+  ],
+  "id": "MNCS-LANG-21A2AA307869--OBS-C168EEC9FA6F",
+  "kind": "reconciliation",
+  "languageProfile": "0.14",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "PARTIALLY_RESOLVED",
+    "consumerMain": "c4384b9",
+    "currentValidation": true,
+    "languageMain": "772db68",
+    "remainingPressure": "native canonical-cell arena scaling",
+    "resolvedSubpressure": "SequenceCopy inactive-lane address wrap"
+  },
+  "observedAt": "2026-09-21T07:20:00Z",
+  "pressureId": "MNCS-LANG-21A2AA307869",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run mncs-web repro/feed-chunk-trap.py on all five executable backends, then run the uncapped test_fragmentation.py chunk cases; the former 13-live trigger passes, while larger native chunk cases return MNCS_RSRC_EXHAUSTED.",
+    "status": "FAIL"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "772db68",
+    "path": "crates/mncs-codegen/src/lower.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "PARTIALLY_RESOLVED: the eager inactive-lane source-address failure is fixed and the former 13-live trigger returns on all five backends; C11, LLVM, and Cranelift still exhaust their bounded native arena on larger 37+ live-chunk cases.",
+  "version": "1",
+  "workaround": {
+    "description": "Explicit per-backend live-chunk ceilings remain for C11, LLVM, and Cranelift; portable WASM no longer needs the former 12-live ceiling.",
+    "removed": false
+  }
+}
