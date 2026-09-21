@@ -16,7 +16,7 @@ _STALE_SEED_REASONS = {
         "is no longer an open capability gap."
     ),
     "work:seed-family-registry-reconcile": (
-        "The canonical 21-project family roster was reconciled in the Standard and Commons "
+        "The canonical 25-project family roster was reconciled in the Standard and Commons "
         "registries."
     ),
     "work:seed-atlas-registry-alignment": (
