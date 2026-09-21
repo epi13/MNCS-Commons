@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-consumer-verification"
+  },
+  "contentDigest": "sha256:6b1deffb320f8ddadffbd14369fedb887f3736eeb875efecd3d72fc05a6e2efc",
+  "evidence": [
+    {
+      "id": "campaign:mncs-index:canonical-digest-scan:tests",
+      "kind": "consumer-test-suite",
+      "ref": "mncs-index@61d01c8:tests/test_kernels.py tests/test_differential.py tests/test_failure.py",
+      "status": "PASS",
+      "summary": "72 focused tests passed after module canonicalization."
+    }
+  ],
+  "id": "MNCS-LANG-337C9F6113E9--OBS-916D83C986F9",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "RESOLVED",
+    "consumerMain": "61d01c8",
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-337C9F6113E9",
+  "repository": "mncs-index",
+  "reproduction": {
+    "instructions": "Run pytest -q tests/test_kernels.py tests/test_differential.py tests/test_failure.py.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "61d01c8",
+    "path": "tests/test_kernels.py",
+    "repository": "mncs-index"
+  },
+  "summary": "Index now uses the singular mncs.index.digest and mncs.index.scan identities; the canonical module migration and 72 focused bridge/differential/failure tests pass.",
+  "version": "1",
+  "workaround": {
+    "description": "The chronological digest.v2/scan.v2 implementation identities and active references were migrated to the canonical modules.",
+    "removed": true
+  }
+}

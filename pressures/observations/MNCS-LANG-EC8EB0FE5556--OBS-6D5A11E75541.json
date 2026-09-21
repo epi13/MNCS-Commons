@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:66f3aa378d4bf3e3869b4f1a2b35471e860030ed504739e02e0f5781f048a4b1",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-EC8EB0FE5556:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-compiler/src/frontend.rs",
+      "status": "PASS",
+      "summary": "Current literal typing and numeric conversion in the canonical frontend accept the required f64 literal forms."
+    }
+  ],
+  "id": "MNCS-LANG-EC8EB0FE5556--OBS-6D5A11E75541",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-EC8EB0FE5556",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-compiler/src/frontend.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current literal typing and numeric conversion in the canonical frontend accept the required f64 literal forms.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

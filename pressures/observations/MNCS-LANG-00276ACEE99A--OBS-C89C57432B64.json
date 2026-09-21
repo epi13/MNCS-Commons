@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:8e42645215d6d26bd26cee8616a07b777597f1fbda6d1242e1b8ea5346fadf96",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-00276ACEE99A:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:examples/source/pressure-span-copy.mncs",
+      "status": "PASS",
+      "summary": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED: Current MNCS Language exposes the required capability, but the named consumer has not yet migrated or has no current checkout in this workspace."
+    }
+  ],
+  "id": "MNCS-LANG-00276ACEE99A--OBS-C89C57432B64",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-00276ACEE99A",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at examples/source/pressure-span-copy.mncs; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "examples/source/pressure-span-copy.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED: Current MNCS Language exposes the required capability, but the named consumer has not yet migrated or has no current checkout in this workspace.",
+  "version": "1",
+  "workaround": {
+    "description": "The language capability is available; consumer migration remains explicit debt.",
+    "removed": false
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:0f05ed1801d566f79c114ad8b25d36f5e25c5a98ea47788866988dcce6c74609",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-8230261A9F13:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:examples/source/pressure-span-copy.mncs",
+      "status": "PASS",
+      "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
+    }
+  ],
+  "id": "MNCS-LANG-8230261A9F13--OBS-6DC57F3065D4",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "STILL_REPRODUCES",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-8230261A9F13",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at examples/source/pressure-span-copy.mncs; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "examples/source/pressure-span-copy.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation.",
+  "version": "1",
+  "workaround": {
+    "description": "The remaining workaround or boundary is still active.",
+    "removed": false
+  }
+}

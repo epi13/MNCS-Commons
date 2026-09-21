@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:99193dffacc2a88fbabfba7f44693355ac03ba1fbd669415f556f4043efb549c",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-817B22E99A6B:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-compiler/src/frontend.rs",
+      "status": "PASS",
+      "summary": "Current frontend arithmetic lowering supports the exact negation behavior required by the historical reproducer."
+    }
+  ],
+  "id": "MNCS-LANG-817B22E99A6B--OBS-58B90E2DF58F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-817B22E99A6B",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-compiler/src/frontend.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Current frontend arithmetic lowering supports the exact negation behavior required by the historical reproducer.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

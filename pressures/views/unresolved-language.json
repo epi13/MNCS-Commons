@@ -3,21 +3,27 @@
   "pressures": [
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-003",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-00276ACEE99A",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-00276ACEE99A--OBS-C89C57432B64",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED: Current MNCS Language exposes the required capability, but the named consumer has not yet migrated or has no current checkout in this workspace."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "language",
@@ -26,7 +32,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -38,13 +44,17 @@
         "mncs-numerics"
       ],
       "capability": "legacy.p-004",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-019204D482CB",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-019204D482CB--OBS-498374F2CC17",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
         "mncs-language",
@@ -244,21 +254,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-001",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-11473A6AEAC0",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-11473A6AEAC0--OBS-2DA6DA7A48FF",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocker",
       "status": "confirmed",
       "target": "language",
@@ -267,7 +283,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -345,18 +361,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-003",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-18E3AA414F9E",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-18E3AA414F9E--OBS-4D5F73E545C9",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -368,7 +390,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -376,21 +398,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-008",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-1DF6AF1E90DB",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-1DF6AF1E90DB--OBS-B4C249BEB03A",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -399,7 +427,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -407,21 +435,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-012",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "BACKEND_ONLY",
+      "currentValidation": true,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-21A2AA307869",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-21A2AA307869--OBS-24650DF82244",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -430,7 +464,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -543,18 +577,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-014",
-      "classification": "UNRECONCILED",
+      "classification": "BACKEND_ONLY",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-289DEF6E2837",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-289DEF6E2837--OBS-2914FF266A8C",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -566,7 +606,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -959,21 +999,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-004",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "control-flow.iteration",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-470A89615EFE",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-470A89615EFE--OBS-8692E2444AB1",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "language",
@@ -982,7 +1028,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1175,21 +1221,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-010",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-51DC701BCE74",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-51DC701BCE74--OBS-DEA9D288759E",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -1198,7 +1250,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1383,18 +1435,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-010",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5A9472D38CCB",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-5A9472D38CCB--OBS-7D9FEFA5C548",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -1406,7 +1464,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1414,21 +1472,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-009",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-5A94DFD0A049",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-5A94DFD0A049--OBS-72F0CEB9ABD3",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "language",
@@ -1437,7 +1501,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1554,7 +1618,7 @@
         "mncs-language"
       ],
       "capability": "dynamic_query_projection",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "data.registry",
       "fallbackLanguages": [
@@ -1562,7 +1626,11 @@
       ],
       "id": "MNCS-LANG-6643CDECCFEC",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-9CC680A5AFED",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
         "mncs-commons",
@@ -1620,18 +1688,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-016",
-      "classification": "UNRECONCILED",
+      "classification": "BACKEND_ONLY",
       "currentValidation": true,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-6CE2CD2EB82B",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-6CE2CD2EB82B--OBS-B0D2D487E22D",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -1643,7 +1717,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1826,11 +1900,12 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-test",
         "mncs-web"
       ],
       "capability": "legacy.web-p-007",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -1838,9 +1913,14 @@
       ],
       "id": "MNCS-LANG-770B42F56E6C",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-770B42F56E6C--OBS-A70804D85A19",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-test",
         "mncs-web"
       ],
@@ -1853,7 +1933,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1896,18 +1976,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-015",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8230261A9F13",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-8230261A9F13--OBS-6DC57F3065D4",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -1919,7 +2005,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2032,21 +2118,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-011",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "BACKEND_ONLY",
+      "currentValidation": true,
       "domain": "backend",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8930A60B60E0",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "BACKEND_ONLY",
+        "observationId": "MNCS-LANG-8930A60B60E0--OBS-765F4D5245AA",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "BACKEND_ONLY: The source-level contract is present or expressible; the remaining failure is a backend realization/portability inconsistency rather than a missing language construct."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -2055,7 +2147,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2280,21 +2372,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-006",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A24150CD4D89",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-A24150CD4D89--OBS-12FB3FEC5C9E",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "language",
@@ -2303,7 +2401,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2346,18 +2444,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-009",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "type-system.generics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-A341270CEEAA",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-A341270CEEAA--OBS-8D75B3C7A861",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -2369,7 +2473,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2552,18 +2656,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-017",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-BA0CEB347965",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-BA0CEB347965--OBS-428B736D8DD1",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -2575,7 +2685,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2583,23 +2693,29 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doc"
+        "mncs-doc",
+        "mncs-language"
       ],
       "capability": "source-preserving-document-regions",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
       "domain": "document.text",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-BC105FDA1446",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-BC105FDA1446--OBS-FC9B1F793314",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open."
       },
       "reporters": [
-        "mncs-doc"
+        "mncs-doc",
+        "mncs-language"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "discovered",
       "target": "language",
@@ -2608,7 +2724,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2616,18 +2732,24 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "capability": "legacy.p-018",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "type-system.views",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-C20E8604EB31",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-C20E8604EB31--OBS-C655D72E3333",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-numerics"
       ],
       "revalidationRequired": false,
@@ -2639,7 +2761,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2933,21 +3055,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-002",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "type-system.records",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-E0ECD53CAE1F",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-E0ECD53CAE1F--OBS-7282FB52FACF",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -2956,7 +3084,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3104,21 +3232,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-web"
       ],
       "capability": "legacy.web-p-005",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-F43CBD64717D",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-F43CBD64717D--OBS-82ED64FAEA61",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-web"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "minor",
       "status": "confirmed",
       "target": "language",
@@ -3127,7 +3261,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3206,14 +3340,13 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "BACKEND_ONLY": 2,
-      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
+      "BACKEND_ONLY": 6,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
       "CONSUMER_DEBT": 16,
-      "PARTIALLY_RESOLVED": 26,
-      "STILL_REPRODUCES": 15,
-      "UNRECONCILED": 23
+      "PARTIALLY_RESOLVED": 29,
+      "STILL_REPRODUCES": 30
     },
-    "unreconciled": 23
+    "unreconciled": 0
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "unresolved-language"

@@ -43,7 +43,7 @@
         "mncs-test"
       ],
       "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -51,7 +51,11 @@
       ],
       "id": "MNCS-LANG-52A5E0C72A39",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-52A5E0C72A39--OBS-ABA8E2E6F36A",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-actions",
@@ -123,17 +127,22 @@
         "ravel"
       ],
       "capability": "generic-typed-callable-reflection",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "OBSOLETE",
+      "currentValidation": true,
       "domain": "callable.inventory",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-5E290D20B90B",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-5E290D20B90B--OBS-866838E9975B",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
+        "mncs-language",
         "mncs-test"
       ],
       "revalidationRequired": false,
@@ -157,7 +166,7 @@
         "mncs-language"
       ],
       "capability": "dynamic_query_projection",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "data.registry",
       "fallbackLanguages": [
@@ -165,7 +174,11 @@
       ],
       "id": "MNCS-LANG-6643CDECCFEC",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-9CC680A5AFED",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
         "mncs-commons",
@@ -188,11 +201,12 @@
     },
     {
       "affectedRepositories": [
+        "mncs-language",
         "mncs-test",
         "mncs-web"
       ],
       "capability": "legacy.web-p-007",
-      "classification": "UNRECONCILED",
+      "classification": "STILL_REPRODUCES",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -200,9 +214,14 @@
       ],
       "id": "MNCS-LANG-770B42F56E6C",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-770B42F56E6C--OBS-A70804D85A19",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-language",
         "mncs-test",
         "mncs-web"
       ],
@@ -215,7 +234,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -228,7 +247,7 @@
         "mncs-store"
       ],
       "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
-      "classification": "UNRECONCILED",
+      "classification": "OBSOLETE",
       "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
@@ -236,7 +255,11 @@
       ],
       "id": "MNCS-LANG-8AF4BC50DDB4",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "OBSOLETE",
+        "observationId": "MNCS-LANG-8AF4BC50DDB4--OBS-D5DA8DE2A28C",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "OBSOLETE: The lifecycle is already terminal and current architecture supersedes the historical implementation claim; history is retained without treating it as active language debt."
       },
       "reporters": [
         "mncs-commons",
@@ -302,23 +325,29 @@
     },
     {
       "affectedRepositories": [
-        "mncs-doc"
+        "mncs-doc",
+        "mncs-language"
       ],
       "capability": "source-preserving-document-regions",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
       "domain": "document.text",
       "fallbackLanguages": [
         "python"
       ],
       "id": "MNCS-LANG-BC105FDA1446",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-BC105FDA1446--OBS-FC9B1F793314",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-language",
+        "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open."
       },
       "reporters": [
-        "mncs-doc"
+        "mncs-doc",
+        "mncs-language"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "discovered",
       "target": "language",
@@ -327,7 +356,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -424,10 +453,10 @@
       "id": "MNCS-LIB-C1263916C3C2",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LIB-C1263916C3C2--OBS-311FB5763321",
-        "observedAt": "2026-09-20T18:46:00Z",
+        "observationId": "MNCS-LIB-C1263916C3C2--OBS-3A6C46163A9D",
+        "observedAt": "2026-09-20T20:00:00Z",
         "repository": "mncs-store",
-        "summary": "The native publication admission decision and a granted effectful create/write/sync/rename/sync proof now pass. The ordinary multi-chunk generation/current-pointer lifecycle still uses host filesystem mechanics, so the persistence cutover is partial."
+        "summary": "The Commons pressure vertical path now persists a typed semantic-state payload with source/lifecycle/severity codes and evidence/supersession set identities, then reads the same bytes after Store close/reopen. Native publication admission remains proven, while ordinary large generation publication remains host-backed."
       },
       "reporters": [
         "mncs-commons",
@@ -680,12 +709,13 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "PARTIALLY_RESOLVED": 3,
+      "OBSOLETE": 3,
+      "PARTIALLY_RESOLVED": 4,
       "RESOLVED": 1,
-      "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 13
+      "STILL_REPRODUCES": 3,
+      "UNRECONCILED": 7
     },
-    "unreconciled": 13
+    "unreconciled": 7
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "python-fallback"

@@ -1,0 +1,48 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:2d2d5027e96ec141f1ee4385e5335ae71cda52eba10f70f2ecda50243a436652",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-BC105FDA1446:current-main",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:library/std/text_view.mncs",
+      "status": "PASS",
+      "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open."
+    }
+  ],
+  "id": "MNCS-LANG-BC105FDA1446--OBS-FC9B1F793314",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "classification": "PARTIALLY_RESOLVED",
+    "consumerMain": null,
+    "currentValidation": true,
+    "languageMain": "0e28c9c"
+  },
+  "observedAt": "2026-09-21T05:12:00Z",
+  "pressureId": "MNCS-LANG-BC105FDA1446",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Rerun the current-language evidence at library/std/text_view.mncs; this observation does not execute repository text automatically.",
+    "status": "PASS"
+  },
+  "runId": "mncs-language-reconciliation-2026-09",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "library/std/text_view.mncs",
+    "repository": "mncs-language"
+  },
+  "summary": "PARTIALLY_RESOLVED: Current Profile 0.18 resolves the documented diagnostic or bounded subset; the narrower remaining semantic boundary is still open.",
+  "version": "1",
+  "workaround": {
+    "description": "The remaining workaround or boundary is still active.",
+    "removed": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "0e28c9c",
+    "validation": "current-main-revalidation"
+  },
+  "contentDigest": "sha256:1130e1f13abea2558de7f028c563e7e0acd89c0f007900eb3c8288e4b05a8cd9",
+  "evidence": [
+    {
+      "id": "campaign:mncs-language:MNCS-LANG-76B88EDA0119:current-main-verification",
+      "kind": "campaign-current-main",
+      "ref": "mncs-language@0e28c9c:crates/mncs-codegen/src/cranelift_backend.rs",
+      "status": "PASS",
+      "summary": "The current Cranelift backend validates execution-request arity before lowering; the historical arity-mismatch SIGSEGV is not reproduced by the current implementation."
+    }
+  ],
+  "id": "MNCS-LANG-76B88EDA0119--OBS-296AC2580214",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-language-reconciliation-2026-09",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-21T05:19:46Z",
+  "pressureId": "MNCS-LANG-76B88EDA0119",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "0e28c9c",
+    "path": "crates/mncs-codegen/src/cranelift_backend.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "The current Cranelift backend validates execution-request arity before lowering; the historical arity-mismatch SIGSEGV is not reproduced by the current implementation.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
