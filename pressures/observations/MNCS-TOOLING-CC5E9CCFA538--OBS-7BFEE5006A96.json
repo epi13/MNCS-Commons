@@ -1,0 +1,74 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-language": "ff5e98c",
+    "mncs-store": "16ba618"
+  },
+  "contentDigest": "sha256:5c277454bacc6c16d3ecd26827e5a2af5bca2efc0dbb9fb509ccf8fdf38188e0",
+  "evidence": [
+    {
+      "id": "mncs-forge:micro-verifier-retained-final-20260922",
+      "kind": "benchmark",
+      "ref": "scripts/benchmark-micro-verifiers.py --iterations 9",
+      "status": "PASS",
+      "summary": "Exit 0; setup 7.133 s, verifier p50 2.156 s, verifier p95/p99 2.817 s, state-inspect p50 2.797 ms and p95/p99 47.734 ms."
+    },
+    {
+      "id": "mncs-forge:verifier-phase-split-final-20260922",
+      "kind": "measurement",
+      "ref": "one bounded micro-verifier phase profile",
+      "status": "PASS",
+      "summary": "Provider 30.9 ms; action publication 282.5 ms; terminal receipt-plus-result batch publication 997.8 ms; total 1,345.9 ms; one action generation plus one terminal-evidence generation."
+    },
+    {
+      "id": "mncs-forge:environment-entry-final-20260922",
+      "kind": "integration",
+      "ref": "continuous enter controlled fresh-agent acceptance",
+      "status": "PASS",
+      "summary": "One bounded entry operation attached Language Service and Forge supervisor, returned a compact capsule, and required no repository enumeration; warm repeat returned in about 0.25 s."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-7BFEE5006A96",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "action_publication_ms": 282.5,
+    "benchmark_iterations": 9,
+    "classification": "PARTIALLY_RESOLVED",
+    "cold_environment_entry_s": 6.54,
+    "currentValidation": true,
+    "provider_ms": 30.9,
+    "remaining_primitive": "Store durable terminal publication and legitimate first-fill artifact admission",
+    "setup_ms": 7133.079,
+    "state_inspect_p50_ms": 2.797,
+    "state_inspect_p95_ms": 47.734,
+    "state_inspect_p99_ms": 47.734,
+    "terminal_publication_ms": 997.8,
+    "verifier_p50_ms": 2156.293,
+    "verifier_p95_ms": 2817.022,
+    "verifier_p99_ms": 2817.022,
+    "verifier_total_ms": 1345.9,
+    "warm_environment_entry_s": 0.25
+  },
+  "observedAt": "2026-09-22T15:36:00Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run scripts/benchmark-micro-verifiers.py --iterations 9, profile one real bounded verifier by authorization/action/provider/terminal-publication phase, and invoke continuous enter once from a fresh controlled process followed by a warm entry.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-final-integration",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7ce2329",
+    "repository": "mncs-forge",
+    "scope": "resident-forge-and-environment-entry-campaign"
+  },
+  "summary": "The final integration path removes routine Forge semantic subprocesses and makes environment entry bounded. A nine-iteration micro-verifier benchmark reports setup 7.133 s in a fresh temporary project, verifier p50 2.156 s and p95/p99 2.817 s, and state-inspect p50 2.797 ms with p95/p99 47.734 ms; the first state sample is the projection establishment. In one measured verifier, provider work was about 31 ms, action publication 282 ms, and receipt-plus-result batch publication 998 ms, so Forge/Store orchestration was about 1.315 s. A controlled environment enter took 6.54 s cold while starting both residents and 0.25 s warm; its capsule is bounded and performs no repository-family enumeration. The remaining pressure is durable Store publication and first-fill artifact admission.",
+  "version": "1",
+  "workaround": {
+    "description": "Use continuous enter and resident Forge/Language Service state; Store artifact cache hits are retained rather than forcing a new identity shortcut.",
+    "removed": "not_needed"
+  }
+}

@@ -437,21 +437,21 @@
       ],
       "capability": "continuous_supervisor_startup",
       "classification": "PARTIALLY_RESOLVED",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "tooling.verification-orchestration",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-842388745696",
-        "observedAt": "2026-09-22T11:28:37Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-7BFEE5006A96",
+        "observedAt": "2026-09-22T15:36:00Z",
         "repository": "mncs-forge",
-        "summary": "The existing default 25-iteration Forge micro-verifier benchmark now completes with exit 0 under its declared 300-second guard. It reports 80 ledger entries, 13.181 s setup, verifier-run p50 4.796 s, state-inspect p50 0.306 s with a 4.481 s p99 cold outlier, and ledger verification p50 0.100 s. The benchmark is no longer a native-SSA timeout detector; the remaining latency is Store-backed durable verifier work and cold projection outliers."
+        "summary": "The final integration path removes routine Forge semantic subprocesses and makes environment entry bounded. A nine-iteration micro-verifier benchmark reports setup 7.133 s in a fresh temporary project, verifier p50 2.156 s and p95/p99 2.817 s, and state-inspect p50 2.797 ms with p95/p99 47.734 ms; the first state sample is the projection establishment. In one measured verifier, provider work was about 31 ms, action publication 282 ms, and receipt-plus-result batch publication 998 ms, so Forge/Store orchestration was about 1.315 s. A controlled environment enter took 6.54 s cold while starting both residents and 0.25 s warm; its capsule is bounded and performs no repository-family enumeration. The remaining pressure is durable Store publication and first-fill artifact admission."
       },
       "reporters": [
         "mncs-forge"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocking",
       "status": "discovered",
       "target": "tooling",

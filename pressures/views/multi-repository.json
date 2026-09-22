@@ -481,29 +481,31 @@
     },
     {
       "affectedRepositories": [
+        "mncs-forge",
         "mncs-ingest",
         "mncs-language"
       ],
       "capability": "legacy.ingest-p-010",
-      "classification": "PARTIALLY_RESOLVED",
-      "currentValidation": false,
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4E8D16B49738",
       "reconciliation": {
-        "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-4E8D16B49738--OBS-B23010627595",
-        "observedAt": "2026-09-22T11:08:03Z",
-        "repository": "mncs-language",
-        "summary": "Generic retained reference execution cost per call is narrowed substantially. The scalar C ABI leaf measured about 63-73 microseconds and a 20-deep chain about 158-164 microseconds, or about 4.7-5.0 microseconds of nested-call overhead per call, versus about 84.3 microseconds for the old leaf and about 50 microseconds nested overhead. The remaining consumer-specific gap is downstream adoption and the broader Store effect envelope, not a second execution implementation."
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-FE763882E2B1",
+        "observedAt": "2026-09-22T15:34:00Z",
+        "repository": "mncs-forge",
+        "summary": "Forge now adopts the canonical language-owned retained execution boundary for its lifecycle, readiness, reconciliation, bundle, and assurance semantic calls. One exact Forge application artifact and one mncs-embed session are admitted and reused; the one process invocation in the profile is startup ABI metadata, while seven semantic calls use the retained session. The remaining measured cost is downstream durable Store publication, not a second reference-execution implementation."
       },
       "reporters": [
+        "mncs-forge",
         "mncs-ingest",
         "mncs-language"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -512,7 +514,7 @@
       "valid": true,
       "verificationState": "unknown",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 1
@@ -1293,22 +1295,22 @@
       ],
       "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
       "classification": "PARTIALLY_RESOLVED",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-8F49A242F22D",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-8F49A242F22D--OBS-4CEA012D3B4F",
-        "observedAt": "2026-09-22T11:20:00Z",
-        "repository": "mncs-language",
-        "summary": "Pure generation semantics are cross-backend identical when the backend resource envelope is sufficient: research-bytecode, portable WASM, C11, LLVM, and Cranelift all returned the same table values at a temporary 524288 request budget. The exact residual compiled-backend limitation is portable WASM's generic opcode-fuel expansion: its table cases exhaust at the corpus-declared 65536 language-step budget while research-bytecode returns in 33808 language steps; the native compiled backends return at the declared budget. This is a resource-scaling limitation, not a digest or semantic-value disagreement."
+        "observationId": "MNCS-LANG-8F49A242F22D--OBS-47A84756343F",
+        "observedAt": "2026-09-22T15:35:00Z",
+        "repository": "mncs-store",
+        "summary": "The Store now provides generic generation-bound lookup maps and atomic multi-object publication, and Forge uses the latter to publish a receipt plus terminal verifier result in one generation. Isolated generation measurements remain approximately linear in total history bytes: 148 bytes at one record, 1,264 at ten, 6,224 at fifty, 12,424 at one hundred, 31,024 at 250, and 62,024 at 500; the sampled commit remained filesystem-barrier dominated at about 14.6-20.8 ms. The residual is representation write amplification and the separate portable-WASM resource envelope, not a cross-backend value disagreement."
       },
       "reporters": [
         "mncs-language",
         "mncs-store"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "discovered",
       "target": "language",
@@ -2472,21 +2474,21 @@
       ],
       "capability": "continuous_supervisor_startup",
       "classification": "PARTIALLY_RESOLVED",
-      "currentValidation": false,
+      "currentValidation": true,
       "domain": "tooling.verification-orchestration",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-842388745696",
-        "observedAt": "2026-09-22T11:28:37Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-7BFEE5006A96",
+        "observedAt": "2026-09-22T15:36:00Z",
         "repository": "mncs-forge",
-        "summary": "The existing default 25-iteration Forge micro-verifier benchmark now completes with exit 0 under its declared 300-second guard. It reports 80 ledger entries, 13.181 s setup, verifier-run p50 4.796 s, state-inspect p50 0.306 s with a 4.481 s p99 cold outlier, and ledger verification p50 0.100 s. The benchmark is no longer a native-SSA timeout detector; the remaining latency is Store-backed durable verifier work and cold projection outliers."
+        "summary": "The final integration path removes routine Forge semantic subprocesses and makes environment entry bounded. A nine-iteration micro-verifier benchmark reports setup 7.133 s in a fresh temporary project, verifier p50 2.156 s and p95/p99 2.817 s, and state-inspect p50 2.797 ms with p95/p99 47.734 ms; the first state sample is the projection establishment. In one measured verifier, provider work was about 31 ms, action publication 282 ms, and receipt-plus-result batch publication 998 ms, so Forge/Store orchestration was about 1.315 s. A controlled environment enter took 6.54 s cold while starting both residents and 0.25 s warm; its capsule is bounded and performs no repository-family enumeration. The remaining pressure is durable Store publication and first-fill artifact admission."
       },
       "reporters": [
         "mncs-forge"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "blocking",
       "status": "discovered",
       "target": "tooling",
@@ -2619,8 +2621,9 @@
   "reconciliation": {
     "classificationCounts": {
       "BACKEND_ONLY": 3,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 9,
+      "PARTIALLY_RESOLVED": 8,
       "RESOLVED": 14,
       "STILL_REPRODUCES": 17,
       "UNRECONCILED": 21

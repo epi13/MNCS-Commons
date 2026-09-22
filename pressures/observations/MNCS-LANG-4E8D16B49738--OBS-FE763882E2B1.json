@@ -1,0 +1,57 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-forge": "7ce2329",
+    "mncs-language": "ff5e98c",
+    "mncs-store": "16ba618"
+  },
+  "contentDigest": "sha256:877c3ad5eb0c102b277485d95945713ad78df78221d22c6d05908d6e71436195",
+  "evidence": [
+    {
+      "id": "mncs-forge:retained-semantic-spine-profile-20260922",
+      "kind": "benchmark",
+      "ref": "retained Forge semantic call profile",
+      "status": "PASS",
+      "summary": "Lifecycle preflight p50 5.563 ms, lifecycle projection p50 11.938 ms, readiness projection p50 13.587 ms, bundle precondition p50 8.063 ms, and assurance p50 5.704 ms after one admitted artifact/session."
+    },
+    {
+      "id": "mncs-forge:retained-semantic-tests-20260922",
+      "kind": "test",
+      "ref": "tests/test_mncs_native.py tests/test_mncs_assurance.py",
+      "status": "PASS",
+      "summary": "Retained native calls and language-owned assurance behavior pass the focused Forge contract suite; the CLI path remains available as the explicit oracle/diagnostic surface."
+    }
+  ],
+  "id": "MNCS-LANG-4E8D16B49738--OBS-FE763882E2B1",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "currentValidation": true,
+    "residual": "Store durable terminal publication",
+    "retained_session": true,
+    "semantic_process_invocations_per_profile": 0,
+    "startup_metadata_process_invocations": 1
+  },
+  "observedAt": "2026-09-22T15:34:00Z",
+  "pressureId": "MNCS-LANG-4E8D16B49738",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Start NativeForgeAdapter with the release mncs-embed library, call each Forge semantic projection repeatedly, and inspect retained_status for one artifact identity, one active session, zero per-query process invocations, and typed result parity with the existing CLI/oracle tests.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-forge-retained-spine",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7ce2329",
+    "repository": "mncs-forge",
+    "scope": "resident-forge-semantic-spine"
+  },
+  "summary": "Forge now adopts the canonical language-owned retained execution boundary for its lifecycle, readiness, reconciliation, bundle, and assurance semantic calls. One exact Forge application artifact and one mncs-embed session are admitted and reused; the one process invocation in the profile is startup ABI metadata, while seven semantic calls use the retained session. The remaining measured cost is downstream durable Store publication, not a second reference-execution implementation.",
+  "version": "1",
+  "workaround": {
+    "description": "Use the canonical retained mncs-embed session for Forge semantic work; retain CLI execution only for explicit diagnostics and compatibility tests.",
+    "removed": "not_needed"
+  }
+}

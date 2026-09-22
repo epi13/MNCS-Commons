@@ -1,0 +1,70 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-forge": "7ce2329",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:2134b4346d0d1173b35a1f9422fd804c214037b657784963baaf12daa132787a",
+  "evidence": [
+    {
+      "id": "mncs-store:generation-scaling-20260922",
+      "kind": "measurement",
+      "ref": "Store generation representation scaling probe",
+      "status": "PASS",
+      "summary": "Generation and SHA bytes scale with history size, while the sampled commit remains about 14.6-20.8 ms through 500 records and 21 filesystem barriers in the isolated probe."
+    },
+    {
+      "id": "mncs-store:batch-old-or-new-recovery-20260922",
+      "kind": "test",
+      "ref": "tests/test_embedded_store.py atomic batch failpoints",
+      "status": "PASS",
+      "summary": "All publication failpoints recover to the old generation or the complete new batch; no partial batch is visible."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-47A84756343F",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "commit_latency_ms": [
+      15.062,
+      14.615,
+      15.646,
+      15.856,
+      20.749,
+      18.25
+    ],
+    "currentValidation": true,
+    "generation_bytes": [
+      148,
+      1264,
+      6224,
+      12424,
+      31024,
+      62024
+    ],
+    "generation_samples": [1, 10, 50, 100, 250, 500],
+    "residual": "full-generation rewrite/hash is asymptotically linear but not dominant in the 500-record probe"
+  },
+  "observedAt": "2026-09-22T15:35:00Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Run Store history scaling at 1, 10, 50, 100, 250, and 500 records, record generation and SHA bytes plus fsync count and commit latency, then fault-inject every atomic batch publication boundary and verify recovery exposes only the old or complete new generation.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-store-generation-scaling",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "16ba618",
+    "repository": "mncs-store",
+    "scope": "generation-representation-scaling-and-terminal-batch"
+  },
+  "summary": "The Store now provides generic generation-bound lookup maps and atomic multi-object publication, and Forge uses the latter to publish a receipt plus terminal verifier result in one generation. Isolated generation measurements remain approximately linear in total history bytes: 148 bytes at one record, 1,264 at ten, 6,224 at fifty, 12,424 at one hundred, 31,024 at 250, and 62,024 at 500; the sampled commit remained filesystem-barrier dominated at about 14.6-20.8 ms. The residual is representation write amplification and the separate portable-WASM resource envelope, not a cross-backend value disagreement.",
+  "version": "1",
+  "workaround": {
+    "description": "Use the admitted research-bytecode backend for the effectful Store application and the generic Store batch boundary; preserve the larger portable-WASM fuel envelope for composite/table workloads.",
+    "removed": "not_needed"
+  }
+}

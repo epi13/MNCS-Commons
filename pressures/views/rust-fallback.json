@@ -177,29 +177,31 @@
     },
     {
       "affectedRepositories": [
+        "mncs-forge",
         "mncs-ingest",
         "mncs-language"
       ],
       "capability": "legacy.ingest-p-010",
-      "classification": "PARTIALLY_RESOLVED",
-      "currentValidation": false,
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-LANG-4E8D16B49738",
       "reconciliation": {
-        "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-4E8D16B49738--OBS-B23010627595",
-        "observedAt": "2026-09-22T11:08:03Z",
-        "repository": "mncs-language",
-        "summary": "Generic retained reference execution cost per call is narrowed substantially. The scalar C ABI leaf measured about 63-73 microseconds and a 20-deep chain about 158-164 microseconds, or about 4.7-5.0 microseconds of nested-call overhead per call, versus about 84.3 microseconds for the old leaf and about 50 microseconds nested overhead. The remaining consumer-specific gap is downstream adoption and the broader Store effect envelope, not a second execution implementation."
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-FE763882E2B1",
+        "observedAt": "2026-09-22T15:34:00Z",
+        "repository": "mncs-forge",
+        "summary": "Forge now adopts the canonical language-owned retained execution boundary for its lifecycle, readiness, reconciliation, bundle, and assurance semantic calls. One exact Forge application artifact and one mncs-embed session are admitted and reused; the one process invocation in the profile is startup ABI metadata, while seven semantic calls use the retained session. The remaining measured cost is downstream durable Store publication, not a second reference-execution implementation."
       },
       "reporters": [
+        "mncs-forge",
         "mncs-ingest",
         "mncs-language"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "language",
@@ -208,7 +210,7 @@
       "valid": true,
       "verificationState": "unknown",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 1
@@ -987,8 +989,8 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
-      "PARTIALLY_RESOLVED": 5,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
+      "PARTIALLY_RESOLVED": 4,
       "UNRECONCILED": 22
     },
     "unreconciled": 22
