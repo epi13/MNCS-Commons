@@ -1291,6 +1291,43 @@
         "mncs-language",
         "mncs-store"
       ],
+      "capability": "legacy.p2-008.step-cost-and-boundary-crossing-pressure-at-store-scale",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-8F49A242F22D",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-8F49A242F22D--OBS-4CEA012D3B4F",
+        "observedAt": "2026-09-22T11:20:00Z",
+        "repository": "mncs-language",
+        "summary": "Pure generation semantics are cross-backend identical when the backend resource envelope is sufficient: research-bytecode, portable WASM, C11, LLVM, and Cranelift all returned the same table values at a temporary 524288 request budget. The exact residual compiled-backend limitation is portable WASM's generic opcode-fuel expansion: its table cases exhaust at the corpus-declared 65536 language-step budget while research-bytecode returns in 33808 language steps; the native compiled backends return at the declared budget. This is a resource-scaling limitation, not a digest or semantic-value disagreement."
+      },
+      "reporters": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Step-cost and boundary-crossing pressure at store scale",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-language",
+        "mncs-store"
+      ],
       "capability": "legacy.p1-003.no-atomic-rename-directory-creation-iteration-or-file-metadata",
       "classification": "OBSOLETE",
       "currentValidation": true,
@@ -2583,7 +2620,7 @@
     "classificationCounts": {
       "BACKEND_ONLY": 3,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 8,
+      "PARTIALLY_RESOLVED": 9,
       "RESOLVED": 14,
       "STILL_REPRODUCES": 17,
       "UNRECONCILED": 21

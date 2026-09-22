@@ -1,0 +1,54 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "mncs-language": "938616b",
+    "release_binary": "target/release/mncs"
+  },
+  "contentDigest": "sha256:9f5163b8abcdff371860988f866e538ec0be898cead1dc4023584b87ce5d4407",
+  "evidence": [
+    {
+      "id": "mncs-language:backend-differential-table-values-20260922",
+      "kind": "differential",
+      "ref": "release experiment run over generation table cases on five backends",
+      "status": "PASS",
+      "summary": "All five backends returned true/true/false/false identically with sufficient fuel."
+    },
+    {
+      "id": "mncs-codegen:portable-wasm-opcode-fuel-bound-20260922",
+      "kind": "measurement",
+      "ref": "portable WASM generation corpus at 65536 and 524288 request budgets",
+      "status": "PASS",
+      "summary": "Portable WASM exhausts its generic opcode budget at 65536 and succeeds at 524288; no value mismatch occurs."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-4CEA012D3B4F",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "portable_wasm_declared_budget": 65536,
+    "portable_wasm_sufficient_budget": 524288,
+    "research_generation_steps": 33808,
+    "residual": "portable-WASM opcode-fuel expansion for composite/table workloads"
+  },
+  "observedAt": "2026-09-22T11:20:00Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the release CLI over generation-corpus.json on all five backends; compare table cases at the declared budget, then rerun the same pure table cases with a temporary 524288 budget.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-backend-differential",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "938616b",
+    "repository": "mncs-language",
+    "scope": "compiled-backend-differential-resource-boundary"
+  },
+  "summary": "Pure generation semantics are cross-backend identical when the backend resource envelope is sufficient: research-bytecode, portable WASM, C11, LLVM, and Cranelift all returned the same table values at a temporary 524288 request budget. The exact residual compiled-backend limitation is portable WASM's generic opcode-fuel expansion: its table cases exhaust at the corpus-declared 65536 language-step budget while research-bytecode returns in 33808 language steps; the native compiled backends return at the declared budget. This is a resource-scaling limitation, not a digest or semantic-value disagreement.",
+  "version": "1",
+  "workaround": {
+    "description": "Use the backend-specific admitted resource envelope; Store's full effectful application remains on research-bytecode.",
+    "removed": "not_needed"
+  }
+}
