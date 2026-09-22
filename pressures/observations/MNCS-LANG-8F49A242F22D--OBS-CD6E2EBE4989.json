@@ -1,0 +1,62 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-language": "938616b",
+    "optimization": "prepared-ssa-dense-slots-shared-call-frames"
+  },
+  "contentDigest": "sha256:be257ed168bbdb4948379262bc5f0f95a28429b04d79255f89c2778c407b57f0",
+  "evidence": [
+    {
+      "id": "mncs-store:native-sha-corpus-20260922",
+      "kind": "measurement",
+      "ref": "StoreSession.sha256 256B..16KiB release corpus",
+      "status": "PASS",
+      "summary": "All six digest outputs matched hashlib; 16 KiB was 0.41799 s."
+    },
+    {
+      "id": "mncs-language:ssa-runtime-profile-20260922",
+      "kind": "measurement",
+      "ref": "MNCS_RUNTIME_PROFILE retained 1 KiB SHA request",
+      "status": "PASS",
+      "summary": "Nested-call, instruction, scalar-operator, sequence, and trace counters were captured."
+    },
+    {
+      "id": "mncs-store:artifact-cache-cross-process-20260922",
+      "kind": "measurement",
+      "ref": "StoreSession fresh-process cache miss/hit probe",
+      "status": "PASS",
+      "summary": "Artifact preparation fell from 3.504 s on fill to 0.120 s on a validated cross-process hit."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-CD6E2EBE4989",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "new_sha_16k_seconds": 0.41799077298492193,
+    "old_sha_16k_seconds": 64.036,
+    "remaining_step_budget_boundary": "32768 default harness versus approximately 32786 required",
+    "sha_speedup": 153.2
+  },
+  "observedAt": "2026-09-22T11:08:03Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Run the retained Store native SHA corpus with release research-bytecode, MNCS_RUNTIME_PROFILE for the 1 KiB case, and the existing generation corpus with its declared step budgets.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "6c5b736",
+    "repository": "mncs-store",
+    "scope": "native-retained-runtime-profile-and-store-cache"
+  },
+  "summary": "The Store-scale retained-runtime pressure is materially narrowed. Release research-bytecode SHA-256 fell from 64.0360 s to 0.41799 s at 16 KiB (153.2x), and 4.2376 s to 0.02818 s at 1 KiB. A profiled 1 KiB request reported 285,542 instructions, 19,552 nested calls, 4.11 ms scalar primitive time, and 81.9 ms profiled execution, showing generic executor administration rather than arithmetic was dominant. The remaining corpus boundary is the existing default 32,768-step harness budget for table cases requiring about 32,786 steps; explicit 65,536 remains required there.",
+  "version": "1",
+  "workaround": {
+    "description": "Prepared retained execution and identity-bound artifact reuse are now canonical.",
+    "removed": "not_needed"
+  }
+}

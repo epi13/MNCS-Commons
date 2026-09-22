@@ -1106,7 +1106,8 @@
     },
     {
       "affectedRepositories": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "capability": "legacy.ingest-p-010",
       "classification": "PARTIALLY_RESOLVED",
@@ -1118,13 +1119,14 @@
       "id": "MNCS-LANG-4E8D16B49738",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-4E8D16B49738--OBS-031616828BA3",
-        "observedAt": "2026-09-20T23:00:00Z",
-        "repository": "mncs-ingest",
-        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Reference-execution cost per call (partially relieved)."
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-B23010627595",
+        "observedAt": "2026-09-22T11:08:03Z",
+        "repository": "mncs-language",
+        "summary": "Generic retained reference execution cost per call is narrowed substantially. The scalar C ABI leaf measured about 63-73 microseconds and a 20-deep chain about 158-164 microseconds, or about 4.7-5.0 microseconds of nested-call overhead per call, versus about 84.3 microseconds for the old leaf and about 50 microseconds nested overhead. The remaining consumer-specific gap is downstream adoption and the broader Store effect envelope, not a second execution implementation."
       },
       "reporters": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -1135,7 +1137,7 @@
       "valid": true,
       "verificationState": "unknown",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 1
@@ -2163,10 +2165,10 @@
       "id": "MNCS-LANG-8F49A242F22D",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-8F49A242F22D--OBS-74E53E9C508E",
-        "observedAt": "2026-09-20T23:00:00Z",
+        "observationId": "MNCS-LANG-8F49A242F22D--OBS-CD6E2EBE4989",
+        "observedAt": "2026-09-22T11:08:03Z",
         "repository": "mncs-store",
-        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Step-cost and boundary-crossing pressure at store scale."
+        "summary": "The Store-scale retained-runtime pressure is materially narrowed. Release research-bytecode SHA-256 fell from 64.0360 s to 0.41799 s at 16 KiB (153.2x), and 4.2376 s to 0.02818 s at 1 KiB. A profiled 1 KiB request reported 285,542 instructions, 19,552 nested calls, 4.11 ms scalar primitive time, and 81.9 ms profiled execution, showing generic executor administration rather than arithmetic was dominant. The remaining corpus boundary is the existing default 32,768-step harness budget for table cases requiring about 32,786 steps; explicit 65,536 remains required there."
       },
       "reporters": [
         "mncs-store"
