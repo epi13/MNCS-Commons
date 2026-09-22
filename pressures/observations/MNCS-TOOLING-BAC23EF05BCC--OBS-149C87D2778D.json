@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:29dc28827de7453204090f8f32b471d54b190a04a898dc0e2b5e9c4043ca43fd",
+  "evidence": [
+    {
+      "id": "mncs-language-service:cursor-only-resume-rejection",
+      "kind": "test",
+      "ref": "crates/service-core/tests/integration.rs::restart_reconciles_offline_edit_without_reusing_cursor_alone",
+      "status": "PASS",
+      "summary": "The 30-test service-core integration suite now asserts cursor-only polling cannot resume a nonzero cursor without stream identity."
+    },
+    {
+      "id": "mncs-language-service:cursor-safety-commit",
+      "kind": "commit",
+      "ref": "crates/service-core/src/events.rs",
+      "status": "PASS",
+      "summary": "EventHub treats a missing stream identity with a nonzero cursor as reset-required rather than accepting ambiguous history."
+    }
+  ],
+  "id": "MNCS-TOOLING-BAC23EF05BCC--OBS-149C87D2778D",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-hardening-20260921",
+    "classification": "RESOLVED",
+    "durableState": "compact-checkpoint-only"
+  },
+  "observedAt": "2026-09-22T05:35:00Z",
+  "pressureId": "MNCS-TOOLING-BAC23EF05BCC",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Run the service-core integration test restart_reconciles_offline_edit_without_reusing_cursor_alone and request a nonzero cursor through poll_events without stream_identity; confirm reset_required and the event-stream identity limitation.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "49fc369",
+    "path": "crates/service-core/src/events.rs"
+  },
+  "summary": "Cursor-only resume is now fail-closed: a nonzero cursor without its explicit event-stream identity returns reset_required, while cursor-zero initial polling remains compatible.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "No cursor-only restart workaround remains; clients must carry the explicit stream identity for nonzero cursor resumes.",
+    "removed": true
+  }
+}

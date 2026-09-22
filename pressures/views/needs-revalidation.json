@@ -3196,10 +3196,10 @@
       "id": "MNCS-TOOLING-BAC23EF05BCC",
       "reconciliation": {
         "classification": "RESOLVED",
-        "observationId": "MNCS-TOOLING-BAC23EF05BCC--OBS-7F63DD41B181",
-        "observedAt": "2026-09-22T05:20:00Z",
+        "observationId": "MNCS-TOOLING-BAC23EF05BCC--OBS-149C87D2778D",
+        "observedAt": "2026-09-22T05:35:00Z",
         "repository": "mncs-language-service",
-        "summary": "Restart state is now explicit: workspace checkpoints preserve source identities, generation and event-stream identity, and a restarted host emits bounded reconciled events for offline edits while preserving UNKNOWN until new proof exists."
+        "summary": "Cursor-only resume is now fail-closed: a nonzero cursor without its explicit event-stream identity returns reset_required, while cursor-zero initial polling remains compatible."
       },
       "reporters": [
         "mncs-language-service"
