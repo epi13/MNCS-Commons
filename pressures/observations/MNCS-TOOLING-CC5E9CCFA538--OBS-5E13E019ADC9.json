@@ -1,0 +1,62 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:18891847c14ad514b82cf8377f711174fedf4f216e9a85c6e9a4ced776bddd54",
+  "evidence": [
+    {
+      "id": "mncs-forge:continuous-hardening-startup-measurement",
+      "kind": "measurement",
+      "ref": "docs/development-evidence/continuous-hardening-2026-09.md",
+      "status": "PASS",
+      "summary": "Forge construction and projection timings show duplicate recovery/query work was eliminated."
+    },
+    {
+      "id": "mncs-store:verified-projection-publication-test",
+      "kind": "test",
+      "ref": "tests/test_embedded_store.py::test_publication_extends_verified_projection_without_rereading_old_objects",
+      "status": "PASS",
+      "summary": "A generation publication extends the verified projection without rereading old object payloads."
+    },
+    {
+      "id": "mncs-forge:bounded-recovery-projection",
+      "kind": "commit",
+      "ref": "src/mncs_forge/application/recovery.py",
+      "status": "PASS",
+      "summary": "Stranded verifier recovery loads one bounded action/result view and reuses the generation-bound projection."
+    },
+    {
+      "id": "mncs-forge:native-runtime-residual",
+      "kind": "run",
+      "ref": "scripts/benchmark-micro-verifiers.py",
+      "status": "UNKNOWN",
+      "summary": "The final 25-iteration benchmark reached its declared 300 s limit in native SSA/Store runtime work."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-5E13E019ADC9",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-hardening-20260921",
+    "classification": "PARTIALLY_RESOLVED",
+    "residualPrimitive": "native mncs.std.sha256.v1 and mncs_model::ssa_execution"
+  },
+  "observedAt": "2026-09-22T05:20:00Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Use the controlled Store-backed Forge workspace with native Store semantics; measure Store session construction, one open-time verification, Forge projection construction, warm records(), stranded-action recovery, continuous start, and the 300 s micro-verifier benchmark. Confirm that no host-side hash fallback is used.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "5643849850f290e1fb646b688c680ec81ff2c5b7",
+    "path": "docs/development-evidence/continuous-hardening-2026-09.md"
+  },
+  "summary": "Duplicate Store recovery, current-generation verification, Forge projection, and stranded-action scans were removed from the Store-backed startup path. Forge construction fell from 186.1-187.2 s to 44.97-45.88 s, and warm projection queries fell from about 24 s to about 0.00003 s. Native Store SHA/runtime still dominates cold publication and the 300 s micro-verifier benchmark remains timed out.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep one resident supervisor and reuse generation-bound Store projections; native Store/runtime work still needs a measured follow-up optimization."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:649727131e360789258d884137c6109720b24d7edcf2eac6d7bd40178b72c757",
+  "evidence": [
+    {
+      "id": "mncs-language-service:restart-reconciliation-integration",
+      "kind": "test",
+      "ref": "crates/service-core/tests/integration.rs::restart_reconciles_offline_edit_without_reusing_cursor_alone",
+      "status": "PASS",
+      "summary": "The service-core integration suite passed 30 tests, including offline-edit reconciliation without cursor-only reuse."
+    },
+    {
+      "id": "mncs-language-service:workspace-checkpoint-schema",
+      "kind": "commit",
+      "ref": "crates/service-core/src/queries.rs",
+      "status": "PASS",
+      "summary": "Checkpoint schema mncs.workspace-checkpoint/1 stores compact source identities, generation, cursor, and stream identity."
+    },
+    {
+      "id": "mncs-forge:restart-attention-demonstration",
+      "kind": "measurement",
+      "ref": "docs/development-evidence/continuous-hardening-2026-09.md",
+      "status": "PASS",
+      "summary": "The resident demonstration detected an offline edit after Language Service restart and surfaced UNKNOWN attention instead of PASS."
+    }
+  ],
+  "id": "MNCS-TOOLING-BAC23EF05BCC--OBS-7F63DD41B181",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "continuous-hardening-20260921",
+    "classification": "RESOLVED",
+    "durableState": "compact-checkpoint-only"
+  },
+  "observedAt": "2026-09-22T05:20:00Z",
+  "pressureId": "MNCS-TOOLING-BAC23EF05BCC",
+  "repository": "mncs-language-service",
+  "reproduction": {
+    "instructions": "Run the service-core integration test restart_reconciles_offline_edit_without_reusing_cursor_alone; then stop the resident host, edit a workspace file, restart it, and poll with the old stream identity. Confirm the same stream identity, a new cursor, reconciled=true, and incomplete impact.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "27bf8192ee06d8f2cd58e1ed4b77bb469d098788",
+    "path": "crates/service-core/src/events.rs"
+  },
+  "summary": "Restart state is now explicit: workspace checkpoints preserve source identities, generation and event-stream identity, and a restarted host emits bounded reconciled events for offline edits while preserving UNKNOWN until new proof exists.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The restart workaround is now implemented as the canonical checkpoint and stream-reconciliation path; transient event history remains bounded by design.",
+    "removed": true
+  }
+}

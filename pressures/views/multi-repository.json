@@ -2395,13 +2395,17 @@
         "mncs-store"
       ],
       "capability": "continuous_supervisor_startup",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "tooling.verification-orchestration",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-5E13E019ADC9",
+        "observedAt": "2026-09-22T05:20:00Z",
+        "repository": "mncs-forge",
+        "summary": "Duplicate Store recovery, current-generation verification, Forge projection, and stranded-action scans were removed from the Store-backed startup path. Forge construction fell from 186.1-187.2 s to 44.97-45.88 s, and warm projection queries fell from about 24 s to about 0.00003 s. Native Store SHA/runtime still dominates cold publication and the 300 s micro-verifier benchmark remains timed out."
       },
       "reporters": [
         "mncs-forge"
@@ -2540,12 +2544,12 @@
     "classificationCounts": {
       "BACKEND_ONLY": 3,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 6,
+      "PARTIALLY_RESOLVED": 7,
       "RESOLVED": 14,
       "STILL_REPRODUCES": 17,
-      "UNRECONCILED": 22
+      "UNRECONCILED": 21
     },
-    "unreconciled": 22
+    "unreconciled": 21
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "multi-repository"

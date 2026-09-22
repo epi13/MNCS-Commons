@@ -3189,13 +3189,17 @@
         "mncs-language-service"
       ],
       "capability": "resident_event_cursor_resume",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": false,
       "domain": "tooling.event-delivery",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-BAC23EF05BCC",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-TOOLING-BAC23EF05BCC--OBS-7F63DD41B181",
+        "observedAt": "2026-09-22T05:20:00Z",
+        "repository": "mncs-language-service",
+        "summary": "Restart state is now explicit: workspace checkpoints preserve source identities, generation and event-stream identity, and a restarted host emits bounded reconciled events for offline edits while preserving UNKNOWN until new proof exists."
       },
       "reporters": [
         "mncs-language-service"
@@ -3285,13 +3289,17 @@
         "mncs-store"
       ],
       "capability": "continuous_supervisor_startup",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "tooling.verification-orchestration",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-5E13E019ADC9",
+        "observedAt": "2026-09-22T05:20:00Z",
+        "repository": "mncs-forge",
+        "summary": "Duplicate Store recovery, current-generation verification, Forge projection, and stranded-action scans were removed from the Store-backed startup path. Forge construction fell from 186.1-187.2 s to 44.97-45.88 s, and warm projection queries fell from about 24 s to about 0.00003 s. Native Store SHA/runtime still dominates cold publication and the 300 s micro-verifier benchmark remains timed out."
       },
       "reporters": [
         "mncs-forge"
@@ -3482,11 +3490,12 @@
       "BACKEND_ONLY": 2,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 11,
       "CONSUMER_DEBT": 16,
-      "PARTIALLY_RESOLVED": 28,
+      "PARTIALLY_RESOLVED": 29,
+      "RESOLVED": 1,
       "STILL_REPRODUCES": 14,
-      "UNRECONCILED": 30
+      "UNRECONCILED": 28
     },
-    "unreconciled": 30
+    "unreconciled": 28
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "needs-revalidation"
