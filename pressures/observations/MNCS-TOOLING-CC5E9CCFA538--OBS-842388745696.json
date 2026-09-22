@@ -1,0 +1,54 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-forge": "f66f7b2",
+    "mncs-language": "938616b",
+    "mncs-store": "6c5b736"
+  },
+  "contentDigest": "sha256:53dd302ffe47557ee0f35ab6a6fe025785b5c539181c065204c65530920bc131",
+  "evidence": [
+    {
+      "id": "mncs-forge:micro-verifier-benchmark-default-25-20260922",
+      "kind": "benchmark",
+      "ref": "scripts/benchmark-micro-verifiers.py default 25 iterations",
+      "status": "PASS",
+      "summary": "Exit 0; setup 13.181 s, verifier p50 4.796 s, state-inspect p99 4.481 s."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-842388745696",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "guard_seconds": 300,
+    "iterations": 25,
+    "ledger_entries": 80,
+    "ledger_verify_p50_ms": 100.361091,
+    "remaining_primitive": "Store durable verifier publication and cold projection outliers",
+    "setup_ms": 13181.401382,
+    "state_inspect_p99_ms": 4480.922339,
+    "verifier_run_p50_ms": 4796.24417
+  },
+  "observedAt": "2026-09-22T11:28:37Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run PYTHONPATH=src python3 scripts/benchmark-micro-verifiers.py with no --iterations override and retain the declared 300-second guard.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-benchmark-default",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "f66f7b2",
+    "path": "scripts/benchmark-micro-verifiers.py",
+    "repository": "mncs-forge",
+    "scope": "default-25-iteration-300-second-guard"
+  },
+  "summary": "The existing default 25-iteration Forge micro-verifier benchmark now completes with exit 0 under its declared 300-second guard. It reports 80 ledger entries, 13.181 s setup, verifier-run p50 4.796 s, state-inspect p50 0.306 s with a 4.481 s p99 cold outlier, and ledger verification p50 0.100 s. The benchmark is no longer a native-SSA timeout detector; the remaining latency is Store-backed durable verifier work and cold projection outliers.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Keep the resident supervisor and generation-bound Store projections while durable verifier work is narrowed."
+  }
+}

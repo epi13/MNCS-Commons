@@ -2478,10 +2478,10 @@
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-29577360B91A",
-        "observedAt": "2026-09-22T11:08:03Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-842388745696",
+        "observedAt": "2026-09-22T11:28:37Z",
         "repository": "mncs-forge",
-        "summary": "The remaining Store-backed continuous-supervision pressure is narrowed. From no running services, detached continuous start reached readiness in 1.46 s; the existing two-iteration Forge micro-verifier benchmark completed in 23.00 s with exit 0 instead of reaching its 300 s guard. A live complete-envelope security verification reused the Store-backed evidence in 1.956 ms without rerunning the provider. The largest remaining benchmark cost is Store durable publication/fsync and cold state-inspect/projection outliers."
+        "summary": "The existing default 25-iteration Forge micro-verifier benchmark now completes with exit 0 under its declared 300-second guard. It reports 80 ledger entries, 13.181 s setup, verifier-run p50 4.796 s, state-inspect p50 0.306 s with a 4.481 s p99 cold outlier, and ledger verification p50 0.100 s. The benchmark is no longer a native-SSA timeout detector; the remaining latency is Store-backed durable verifier work and cold projection outliers."
       },
       "reporters": [
         "mncs-forge"
