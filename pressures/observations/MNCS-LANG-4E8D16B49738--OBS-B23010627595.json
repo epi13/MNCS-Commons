@@ -1,0 +1,55 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-language": "938616b",
+    "profile": "release"
+  },
+  "contentDigest": "sha256:84287122e279339149556980802c1f0dd948b7d07e674015581f693e92c67ac4",
+  "evidence": [
+    {
+      "id": "mncs-language:retained-call-microbench-20260922",
+      "kind": "measurement",
+      "ref": "retained C ABI scalar leaf and 20-deep call-chain benchmark",
+      "status": "PASS",
+      "summary": "Prepared call targets, shared frames, and dense value slots reduce generic call administration."
+    },
+    {
+      "id": "mncs-language:call-correctness-199-tests-20260922",
+      "kind": "test",
+      "ref": "cargo test -p mncs-model --lib",
+      "status": "PASS",
+      "summary": "199 model tests passed, including SSA validation, execution, and identity-bound session tests."
+    }
+  ],
+  "id": "MNCS-LANG-4E8D16B49738--OBS-B23010627595",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "new_leaf_microseconds": "63-73",
+    "new_nested_overhead_microseconds": "4.7-5.0",
+    "old_leaf_microseconds": 84.3,
+    "old_nested_overhead_microseconds": 50.0
+  },
+  "observedAt": "2026-09-22T11:08:03Z",
+  "pressureId": "MNCS-LANG-4E8D16B49738",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the retained C ABI scalar leaf and 20-deep nested-call microbenchmarks against the release language embed library and compare the reported timings.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "938616b",
+    "repository": "mncs-language",
+    "scope": "retained-call-frame-and-value-slot-runtime"
+  },
+  "summary": "Generic retained reference execution cost per call is narrowed substantially. The scalar C ABI leaf measured about 63-73 microseconds and a 20-deep chain about 158-164 microseconds, or about 4.7-5.0 microseconds of nested-call overhead per call, versus about 84.3 microseconds for the old leaf and about 50 microseconds nested overhead. The remaining consumer-specific gap is downstream adoption and the broader Store effect envelope, not a second execution implementation.",
+  "version": "1",
+  "workaround": {
+    "description": "The canonical retained executor now owns the optimized call path.",
+    "removed": "not_needed"
+  }
+}

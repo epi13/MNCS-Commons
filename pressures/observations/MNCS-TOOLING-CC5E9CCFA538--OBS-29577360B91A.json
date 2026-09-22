@@ -1,0 +1,64 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-forge": "f66f7b2",
+    "mncs-language": "938616b",
+    "mncs-store": "6c5b736"
+  },
+  "contentDigest": "sha256:dd7e4f9f615f3789dee4b2fcd12a898bbfeed2e83f1ab24d2fdab07661726bed",
+  "evidence": [
+    {
+      "id": "mncs-forge:continuous-start-dispatch-reuse-20260922",
+      "kind": "end-to-end",
+      "ref": "mncs-forge continuous start plus live Store-backed security event/replay",
+      "status": "PASS",
+      "summary": "PASS dispatch published evidence; the exact replay reported evidence_recomputed=0 and evidence_reused=1."
+    },
+    {
+      "id": "mncs-forge:micro-verifier-benchmark-20260922",
+      "kind": "benchmark",
+      "ref": "scripts/benchmark-micro-verifiers.py --iterations 2",
+      "status": "PASS",
+      "summary": "Completed in 23.00 s; setup was 9.702 s and verifier p50 was 1.839 s."
+    },
+    {
+      "id": "mncs-store:cold-verified-projection-20260922",
+      "kind": "measurement",
+      "ref": "new StoreBackedRecordStore process over existing controlled Store",
+      "status": "PASS",
+      "summary": "Cold verified projection took 1.701 s without changing generation or object identities; warm projection was 82 microseconds."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-29577360B91A",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "benchmark_exit": 0,
+    "benchmark_seconds": 23.0,
+    "classification": "PARTIALLY_RESOLVED",
+    "cold_continuous_start_seconds": 1.46,
+    "live_store_reuse_seconds": 0.0019559431821107864,
+    "remaining_primitive": "Store durable publication/fsync and cold state-inspect/projection outliers"
+  },
+  "observedAt": "2026-09-22T11:08:03Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Start the detached continuous supervisor from no services, trigger the security micro-verifier, replay the exact complete dependency envelope, and run scripts/benchmark-micro-verifiers.py --iterations 2.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "f66f7b2",
+    "repository": "mncs-forge",
+    "scope": "continuous-native-runtime-reconciliation"
+  },
+  "summary": "The remaining Store-backed continuous-supervision pressure is narrowed. From no running services, detached continuous start reached readiness in 1.46 s; the existing two-iteration Forge micro-verifier benchmark completed in 23.00 s with exit 0 instead of reaching its 300 s guard. A live complete-envelope security verification reused the Store-backed evidence in 1.956 ms without rerunning the provider. The largest remaining benchmark cost is Store durable publication/fsync and cold state-inspect/projection outliers.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Resident supervisor and generation-bound Store projections remain the continuous architecture."
+  }
+}

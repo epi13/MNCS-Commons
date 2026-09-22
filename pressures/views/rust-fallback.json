@@ -177,7 +177,8 @@
     },
     {
       "affectedRepositories": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "capability": "legacy.ingest-p-010",
       "classification": "PARTIALLY_RESOLVED",
@@ -189,13 +190,14 @@
       "id": "MNCS-LANG-4E8D16B49738",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-4E8D16B49738--OBS-031616828BA3",
-        "observedAt": "2026-09-20T23:00:00Z",
-        "repository": "mncs-ingest",
-        "summary": "Current Profile 0.18 supplies part of this boundary, but the narrower remaining gap is still real: Reference-execution cost per call (partially relieved)."
+        "observationId": "MNCS-LANG-4E8D16B49738--OBS-B23010627595",
+        "observedAt": "2026-09-22T11:08:03Z",
+        "repository": "mncs-language",
+        "summary": "Generic retained reference execution cost per call is narrowed substantially. The scalar C ABI leaf measured about 63-73 microseconds and a 20-deep chain about 158-164 microseconds, or about 4.7-5.0 microseconds of nested-call overhead per call, versus about 84.3 microseconds for the old leaf and about 50 microseconds nested overhead. The remaining consumer-specific gap is downstream adoption and the broader Store effect envelope, not a second execution implementation."
       },
       "reporters": [
-        "mncs-ingest"
+        "mncs-ingest",
+        "mncs-language"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -206,7 +208,7 @@
       "valid": true,
       "verificationState": "unknown",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 1
