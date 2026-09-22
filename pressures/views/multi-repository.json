@@ -2480,10 +2480,10 @@
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-7BFEE5006A96",
-        "observedAt": "2026-09-22T15:36:00Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-E008C8644C7C",
+        "observedAt": "2026-09-22T15:42:00Z",
         "repository": "mncs-forge",
-        "summary": "The final integration path removes routine Forge semantic subprocesses and makes environment entry bounded. A nine-iteration micro-verifier benchmark reports setup 7.133 s in a fresh temporary project, verifier p50 2.156 s and p95/p99 2.817 s, and state-inspect p50 2.797 ms with p95/p99 47.734 ms; the first state sample is the projection establishment. In one measured verifier, provider work was about 31 ms, action publication 282 ms, and receipt-plus-result batch publication 998 ms, so Forge/Store orchestration was about 1.315 s. A controlled environment enter took 6.54 s cold while starting both residents and 0.25 s warm; its capsule is bounded and performs no repository-family enumeration. The remaining pressure is durable Store publication and first-fill artifact admission."
+        "summary": "The landed main revision remains green under the final focused profile. In a fresh temporary project, the nine-iteration benchmark reports setup 7.172 s, verifier p50 2.179 s and p95/p99 2.779 s, and state_inspect p50 5.277 ms with p95/p99 50.007 ms. A separate retained verifier profile measured 30.1 ms authorization/request preparation, 288.6 ms action publication, 40.0 ms provider plus result construction, and 1,036.5 ms terminal receipt-plus-result publication for a 1,396.3 ms run; the Store generation delta was two. These numbers keep the remaining bottleneck in durable Store publication rather than Forge semantic subprocesses."
       },
       "reporters": [
         "mncs-forge"

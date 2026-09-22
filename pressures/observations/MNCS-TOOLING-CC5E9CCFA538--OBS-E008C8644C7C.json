@@ -1,0 +1,76 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "backend": "mncs-research-bytecode",
+    "mncs-language": "ff5e98c",
+    "mncs-store": "16ba618"
+  },
+  "contentDigest": "sha256:feae2a24310aca75cfe45e677a7c33edc552adbb7585256dc5e127fa07ac903b",
+  "evidence": [
+    {
+      "id": "mncs-forge:micro-verifier-final-landed-20260922",
+      "kind": "benchmark",
+      "ref": "scripts/benchmark-micro-verifiers.py --iterations 9 on landed main",
+      "status": "PASS",
+      "summary": "Exit 0; setup 7.172 s, verifier p50 2.179 s, verifier p95/p99 2.779 s, state-inspect p50 5.277 ms and p95/p99 50.007 ms."
+    },
+    {
+      "id": "mncs-forge:retained-phase-final-landed-20260922",
+      "kind": "measurement",
+      "ref": "phase-instrumented one bounded micro-verifier on landed main",
+      "status": "PASS",
+      "summary": "One admitted artifact/session; process_invocations 1 for startup ABI metadata and seven retained semantic calls; action publication 288.6 ms; provider plus result construction 40.0 ms; terminal batch publication 1,036.5 ms; total 1,396.3 ms; two Store generations."
+    },
+    {
+      "id": "mncs-store:artifact-cache-cold-fill-final-20260922",
+      "kind": "measurement",
+      "ref": "two fresh processes with an isolated Store artifact cache",
+      "status": "PASS",
+      "summary": "The first isolated cache fill took 3.528 s for artifact preparation and the second process hit the same exact identity in 0.126 s; both opened the retained session in about 0.495 s with identical artifact SHA."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-E008C8644C7C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "action_publication_ms": 288.629,
+    "authorization_request_ms": 30.067,
+    "benchmark_iterations": 9,
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "provider_and_result_construction_ms": 39.951,
+    "remaining_primitive": "Store durable terminal publication",
+    "semantic_process_invocations": 0,
+    "setup_ms": 7171.819,
+    "startup_metadata_process_invocations": 1,
+    "state_inspect_p50_ms": 5.277,
+    "state_inspect_p95_ms": 50.007,
+    "state_inspect_p99_ms": 50.007,
+    "store_generations_produced": 2,
+    "terminal_publication_ms": 1036.45,
+    "verifier_p50_ms": 2178.674,
+    "verifier_p95_ms": 2779.177,
+    "verifier_p99_ms": 2779.177,
+    "verifier_total_ms": 1396.283
+  },
+  "observedAt": "2026-09-22T15:42:00Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the landed mncs-forge main benchmark with --iterations 9 and a retained phase-instrumented micro-verifier; record the Forge retained_status and Store generation before and after the run.",
+    "status": "PASS"
+  },
+  "runId": "native-runtime-pressure-20260922-final-landed-profile",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7ce2329",
+    "repository": "mncs-forge",
+    "scope": "final-landed-retained-runtime-profile"
+  },
+  "summary": "The landed main revision remains green under the final focused profile. In a fresh temporary project, the nine-iteration benchmark reports setup 7.172 s, verifier p50 2.179 s and p95/p99 2.779 s, and state_inspect p50 5.277 ms with p95/p99 50.007 ms. A separate retained verifier profile measured 30.1 ms authorization/request preparation, 288.6 ms action publication, 40.0 ms provider plus result construction, and 1,036.5 ms terminal receipt-plus-result publication for a 1,396.3 ms run; the Store generation delta was two. These numbers keep the remaining bottleneck in durable Store publication rather than Forge semantic subprocesses.",
+  "version": "1",
+  "workaround": {
+    "description": "Keep the resident Forge session and generation-bound projections; treat the isolated first artifact fill as cache-warming cost and preserve exact identity validation.",
+    "removed": "not_needed"
+  }
+}
