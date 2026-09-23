@@ -1,0 +1,77 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:554e9404257dcd15210c5ff2d1cdd16b9edd4f9cc7c9fc3aa03fe66f3e692eae",
+  "evidence": [
+    {
+      "id": "mncs-forge:native-resource-decisions-30-round-trips",
+      "kind": "retained-artifact-latency",
+      "ref": "NativeForgeAdapter resource budget/admission/outcome measurement",
+      "status": "PASS",
+      "summary": "30 warm calls each: budget select p50/p95/p99 5.862/6.183/6.246 ms; identity 5.382/5.915/6.032 ms; admission 5.893/6.234/6.286 ms; outcome 6.024/6.366/6.464 ms. First budget call, including cold adapter/session setup, took 3283.912 ms."
+    },
+    {
+      "id": "mncs-forge:micro-verifier-store-reuse-timing",
+      "kind": "micro-verifier-latency",
+      "ref": "tests/test_continuous.py::test_reconciled_security_trigger_runs_bounded_verifier_and_reuses_evidence",
+      "status": "PASS",
+      "summary": "Four fixture calls: first 104.36 ms; warm calls 19.66, 20.42, 21.65 ms. The test established Store-backed evidence reuse; one reused call took 19.66 ms. N=4 nearest-rank p50/p95/p99 including cold was 21.03/104.36/104.36 ms; this is a small fixture sample, not a production-tail estimate."
+    },
+    {
+      "id": "mncs-forge:target-environment-entry-still-unknown",
+      "kind": "environment-entry",
+      "ref": "MNCS-TOOLING-EAF30A7233B0",
+      "status": "UNKNOWN",
+      "summary": "The target entry command fails CONFIG_READ in 233.228 ms because mncs-forge.toml is absent, and MCP context is bound elsewhere. Actual cold/warm continuous entry and idle RSS/cache stability remain unmeasured."
+    },
+    {
+      "id": "mncs-forge:idle-resident-stability-unknown",
+      "kind": "idle-resident-observation",
+      "ref": "target workspace has no bound continuous entry",
+      "status": "UNKNOWN",
+      "summary": "No target resident process could be established, so RSS range, cache cardinalities, polling-event stability, and detached child ownership were not measured."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-0681D6EC02A9",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "generic process_run resource/cancellation handle",
+      "proven cgroup-zero cleanup",
+      "workspace-bound enter and idle resident proof",
+      "repository-canonical suite pass"
+    ],
+    "performance": {
+      "micro_verifier_fixture": "n=4, p50 21.03 ms; p95/p99 104.36 ms including cold",
+      "native_decisions": "warm p50 5.382-6.024 ms, p95 5.915-6.366 ms, p99 6.032-6.464 ms"
+    },
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T10:20:54Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Warm decision timing used 30 repeated calls per native function on one NativeForgeAdapter. Micro-verifier timing used the existing fixture test with a local timer around ContinuousSupervisor._micro.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-post-migration-measurements",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "1e7142999aae32f6a69e0bf560fa17c5fdfd5fa1"
+      }
+    }
+  },
+  "summary": "Warm retained native decision round trips are 5.4–6.5 ms in a 30-call sample. A bounded micro-verifier/store-reuse fixture measured 104.4 ms cold, 19.7 ms on its Store-backed reuse call, and a small-sample median of 21.0 ms. Target environment entry and idle resident measurements remain unknown because the requested workspace cannot enter.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Use retained MNCS artifact/session for warm decisions; target continuous-entry configuration remains an open tooling pressure."
+  }
+}

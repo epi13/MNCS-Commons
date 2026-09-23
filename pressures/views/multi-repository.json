@@ -2551,10 +2551,10 @@
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-9EC10C80E0AF",
-        "observedAt": "2026-09-23T10:11:49Z",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-0681D6EC02A9",
+        "observedAt": "2026-09-23T10:20:54Z",
         "repository": "mncs-forge",
-        "summary": "Forge native semantics own budget/identity selection, admission, raw resource outcome classification, pending/defer, queue selection, unresolved status aggregation, and stale cancellation. The host passes only raw observation presence and realizes process/cgroup actions. The Forge Runner stopped a superseded process group in 52 ms. Generic process_run handles, cgroup-zero proof, target environment entry/idle measurements, and repository-suite proof remain open."
+        "summary": "Warm retained native decision round trips are 5.4–6.5 ms in a 30-call sample. A bounded micro-verifier/store-reuse fixture measured 104.4 ms cold, 19.7 ms on its Store-backed reuse call, and a small-sample median of 21.0 ms. Target environment entry and idle resident measurements remain unknown because the requested workspace cannot enter."
       },
       "reporters": [
         "mncs-forge"
