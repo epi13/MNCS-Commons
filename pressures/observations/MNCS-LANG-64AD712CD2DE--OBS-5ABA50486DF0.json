@@ -1,0 +1,70 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:78fdcf2c79c9b7cedb669226a592240068408a32e105048240443c4880c00cb4",
+  "evidence": [
+    {
+      "id": "mncs-forge:current-main-process-resource-reproducer",
+      "kind": "compiler-reproduction",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "The bounded .mncs reproducer still observes MNP216 at the second typed process_run argument under Profile 0.18."
+    },
+    {
+      "id": "mncs-forge:native-cost-tier-admission",
+      "kind": "native-policy-regression",
+      "ref": "src/mncs_forge/resources/native/forge/core.mncs::verification_cost_admit",
+      "status": "PASS",
+      "summary": "The verifier cost threshold now executes in MNCS with a Python-oracle differential corpus; this does not provide process resource limits or an active process handle."
+    },
+    {
+      "id": "mncs-language:process-effect-capability-gap",
+      "kind": "capability-gap-artifact",
+      "ref": "examples/capability-gaps/process-resource-handle.json",
+      "status": "PASS",
+      "summary": "The exact runtime gap is recorded as a content-addressed Profile 0.18 capability-gap artifact at mncs-language main ece9e46."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-5ABA50486DF0",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "consumer_status": "CONSUMER_DEBT",
+    "pressure_boundary": "synchronous process_run lacks generic resource envelope and source-visible in-flight cancellation handle",
+    "profile": "0.18",
+    "state": "STILL_REPRODUCES"
+  },
+  "observedAt": "2026-09-23T10:41:08Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run tests/test_native_resource_policy.py::test_process_resource_handle_pressure_reproducer from mncs-forge main 0f637ab8d5639314cbeef52012d505c117e8cfdd against mncs-language ff5e98c; expect MNP216 for process_run(request, envelope).",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-current-main-after-cost-tier-migration",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "0f637ab8d5639314cbeef52012d505c117e8cfdd",
+        "path": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs"
+      },
+      "mncs-language": {
+        "branch": "main",
+        "commit": "ece9e46ece46b7a7a4a0dc6a0d4c75ac0b4d0510",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "After the native continuous cost-tier migration, the minimal resource-handle reproducer still fails at process_run with MNP216. Resource budget, admission, outcome, pending/defer, stale cancellation, and cost-tier admission are Forge MNCS-owned; the remaining effect gap is the generic resource-bounded process contract and source-visible active cancellation handle.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge native policy returns cancel/defer/classification decisions; the Forge Runner realizes process-tree termination and cgroup/systemd operations. The generic process_run contract remains synchronous and lacks the resource envelope and source-visible active handle."
+  }
+}
