@@ -435,6 +435,38 @@
         "mncs-forge",
         "mncs-store"
       ],
+      "capability": "resident_verification_host_protection",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.resource-safety",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-AB4AB0BDD168",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-forge"
+      ],
+      "revalidationRequired": true,
+      "severity": "blocking",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Resident verification lacks proven host-resource self-protection",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-forge",
+        "mncs-store"
+      ],
       "capability": "continuous_supervisor_startup",
       "classification": "PARTIALLY_RESOLVED",
       "currentValidation": true,
@@ -472,9 +504,9 @@
       "OBSOLETE": 4,
       "PARTIALLY_RESOLVED": 3,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 5
+      "UNRECONCILED": 6
     },
-    "unreconciled": 5
+    "unreconciled": 6
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"

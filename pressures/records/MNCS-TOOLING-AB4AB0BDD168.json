@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-forge",
+    "mncs-store"
+  ],
+  "capability": "resident_verification_host_protection",
+  "contentDigest": "sha256:a56eb270fab2db72f9fdab8e2d26178cd7841123c36b0cab7a83ec169bc6a451",
+  "discoveredAt": "2026-09-23T06:07:02Z",
+  "discoveredBy": "mncs-forge",
+  "domain": "tooling.resource-safety",
+  "id": "MNCS-TOOLING-AB4AB0BDD168",
+  "identity": {
+    "capability": "resident_verification_host_protection",
+    "domain": "tooling.resource-safety",
+    "reproducerSignature": "resident-verification.host-resource-envelope.v1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "path": "mncs-forge:src/mncs_forge/resource_envelope.py",
+    "signature": "resident-verification.host-resource-envelope.v1"
+  },
+  "requiredBehavior": "Automatic resident verification admits work only under a verifiable aggregate memory, swap, task/process, concurrency, wall-time, and output envelope that preserves interactive host headroom. Caches, queues, telemetry, and history have declared bounds. Stale work is coalesced/cancelled before expansion. If enforcement, resource completion, or cleanup cannot be established, the exact obligation remains pending as structured UNKNOWN/resource evidence, never PASS or semantic FAIL.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {},
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "3ec1a74",
+        "path": "src/mncs_forge/resource_envelope.py"
+      },
+      "mncs-store": {
+        "commit": "1d4c18c",
+        "path": "python/mncs_store/session.py"
+      }
+    }
+  },
+  "summary": "Resident semantic/verification state must remain useful through an agent workday without unbounded cache/history growth or verifier pressure that can consume workstation headroom. On 2026-09-22 the user reported a Fedora low-memory/OOM warning during mncs-cgroup-swap-probe-20260922.scope, kernel termination of that scope, and visible host RAM pressure. The agent cannot access the previous-boot journal; the exact incident cause is unproven.",
+  "target": "tooling",
+  "title": "Resident verification lacks proven host-resource self-protection",
+  "version": "1"
+}

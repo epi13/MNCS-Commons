@@ -1,0 +1,119 @@
+{
+  "agent": "codex",
+  "compiler": null,
+  "contentDigest": "sha256:0f1be4ba14b207a920aa5f15b5230948746680af657b56fdc057820bc32ccd01",
+  "evidence": [
+    {
+      "id": "mncs-forge:resident-focused-suite-3ec1a74",
+      "kind": "test",
+      "ref": "timeout 90s /usr/bin/time -v pytest -q tests/test_resident_bounds.py tests/test_execution.py tests/test_podman_runner.py tests/test_continuous.py tests/test_environment_entry.py tests/test_config_paths.py tests/test_mncs_execution_receipt.py",
+      "status": "PASS",
+      "summary": "98 passed, 1 skipped in 5.90 s; process maximum RSS 63,688 KiB; swap 0."
+    },
+    {
+      "id": "mncs-forge:resident-10000-cycle-3ec1a74",
+      "kind": "measurement",
+      "ref": "tests/test_resident_bounds.py::test_continuous_resident_structures_plateau_under_generation_churn",
+      "status": "PASS",
+      "summary": "10,000 generations; RSS 53,268,480 B before and 56,594,432 B after (delta 3,325,952 B); process max RSS 58,904 KiB; 0.67 s. Native cache assertions: each of six caches <=64 entries and <=2 MiB estimated; supervisor: counts 3 statuses, attention 64, pending 128, repairs 32, result history 32, selected display identities 256; queue capacity 1."
+    },
+    {
+      "id": "mncs-forge:tiny-memory-high-timeout-3ec1a74",
+      "kind": "resource-test",
+      "ref": "fixed user-systemd cgroup: MemoryHigh=67108864, MemoryMax=134217728, MemorySwapMax=0, TasksMax=8; fixture requested fixed 201326592 bytes; wall timeout 8 s",
+      "status": "UNKNOWN",
+      "summary": "Cgroup peak 72,863,744 B, memory.events high=598, max=0, oom=0, oom_kill=0; fixture timed out at 8.061 s, Forge UNKNOWN/TIMEOUT, cleanup/tree cleanup/environment cleanup true, process count peak 1, zero swap. This proves bounded high-pressure timeout and cleanup, not MemoryMax kill."
+    },
+    {
+      "id": "mncs-forge:tiny-pid-limit-unknown-cleanup-3ec1a74",
+      "kind": "resource-test",
+      "ref": "fixed cgroup TasksMax=8; fixture attempted only a few children beyond the local bound",
+      "status": "PASS",
+      "summary": "pids.events max=1, process peak 8, cgroup memory peak 9,281,536 B, Forge RESOURCE_LIMIT/UNKNOWN, cleanup true, pids.current=0 after cleanup."
+    },
+    {
+      "id": "mncs-forge:tiny-timeout-unknown-cleanup-3ec1a74",
+      "kind": "resource-test",
+      "ref": "fixed cgroup wall bound 0.5 s; fixture /usr/bin/sleep 2",
+      "status": "PASS",
+      "summary": "Forge UNKNOWN/wall-duration observed about 0.528 s, cgroup memory peak about 1.31 MiB, process peak 1, cleanup true."
+    },
+    {
+      "id": "mncs-forge:small-protected-fast-path-3ec1a74",
+      "kind": "measurement",
+      "ref": "/usr/bin/true under fixed cgroup MemoryMax=192 MiB, MemoryHigh=96 MiB, MemorySwapMax=0, TasksMax=8, runtime 5 s",
+      "status": "PASS",
+      "summary": "PASS in 0.046416 s; memory peak 3,235,840 B; task peak 1; CPU 10,134 us; high/max/oom events zero; cleanup true; wrapper maximum RSS 27,768 KiB; zero swap."
+    },
+    {
+      "id": "mncs-forge:podman-placement-unverified-3ec1a74",
+      "kind": "resource-test",
+      "ref": "podman --version under fixed cgroup MemoryMax=192 MiB, MemoryHigh=96 MiB, MemorySwapMax=0, TasksMax=8, runtime 10 s",
+      "status": "UNKNOWN",
+      "summary": "Timed out before container startup; wrapper max RSS 29,612 KiB; no swap; no active job or process tree remained. Cgroup parenting support is implemented but not proven on this user session; automatic verification must fail closed if it is unavailable."
+    },
+    {
+      "id": "mncs-forge:workstation-low-memory-warning-20260922",
+      "kind": "incident-report",
+      "ref": "user report: mncs-cgroup-swap-probe-20260922.scope; previous-boot journal inaccessible to agent",
+      "status": "UNKNOWN",
+      "summary": "User reported a Fedora low-memory/OOM warning and visible host RAM pressure; kernel terminated the scope. Exact OOM/root cause is unknown and is not attributed to MNCS implementation by this evidence."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-2D08360DDB03",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "attention_capacity": 64,
+    "cache_byte_capacity_each": 2097152,
+    "cache_capacity_each": 64,
+    "execution_concurrency": 1,
+    "memory_fixture_high_events": 598,
+    "memory_fixture_max_events": 0,
+    "memory_fixture_memory_high_bytes": 67108864,
+    "memory_fixture_memory_max_bytes": 134217728,
+    "memory_fixture_oom_events": 0,
+    "memory_fixture_peak_bytes": 72863744,
+    "memory_fixture_request_bytes": 201326592,
+    "memory_fixture_swap_max_bytes": 0,
+    "memory_fixture_tasks_max": 8,
+    "native_cache_count": 6,
+    "pending_capacity": 128,
+    "repair_capacity": 32,
+    "resident_cycle_generations": 10000,
+    "resident_cycle_rss_after_bytes": 56594432,
+    "resident_cycle_rss_before_bytes": 53268480,
+    "resident_cycle_rss_delta_bytes": 3325952,
+    "result_history_capacity": 32,
+    "selected_test_display_capacity": 256,
+    "workstation_incident_cause": "unproven"
+  },
+  "observedAt": "2026-09-23T06:07:02Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Use only fixed tiny cgroup envelopes. Do not derive allocations from host RAM or swap. The original user-reported warning scope was not repeated. Review mncs-forge:tests/test_resident_bounds.py and the recorded actual fixed-envelope runner measurements.",
+    "status": "UNKNOWN"
+  },
+  "runId": "resident-resource-bounds-20260922",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "3ec1a74",
+        "path": "src/mncs_forge/resource_envelope.py"
+      },
+      "mncs-store": {
+        "commit": "1d4c18c",
+        "path": "python/mncs_store/session.py"
+      }
+    },
+    "scope": "fixed-tiny-cgroup campaign validation; no host-capacity or global-swap probes"
+  },
+  "summary": "Implementation bounds the six Forge native projection caches at 64 entries and a 2 MiB estimate apiece, pending obligations at 128 with an explicit overflow digest/count, attention at 64, repairs at 32, recent results at 32, selected displayed test identities at 256, and concurrent execution at one job. Fedora user-systemd/cgroup-v2 memory+pids enforcement is available and verified locally. Tiny fixed-envelope process and wall-time exhaustion became UNKNOWN/resource evidence and cleaned up. The memory fixture ran at MemoryHigh=64 MiB, MemoryMax=128 MiB, MemorySwapMax=0, TasksMax=8 with a fixed 192 MiB request; it reached 72,863,744 B peak and 598 high events, then hit the 8 second timeout. memory.max, oom, and oom_kill events remained zero, so MemoryMax exhaustion is NOT proven. The user-reported workstation incident remains causally unconfirmed. No repeated or host-capacity/swap-saturation probe was run.",
+  "version": "1",
+  "workaround": {
+    "description": "Keep deep automatic work admitted only through a verified Runner cgroup envelope; deferral is UNKNOWN and obligations remain pending. Podman aggregate placement remains unverified; do not silently use an unbounded fallback.",
+    "removed": false
+  }
+}
