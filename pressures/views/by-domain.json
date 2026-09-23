@@ -219,6 +219,9 @@
     "tooling.event-delivery": [
       "MNCS-TOOLING-BAC23EF05BCC"
     ],
+    "tooling.resource-safety": [
+      "MNCS-TOOLING-AB4AB0BDD168"
+    ],
     "tooling.verification-orchestration": [
       "MNCS-TOOLING-CC5E9CCFA538"
     ],
