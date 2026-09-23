@@ -1,0 +1,82 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:0ab10bc5ca2555640043db14b0e7457c013ea81494a058cb37706dd1e6310a44",
+  "evidence": [
+    {
+      "id": "mncs-forge:native-resource-policy-corpus-final",
+      "kind": "native-differential-corpus",
+      "ref": "tests/test_native_resource_policy.py",
+      "status": "PASS",
+      "summary": "Bounded host-observation/configuration corpora assert exact native budget/admission/outcome and continuous transition decisions."
+    },
+    {
+      "id": "mncs-forge:superseded-process-group-latency",
+      "kind": "cancellation-latency",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group",
+      "status": "PASS",
+      "summary": "Warm retained Forge run observed 52 ms from N+1 publication to owned process-group stop; N produced no current PASS and N+1 proceeded."
+    },
+    {
+      "id": "mncs-forge:cgroup-zero-proof",
+      "kind": "cgroup-containment",
+      "ref": "tiny local cgroup fixture",
+      "status": "UNKNOWN",
+      "summary": "The bounded 128 MiB limit fixture ended at its 30-second timeout without readable OOM counters; no larger or longer retry was made."
+    },
+    {
+      "id": "mncs-forge:target-idle-proof",
+      "kind": "resident-stability",
+      "ref": "continuous enter",
+      "status": "UNKNOWN",
+      "summary": "The requested workspace could not be entered; cold/warm target entry and idle RSS/cache stability are not established."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-3257B736EE0C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "native resource policy and outcome semantics",
+      "native pending/defer/status/stale decisions",
+      "prompt owned process-group cancellation through Forge Runner"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "source-visible cancellable resource-bounded process effect",
+      "proven cgroup-zero cleanup",
+      "target environment entry and idle resident measurements"
+    ],
+    "pressure_boundary": "MNCS process_run handle and workspace-bound continuous entry remain unavailable",
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T09:45:52Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run tests/test_native_resource_policy.py and tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group; native policy determines cancellation and the Forge Runner terminates the owned process group.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-final-safety-reconciliation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "b66d4019f1e567e1a88cf0048aae858f0c3f5915",
+        "path": "src/mncs_forge/continuous.py"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "Native Forge policy and continuous transitions now cover budget selection, admission, outcome classification, pending/defer, stale cancellation, and aggregate status. A superseding generation cancelled its owned process group in 52 ms; the stale generation could not publish PASS and the next generation proceeded. The source-visible MNCS process effect still lacks the resource envelope/cancellable handle, cgroup-zero proof is unavailable, and target continuous-entry/idle measurements remain blocked by workspace binding.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge Runner performs process-group/systemd/cgroup realization; the generic MNCS process effect remains provisional for resource handles."
+  }
+}

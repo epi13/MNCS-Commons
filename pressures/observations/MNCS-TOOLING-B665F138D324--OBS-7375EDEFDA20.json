@@ -1,0 +1,79 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:8572558fa05db8f2f4a33792b3647ab85994cb3d3abf2d29134e182b20fc3890",
+  "evidence": [
+    {
+      "id": "mncs-language:process-run-profile018",
+      "kind": "profile018-revalidation",
+      "ref": "language-inventory -- Profile 0.18",
+      "status": "PASS",
+      "summary": "process_run is an available process_grant effect with typed request/result contracts."
+    },
+    {
+      "id": "mncs-forge:process-effect-consumer",
+      "kind": "profile018-revalidation",
+      "ref": "src/mncs_forge/execution.py",
+      "status": "FAIL",
+      "summary": "Forge still launches verifier/compiler helper processes through its Python Runner."
+    },
+    {
+      "id": "mncs-forge:resource-process-remainder",
+      "kind": "profile018-revalidation",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "Two-argument process_run(request, envelope) is rejected with MNP216."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-7375EDEFDA20",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "explicit argv",
+      "bounded environment",
+      "stdin",
+      "output caps",
+      "deadline",
+      "exit status"
+    ],
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "aggregate cgroup resource envelope",
+      "raw cgroup observation result",
+      "cancellable running handle"
+    ],
+    "state": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Revalidate against the current Profile 0.18 source/runtime and exact focused Forge reproducer.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-profile018-revalidation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "The historical claim that MNCS has no process spawning/capture/exit status is stale at Profile 0.18. mncs.std.process.v1 and process_run expose explicit argv, bounded environment, stdin/stdout/stderr, deadline, and exit status. Forge has not migrated verifier execution to this effect because aggregate cgroup limits and cancellable running handles are absent; the bounded Python Runner remains the consumer realization.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge continues to use the existing bounded host Runner for process realization while native semantic migration proceeds.",
+    "removed": false
+  }
+}

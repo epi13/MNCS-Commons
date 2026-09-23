@@ -1,0 +1,68 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:196998960757f843a678d375384a402c09321f48423f60607f5a1e236e288ad0",
+  "evidence": [
+    {
+      "id": "mncs-forge:process-resource-handle-post-migration",
+      "kind": "compiler-reproduction",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "The post-migration source still receives MNP216 because process_run accepts one ProcessRequest only."
+    },
+    {
+      "id": "mncs-language:process-v1-sync-contract-current",
+      "kind": "source-inspection",
+      "ref": "library/std/process.mncs",
+      "status": "PASS",
+      "summary": "ProcessResult returns synchronously; it contains no aggregate cgroup envelope, raw cgroup result counters, or in-flight cancellation handle."
+    },
+    {
+      "id": "mncs-forge:runner-cancel-realization",
+      "kind": "focused-execution-test",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group",
+      "status": "PASS",
+      "summary": "Forge's generic Runner boundary terminates an owned process group after native stale-work policy requests cancellation; this does not resolve process_run's source-visible effect gap."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-0231F6A55A77",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "consumer_status": "CONSUMER_DEBT",
+    "pressure_boundary": "synchronous process_run still lacks aggregate resource envelope and in-flight cancellation handle",
+    "profile": "0.18",
+    "state": "STILL_REPRODUCES"
+  },
+  "observedAt": "2026-09-23T09:44:23Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Compile src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs against mncs-language ff5e98c and the Forge native library; process_run(request, envelope) returns MNP216.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-process-effect-retry",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "b66d4019f1e567e1a88cf0048aae858f0c3f5915",
+        "path": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "After native resource budget/admission/outcome/pending migration, the same minimal process resource-handle reproducer still fails at the generic effect boundary. Forge's Python process-group/systemd runner can realize the returned native cancellation decision, but process_run itself remains synchronous and has no typed resource envelope or cancellable source-visible handle.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The Forge Runner performs systemd/cgroup and process-tree realization after native policy decisions; it remains provisional for the missing MNCS process effect contract."
+  }
+}

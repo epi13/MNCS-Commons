@@ -185,6 +185,43 @@
     },
     {
       "affectedRepositories": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "capability": "legacy.press-001",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-0973D3173B88",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-0973D3173B88--OBS-54D24504BE7B",
+        "observedAt": "2026-09-23T07:42:44Z",
+        "repository": "mncs-forge",
+        "summary": "The old blanket statement is too broad at Profile 0.18: scope/task semantics and mncs-embed TaskScope provide bounded concurrent host-thread execution with deterministic ordered merge and failure/cancellation distinction. MNCS still has no source-level thread, async, or general scheduler syntax; TaskScope is an embed runtime realization, not in-language spawning."
+      },
+      "reporters": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No concurrency primitives (P0, concurrency, runtime)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-web"
       ],
@@ -366,6 +403,43 @@
         "fail": 0,
         "pass": 0,
         "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-forge",
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-001",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-2B19F2A16ACB",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-595B1626C5FC",
+        "observedAt": "2026-09-23T07:42:44Z",
+        "repository": "mncs-forge",
+        "summary": "Profile 0.18 provides structured task/scope state and the embed runtime executes bounded concurrent work. The original task/spawn/channel wording is narrowed: source can express bounded scope lifecycle and cancellation policy, but actual scheduling remains the host TaskScope API and an already-running external effect cannot be interrupted."
+      },
+      "reporters": [
+        "mncs-forge",
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No task/spawn/channel runtime primitives",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "unknown",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 1
       }
     },
     {
@@ -910,6 +984,42 @@
     },
     {
       "affectedRepositories": [
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "capability": "cancellable_resource_bounded_process",
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": false,
+      "domain": "io.process-runtime",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-64AD712CD2DE",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-64AD712CD2DE--OBS-7A599AB8D762",
+        "observedAt": "2026-09-23T10:11:49Z",
+        "repository": "mncs-forge",
+        "summary": "The process resource-handle reproducer still fails at the Profile 0.18 process effect after all native Forge policy/status changes. The remaining pressure is specifically the generic resource-bounded, source-visible cancellable process handle; the existing bounded synchronous process_run remains available."
+      },
+      "reporters": [
+        "mncs-forge"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-commons",
         "mncs-language"
       ],
@@ -1018,6 +1128,43 @@
         "affected": 2,
         "fail": 0,
         "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "capability": "legacy.press-012",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-7610973D3A68",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-7610973D3A68--OBS-4DE6733D9641",
+        "observedAt": "2026-09-23T10:03:09Z",
+        "repository": "mncs-forge",
+        "summary": "Task and structured-scope cancellation are available, and Forge native semantics now classify superseded work and request cancellation. A generic Forge Runner can terminate the owned process group in 52 ms and report cleanup facts. However, source-visible cooperative cancellation still cannot interrupt a task already blocked inside synchronous process_run; cgroup-zero cleanup was not proven."
+      },
+      "reporters": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No cancellation semantics (P2, runtime, language)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
         "unknown": 0
       }
     },
@@ -1550,6 +1697,43 @@
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "capability": "legacy.press-008",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-B613462C9EB6",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-B613462C9EB6--OBS-C346A9C17A60",
+        "observedAt": "2026-09-23T07:42:44Z",
+        "repository": "mncs-forge",
+        "summary": "scope.v1 records each task failure distinctly from cancellation; TaskScope returns every per-index result and a deterministic first-failure index. Forge continuous execution still makes pending/defer decisions in its consumer loop, which this campaign is migrating to the native Forge core."
+      },
+      "reporters": [
+        "mncs-forge",
+        "mncs-index"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "language",
+      "title": "No concurrent error aggregation (P2, error model)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "failed",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -2360,13 +2544,17 @@
         "mncs-store"
       ],
       "capability": "resident_verification_host_protection",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "tooling.resource-safety",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-9EC10C80E0AF",
+        "observedAt": "2026-09-23T10:11:49Z",
+        "repository": "mncs-forge",
+        "summary": "Forge native semantics own budget/identity selection, admission, raw resource outcome classification, pending/defer, queue selection, unresolved status aggregation, and stale cancellation. The host passes only raw observation presence and realizes process/cgroup actions. The Forge Runner stopped a superseded process group in 52 ms. Generic process_run handles, cgroup-zero proof, target environment entry/idle measurements, and repository-suite proof remain open."
       },
       "reporters": [
         "mncs-forge"
@@ -2391,10 +2579,11 @@
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
+        "mncs-forge",
         "mncs-test"
       ],
       "capability": "legacy.doc-p-011",
-      "classification": "UNRECONCILED",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -2403,12 +2592,17 @@
       ],
       "id": "MNCS-TOOLING-B665F138D324",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-TOOLING-B665F138D324--OBS-E57B43F44F41",
+        "observedAt": "2026-09-23T10:03:09Z",
+        "repository": "mncs-forge",
+        "summary": "Profile 0.18 process_run remains a real process_grant capability with bounded typed request/result. Forge has not moved verifier process execution onto it because it cannot express aggregate cgroup limits or a cancellable in-flight handle; Python remains the Linux realization adapter."
       },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
+        "mncs-forge",
         "mncs-test"
       ],
       "revalidationRequired": false,
@@ -2420,7 +2614,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 4,
+        "affected": 5,
         "fail": 0,
         "pass": 1,
         "unknown": 0
@@ -2653,14 +2847,14 @@
   "reconciliation": {
     "classificationCounts": {
       "BACKEND_ONLY": 3,
-      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 8,
+      "PARTIALLY_RESOLVED": 13,
       "RESOLVED": 14,
-      "STILL_REPRODUCES": 17,
-      "UNRECONCILED": 22
+      "STILL_REPRODUCES": 18,
+      "UNRECONCILED": 20
     },
-    "unreconciled": 22
+    "unreconciled": 20
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "multi-repository"

@@ -1,0 +1,89 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:310034f5dde648565f082ca1d76f896609ebc9cf28f6a1f961380c670a01de57",
+  "evidence": [
+    {
+      "id": "mncs-language:task-scope-current",
+      "kind": "profile018-runtime-capability",
+      "ref": "library/std/task.mncs; library/std/scope.mncs; crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "Task phases and cooperative cancellation exist; bounded TaskScope cancels pending tasks and observes cancellation between calls."
+    },
+    {
+      "id": "mncs-forge:native-stale-cancel-decision",
+      "kind": "native-policy-test",
+      "ref": "tests/test_native_resource_policy.py",
+      "status": "PASS",
+      "summary": "verification_resource_transition returns CancelStale, cleanup obligation, and Unknown evidence for superseded in-flight work."
+    },
+    {
+      "id": "mncs-forge:process-group-stop-52ms",
+      "kind": "in-flight-cancellation",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group",
+      "status": "PASS",
+      "summary": "The owned process group stopped 52 ms after N+1 publication; N did not establish current PASS and N+1 proceeded."
+    },
+    {
+      "id": "mncs-language:process-effect-handle-remains-missing",
+      "kind": "language-pressure",
+      "ref": "MNCS-LANG-64AD712CD2DE",
+      "status": "PASS",
+      "summary": "process_run is synchronous and exposes no source-visible handle to interrupt the active provider/effect."
+    },
+    {
+      "id": "mncs-forge:cgroup-zero-remains-unknown",
+      "kind": "bounded-cleanup-proof",
+      "ref": "128 MiB local cgroup fixture",
+      "status": "UNKNOWN",
+      "summary": "The 30-second fixture timed out without readable OOM or cgroup cleanup counters; no repeated larger probe was run."
+    }
+  ],
+  "id": "MNCS-LANG-7610973D3A68--OBS-4DE6733D9641",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "task/scope cooperative cancellation",
+      "native stale-generation decision",
+      "prompt Forge Runner process-group cancellation"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "source-visible cancellation handle through process_run for an in-flight external effect",
+      "proven cgroup-zero cleanup"
+    ],
+    "pressure_boundary": "synchronous external effect cannot be interrupted by source-visible runtime cancellation",
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T10:03:09Z",
+  "pressureId": "MNCS-LANG-7610973D3A68",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Inspect mncs.std.task.v1 and scope.v1, mncs-embed TaskScope, then run tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group. The remaining runtime effect-handle gap is reproduced by MNCS-LANG-64AD712CD2DE.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-cancellation-final",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "016a1e185f5654dd0968f34ffe69668fb03533f9",
+        "path": "src/mncs_forge/continuous.py"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c",
+        "path": "library/std/task.mncs"
+      }
+    }
+  },
+  "summary": "Task and structured-scope cancellation are available, and Forge native semantics now classify superseded work and request cancellation. A generic Forge Runner can terminate the owned process group in 52 ms and report cleanup facts. However, source-visible cooperative cancellation still cannot interrupt a task already blocked inside synchronous process_run; cgroup-zero cleanup was not proven.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge Runner realizes native cancellation decisions by signaling and reaping the owned process group/cgroup where available."
+  }
+}

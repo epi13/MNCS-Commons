@@ -1,0 +1,58 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:669aed25a8e4ecc9a067652814847a756a5f332ba9a23e38c48c2c4487943edc",
+  "evidence": [
+    {
+      "id": "mncs-forge:process-run-two-argument-mnp216",
+      "kind": "compiler-reproduction",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "Compiler returned MNP216 at line 23, column 42: process_run takes exactly one typed process-request argument."
+    },
+    {
+      "id": "mncs-language:process-v1-contract-ff5e98c",
+      "kind": "source-inspection",
+      "ref": "library/std/process.mncs",
+      "status": "PASS",
+      "summary": "ProcessRequest has argv/env/stdin/output bounds/deadline; ProcessResult is synchronous and has no cgroup resource counters or cancellation handle."
+    },
+    {
+      "id": "mncs-language:task-scope-available-ff5e98c",
+      "kind": "runtime-capability-audit",
+      "ref": "crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "TaskScope runs bounded artifact calls on host threads and observes cancellation between tasks; it does not interrupt a call already inside process_run."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-2D0EC5DB180C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "consumer_status": "CONSUMER_DEBT",
+    "pressure_boundary": "synchronous process_run has no resource envelope or cancellable handle",
+    "profile": "0.18",
+    "state": "STILL_REPRODUCES"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "With MNCS_LIBRARY_PATH pointing to mncs-language/library and mncs-forge/src/mncs_forge/resources/native, run target/release/mncs declaration-inventory src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs. Expected pressure witness: MNP216 at process_run(request, envelope).",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-process-effect-reproducer",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "The current narrow process boundary reproduces in the authoritative compiler. This campaign's minimal .mncs source calls process_run(request, envelope); Profile 0.18 rejects it with MNP216: process_run takes exactly one typed process-request argument. The accepted ProcessRequest has a synchronous ProcessResult with deadlines and bounded output but no memory/swap/pid envelope, cgroup observations, or active-execution handle. This is a language/runtime pressure; the Python Runner's existing cgroup realization is not evidence of resolution.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge currently realizes cgroup/systemd containment and process-tree cleanup through its Runner adapter; that host scaffold is provisional and does not resolve the native pressure.",
+    "removed": false
+  }
+}

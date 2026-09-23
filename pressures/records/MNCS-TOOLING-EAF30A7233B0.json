@@ -1,0 +1,40 @@
+{
+  "affectedRepositories": [
+    "mncs-forge"
+  ],
+  "capability": "continuous_entry_workspace_binding",
+  "contentDigest": "sha256:3be5a514c99d60f1b6a96648329d4a68c657139125dfde688a6cf109047571ba",
+  "discoveredAt": "2026-09-23T09:44:23Z",
+  "discoveredBy": "mncs-forge",
+  "domain": "tooling.environment-entry",
+  "id": "MNCS-TOOLING-EAF30A7233B0",
+  "identity": {
+    "capability": "continuous_entry_workspace_binding",
+    "domain": "tooling.environment-entry",
+    "reproducerSignature": "mncs-forge:continuous-entry-workspace-binding:CONFIG_READ",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-forge:continuous-entry-workspace-binding:CONFIG_READ"
+  },
+  "requiredBehavior": "Given an explicit workspace identity, enter the matching continuous environment and return its bounded context/capability capsule; reject mismatched project binding, and expose entry performance and resident status for that same workspace.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "b66d4019f1e567e1a88cf0048aae858f0c3f5915",
+        "path": "src/mncs_forge/cli.py"
+      }
+    }
+  },
+  "summary": "The local Forge environment entry cannot produce the bounded MNCS context capsule for mncs-forge because the selected repository has no mncs-forge.toml. The configured Forge MCP project surface is bound to mncs-reference-studies, so its status is not a valid substitute for this requested workspace. Target-specific entry latency, capability context, and idle resident behavior therefore remain unmeasured.",
+  "target": "tooling",
+  "title": "Continuous entry cannot bind the requested workspace",
+  "version": "1"
+}

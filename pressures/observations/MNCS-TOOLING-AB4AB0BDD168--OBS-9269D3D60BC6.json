@@ -1,0 +1,72 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:ab60e80f5185a431b5a3bf88a501e39f45640257e68a3c7d634610a0926fc50f",
+  "evidence": [
+    {
+      "id": "mncs-forge:native-budget-admission-outcome-corpus",
+      "kind": "profile018-revalidation",
+      "ref": "tests/test_native_resource_policy.py",
+      "status": "PASS",
+      "summary": "Fixed native corpora cover budget, admission, outcomes, and continuous transitions without host allocation."
+    },
+    {
+      "id": "mncs-forge:bounded-cgroup-oracle",
+      "kind": "profile018-revalidation",
+      "ref": "tests/test_resident_bounds.py::test_small_cgroup_budget_and_memory_pid_timeout_evidence_use_fake_kernel_state",
+      "status": "PASS",
+      "summary": "Tiny fixed fake cgroup inputs preserve memory/PID/timeout evidence."
+    },
+    {
+      "id": "mncs-forge:workstation-incident",
+      "kind": "profile018-revalidation",
+      "ref": "MNCS-TOOLING-AB4AB0BDD168--OBS-2D08360DDB03",
+      "status": "UNKNOWN",
+      "summary": "The reported low-memory/OOM warning cause remains unproven and was not repeated."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-9269D3D60BC6",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "immediate stale in-flight cancellation",
+      "generic process cgroup envelope and cancellable handle",
+      "idle resident and final verification measurements"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Revalidate against the current Profile 0.18 source/runtime and exact focused Forge reproducer.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-profile018-revalidation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "The previous campaign safety scaffold remains: cgroup-v2/systemd limits, one-job execution, bounded histories, and cleanup evidence. This campaign adds MNCS Forge core budget/identity selection, admission, raw process/cgroup outcome classification, and pending/defer transitions. Immediate stale in-flight cancellation and the generic resource/cancellable process effect remain open; the workstation incident remains causally UNKNOWN.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge continues to use the existing bounded host Runner for process realization while native semantic migration proceeds.",
+    "removed": false
+  }
+}

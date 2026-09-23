@@ -1,0 +1,74 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:c3bf71c9dc16622b04afce55ad2866217f1dc645878a35c04ca4ffc72c96e389",
+  "evidence": [
+    {
+      "id": "mncs-language:scope-failure-values",
+      "kind": "profile018-revalidation",
+      "ref": "library/std/scope.mncs",
+      "status": "PASS",
+      "summary": "Per-task FAILED state and error code remain inspectable independently from CANCELLED state."
+    },
+    {
+      "id": "mncs-embed:scope-run-error-aggregation",
+      "kind": "profile018-revalidation",
+      "ref": "crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "ScopeRun preserves ordered outputs, each failure reason, cancellation count, cleanup count, and deterministic first_failure."
+    },
+    {
+      "id": "mncs-forge:continuous-consumer-migration",
+      "kind": "profile018-revalidation",
+      "ref": "src/mncs_forge/continuous.py",
+      "status": "FAIL",
+      "summary": "Forge native transition integration is still in progress; bounded host collections remain the temporary state container."
+    }
+  ],
+  "id": "MNCS-LANG-B613462C9EB6--OBS-C346A9C17A60",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "structured per-task failure state",
+      "ordered result aggregation",
+      "failure/cancellation distinction"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "Forge native consumer migration completion"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-LANG-B613462C9EB6",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Revalidate against the current Profile 0.18 source/runtime and exact focused Forge reproducer.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-profile018-revalidation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "scope.v1 records each task failure distinctly from cancellation; TaskScope returns every per-index result and a deterministic first-failure index. Forge continuous execution still makes pending/defer decisions in its consumer loop, which this campaign is migrating to the native Forge core.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge continues to use the existing bounded host Runner for process realization while native semantic migration proceeds.",
+    "removed": false
+  }
+}

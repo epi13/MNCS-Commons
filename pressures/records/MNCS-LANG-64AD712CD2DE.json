@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-forge",
+    "mncs-language"
+  ],
+  "capability": "cancellable_resource_bounded_process",
+  "contentDigest": "sha256:ba77ae12fc57b77b3e4b0160e2b0ccc78bc2a707e18ef8479b570786419699dc",
+  "discoveredAt": "2026-09-23T07:42:44Z",
+  "discoveredBy": "mncs-forge",
+  "domain": "io.process-runtime",
+  "id": "MNCS-LANG-64AD712CD2DE",
+  "identity": {
+    "capability": "cancellable_resource_bounded_process",
+    "domain": "io.process-runtime",
+    "reproducerSignature": "mncs-forge:process-resource-handle:MNP216",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-forge:process-resource-handle:MNP216"
+  },
+  "requiredBehavior": "Provide a compatible generic process/resource effect contract that accepts bounded memory, swap, process-count and deadline constraints, returns typed raw observations, and exposes an owned cancellable execution handle so MNCS decides stale cancellation and a provider/runtime interrupts the process tree and reports cleanup.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c",
+        "path": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "Profile 0.18 process_run supports explicit bounded argv, environment, capture, and a deadline, but has no typed cgroup resource envelope or source-visible handle for interrupting an already-running external process. Structured task/scope cancellation stops pending work, while process_run completes synchronously.",
+  "target": "language",
+  "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
+  "version": "1"
+}

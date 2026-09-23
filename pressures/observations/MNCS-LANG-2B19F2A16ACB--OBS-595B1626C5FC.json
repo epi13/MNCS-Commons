@@ -1,0 +1,73 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:33cab650090dbaa69852e1bb1a028edaf316b2bacab3f06a7970834b3628b81b",
+  "evidence": [
+    {
+      "id": "mncs-language:scope-concurrency-source",
+      "kind": "profile018-revalidation",
+      "ref": "library/std/scope.mncs; library/std/task.mncs",
+      "status": "PASS",
+      "summary": "Source expresses bounded admission, lifecycle, pending cancellation, deterministic merge, and failure distinction."
+    },
+    {
+      "id": "mncs-embed:scope-runtime-concurrency",
+      "kind": "profile018-revalidation",
+      "ref": "crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "TaskScope executes artifact calls on bounded host threads with deterministic merge and joined lifetime."
+    },
+    {
+      "id": "mncs-forge:running-effect-cancel-gap",
+      "kind": "profile018-revalidation",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "Running provider effects still lack an interruptible generic handle."
+    }
+  ],
+  "id": "MNCS-LANG-2B19F2A16ACB--OBS-595B1626C5FC",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "task/scope source semantics",
+      "TaskScope runtime realization"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "source-level scheduler and blocked-effect cancellation"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-LANG-2B19F2A16ACB",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Revalidate against the current Profile 0.18 source/runtime and exact focused Forge reproducer.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-profile018-revalidation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "Profile 0.18 provides structured task/scope state and the embed runtime executes bounded concurrent work. The original task/spawn/channel wording is narrowed: source can express bounded scope lifecycle and cancellation policy, but actual scheduling remains the host TaskScope API and an already-running external effect cannot be interrupted.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge continues to use the existing bounded host Runner for process realization while native semantic migration proceeds.",
+    "removed": false
+  }
+}

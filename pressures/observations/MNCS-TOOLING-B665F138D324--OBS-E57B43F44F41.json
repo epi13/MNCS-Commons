@@ -1,0 +1,78 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:3d47e1f00608fe4461ce804efd47408c661113d704a86d7b3f373237e7b50d51",
+  "evidence": [
+    {
+      "id": "mncs-language:process-v1-available",
+      "kind": "profile018-capability-inventory",
+      "ref": "library/std/process.mncs",
+      "status": "PASS",
+      "summary": "process_run is a process_grant effect for explicit argv, bounded environment, stdin, output limits, deadline, and exit status."
+    },
+    {
+      "id": "mncs-forge:runner-not-native-consumer",
+      "kind": "consumer-inspection",
+      "ref": "src/mncs_forge/execution.py",
+      "status": "PASS",
+      "summary": "Verifier execution still crosses the Python Runner so it can realize systemd/cgroup policy and owned-tree cleanup."
+    },
+    {
+      "id": "mncs-forge:generic-process-gap",
+      "kind": "language-pressure",
+      "ref": "MNCS-LANG-64AD712CD2DE",
+      "status": "PASS",
+      "summary": "The exact missing compatible contract is a resource envelope and interruptible execution handle, not process spawning itself."
+    }
+  ],
+  "id": "MNCS-TOOLING-B665F138D324--OBS-E57B43F44F41",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "explicit argv",
+      "bounded environment",
+      "stdin and output caps",
+      "deadline",
+      "exit status"
+    ],
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "aggregate cgroup resource envelope",
+      "typed raw cgroup observation result",
+      "source-visible cancellable process handle"
+    ],
+    "pressure_boundary": "process capability exists but Forge cannot preserve the required generic resource and cancellation contract through process_run",
+    "profile": "0.18",
+    "state": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED"
+  },
+  "observedAt": "2026-09-23T10:03:09Z",
+  "pressureId": "MNCS-TOOLING-B665F138D324",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Inspect current Forge Runner and mncs.std.process.v1; the old no-process-spawning statement is false, but consumer migration remains blocked by the separately recorded resource/cancellation contract pressure.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-process-consumer-final",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "016a1e185f5654dd0968f34ffe69668fb03533f9",
+        "path": "src/mncs_forge/execution.py"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "Profile 0.18 process_run remains a real process_grant capability with bounded typed request/result. Forge has not moved verifier process execution onto it because it cannot express aggregate cgroup limits or a cancellable in-flight handle; Python remains the Linux realization adapter.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge Runner continues as the bounded host process realization adapter; native resource policy is authoritative."
+  }
+}

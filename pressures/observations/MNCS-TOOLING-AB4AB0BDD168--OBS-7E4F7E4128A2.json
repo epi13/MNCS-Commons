@@ -1,0 +1,104 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:f5e0f7f4d2cfa18fdde0f5098303aff9e5e730204dd08727e5fb850cc5623f97",
+  "evidence": [
+    {
+      "id": "mncs-forge:focused-native-policy-continuous-architecture",
+      "kind": "focused-test-batch",
+      "ref": "tests/test_architecture.py tests/test_native_resource_policy.py tests/test_continuous.py",
+      "status": "PASS",
+      "summary": "Focused native-policy, deferred-obligation, stale-cancellation and ownership tests passed on current main."
+    },
+    {
+      "id": "mncs-forge:native-outcome-systemd-true",
+      "kind": "tiny-systemd-cgroup-fixture",
+      "ref": "LocalProcessRunner /usr/bin/true",
+      "status": "PASS",
+      "summary": "One bounded true process returned native Pass and accepted exit status 0; slice limits were restored."
+    },
+    {
+      "id": "mncs-forge:tiny-memorymax-probe",
+      "kind": "tiny-cgroup-limit-fixture",
+      "ref": "128 MiB memory.max; 160 MiB touched-page attempt; 30 second cap",
+      "status": "UNKNOWN",
+      "summary": "The fixture ended at timeout without readable OOM/max counters; no larger or longer retry was made."
+    },
+    {
+      "id": "mncs-forge:inflight-cancellation-latency",
+      "kind": "cancellation-latency",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_owned_process_group",
+      "status": "PASS",
+      "summary": "Measured 52 ms from generation N+1 publication to owned process-group stop; generation N did not establish current PASS and N+1 proceeded."
+    },
+    {
+      "id": "mncs-forge:ravel-final-impact-plan",
+      "kind": "canonical-verification-plan",
+      "ref": "/tmp/mncs-resource-ravel-final.json",
+      "status": "UNKNOWN",
+      "summary": "Plan f7797876 requires repository_canonical_suite_pass; compiler inventory exposed no MNCS test identities to select."
+    },
+    {
+      "id": "mncs-forge:bounded-full-suite-attempt",
+      "kind": "repository-canonical-suite",
+      "ref": "PYTHONPATH=src timeout 600s .venv/bin/python -m pytest -q -k not test_real_podman_container_enforcement",
+      "status": "UNKNOWN",
+      "summary": "The one bounded run timed out at 600 seconds around 22% with one unreported failure. A separate focused execution run exposed two stale cache-test references, which were fixed and passed targeted tests; the repository-canonical suite was not repeated."
+    },
+    {
+      "id": "mncs-forge:environment-entry-pressure",
+      "kind": "environment-entry",
+      "ref": "MNCS-TOOLING-EAF30A7233B0",
+      "status": "UNKNOWN",
+      "summary": "Requested workspace entry fails CONFIG_READ and installed MCP Forge context targets mncs-reference-studies; target cold/warm entry and idle RSS remain unmeasured."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-7E4F7E4128A2",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "native budget and policy identity",
+      "native admission",
+      "native resource outcome classification",
+      "native pending/defer/status and stale cancellation",
+      "prompt process-group cancellation through Forge Runner"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "generic process_run resource/cancellation handle",
+      "proven cgroup-zero cleanup",
+      "workspace-bound enter and idle resident proof",
+      "repository-canonical suite pass"
+    ],
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T10:02:10Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "See the bounded native policy corpus and RAVEL final plan; RAVEL requires a canonical repository suite pass, which was not established.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-final-reconciliation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "016a1e185f5654dd0968f34ffe69668fb03533f9"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "MNCS Forge core now owns budget/identity selection, admission, raw resource outcome classification, pending/defer transitions, queue admission, unresolved status aggregation, stale result suppression, and cancellation policy. A superseding generation stopped its owned process group in 52 ms. The generic MNCS process effect, cgroup-zero proof, target entry/idle measurements, and repository-canonical suite proof remain open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Host systemd/cgroup/Runner operations remain the realization layer; canonical Forge resource and continuous decisions are MNCS-owned."
+  }
+}

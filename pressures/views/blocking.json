@@ -436,13 +436,17 @@
         "mncs-store"
       ],
       "capability": "resident_verification_host_protection",
-      "classification": "UNRECONCILED",
+      "classification": "PARTIALLY_RESOLVED",
       "currentValidation": false,
       "domain": "tooling.resource-safety",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-9EC10C80E0AF",
+        "observedAt": "2026-09-23T10:11:49Z",
+        "repository": "mncs-forge",
+        "summary": "Forge native semantics own budget/identity selection, admission, raw resource outcome classification, pending/defer, queue selection, unresolved status aggregation, and stale cancellation. The host passes only raw observation presence and realizes process/cgroup actions. The Forge Runner stopped a superseded process group in 52 ms. Generic process_run handles, cgroup-zero proof, target environment entry/idle measurements, and repository-suite proof remain open."
       },
       "reporters": [
         "mncs-forge"
@@ -502,11 +506,11 @@
   "reconciliation": {
     "classificationCounts": {
       "OBSOLETE": 4,
-      "PARTIALLY_RESOLVED": 3,
+      "PARTIALLY_RESOLVED": 4,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 6
+      "UNRECONCILED": 5
     },
-    "unreconciled": 6
+    "unreconciled": 5
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"

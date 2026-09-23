@@ -112,6 +112,9 @@
       "MNCS-TOOLING-B9ED716B4A9A",
       "MNCS-TOOLING-C5FD211E05C1"
     ],
+    "io.process-runtime": [
+      "MNCS-LANG-64AD712CD2DE"
+    ],
     "language-semantics": [
       "MNCS-COMPILER-2EA21F85084E",
       "MNCS-COMPILER-33EBFEFE9064",
@@ -215,6 +218,9 @@
     ],
     "provider.admission": [
       "MNCS-RUNTIME-356BE27FB865"
+    ],
+    "tooling.environment-entry": [
+      "MNCS-TOOLING-EAF30A7233B0"
     ],
     "tooling.event-delivery": [
       "MNCS-TOOLING-BAC23EF05BCC"

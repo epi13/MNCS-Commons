@@ -1,0 +1,97 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:74f31dce17b226a6f1a4fc75b452512d9bbae4382c8ef0ccadcca754e5fba144",
+  "evidence": [
+    {
+      "id": "mncs-forge:final-focused-native-continuous-architecture",
+      "kind": "focused-test-batch",
+      "ref": "tests/test_architecture.py tests/test_native_resource_policy.py tests/test_continuous.py",
+      "status": "PASS",
+      "summary": "Focused current-main tests pass, including absent-versus-Unknown resource observation, pressure-induced second-obligation deferral, native status, and stale process-group cancellation."
+    },
+    {
+      "id": "mncs-forge:current-native-status-source",
+      "kind": "source-inspection",
+      "ref": "src/mncs_forge/resources/native/forge/core.mncs::verification_status_decide and verification_resource_transition",
+      "status": "PASS",
+      "summary": "Native functions decide pending/defer, resource outcome availability, unresolved aggregation, stale cancellation, and escalation."
+    },
+    {
+      "id": "mncs-forge:ravel-final-plan-current",
+      "kind": "canonical-verification-plan",
+      "ref": "/tmp/mncs-resource-ravel-final.json",
+      "status": "UNKNOWN",
+      "summary": "Plan c6686bc requires repository_canonical_suite_pass and has no source MNCS test identities to select."
+    },
+    {
+      "id": "mncs-forge:repository-suite-not-established",
+      "kind": "repository-canonical-suite",
+      "ref": "PYTHONPATH=src timeout 600s .venv/bin/python -m pytest -q -k not test_real_podman_container_enforcement",
+      "status": "UNKNOWN",
+      "summary": "The single bounded full-suite attempt timed out after 600 seconds around 22% with an unreported failure; it was not repeated. Two identified focused readiness-cache failures were repaired and their tests pass."
+    },
+    {
+      "id": "mncs-forge:small-memory-limit-result",
+      "kind": "tiny-cgroup-limit-fixture",
+      "ref": "128 MiB memory.max; 160 MiB touched-page attempt; 30-second cap",
+      "status": "UNKNOWN",
+      "summary": "The fixture timed out without readable OOM/max counters; no larger or longer test ran."
+    },
+    {
+      "id": "mncs-forge:workspace-entry-remains-blocked",
+      "kind": "environment-entry",
+      "ref": "MNCS-TOOLING-EAF30A7233B0",
+      "status": "UNKNOWN",
+      "summary": "Local continuous enter returns CONFIG_READ for missing mncs-forge.toml and the configured MCP project is mncs-reference-studies; target cold/warm and idle RSS are unmeasured."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-9EC10C80E0AF",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "native resource budget and semantic identity",
+      "native admission and outcome classification",
+      "native pending/defer/queue/status/stale policy",
+      "prompt owned process-group cancellation through Forge Runner"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "generic resource-bounded cancellable process effect",
+      "cgroup-zero proof",
+      "workspace-bound entry and idle resident proof",
+      "repository-canonical suite pass"
+    ],
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T10:11:49Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Focused native differential and cancellation tests pass. RAVEL plan c6686bc9 requires repository_canonical_suite_pass, which the bounded full-suite run did not establish.",
+    "status": "UNKNOWN"
+  },
+  "runId": "native-resource-authority-20260922-current-main",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "1e7142999aae32f6a69e0bf560fa17c5fdfd5fa1",
+        "path": "src/mncs_forge/resources/native/forge/core.mncs"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "Forge native semantics own budget/identity selection, admission, raw resource outcome classification, pending/defer, queue selection, unresolved status aggregation, and stale cancellation. The host passes only raw observation presence and realizes process/cgroup actions. The Forge Runner stopped a superseded process group in 52 ms. Generic process_run handles, cgroup-zero proof, target environment entry/idle measurements, and repository-suite proof remain open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The host adapter keeps the working cgroup safety envelope while MNCS owns the policy and continuous transitions; process_run remains a language pressure."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:824f533a77941383fe4773250ad146bade2b1f077e3a59b64f318787bbfdc8da",
+  "evidence": [
+    {
+      "id": "mncs-forge:continuous-enter-config-read-b66d401",
+      "kind": "environment-entry",
+      "ref": "PYTHONPATH=src .venv/bin/python -m mncs_forge.cli continuous enter",
+      "status": "PASS",
+      "summary": "Command returned exit 2 / CONFIG_READ in 233.228 ms because /home/epi13/Documents/Projects/mncs-forge/mncs-forge.toml is absent; no environment capsule was returned."
+    },
+    {
+      "id": "mncs-forge:mcp-project-binding-mismatch",
+      "kind": "configured-tool-context",
+      "ref": "mcp__mncs_forge__mncs_forge_project_inspect",
+      "status": "PASS",
+      "summary": "The configured Forge MCP project inspection is bound to /home/epi13/Documents/Projects/mncs-reference-studies, not the target mncs-forge repository."
+    }
+  ],
+  "id": "MNCS-TOOLING-EAF30A7233B0--OBS-B18866C35644",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "consumer_status": "CONSUMER_DEBT",
+    "pressure_boundary": "workspace-bound Forge environment entry and context capsule are unavailable for requested repository",
+    "state": "STILL_REPRODUCES"
+  },
+  "observedAt": "2026-09-23T09:44:23Z",
+  "pressureId": "MNCS-TOOLING-EAF30A7233B0",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "From the mncs-forge repository root run PYTHONPATH=src .venv/bin/python -m mncs_forge.cli continuous enter; expected current result is exit 2 with CONFIG_READ naming the missing mncs-forge.toml.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "b66d4019f1e567e1a88cf0048aae858f0c3f5915",
+        "path": "src/mncs_forge/cli.py"
+      }
+    }
+  },
+  "summary": "The canonical target entry surface was attempted. It fails before startup because configuration is absent, while the available Forge MCP inspection is bound to a different repository. Per the campaign instruction, this workspace-binding obstacle is recorded as environment pressure instead of substituting broad filesystem discovery.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The target local entry requires a missing Forge configuration; the installed MCP inspection targets another repository. Neither provides a target-specific entry capsule."
+  }
+}

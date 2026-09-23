@@ -599,10 +599,11 @@
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
+        "mncs-forge",
         "mncs-test"
       ],
       "capability": "legacy.doc-p-011",
-      "classification": "UNRECONCILED",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
@@ -611,12 +612,17 @@
       ],
       "id": "MNCS-TOOLING-B665F138D324",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-TOOLING-B665F138D324--OBS-E57B43F44F41",
+        "observedAt": "2026-09-23T10:03:09Z",
+        "repository": "mncs-forge",
+        "summary": "Profile 0.18 process_run remains a real process_grant capability with bounded typed request/result. Forge has not moved verifier process execution onto it because it cannot express aggregate cgroup limits or a cancellable in-flight handle; Python remains the Linux realization adapter."
       },
       "reporters": [
         "mncs-actions",
         "mncs-debug",
         "mncs-doctor",
+        "mncs-forge",
         "mncs-test"
       ],
       "revalidationRequired": false,
@@ -628,7 +634,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 4,
+        "affected": 5,
         "fail": 0,
         "pass": 1,
         "unknown": 0
@@ -709,13 +715,14 @@
   ],
   "reconciliation": {
     "classificationCounts": {
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
       "OBSOLETE": 3,
       "PARTIALLY_RESOLVED": 4,
       "RESOLVED": 1,
       "STILL_REPRODUCES": 3,
-      "UNRECONCILED": 7
+      "UNRECONCILED": 6
     },
-    "unreconciled": 7
+    "unreconciled": 6
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "python-fallback"

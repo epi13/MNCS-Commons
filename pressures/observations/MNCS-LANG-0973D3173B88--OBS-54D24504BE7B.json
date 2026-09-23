@@ -1,0 +1,68 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:3abe460585ab937aa478d9672c0674ceda13dcff579e3fff93efd579993523eb",
+  "evidence": [
+    {
+      "id": "mncs-language:scope-source-semantics-018",
+      "kind": "profile018-revalidation",
+      "ref": "library/std/scope.mncs; library/std/task.mncs",
+      "status": "PASS",
+      "summary": "Source records own bounded spawn admission, deterministic merge, failure and pending cancellation transitions."
+    },
+    {
+      "id": "mncs-embed:task-scope-host-concurrency-018",
+      "kind": "profile018-revalidation",
+      "ref": "crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "TaskScope runs verified artifact calls on bounded host threads and joins them; no source scheduling or preemption is claimed."
+    }
+  ],
+  "id": "MNCS-LANG-0973D3173B88--OBS-54D24504BE7B",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "bounded structured scopes",
+      "host-thread TaskScope realization",
+      "deterministic ordered merge"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONSUMER_DEBT",
+    "missing": [
+      "source-visible scheduler semantics",
+      "interruption of in-flight external effects"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-23T07:42:44Z",
+  "pressureId": "MNCS-LANG-0973D3173B88",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Revalidate against the current Profile 0.18 source/runtime and exact focused Forge reproducer.",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-profile018-revalidation",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/native-resource-authority-20260922",
+        "commit": "cc7912c"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c"
+      }
+    }
+  },
+  "summary": "The old blanket statement is too broad at Profile 0.18: scope/task semantics and mncs-embed TaskScope provide bounded concurrent host-thread execution with deterministic ordered merge and failure/cancellation distinction. MNCS still has no source-level thread, async, or general scheduler syntax; TaskScope is an embed runtime realization, not in-language spawning.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge continues to use the existing bounded host Runner for process realization while native semantic migration proceeds.",
+    "removed": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "ff5e98c"
+  },
+  "contentDigest": "sha256:d0ef53dfbd88cce7da0f984814569ad562a87cb2f205167e3717ce3c7933fb32",
+  "evidence": [
+    {
+      "id": "mncs-forge:process-resource-handle-main-016a1e1",
+      "kind": "compiler-reproduction",
+      "ref": "src/mncs_forge/resources/pressure-reproducers/process-resource-handle.mncs",
+      "status": "PASS",
+      "summary": "Current main still gets MNP216 because process_run takes exactly one ProcessRequest."
+    },
+    {
+      "id": "mncs-language:process-v1-main-ff5e98c",
+      "kind": "source-inspection",
+      "ref": "library/std/process.mncs",
+      "status": "PASS",
+      "summary": "Profile 0.18 process_run exposes bounded argv/env/stdin/output/deadline and exit status, but returns synchronously with no resource envelope or cancellation handle."
+    },
+    {
+      "id": "mncs-forge:defer-native-main-016a1e1",
+      "kind": "native-policy-regression",
+      "ref": "tests/test_native_resource_policy.py::test_native_continuous_status_includes_deferred_obligations",
+      "status": "PASS",
+      "summary": "Forge handles unresolved/deferred obligations natively; this does not alter process_run capability."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-30D8B6C1D974",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "consumer_status": "CONSUMER_DEBT",
+    "pressure_boundary": "synchronous process_run lacks aggregate resource envelope and source-visible in-flight cancellation handle",
+    "profile": "0.18",
+    "state": "STILL_REPRODUCES"
+  },
+  "observedAt": "2026-09-23T10:02:10Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run tests/test_native_resource_policy.py::test_process_resource_handle_pressure_reproducer with mncs-language ff5e98c; expected MNP216 at process_run(request, envelope).",
+    "status": "PASS"
+  },
+  "runId": "native-resource-authority-20260922-process-effect-final",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "main",
+        "commit": "016a1e185f5654dd0968f34ffe69668fb03533f9",
+        "path": "src/mncs_forge/resources/native/forge/core.mncs"
+      },
+      "mncs-language": {
+        "commit": "ff5e98c",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The current main branch still reproduces the same narrow process-effect pressure after native status handling and defer/pending migration. ProcessRequest remains one typed request with synchronous ProcessResult; Forge native semantics can now choose resource budgets, admission, classification, pending and stale cancellation, but process_run still has no aggregate cgroup envelope or cancellable active handle.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Forge Runner retains Linux cgroup/systemd and process-tree realization after native decisions; the process effect contract remains an open language pressure."
+  }
+}
