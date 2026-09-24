@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:3d74b1b382035ee7616e9823bc97c4365f5f3d73a734894c26edf643aa54b380",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308"
+  ],
+  "from": "confirmed",
+  "id": "EVT-7E2A74BB8ADE33F0",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T04:37:29Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "previousEvent": "EVT-57060AF1E0B63FE9",
+  "reason": "The capability owner and an actual Forge consumer both pass current process lifecycle verification; the generic effect contract meets the pressure's required behavior.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

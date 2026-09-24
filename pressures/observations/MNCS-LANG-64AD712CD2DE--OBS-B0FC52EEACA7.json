@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "profile": "0.18"
+  },
+  "contentDigest": "sha256:ef3b13509f00432860a2c055a58f057e27e1ff326d9b1eed55b8ff60e346a7d3",
+  "evidence": [
+    {
+      "id": "mncs-language:current-generic-process-lifecycle",
+      "kind": "process-lifecycle-consumer-proof",
+      "ref": "tests/process_lifecycle_effect.mncs; crates/mncs-embed/tests/process_lifecycle.rs; crates/mncs-model/src/process_runtime.rs",
+      "status": "PASS",
+      "summary": "MNCS source start/observe/cancel/reap, separate semantic cancellation, full parent-child tree cleanup, tiny bounded resource exhaustion, runtime-scoped handles and active/retained limits all pass on the current Linux provider."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-B0FC52EEACA7",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T04:36:28Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The generic MNCS process lifecycle contract and Linux provider pass source-level, embed, resource, handle-bound, cancellation and cleanup verification.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

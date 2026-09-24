@@ -1,0 +1,52 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "profile": "0.18"
+  },
+  "contentDigest": "sha256:a047dae5c3b82a1b5d6e8d3524aabf9a51a31797e3294ebd0212ff6a17c4b0aa",
+  "evidence": [
+    {
+      "id": "mncs-forge:current-generic-process-effect-consumer",
+      "kind": "process-effect-consumer-integration",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_generic_process_tree; src/mncs_forge/process_effect.py",
+      "status": "PASS",
+      "summary": "Forge uses the generic mncs.std.process.v1 handle through transport glue; native stale policy cancels the exact handle, reaps the owned tree, suppresses N as current PASS, and dispatches N+1."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-E7658DE8625A",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T04:36:33Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "src/mncs_forge/process_effect.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The normal Forge continuous verifier consumes the generic MNCS process handle; native stale-work policy cancels and reaps that exact process tree and prevents stale PASS.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

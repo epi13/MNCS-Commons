@@ -1,0 +1,89 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:a68d83a3c6716b4aa5bc13407fdf3f51a2c36a3ef6301797a70ebbcf80fbb7a7",
+  "evidence": [
+    {
+      "id": "mncs-forge:resident-24-generation-churn",
+      "kind": "bounded-resident-stability",
+      "ref": "continuous enter/start/status/stop run; workspace A; 24 edits",
+      "status": "PASS",
+      "summary": "Supervisor RSS 357,788 KiB after entry, 357,976 KiB after 24 changes (+188 KiB), flat for 4 s idle. LS RSS 13,808 KiB after entry, 19,556 KiB after churn, flat during idle. Pending verification=0, queue=0, active job=null, Store projection generation=0."
+    },
+    {
+      "id": "mncs-forge:resident-bounded-state",
+      "kind": "resident-cache-and-handle-observation",
+      "ref": "NativeForgeAdapter and ProcessRuntime bounded state",
+      "status": "PASS",
+      "summary": "ABI cache held 1 entry (~2.49 MB under 4 MB); other native caches=0; active process units=0 and retained handles=0 in this no-verifier resident run. The separate ProcessRuntime tests verify caps of 16 active and 128 retained, eviction safety, and foreign/expired fail-closed behavior."
+    },
+    {
+      "id": "mncs-language:owned-process-cleanup",
+      "kind": "linux-owned-tree-resource-test",
+      "ref": "crates/mncs-embed/tests/process_lifecycle.rs",
+      "status": "PASS",
+      "summary": "A parent with a child was cancelled through the generic handle; the owned cgroup reached empty, launcher was reaped, and cleanup completed. Tiny fixed memory envelope only; no host-derived allocation."
+    },
+    {
+      "id": "mncs-forge:ravel-language-effect-plan",
+      "kind": "ravel-verification-plan",
+      "ref": "RAVEL impact root library/std/process.mncs; change_class=effect_semantics",
+      "status": "UNKNOWN",
+      "summary": "The language effect-semantics plan still requires repository_canonical_suite_pass. Focused lifecycle evidence is current, but the campaign did not rerun the broad language canonical suite."
+    },
+    {
+      "id": "mncs-forge:historical-low-memory-event-cause",
+      "kind": "host-resource-incident",
+      "ref": "2026-09-22 Fedora low-memory/OOM report",
+      "status": "UNKNOWN",
+      "summary": "The prior-boot journal is unavailable; no cause is attributed to this campaign."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-76861FFF4E77",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "BOUNDED_RESIDENT_PROOF_WITH_OPEN_GATES",
+    "missing": [
+      "RAVEL language effect-semantics repository-canonical suite pass",
+      "historical Fedora low-memory incident attribution",
+      "authoritative workspace mapping",
+      "longer-duration resident bounds"
+    ],
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:05Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Use the bounded 24-change, 4-second idle resident run and the focused process-runtime cap/tree tests; do not infer host OOM cause or repository-wide suite status from these runs.",
+    "status": "UNKNOWN"
+  },
+  "runId": "resident-stability-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "tests/test_resident_bounds.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "crates/mncs-model/src/process_runtime.rs"
+      }
+    }
+  },
+  "summary": "A bounded live resident run entered a configured workspace in 8.653 s, processed 24 edit/generation changes, then stayed semantically idle for 4 s. Supervisor RSS was 357,788 KiB after entry and 357,976 KiB after churn (+188 KiB), stable during idle; pending verifications/queue/active job and active/retained process handle counts were zero because no verifier was triggered. Native ABI cache was one ~2.49 MB entry under its 4 MB bound, Store projection generation stayed zero. Separate lifecycle tests prove the 16 active / 128 retained caps and owned-tree cleanup. The historic Fedora low-memory event cause and language effect-semantics repository-canonical RAVEL suite remain UNKNOWN.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Resident verification remains constrained to bounded explicit envelopes and focused evidence until the language canonical suite, full long-lived handle churn, and historic host incident are independently closed."
+  }
+}

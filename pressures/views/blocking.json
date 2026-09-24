@@ -443,10 +443,10 @@
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-0681D6EC02A9",
-        "observedAt": "2026-09-23T10:20:54Z",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-76861FFF4E77",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Warm retained native decision round trips are 5.4–6.5 ms in a 30-call sample. A bounded micro-verifier/store-reuse fixture measured 104.4 ms cold, 19.7 ms on its Store-backed reuse call, and a small-sample median of 21.0 ms. Target environment entry and idle resident measurements remain unknown because the requested workspace cannot enter."
+        "summary": "A bounded live resident run entered a configured workspace in 8.653 s, processed 24 edit/generation changes, then stayed semantically idle for 4 s. Supervisor RSS was 357,788 KiB after entry and 357,976 KiB after churn (+188 KiB), stable during idle; pending verifications/queue/active job and active/retained process handle counts were zero because no verifier was triggered. Native ABI cache was one ~2.49 MB entry under its 4 MB bound, Store projection generation stayed zero. Separate lifecycle tests prove the 16 active / 128 retained caps and owned-tree cleanup. The historic Fedora low-memory event cause and language effect-semantics repository-canonical RAVEL suite remain UNKNOWN."
       },
       "reporters": [
         "mncs-forge"
@@ -479,10 +479,10 @@
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-E008C8644C7C",
-        "observedAt": "2026-09-22T15:42:00Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-6301BB5CA354",
+        "observedAt": "2026-09-24T04:36:06Z",
         "repository": "mncs-forge",
-        "summary": "The landed main revision remains green under the final focused profile. In a fresh temporary project, the nine-iteration benchmark reports setup 7.172 s, verifier p50 2.179 s and p95/p99 2.779 s, and state_inspect p50 5.277 ms with p95/p99 50.007 ms. A separate retained verifier profile measured 30.1 ms authorization/request preparation, 288.6 ms action publication, 40.0 ms provider plus result construction, and 1,036.5 ms terminal receipt-plus-result publication for a 1,396.3 ms run; the Store generation delta was two. These numbers keep the remaining bottleneck in durable Store publication rather than Forge semantic subprocesses."
+        "summary": "Workspace-first continuous enter/start completed in 8.653 s for the bounded resident run; a 24-change burst was processed and status remained stable through 4 seconds idle, with no queued or repeated verification absent invalidation. Store projection generation stayed zero. This is a single fixture/workspace sample, not a startup tail estimate; startup/Store recovery can still dominate broader workspaces."
       },
       "reporters": [
         "mncs-forge"

@@ -196,10 +196,10 @@
       "id": "MNCS-LANG-0973D3173B88",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-0973D3173B88--OBS-54D24504BE7B",
-        "observedAt": "2026-09-23T07:42:44Z",
+        "observationId": "MNCS-LANG-0973D3173B88--OBS-A0B26CA3A971",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "The old blanket statement is too broad at Profile 0.18: scope/task semantics and mncs-embed TaskScope provide bounded concurrent host-thread execution with deterministic ordered merge and failure/cancellation distinction. MNCS still has no source-level thread, async, or general scheduler syntax; TaskScope is an embed runtime realization, not in-language spawning."
+        "summary": "Profile 0.18 TaskScope provides bounded joined host-thread concurrency, while the process runtime admits at most 16 active executions and retains at most 128 terminal handles; the Forge continuous path uses event-driven supersession. These do not provide source-level general scheduling or async/thread primitives, so the imported concurrency pressure remains partially open."
       },
       "reporters": [
         "mncs-forge",
@@ -418,10 +418,10 @@
       "id": "MNCS-LANG-2B19F2A16ACB",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-595B1626C5FC",
-        "observedAt": "2026-09-23T07:42:44Z",
+        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-CE2BB6F7C794",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Profile 0.18 provides structured task/scope state and the embed runtime executes bounded concurrent work. The original task/spawn/channel wording is narrowed: source can express bounded scope lifecycle and cancellation policy, but actual scheduling remains the host TaskScope API and an already-running external effect cannot be interrupted."
+        "summary": "The task/scope lifecycle and pending cancellation contract remains available, and the newly generic process effect can now cancel an already-running external owned tree. This narrows blocked-effect cancellation, but the execution scheduler is still a host TaskScope realization and the affected service consumer has not been reverified."
       },
       "reporters": [
         "mncs-forge",
@@ -988,33 +988,34 @@
         "mncs-language"
       ],
       "capability": "cancellable_resource_bounded_process",
-      "classification": "STILL_REPRODUCES",
-      "currentValidation": false,
+      "classification": "RESOLVED",
+      "currentValidation": true,
       "domain": "io.process-runtime",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-64AD712CD2DE",
       "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-64AD712CD2DE--OBS-5ABA50486DF0",
-        "observedAt": "2026-09-23T10:41:08Z",
-        "repository": "mncs-forge",
-        "summary": "After the native continuous cost-tier migration, the minimal resource-handle reproducer still fails at process_run with MNP216. Resource budget, admission, outcome, pending/defer, stale cancellation, and cost-tier admission are Forge MNCS-owned; the remaining effect gap is the generic resource-bounded process contract and source-visible active cancellation handle."
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308",
+        "observedAt": "2026-09-24T04:36:04Z",
+        "repository": "mncs-language",
+        "summary": "The existing mncs.std.process.v1 authority now provides start/observe/cancel/reap with a runtime-scoped opaque handle and bounded resource envelope. A real MNCS source call observed Running, then a separate call cancelled and reaped the same handle; typed trace ended Cancelled with cleanup=true. Embed tests verified parent+child tree empty, launcher reaped, cleanup complete, tiny MemoryMax exhaustion classified ResourceExhausted, and foreign/expired handles fail closed. cgroup removal can prevent final counters, which remains observation_complete=false rather than fabricated zero."
       },
       "reporters": [
-        "mncs-forge"
+        "mncs-forge",
+        "mncs-language"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
-      "status": "discovered",
+      "status": "resolved",
       "target": "language",
       "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -1144,10 +1145,10 @@
       "id": "MNCS-LANG-7610973D3A68",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-7610973D3A68--OBS-4DE6733D9641",
-        "observedAt": "2026-09-23T10:03:09Z",
+        "observationId": "MNCS-LANG-7610973D3A68--OBS-42B4BA71E936",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Task and structured-scope cancellation are available, and Forge native semantics now classify superseded work and request cancellation. A generic Forge Runner can terminate the owned process group in 52 ms and report cleanup facts. However, source-visible cooperative cancellation still cannot interrupt a task already blocked inside synchronous process_run; cgroup-zero cleanup was not proven."
+        "summary": "The running external-effect cancellation gap is closed for Forge continuous work: Language Service generation N+1 reaches the event-driven supervisor once, native Forge returns the stale/cancel transition, and the exact generic ProcessHandle is cancelled and reaped. Generation N cannot publish current PASS; N+1 dispatches. The original broad cancellation pressure remains open for other consumers and semantics."
       },
       "reporters": [
         "mncs-forge",
@@ -2551,10 +2552,10 @@
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-0681D6EC02A9",
-        "observedAt": "2026-09-23T10:20:54Z",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-76861FFF4E77",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Warm retained native decision round trips are 5.4–6.5 ms in a 30-call sample. A bounded micro-verifier/store-reuse fixture measured 104.4 ms cold, 19.7 ms on its Store-backed reuse call, and a small-sample median of 21.0 ms. Target environment entry and idle resident measurements remain unknown because the requested workspace cannot enter."
+        "summary": "A bounded live resident run entered a configured workspace in 8.653 s, processed 24 edit/generation changes, then stayed semantically idle for 4 s. Supervisor RSS was 357,788 KiB after entry and 357,976 KiB after churn (+188 KiB), stable during idle; pending verifications/queue/active job and active/retained process handle counts were zero because no verifier was triggered. Native ABI cache was one ~2.49 MB entry under its 4 MB bound, Store projection generation stayed zero. Separate lifecycle tests prove the 16 active / 128 retained caps and owned-tree cleanup. The historic Fedora low-memory event cause and language effect-semantics repository-canonical RAVEL suite remain UNKNOWN."
       },
       "reporters": [
         "mncs-forge"
@@ -2706,10 +2707,10 @@
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-E008C8644C7C",
-        "observedAt": "2026-09-22T15:42:00Z",
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-6301BB5CA354",
+        "observedAt": "2026-09-24T04:36:06Z",
         "repository": "mncs-forge",
-        "summary": "The landed main revision remains green under the final focused profile. In a fresh temporary project, the nine-iteration benchmark reports setup 7.172 s, verifier p50 2.179 s and p95/p99 2.779 s, and state_inspect p50 5.277 ms with p95/p99 50.007 ms. A separate retained verifier profile measured 30.1 ms authorization/request preparation, 288.6 ms action publication, 40.0 ms provider plus result construction, and 1,036.5 ms terminal receipt-plus-result publication for a 1,396.3 ms run; the Store generation delta was two. These numbers keep the remaining bottleneck in durable Store publication rather than Forge semantic subprocesses."
+        "summary": "Workspace-first continuous enter/start completed in 8.653 s for the bounded resident run; a 24-change burst was processed and status remained stable through 4 seconds idle, with no queued or repeated verification absent invalidation. Store projection generation stayed zero. This is a single fixture/workspace sample, not a startup tail estimate; startup/Store recovery can still dominate broader workspaces."
       },
       "reporters": [
         "mncs-forge"
@@ -2812,13 +2813,17 @@
         "ravel"
       ],
       "capability": "minimum-sufficient-verification-plan",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "verification.scope-selection",
       "fallbackLanguages": [],
       "id": "MNCS-VERIFY-CF7230C4396D",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-VERIFY-CF7230C4396D--OBS-AC67BACFCE06",
+        "observedAt": "2026-09-24T04:39:31Z",
+        "repository": "mncs-forge",
+        "summary": "This records the current focused Forge continuous RAVEL plan while preserving the already-resolved shared verification-plan validator pressure. RAVEL selected and mncs-test passed all four native trigger/debounce identities; the Commons-owned mncs.verification-plan/1 validator and six affected-consumer PASS verifications remain the closure basis for this pressure. The separate language process effect_semantics repository-canonical suite gate is tracked under resident verification safety, not treated as a regression of the shared-validator pressure."
       },
       "reporters": [
         "mncs-actions",
@@ -2850,11 +2855,11 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
       "OBSOLETE": 6,
       "PARTIALLY_RESOLVED": 13,
-      "RESOLVED": 14,
-      "STILL_REPRODUCES": 18,
-      "UNRECONCILED": 20
+      "RESOLVED": 16,
+      "STILL_REPRODUCES": 17,
+      "UNRECONCILED": 19
     },
-    "unreconciled": 20
+    "unreconciled": 19
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "multi-repository"

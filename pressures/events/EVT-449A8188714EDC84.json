@@ -1,0 +1,24 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:ca66bd3e4ee95860c27d92e6b5bce287340b6169dd744293bb4b2e007f99ab45",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308",
+    "MNCS-LANG-64AD712CD2DE--OBS-B0FC52EEACA7",
+    "MNCS-LANG-64AD712CD2DE--OBS-E7658DE8625A"
+  ],
+  "from": "implementing",
+  "id": "EVT-449A8188714EDC84",
+  "implementation": {
+    "provider": "mncs-embed Linux transient user service with cgroup v2",
+    "ref": "mncs-language@066897e97a8499a25ea33611d47cc7a4fcdc2b48:mncs.std.process.v1"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T04:37:30Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "previousEvent": "EVT-2D8C16E540E83FE8",
+  "reason": "mncs.std.process.v1 is implemented and consumed by Forge; current Linux provider proves typed start/observe/cancel/reap and cleanup.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

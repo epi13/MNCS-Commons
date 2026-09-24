@@ -86,10 +86,10 @@
       "id": "MNCS-LANG-0973D3173B88",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-0973D3173B88--OBS-54D24504BE7B",
-        "observedAt": "2026-09-23T07:42:44Z",
+        "observationId": "MNCS-LANG-0973D3173B88--OBS-A0B26CA3A971",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "The old blanket statement is too broad at Profile 0.18: scope/task semantics and mncs-embed TaskScope provide bounded concurrent host-thread execution with deterministic ordered merge and failure/cancellation distinction. MNCS still has no source-level thread, async, or general scheduler syntax; TaskScope is an embed runtime realization, not in-language spawning."
+        "summary": "Profile 0.18 TaskScope provides bounded joined host-thread concurrency, while the process runtime admits at most 16 active executions and retains at most 128 terminal handles; the Forge continuous path uses event-driven supersession. These do not provide source-level general scheduling or async/thread primitives, so the imported concurrency pressure remains partially open."
       },
       "reporters": [
         "mncs-forge",
@@ -590,10 +590,10 @@
       "id": "MNCS-LANG-2B19F2A16ACB",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-595B1626C5FC",
-        "observedAt": "2026-09-23T07:42:44Z",
+        "observationId": "MNCS-LANG-2B19F2A16ACB--OBS-CE2BB6F7C794",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Profile 0.18 provides structured task/scope state and the embed runtime executes bounded concurrent work. The original task/spawn/channel wording is narrowed: source can express bounded scope lifecycle and cancellation policy, but actual scheduling remains the host TaskScope API and an already-running external effect cannot be interrupted."
+        "summary": "The task/scope lifecycle and pending cancellation contract remains available, and the newly generic process effect can now cancel an already-running external owned tree. This narrows blocked-effect cancellation, but the execution scheduler is still a host TaskScope realization and the affected service consumer has not been reverified."
       },
       "reporters": [
         "mncs-forge",
@@ -1585,42 +1585,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-forge",
-        "mncs-language"
-      ],
-      "capability": "cancellable_resource_bounded_process",
-      "classification": "STILL_REPRODUCES",
-      "currentValidation": false,
-      "domain": "io.process-runtime",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-64AD712CD2DE",
-      "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-64AD712CD2DE--OBS-5ABA50486DF0",
-        "observedAt": "2026-09-23T10:41:08Z",
-        "repository": "mncs-forge",
-        "summary": "After the native continuous cost-tier migration, the minimal resource-handle reproducer still fails at process_run with MNP216. Resource budget, admission, outcome, pending/defer, stale cancellation, and cost-tier admission are Forge MNCS-owned; the remaining effect gap is the generic resource-bounded process contract and source-visible active cancellation handle."
-      },
-      "reporters": [
-        "mncs-forge"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 2,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-commons",
         "mncs-language"
       ],
@@ -1883,10 +1847,10 @@
       "id": "MNCS-LANG-7610973D3A68",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-LANG-7610973D3A68--OBS-4DE6733D9641",
-        "observedAt": "2026-09-23T10:03:09Z",
+        "observationId": "MNCS-LANG-7610973D3A68--OBS-42B4BA71E936",
+        "observedAt": "2026-09-24T04:36:05Z",
         "repository": "mncs-forge",
-        "summary": "Task and structured-scope cancellation are available, and Forge native semantics now classify superseded work and request cancellation. A generic Forge Runner can terminate the owned process group in 52 ms and report cleanup facts. However, source-visible cooperative cancellation still cannot interrupt a task already blocked inside synchronous process_run; cgroup-zero cleanup was not proven."
+        "summary": "The running external-effect cancellation gap is closed for Forge continuous work: Language Service generation N+1 reaches the event-driven supervisor once, native Forge returns the stale/cancel transition, and the exact generic ProcessHandle is cancelled and reaped. Generation N cannot publish current PASS; N+1 dispatches. The original broad cancellation pressure remains open for other consumers and semantics."
       },
       "reporters": [
         "mncs-forge",
@@ -3357,7 +3321,7 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 30,
-      "STILL_REPRODUCES": 30
+      "STILL_REPRODUCES": 29
     },
     "unreconciled": 0
   },

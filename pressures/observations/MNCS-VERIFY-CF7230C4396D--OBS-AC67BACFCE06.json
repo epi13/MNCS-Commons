@@ -1,0 +1,77 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "ravel": "59378840dc2fe0504133bb704553aa8fef4f356b"
+  },
+  "contentDigest": "sha256:6b534499b4ca73d4e320c7372b098db47140430e1c13801d7beb6ef89a0e1964",
+  "evidence": [
+    {
+      "id": "ravel:forge-continuous-focused-plan-correction",
+      "kind": "verification-plan",
+      "ref": "plan 3ee9e721; obligation plan sufficient_to_stop=true",
+      "status": "PASS",
+      "summary": "The native Forge continuous trigger/debounce roots selected exactly four declared first-class MNCS tests and reached sufficient_to_stop=true."
+    },
+    {
+      "id": "mncs-test:forge-continuous-selected-run-correction",
+      "kind": "native-first-class-test-run",
+      "ref": "mncs:language:experiment-run:82c51fc4f647a98411297ab2ce6617028a968cd6c373f002a9b63fa435852f76",
+      "status": "PASS",
+      "summary": "All four selected cases passed in mncs-test; no failure or outstanding selected identity remains."
+    },
+    {
+      "id": "mncs-commons:verification-plan-pressure-closure",
+      "kind": "existing-current-pressure-closure",
+      "ref": "MNCS-VERIFY-CF7230C4396D--OBS-409526C422BD; --OBS-452864E972C3; --OBS-51CBD2A74C21; --OBS-7524C9D4A5A7; --OBS-A5D4AFAEAE49; --OBS-E0DE2171B8F7",
+      "status": "PASS",
+      "summary": "The pre-existing resolved event records the shared Commons validator implementation and current PASS verification from all six affected consumers; this focused plan run does not reopen that closure."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-AC67BACFCE06",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "RESOLVED",
+    "consumer_status": "SHARED_VALIDATOR_CLOSURE_REMAINS_CURRENT",
+    "focused_plan_sufficient_to_stop": true,
+    "focused_ravel_plan_id": "3ee9e721",
+    "language_effect_semantics_plan_sufficient_to_stop": false,
+    "note": "The language effect-semantics canonical-suite gate is separately recorded in MNCS-TOOLING-AB4AB0BDD168.",
+    "state": "RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:39:31Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the exact RAVEL roots continuous_trigger_matches and continuous_debounce_ms and execute the selected plan through mncs-test.",
+    "status": "PASS"
+  },
+  "runId": "ravel-focused-continuous-proof-reconciliation-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-commons": {
+        "commit": "7666dfd6da52ce9ccc5057eff4acb162e9d57791",
+        "path": "src/mncs_commons/verification_plan.py"
+      },
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": ".mncs/verification-obligations.json"
+      },
+      "ravel": {
+        "branch": "campaign/continuous-hardening-20260921",
+        "commit": "59378840dc2fe0504133bb704553aa8fef4f356b",
+        "path": "src/ravel/impact.py"
+      }
+    }
+  },
+  "summary": "This records the current focused Forge continuous RAVEL plan while preserving the already-resolved shared verification-plan validator pressure. RAVEL selected and mncs-test passed all four native trigger/debounce identities; the Commons-owned mncs.verification-plan/1 validator and six affected-consumer PASS verifications remain the closure basis for this pressure. The separate language process effect_semantics repository-canonical suite gate is tracked under resident verification safety, not treated as a regression of the shared-validator pressure.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The family-owned Commons verification-plan validator remains the canonical authority; this campaign adds focused consumer evidence."
+  }
+}

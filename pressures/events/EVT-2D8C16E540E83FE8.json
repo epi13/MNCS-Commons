@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:ab85aacfd0c90f5b9d7261ec2486a9b2f72d5b4e9d285e84b5308453d5b2222f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308"
+  ],
+  "from": "accepted",
+  "id": "EVT-2D8C16E540E83FE8",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T04:37:29Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "previousEvent": "EVT-7E2A74BB8ADE33F0",
+  "reason": "Recovered generic lifecycle integration and Forge migration are complete, including resource envelope, runtime-scoped handle, whole-tree cancellation and reap evidence.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

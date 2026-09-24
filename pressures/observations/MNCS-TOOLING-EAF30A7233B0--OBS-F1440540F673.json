@@ -1,0 +1,66 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:fc4b230d823c43d4d3d3d05f1a8ef3f52c3183569257aa88e1e23c149f3c0136",
+  "evidence": [
+    {
+      "id": "mncs-forge:workspace-entry-neutral-cwd",
+      "kind": "workspace-entry-integration",
+      "ref": "tests/test_workspace_binding.py; continuous enter/start/status/stop",
+      "status": "PASS",
+      "summary": "Nine focused tests pass; neutral-CWD explicit workspace binds the expected Forge config and resident for each of two workspaces, with no cross-project attachment."
+    },
+    {
+      "id": "mncs-forge:workspace-resolution-fail-closed",
+      "kind": "workspace-resolution-tests",
+      "ref": "tests/test_workspace_binding.py",
+      "status": "PASS",
+      "summary": "Explicit-config mismatch, multiple authoritative configs, and missing config produce precise fail-closed results; CWD is never substituted."
+    },
+    {
+      "id": "mncs-forge:bounded-workspace-bootstrap",
+      "kind": "source-review",
+      "ref": "src/mncs_forge/workspace_binding.py",
+      "status": "PASS",
+      "summary": "Recursive candidate discovery does not follow symlinks and is bounded by depth 8, 4096 directories, and 64 configs. This is documented as bootstrap behavior, not authoritative family mapping."
+    }
+  ],
+  "id": "MNCS-TOOLING-EAF30A7233B0--OBS-F1440540F673",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "CONFIGURED_WORKSPACES_VERIFIED",
+    "missing": [
+      "authoritative workspace/project-to-Forge-config mapping"
+    ],
+    "state": "WORKSPACE_FIRST_ENTRY_AVAILABLE"
+  },
+  "observedAt": "2026-09-24T04:36:05Z",
+  "pressureId": "MNCS-TOOLING-EAF30A7233B0",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run tests/test_workspace_binding.py and the bounded neutral-CWD enter/start/status/stop run for workspaces A and B.",
+    "status": "PASS"
+  },
+  "runId": "workspace-first-entry-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "src/mncs_forge/workspace_binding.py"
+      }
+    }
+  },
+  "summary": "Explicit workspace resolution is now shared by continuous enter/start/status/stop and works from a neutral CWD for two distinct configured workspaces without cross-attachment. Tests also prove mismatch, ambiguity, and no-config failures are precise and never fall back to CWD. Discovery remains a bounded bootstrap walk (depth 8, 4096 directories, 64 configs); authoritative workspace-to-project mapping is still outstanding.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The mature machine-native workspace identity to authoritative environment/project mapping is still absent; current bounded recursive discovery is the bootstrap resolver."
+  }
+}

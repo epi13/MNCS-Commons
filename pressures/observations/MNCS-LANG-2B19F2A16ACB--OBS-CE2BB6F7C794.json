@@ -1,0 +1,65 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:0ed3b75dce03b543f7ce3220ea63e18014138cd22bf70eca180a8f006a2d9225",
+  "evidence": [
+    {
+      "id": "mncs-language:task-scope-lifecycle-and-process-cancel",
+      "kind": "task-effect-runtime-evidence",
+      "ref": "library/std/task.mncs; library/std/scope.mncs; library/std/process.mncs; crates/mncs-embed/tests/process_lifecycle.rs",
+      "status": "PASS",
+      "summary": "Source task/scope semantics plus embed runtime are present; a separate MNCS semantic action cancels and reaps the running process effect with whole-tree cleanup."
+    },
+    {
+      "id": "mncs-forge:continuous-native-supersession",
+      "kind": "consumer-integration",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_generic_process_tree",
+      "status": "PASS",
+      "summary": "The event-driven Forge consumer cancels the exact generic handle and proceeds to the next generation."
+    }
+  ],
+  "id": "MNCS-LANG-2B19F2A16ACB--OBS-CE2BB6F7C794",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "RUNNING_EFFECT_CANCEL_AVAILABLE",
+    "missing": [
+      "source-level general scheduler",
+      "mncs-service current consumer verification"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:05Z",
+  "pressureId": "MNCS-LANG-2B19F2A16ACB",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the MNCS process lifecycle source test, mncs-embed TaskScope tests, and Forge generic-handle supersession integration.",
+    "status": "PASS"
+  },
+  "runId": "task-scope-process-effect-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "tests/test_continuous.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The task/scope lifecycle and pending cancellation contract remains available, and the newly generic process effect can now cancel an already-running external owned tree. This narrows blocked-effect cancellation, but the execution scheduler is still a host TaskScope realization and the affected service consumer has not been reverified.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "General scheduling remains in joined host TaskScope; only the external-process cancellation portion now has a generic source-visible capability."
+  }
+}

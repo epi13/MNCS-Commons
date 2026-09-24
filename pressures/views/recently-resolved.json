@@ -493,6 +493,43 @@
     },
     {
       "affectedRepositories": [
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "capability": "cancellable_resource_bounded_process",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "io.process-runtime",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-64AD712CD2DE",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308",
+        "observedAt": "2026-09-24T04:36:04Z",
+        "repository": "mncs-language",
+        "summary": "The existing mncs.std.process.v1 authority now provides start/observe/cancel/reap with a runtime-scoped opaque handle and bounded resource envelope. A real MNCS source call observed Running, then a separate call cancelled and reaped the same handle; typed trace ended Cancelled with cleanup=true. Embed tests verified parent+child tree empty, launcher reaped, cleanup complete, tiny MemoryMax exhaustion classified ResourceExhausted, and foreign/expired handles fail closed. cgroup removal can prevent final counters, which remains observation_complete=false rather than fabricated zero."
+      },
+      "reporters": [
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-numerics"
       ],
@@ -908,13 +945,17 @@
         "ravel"
       ],
       "capability": "minimum-sufficient-verification-plan",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "verification.scope-selection",
       "fallbackLanguages": [],
       "id": "MNCS-VERIFY-CF7230C4396D",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-VERIFY-CF7230C4396D--OBS-AC67BACFCE06",
+        "observedAt": "2026-09-24T04:39:31Z",
+        "repository": "mncs-forge",
+        "summary": "This records the current focused Forge continuous RAVEL plan while preserving the already-resolved shared verification-plan validator pressure. RAVEL selected and mncs-test passed all four native trigger/debounce identities; the Commons-owned mncs.verification-plan/1 validator and six affected-consumer PASS verifications remain the closure basis for this pressure. The separate language process effect_semantics repository-canonical suite gate is tracked under resident verification safety, not treated as a regression of the shared-validator pressure."
       },
       "reporters": [
         "mncs-actions",
@@ -942,10 +983,10 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "RESOLVED": 16,
-      "UNRECONCILED": 10
+      "RESOLVED": 18,
+      "UNRECONCILED": 9
     },
-    "unreconciled": 10
+    "unreconciled": 9
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"
