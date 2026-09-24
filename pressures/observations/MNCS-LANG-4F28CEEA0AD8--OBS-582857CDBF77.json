@@ -1,0 +1,69 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:f80a29bc901aadc5688daf5d14c24a58a0612dd29edf95a1ba02f92dd4cc69ce",
+  "evidence": [
+    {
+      "id": "ravel:language-final-remote-closure",
+      "kind": "verification-plan",
+      "ref": "RAVEL plan 66db33db5793f2edf5c70d4dab878ebaf95447962461fdafe37fc1839f34c951; obligation plan a583ef2f4f6487f9ac0d60c33d4219d0a288445d443c4347492d51005c23de98",
+      "status": "PASS",
+      "summary": "Against the final fetched origin/main heads, RAVEL retained abi_boundary escalation and confirmed a complete 104-obligation closure: 104 current PASS, zero missing obligations, sufficient_to_stop=true, and no new executions required."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-582857CDBF77",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T22:00:42Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "MNCS-Commons": {
+        "branch": "main",
+        "commit": "f682af4cef2b60127a73e158735e34e78b2c60d8",
+        "kind": "campaign-main",
+        "path": "pressures/records/MNCS-LANG-4F28CEEA0AD8.json",
+        "repository": "MNCS-Commons"
+      },
+      "mncs-language": {
+        "branch": "main",
+        "commit": "49873a05b353b040f184113a53b839bbc80ea8dc",
+        "kind": "campaign-main",
+        "path": "crates/mncs-embed/src/lib.rs",
+        "repository": "mncs-language"
+      },
+      "mncs-test": {
+        "branch": "main",
+        "commit": "7b5b02e114e4e5fd6c45257c54fb7dad22175233",
+        "kind": "campaign-main",
+        "path": "tools/mncs_test.py",
+        "repository": "mncs-test"
+      },
+      "ravel": {
+        "branch": "main",
+        "commit": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc",
+        "kind": "campaign-main",
+        "path": "src/ravel/obligations.py",
+        "repository": "ravel"
+      }
+    }
+  },
+  "summary": "A final-head RAVEL replan after badge-only remote advances confirms the implementation evidence remains current across all 104 repository obligations, with no new execution required.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
