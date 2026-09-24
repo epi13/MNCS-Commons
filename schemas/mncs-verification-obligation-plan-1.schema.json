@@ -37,6 +37,36 @@
       },
       "additionalProperties": false
     },
+    "repository": {
+      "type": "object",
+      "required": ["identity", "revision", "fingerprint", "inventory_identity", "scope", "complete", "required_obligation_identities", "selected_obligation_identities", "missing_obligation_identities"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1},
+        "fingerprint": {"$ref": "#/$defs/identity"},
+        "inventory_identity": {"$ref": "#/$defs/identity"},
+        "scope": {"enum": ["source_module", "repository_canonical"]},
+        "complete": {"type": "boolean"},
+        "required_obligation_identities": {"$ref": "#/$defs/strings"},
+        "selected_obligation_identities": {"$ref": "#/$defs/strings"},
+        "missing_obligation_identities": {"$ref": "#/$defs/strings"},
+        "compiler_test_inventories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "scope", "identity", "test_case_identities"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "scope": {"const": "source_module"},
+              "identity": {"$ref": "#/$defs/identity"},
+              "test_case_identities": {"$ref": "#/$defs/strings"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "obligations": {"type": "array", "items": {"$ref": "#/$defs/selectedObligation"}},
     "excluded": {
       "type": "array",
@@ -76,7 +106,14 @@
         "kind": {"type": "string", "minLength": 1},
         "entrypoint": {"type": "string", "minLength": 1},
         "declaration_identities": {"$ref": "#/$defs/strings"},
-        "test_case_identities": {"$ref": "#/$defs/strings"}
+        "test_case_identities": {"$ref": "#/$defs/strings"},
+        "source_paths": {"$ref": "#/$defs/strings"},
+        "library_paths": {"$ref": "#/$defs/strings"},
+        "verifier_identity": {"type": "string", "minLength": 1},
+        "target_identity": {"type": "string", "minLength": 1},
+        "argv": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "maxItems": 16},
+        "working_directory": {"type": "string", "minLength": 1},
+        "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 3600}
       },
       "additionalProperties": true
     },
@@ -85,6 +122,7 @@
       "required": ["identity", "status", "lifecycle", "guarantee_domain", "evidence_role", "reason", "evidence_identities", "test_case_identities"],
       "properties": {
         "identity": {"type": "string", "minLength": 1},
+        "scope": {"enum": ["local", "consumer", "family", "repository_canonical"]},
         "status": {"enum": ["required", "current", "new_execution_required", "stale", "contradictory", "selection_unresolved", "escalation_required", "not_selected"]},
         "lifecycle": {"type": "string", "minLength": 1},
         "guarantee_domain": {"type": "string", "minLength": 1},
@@ -92,6 +130,12 @@
         "reason": {"type": "string", "minLength": 1},
         "evidence_identities": {"$ref": "#/$defs/strings"},
         "test_case_identities": {"$ref": "#/$defs/strings"},
+        "definition_identity": {"$ref": "#/$defs/identity"},
+        "subject_identity": {"type": "string", "minLength": 1},
+        "subject_fingerprint": {"$ref": "#/$defs/identity"},
+        "executor_identity": {"$ref": "#/$defs/identity"},
+        "verifier_identity": {"$ref": "#/$defs/identity"},
+        "invalidation_identity": {"$ref": "#/$defs/identity"},
         "executor": {"$ref": "#/$defs/executor"}
       },
       "additionalProperties": false
@@ -103,10 +147,16 @@
         "status": {"enum": ["PASS", "FAIL", "UNKNOWN"]},
         "evidence_identity": {"type": "string", "minLength": 1},
         "obligation_identity": {"type": "string", "minLength": 1},
+        "repository_identity": {"type": "string", "minLength": 1},
+        "repository_revision": {"type": "string", "minLength": 1},
+        "repository_fingerprint": {"$ref": "#/$defs/identity"},
         "subject_identity": {"type": "string", "minLength": 1},
-        "subject_fingerprint": {"type": "string", "minLength": 1},
-        "definition_identity": {"type": "string", "minLength": 1},
-        "verifier_identity": {"type": "string", "minLength": 1}
+        "subject_fingerprint": {"$ref": "#/$defs/identity"},
+        "definition_identity": {"$ref": "#/$defs/identity"},
+        "executor_identity": {"$ref": "#/$defs/identity"},
+        "verifier_identity": {"$ref": "#/$defs/identity"},
+        "invalidation_identity": {"$ref": "#/$defs/identity"},
+        "reason": {"type": "string", "minLength": 1}
       },
       "additionalProperties": false
     }

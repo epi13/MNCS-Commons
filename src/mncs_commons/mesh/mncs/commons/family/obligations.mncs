@@ -11,6 +11,8 @@ mncs 0.18;
 module mncs.commons.family.obligations.v1;
 
 enum ObligationLifecycle { permanent, transitional, scheduled, reference_only, retired }
+enum ObligationScope { local, consumer, family, repository_canonical }
+enum RepositoryProofScope { source_module, repository_canonical }
 enum GuaranteeDomain {
     semantic,
     parser_front_end,
@@ -55,14 +57,28 @@ record ObligationExecutor {
     kind: ExecutorKind,
     entrypoint: [byte; up_to 1024],
     declaration_identities: [[byte; up_to 1024]; up_to 64],
-    test_case_identities: [[byte; up_to 1024]; up_to 64]
+    test_case_identities: [[byte; up_to 1024]; up_to 64],
+    source_paths: [[byte; up_to 1024]; up_to 8],
+    library_paths: [[byte; up_to 1024]; up_to 8],
+    verifier_identity: [byte; up_to 1024],
+    target_identity: [byte; up_to 1024],
+    argv: [[byte; up_to 1024]; up_to 16],
+    working_directory: [byte; up_to 1024],
+    timeout_seconds: u64
 }
 
 record ObligationFact {
     identity: [byte; up_to 1024],
     lifecycle: ObligationLifecycle,
+    scope: ObligationScope,
     guarantee_domain: GuaranteeDomain,
     evidence_role: EvidenceRole,
+    definition_identity: [byte; up_to 128],
+    subject_identity: [byte; up_to 1024],
+    subject_fingerprint: [byte; up_to 128],
+    executor_identity: [byte; up_to 128],
+    verifier_identity: [byte; up_to 128],
+    invalidation_identity: [byte; up_to 128],
     subjects: [[byte; up_to 1024]; up_to 256],
     invalidation_dependencies: [[byte; up_to 1024]; up_to 256],
     executor: ObligationExecutor
@@ -72,9 +88,16 @@ record EvidenceFact {
     obligation_identity: [byte; up_to 1024],
     evidence_identity: [byte; up_to 1024],
     status: EvidenceVerdict,
+    repository_identity: [byte; up_to 1024],
+    repository_revision: [byte; up_to 128],
+    repository_fingerprint: [byte; up_to 128],
     subject_identity: [byte; up_to 1024],
-    subject_fingerprint: [byte; up_to 1024],
-    definition_identity: [byte; up_to 1024]
+    subject_fingerprint: [byte; up_to 128],
+    definition_identity: [byte; up_to 128],
+    executor_identity: [byte; up_to 128],
+    verifier_identity: [byte; up_to 128],
+    invalidation_identity: [byte; up_to 128],
+    reason: [byte; up_to 1024]
 }
 
 record CompilerTestFact {
@@ -87,8 +110,15 @@ record SelectedObligation {
     identity: [byte; up_to 1024],
     status: ObligationStatus,
     lifecycle: ObligationLifecycle,
+    scope: ObligationScope,
     guarantee_domain: GuaranteeDomain,
     evidence_role: EvidenceRole,
+    definition_identity: [byte; up_to 128],
+    subject_identity: [byte; up_to 1024],
+    subject_fingerprint: [byte; up_to 128],
+    executor_identity: [byte; up_to 128],
+    verifier_identity: [byte; up_to 128],
+    invalidation_identity: [byte; up_to 128],
     reason: [byte; up_to 1024],
     evidence_identities: [[byte; up_to 1024]; up_to 256],
     test_case_identities: [[byte; up_to 1024]; up_to 256],
@@ -103,6 +133,16 @@ record ExcludedObligation {
 
 record ObligationStop {
     sufficient_to_stop: bool,
+    repository_scope_requested: bool,
+    repository_complete: bool,
+    repository_identity: [byte; up_to 1024],
+    repository_revision: [byte; up_to 128],
+    repository_fingerprint: [byte; up_to 128],
+    repository_inventory_identity: [byte; up_to 128],
+    repository_scope: RepositoryProofScope,
+    required_repository_obligation_identities: [[byte; up_to 1024]; up_to 256],
+    selected_repository_obligation_identities: [[byte; up_to 1024]; up_to 256],
+    missing_repository_obligation_identities: [[byte; up_to 1024]; up_to 256],
     required_obligation_identities: [[byte; up_to 1024]; up_to 256],
     new_execution_required: [[byte; up_to 1024]; up_to 256],
     escalation_reasons: [[byte; up_to 1024]; up_to 64],
@@ -155,6 +195,15 @@ fn executor_is_native_test(value: ExecutorKind) -> (result: bool) {
         ExecutorKind.differential_oracle => false,
         ExecutorKind.migration_parity => false,
         ExecutorKind.external_integration => false
+    };
+}
+
+fn obligation_scope_is_repository_canonical(value: ObligationScope) -> (result: bool) {
+    return match value {
+        ObligationScope.local => false,
+        ObligationScope.consumer => false,
+        ObligationScope.family => false,
+        ObligationScope.repository_canonical => true
     };
 }
 

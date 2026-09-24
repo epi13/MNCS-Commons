@@ -55,6 +55,8 @@ EXECUTOR_KINDS = (
     "migration_parity",
     "external_integration",
 )
+OBLIGATION_SCOPES = ("local", "consumer", "family", "repository_canonical")
+REPOSITORY_PLAN_SCOPES = ("source_module", "repository_canonical")
 _IDENTITY_LENGTH = 4096
 
 
@@ -107,6 +109,14 @@ def _optional_strings(value: Any, path: str) -> list[str]:
     return _strings(value, path)
 
 
+def _ordered_strings(value: Any, path: str) -> list[str]:
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item for item in value):
+        raise ObligationPlanError("TYPE_ARRAY", path, "must be a non-empty array of non-empty strings")
+    if len(value) > 16:
+        raise ObligationPlanError("BOUND_EXCEEDED", path, "must contain at most 16 arguments")
+    return list(value)
+
+
 def _validate_executor(value: Any, path: str) -> dict[str, Any]:
     executor = _object(value, path)
     provider = _string(executor.get("provider"), f"{path}.provider")
@@ -115,9 +125,19 @@ def _validate_executor(value: Any, path: str) -> dict[str, Any]:
         raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.kind", f"unsupported executor kind {kind!r}")
     entrypoint = _string(executor.get("entrypoint"), f"{path}.entrypoint")
     result = {"provider": provider, "kind": kind, "entrypoint": entrypoint}
-    for field in ("declaration_identities", "test_case_identities"):
+    for field in ("declaration_identities", "test_case_identities", "source_paths", "library_paths"):
         if field in executor:
             result[field] = _strings(executor[field], f"{path}.{field}")
+    for field in ("verifier_identity", "target_identity", "working_directory"):
+        if field in executor:
+            result[field] = _string(executor[field], f"{path}.{field}")
+    if "argv" in executor:
+        result["argv"] = _ordered_strings(executor["argv"], f"{path}.argv")
+    if "timeout_seconds" in executor:
+        timeout = executor["timeout_seconds"]
+        if not isinstance(timeout, int) or isinstance(timeout, bool) or not 1 <= timeout <= 3600:
+            raise ObligationPlanError("INTEGER_INVALID", f"{path}.timeout_seconds", "must be between 1 and 3600")
+        result["timeout_seconds"] = timeout
     return result
 
 
@@ -143,7 +163,7 @@ def _validate_inventory_obligation(value: Any, index: int) -> dict[str, Any]:
     if lifecycle not in LIFECYCLES:
         raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.lifecycle", f"unsupported lifecycle {lifecycle!r}")
     scope = item.get("scope")
-    if scope not in {"local", "consumer", "family"}:
+    if scope not in OBLIGATION_SCOPES:
         raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.scope", f"unsupported scope {scope!r}")
     result = {
         "identity": identity,
@@ -232,7 +252,19 @@ def _validate_evidence(value: Any, path: str) -> dict[str, Any]:
     if status not in {"PASS", "FAIL", "UNKNOWN"}:
         raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.status", f"unsupported evidence status {status!r}")
     result = {"status": status, "evidence_identity": _string(evidence.get("evidence_identity"), f"{path}.evidence_identity")}
-    for field in ("obligation_identity", "subject_identity", "subject_fingerprint", "definition_identity", "verifier_identity"):
+    for field in (
+        "obligation_identity",
+        "repository_identity",
+        "repository_revision",
+        "repository_fingerprint",
+        "subject_identity",
+        "subject_fingerprint",
+        "definition_identity",
+        "executor_identity",
+        "verifier_identity",
+        "invalidation_identity",
+        "reason",
+    ):
         if evidence.get(field) is not None:
             result[field] = _string(evidence[field], f"{path}.{field}")
     return result
@@ -255,6 +287,7 @@ def _validate_selected(value: Any, index: int) -> dict[str, Any]:
         raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.evidence_role", f"unsupported evidence role {role!r}")
     result = {
         "identity": _string(item.get("identity"), f"{path}.identity"),
+        "scope": item.get("scope", "local"),
         "status": status,
         "lifecycle": lifecycle,
         "guarantee_domain": domain,
@@ -263,6 +296,18 @@ def _validate_selected(value: Any, index: int) -> dict[str, Any]:
         "evidence_identities": _strings(item.get("evidence_identities", []), f"{path}.evidence_identities"),
         "test_case_identities": _strings(item.get("test_case_identities", []), f"{path}.test_case_identities"),
     }
+    if result["scope"] not in OBLIGATION_SCOPES:
+        raise ObligationPlanError("VOCABULARY_UNKNOWN", f"{path}.scope", "unsupported scope")
+    for field in (
+        "definition_identity",
+        "subject_identity",
+        "subject_fingerprint",
+        "executor_identity",
+        "verifier_identity",
+        "invalidation_identity",
+    ):
+        if item.get(field) is not None:
+            result[field] = _string(item[field], f"{path}.{field}")
     if item.get("executor") is not None:
         result["executor"] = _validate_executor(item["executor"], f"{path}.executor")
     return result
@@ -289,6 +334,36 @@ def validate_obligation_plan(value: Any) -> dict[str, Any]:
     _string(inventory.get("repository"), "inventory.repository")
     _string(inventory.get("identity"), "inventory.identity")
     _positive_int(inventory.get("revision"), "inventory.revision")
+    repository = root.get("repository")
+    repository_scope: str | None = None
+    if repository is not None:
+        repository = _object(repository, "repository")
+        _string(repository.get("identity"), "repository.identity")
+        _string(repository.get("revision"), "repository.revision")
+        _string(repository.get("fingerprint"), "repository.fingerprint")
+        _string(repository.get("inventory_identity"), "repository.inventory_identity")
+        repository_scope = repository.get("scope")
+        if repository_scope not in REPOSITORY_PLAN_SCOPES:
+            raise ObligationPlanError("VOCABULARY_UNKNOWN", "repository.scope", "unsupported repository proof scope")
+        if not isinstance(repository.get("complete"), bool):
+            raise ObligationPlanError("TYPE_BOOLEAN", "repository.complete", "must be boolean")
+        required_repository = _strings(repository.get("required_obligation_identities"), "repository.required_obligation_identities")
+        selected_repository = _strings(repository.get("selected_obligation_identities"), "repository.selected_obligation_identities")
+        missing_repository = _strings(repository.get("missing_obligation_identities"), "repository.missing_obligation_identities")
+        source_inventories = repository.get("compiler_test_inventories", [])
+        if not isinstance(source_inventories, list):
+            raise ObligationPlanError("TYPE_ARRAY", "repository.compiler_test_inventories", "must be an array")
+        for index, source_inventory_value in enumerate(source_inventories):
+            source_inventory = _object(source_inventory_value, f"repository.compiler_test_inventories[{index}]")
+            _string(source_inventory.get("path"), f"repository.compiler_test_inventories[{index}].path")
+            if source_inventory.get("scope") != "source_module":
+                raise ObligationPlanError("PROOF_BOUNDARY_INVALID", f"repository.compiler_test_inventories[{index}].scope", "compiler test inventories remain source_module scoped")
+            _string(source_inventory.get("identity"), f"repository.compiler_test_inventories[{index}].identity")
+            _strings(source_inventory.get("test_case_identities"), f"repository.compiler_test_inventories[{index}].test_case_identities")
+        if sorted(set(required_repository) - set(selected_repository)) != sorted(missing_repository):
+            raise ObligationPlanError("INVENTORY_MISMATCH", "repository.missing_obligation_identities", "must equal the declared required identities absent from the selected set")
+        if repository.get("complete") and (missing_repository or required_repository != selected_repository):
+            raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "repository.complete", "complete closure must select every declared repository obligation")
     obligations = root.get("obligations")
     if not isinstance(obligations, list):
         raise ObligationPlanError("TYPE_ARRAY", "obligations", "must be an array")
@@ -312,10 +387,57 @@ def validate_obligation_plan(value: Any) -> dict[str, Any]:
     stop = _object(root.get("stop"), "stop")
     if not isinstance(stop.get("sufficient_to_stop"), bool):
         raise ObligationPlanError("TYPE_BOOLEAN", "stop.sufficient_to_stop", "must be boolean")
-    _strings(stop.get("required_obligation_identities"), "stop.required_obligation_identities")
+    required_stop = _strings(stop.get("required_obligation_identities"), "stop.required_obligation_identities")
     _strings(stop.get("new_execution_required"), "stop.new_execution_required")
     _strings(stop.get("escalation_reasons"), "stop.escalation_reasons")
     _string(stop.get("boundary"), "stop.boundary")
+    if repository_scope == "repository_canonical":
+        if not repository.get("complete") and stop.get("sufficient_to_stop"):
+            raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "stop.sufficient_to_stop", "incomplete repository closure cannot establish a proof")
+        if set(required_repository) != set(required_stop):
+            raise ObligationPlanError("INVENTORY_MISMATCH", "stop.required_obligation_identities", "must equal the repository-canonical obligation set")
+        if set(selected_repository) != set(required_stop) and stop.get("sufficient_to_stop"):
+            raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "stop.sufficient_to_stop", "repository closure requires every declared obligation")
+        by_identity = {item["identity"]: item for item in normalized_obligations}
+        actual_selected_repository = [
+            item["identity"]
+            for item in normalized_obligations
+            if item["scope"] == "repository_canonical"
+        ]
+        if set(actual_selected_repository) != set(repository.get("selected_obligation_identities", [])):
+            raise ObligationPlanError("INVENTORY_MISMATCH", "repository.selected_obligation_identities", "must match the selected repository-canonical obligations")
+        evidence_by_id: dict[str, list[dict[str, Any]]] = {}
+        for item in normalized_evidence:
+            obligation_identity = item.get("obligation_identity")
+            if obligation_identity:
+                evidence_by_id.setdefault(obligation_identity, []).append(item)
+        for identity in stop["required_obligation_identities"]:
+            selected = by_identity.get(identity)
+            if selected is None and identity in missing_repository and not repository.get("complete"):
+                continue
+            if selected is None or selected["scope"] != "repository_canonical":
+                raise ObligationPlanError("INVENTORY_MISMATCH", "obligations", f"repository obligation {identity!r} is absent or has source-local scope")
+            if selected.get("status") == "current":
+                exact_evidence = [
+                    item
+                    for item in evidence_by_id.get(identity, [])
+                    if item.get("repository_identity") == repository.get("identity")
+                    and item.get("repository_fingerprint") == repository.get("fingerprint")
+                    and item.get("subject_identity") == selected.get("subject_identity")
+                    and item.get("subject_fingerprint") == selected.get("subject_fingerprint")
+                    and item.get("definition_identity") == selected.get("definition_identity")
+                    and item.get("executor_identity") == selected.get("executor_identity")
+                    and item.get("verifier_identity") == selected.get("verifier_identity")
+                    and item.get("invalidation_identity") == selected.get("invalidation_identity")
+                ]
+                if not exact_evidence or any(item.get("status") != "PASS" for item in exact_evidence):
+                    raise ObligationPlanError("EVIDENCE_STALE", f"obligations.{identity}", "current status lacks complete, current identity-bound PASS evidence")
+        if stop.get("sufficient_to_stop") and any(by_identity[identity]["status"] != "current" for identity in stop["required_obligation_identities"]):
+            raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "stop.sufficient_to_stop", "all required repository obligations must be current PASS")
+    elif repository_scope == "source_module" and stop.get("sufficient_to_stop"):
+        raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "stop.sufficient_to_stop", "source-module inventory cannot establish repository closure")
+    elif stop.get("sufficient_to_stop") and any(item["scope"] == "repository_canonical" for item in normalized_obligations):
+        raise ObligationPlanError("PROOF_BOUNDARY_INVALID", "stop.sufficient_to_stop", "repository-canonical obligations require an explicit repository closure object")
     return deepcopy(dict(root))
 
 
