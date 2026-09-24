@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:334e0fe4475357186ee2a7a616252e33e6e2b8a0f457dfba00fa85592f697bec",
+  "evidence": [
+    {
+      "id": "mncs-debug:no-identity-dispatch-workaround",
+      "kind": "architecture-audit",
+      "ref": "mncs_debug/analysis.py; mncs_debug/runner.py",
+      "status": "PASS",
+      "summary": "Current Debug code consumes compiler/runtime identities as diagnostic provenance and structured execution output; it does not map selected semantic identities to host implementations or generate callable dispatch."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-1B2D28184423",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-debug",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repository": {
+      "branch": "main",
+      "commit": "ec8bc0592f168133df7ffcc8bf89069503c76d5a",
+      "kind": "campaign-main",
+      "path": "mncs_debug/analysis.py",
+      "repository": "mncs-debug"
+    }
+  },
+  "summary": "Current Debug code uses callable identities as diagnostic provenance and has no identity-selected execution dispatch to migrate.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:28a2546742ac72eb7cdd588be50ba91cba7a7666054fd9c91f8d01444d10a924",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-099551778354"
+  ],
+  "from": "accepted",
+  "id": "EVT-95C44D4AF89A555C",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:51Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": "EVT-FEF48518D8A35CB6",
+  "reason": "Implement the runtime dispatcher and migrate Test and Actions while preserving strict provider admission.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

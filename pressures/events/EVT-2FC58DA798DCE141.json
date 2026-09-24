@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:820926518c90371f9ca5a65a65f303c28cd80a14ea353371b5c265fd223c2fbb",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-3B6425F24B3F",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-4163A9C621DC",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-F35F67240792",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-F653BDA16641"
+  ],
+  "from": "available",
+  "id": "EVT-2FC58DA798DCE141",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:52Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": "EVT-BA0704F1134C47AF",
+  "reason": "All current affected consumers have been revalidated against their delivered main heads.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

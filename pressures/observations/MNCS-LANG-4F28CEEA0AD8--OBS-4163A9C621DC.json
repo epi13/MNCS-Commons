@@ -1,0 +1,78 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:4857a8464de9f0beefb4f5ac9a699b24a5318b64f1a78c5105ab07ac87a3d2ef",
+  "evidence": [
+    {
+      "id": "mncs-test:identity-provider-mixed-selection",
+      "kind": "focused-verification",
+      "ref": "tools/mncs_test.py; tests/test_runner.py; tests/provider_cross_module.mncs",
+      "status": "PASS",
+      "summary": "Selected compiler-owned TestCase identities are sent through the native identity-call path; the heterogeneous fixture spans modules, and the provider validates artifact/declaration/callable/signature receipts before result aggregation."
+    },
+    {
+      "id": "mncs-test:inventory-generation-data-only",
+      "kind": "focused-verification",
+      "ref": "tools/generate_provider.py; tests/test_phase6_provider_generation.py",
+      "status": "PASS",
+      "summary": "The generator now emits only inventory identity data; the generated provider has no per-test executable dispatch branches. Generator --check and eight focused generation tests passed."
+    },
+    {
+      "id": "ravel:mncs-test-current-plan",
+      "kind": "verification-plan",
+      "ref": "RAVEL plan 71f43b4de707109f64e9245228007604a7fb13848e28c4a3d98071daa2de2278; obligation plan 5ccc621482b6357bfc690313af364f0253aca2c88bf3d2dd3b2bb8cf6e384813",
+      "status": "PASS",
+      "summary": "RAVEL classified the Test protocol change as shared_type_changed; both repository-canonical obligations are current PASS, none require execution, and sufficient_to_stop=true."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-4163A9C621DC",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-language": {
+        "branch": "main",
+        "commit": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+        "kind": "campaign-main",
+        "path": "crates/mncs-embed/src/lib.rs",
+        "repository": "mncs-language"
+      },
+      "mncs-test": {
+        "branch": "main",
+        "commit": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+        "kind": "campaign-main",
+        "path": "tools/mncs_test.py",
+        "repository": "mncs-test"
+      },
+      "ravel": {
+        "branch": "main",
+        "commit": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc",
+        "kind": "campaign-main",
+        "path": "src/ravel/obligations.py",
+        "repository": "ravel"
+      }
+    }
+  },
+  "summary": "Selected heterogeneous test identities run through the native identity path; executable per-declaration dispatch is removed and the generator remains data-only.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

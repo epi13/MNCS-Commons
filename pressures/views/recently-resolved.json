@@ -380,6 +380,51 @@
     },
     {
       "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test",
+        "ravel"
+      ],
+      "capability": "callable.identity-reflective-typed-invocation",
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
+      "domain": "callable.inventory",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-4F28CEEA0AD8",
+      "reconciliation": {
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-LANG-4F28CEEA0AD8--OBS-46310124F82C",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-language",
+        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No identity-bound reflective invocation for heterogeneous typed callables."
+      },
+      "reporters": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
+        "mncs-language",
+        "mncs-test",
+        "ravel"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "No identity-bound reflective invocation for heterogeneous typed callables",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 6,
+        "fail": 0,
+        "pass": 6,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-atlas",
         "mncs-language"
       ],
@@ -984,6 +1029,7 @@
   "reconciliation": {
     "classificationCounts": {
       "RESOLVED": 18,
+      "STILL_REPRODUCES": 1,
       "UNRECONCILED": 9
     },
     "unreconciled": 9

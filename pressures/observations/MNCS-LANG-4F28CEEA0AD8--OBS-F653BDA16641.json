@@ -1,0 +1,71 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:397017e45cbd74f414d9df8859421a727d23759eba93825c8fcc53ff7ed0b720",
+  "evidence": [
+    {
+      "id": "mncs-actions:identity-bound-test-receipts",
+      "kind": "focused-verification",
+      "ref": "scripts/selective_family_verify.py; /tmp/mncs-actions-identity-e2e-final.json",
+      "status": "PASS",
+      "summary": "Actions ran two different selected MNCS test identities through the same native Test identity path, validated their compiler-issued callable/signature/artifact receipts, and passed their typed results."
+    },
+    {
+      "id": "mncs-actions:identity-adapter-regression",
+      "kind": "focused-verification",
+      "ref": "tests/test_selective_family_verify.py",
+      "status": "PASS",
+      "summary": "The focused Actions adapter suite passed 3 tests. Python validates/transports receipts only and does not select callable implementations."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-F653BDA16641",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-actions",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-actions": {
+        "branch": "main",
+        "commit": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+        "kind": "campaign-main",
+        "path": "scripts/selective_family_verify.py",
+        "repository": "mncs-actions"
+      },
+      "mncs-language": {
+        "branch": "main",
+        "commit": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+        "kind": "campaign-main",
+        "path": "crates/mncs-embed/src/lib.rs",
+        "repository": "mncs-language"
+      },
+      "mncs-test": {
+        "branch": "main",
+        "commit": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+        "kind": "campaign-main",
+        "path": "tools/mncs_test.py",
+        "repository": "mncs-test"
+      }
+    }
+  },
+  "summary": "Actions consumes and validates compiler-issued callable receipts from the native Test identity runner; focused adapter tests and a two-identity end-to-end run pass.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

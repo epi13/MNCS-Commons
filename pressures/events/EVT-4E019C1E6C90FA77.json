@@ -1,0 +1,24 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:e7abe2e7be90d483b748c32549539d4e488a0889c03506f964e855c9b8f45fff",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-1B2D28184423",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-3B6425F24B3F",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-4163A9C621DC",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-B97D131A180A",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-F35F67240792",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-F653BDA16641"
+  ],
+  "from": "verifying",
+  "id": "EVT-4E019C1E6C90FA77",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:53Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": "EVT-2FC58DA798DCE141",
+  "reason": "All six current affected repositories pass; Test executable per-callable dispatch is removed, Actions consumes validated identity receipts, and the other consumers have no identity-dispatch workaround.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

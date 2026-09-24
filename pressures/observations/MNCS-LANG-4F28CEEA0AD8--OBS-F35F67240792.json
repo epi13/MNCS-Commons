@@ -1,0 +1,92 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:8b81490e477a019fedf96fc79795a84aa0bb86e2d8a6e81cdd025156a3308525",
+  "evidence": [
+    {
+      "id": "mncs-language:identity-callable-runtime",
+      "kind": "focused-verification",
+      "ref": "crates/mncs-embed/tests/identity_calls.rs",
+      "status": "PASS",
+      "summary": "Compiler-owned references dispatch heterogeneous module declarations and generic echo; rejection cases cover unknown/foreign/stale identities, signature metadata, arity, types, generic binding, effects, and retained revisions."
+    },
+    {
+      "id": "mncs-language:cli-test-identity",
+      "kind": "focused-verification",
+      "ref": "crates/mncs-cli/tests/test_inventory_identity.rs",
+      "status": "PASS",
+      "summary": "The CLI discovers a real compiler-issued test-case identity, executes it through the identity session, and checks callable, signature, artifact, and status receipts."
+    },
+    {
+      "id": "ravel:language-abi-boundary-plan",
+      "kind": "focused-verification",
+      "ref": "RAVEL plan 55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0; obligation plan f78a1e98dcc9e207b6bccd41c26eb9b9aceaf819ab6eaf43e28c565234dab4f7",
+      "status": "PASS",
+      "summary": "Native RAVEL classified the runtime change as abi_boundary, escalated to repository_canonical, and found a complete 104-obligation closure."
+    },
+    {
+      "id": "mncs-test:language-canonical-obligations",
+      "kind": "focused-verification",
+      "ref": "/tmp/mncs-language-identity-canonical-result-final-narrowed.json",
+      "status": "PASS",
+      "summary": "Final RAVEL-selected Language run passed all 104 obligations: 98 executed and 6 exact current records reused; duration 3,863,762.635 ms; no retries or final failures."
+    },
+    {
+      "id": "ravel:language-postrun-closure",
+      "kind": "verification-plan",
+      "ref": "RAVEL post-run plan 55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0",
+      "status": "PASS",
+      "summary": "After execution, RAVEL resolved the current repository closure to sufficient_to_stop=true with no missing obligations and no new execution required."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-F35F67240792",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-language": {
+        "branch": "main",
+        "commit": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+        "kind": "campaign-main",
+        "path": "crates/mncs-embed/src/lib.rs",
+        "repository": "mncs-language"
+      },
+      "mncs-test": {
+        "branch": "main",
+        "commit": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+        "kind": "campaign-main",
+        "path": "tools/mncs_test.py",
+        "repository": "mncs-test"
+      },
+      "ravel": {
+        "branch": "main",
+        "commit": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc",
+        "kind": "campaign-main",
+        "path": "src/ravel/obligations.py",
+        "repository": "ravel"
+      }
+    }
+  },
+  "summary": "Identity-bound runtime and CLI regressions pass; the 104-obligation Language repository closure is current and post-run RAVEL reports sufficient_to_stop=true.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

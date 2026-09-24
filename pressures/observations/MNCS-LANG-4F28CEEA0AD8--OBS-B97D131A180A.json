@@ -1,0 +1,49 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:ddd610f1cd54c7dd2fd201c5d2783f50b674ff5d50e46de0d884749d603383e8",
+  "evidence": [
+    {
+      "id": "mncs-doctor:no-identity-dispatch-workaround",
+      "kind": "architecture-audit",
+      "ref": "src/mncs_runtime.rs; src/generated/doctor_version.rs",
+      "status": "PASS",
+      "summary": "Doctor's generated typed wrappers call fixed named health, version, and verification API entrypoints and decode their declared host types. They do not select heterogeneous callables by runtime identity; no identity-only workaround requires migration."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-B97D131A180A",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-doctor",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "language_profile": "0.18",
+    "repository": {
+      "branch": "main",
+      "commit": "98597a49f23b78382d4294db97b8e0f9792c5ad9",
+      "kind": "campaign-main",
+      "path": "src/mncs_runtime.rs",
+      "repository": "mncs-doctor"
+    }
+  },
+  "summary": "Doctor has fixed named typed host APIs, not heterogeneous runtime identity selection; no workaround for this pressure remains.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

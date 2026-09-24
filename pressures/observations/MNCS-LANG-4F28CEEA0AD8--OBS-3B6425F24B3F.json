@@ -1,0 +1,71 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-actions": "b7f06b57bc8752dee50b8a8853e4a291b265642e",
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "mncs-test": "8c542906facc50b4d4565c9fffce0381ded7cc72",
+    "ravel": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc"
+  },
+  "contentDigest": "sha256:d5649f7711d137650e877c361be212963c3179f9142cbd412565fca51edd5aff",
+  "evidence": [
+    {
+      "id": "ravel:host-repository-closure-regression",
+      "kind": "focused-verification",
+      "ref": "src/ravel/obligations.py; tests/test_obligations.py",
+      "status": "PASS",
+      "summary": "Focused regression passed: missing Cargo metadata leaves a declared non-Cargo host/native closure complete, and Cargo expansion is required only for Cargo-declared targets."
+    },
+    {
+      "id": "ravel:no-identity-dispatch-workaround",
+      "kind": "architecture-audit",
+      "ref": "src/ravel/generated/verification_policy.py",
+      "status": "PASS",
+      "summary": "RAVEL's policy calls are fixed named entrypoints; inspection found no identity-to-function selector or heterogeneous dispatch workaround."
+    },
+    {
+      "id": "ravel:language-verification-policy",
+      "kind": "verification-plan",
+      "ref": "RAVEL plan 55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0",
+      "status": "PASS",
+      "summary": "RAVEL preserved abi_boundary escalation and selected repository_canonical verification for the Language runtime change."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-3B6425F24B3F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-24T21:43:27Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "ravel",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-language": {
+        "branch": "main",
+        "commit": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+        "kind": "campaign-main",
+        "path": "crates/mncs-embed/src/lib.rs",
+        "repository": "mncs-language"
+      },
+      "ravel": {
+        "branch": "main",
+        "commit": "ebc89f4b063e8cd5bbd9cd30e681893bde25a5dc",
+        "kind": "campaign-main",
+        "path": "src/ravel/obligations.py",
+        "repository": "ravel"
+      }
+    }
+  },
+  "summary": "RAVEL has no dynamic identity-to-callable workaround; its policy surface uses fixed named entrypoints and the focused non-Cargo closure regression passes.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:50c92942c7b18d605f5f7eef788d951147513466b53f68e0d1a844df0b63374d",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-099551778354"
+  ],
+  "from": "discovered",
+  "id": "EVT-F87B20BBF0E2BA41",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:49Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": null,
+  "reason": "Current compiler and consumer reproductions pass on the delivered heads.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

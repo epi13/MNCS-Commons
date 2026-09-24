@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:aee9511f6c1205f90077d7140da2e93f95d904b970e852c171846b11d82b8b0f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-099551778354"
+  ],
+  "from": "confirmed",
+  "id": "EVT-FEF48518D8A35CB6",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:50Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": "EVT-F87B20BBF0E2BA41",
+  "reason": "Accept the compiler-owned identity dispatcher as the canonical resolution for the reported missing capability.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

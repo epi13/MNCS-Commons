@@ -1151,47 +1151,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-actions",
-        "mncs-debug",
-        "mncs-doctor",
-        "mncs-language",
-        "mncs-test",
-        "ravel"
-      ],
-      "capability": "callable.identity-reflective-typed-invocation",
-      "classification": "STILL_REPRODUCES",
-      "currentValidation": true,
-      "domain": "callable.inventory",
-      "fallbackLanguages": [],
-      "id": "MNCS-LANG-4F28CEEA0AD8",
-      "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-4F28CEEA0AD8--OBS-46310124F82C",
-        "observedAt": "2026-09-20T23:00:00Z",
-        "repository": "mncs-language",
-        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No identity-bound reflective invocation for heterogeneous typed callables."
-      },
-      "reporters": [
-        "mncs-language",
-        "mncs-test"
-      ],
-      "revalidationRequired": false,
-      "severity": "major",
-      "status": "discovered",
-      "target": "language",
-      "title": "No identity-bound reflective invocation for heterogeneous typed callables",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "failed",
-      "verificationSummary": {
-        "affected": 6,
-        "fail": 2,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-language",
         "mncs-web"
       ],
@@ -3321,7 +3280,7 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 30,
-      "STILL_REPRODUCES": 29
+      "STILL_REPRODUCES": 28
     },
     "unreconciled": 0
   },

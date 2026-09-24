@@ -654,21 +654,25 @@
         "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: No identity-bound reflective invocation for heterogeneous typed callables."
       },
       "reporters": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-doctor",
         "mncs-language",
-        "mncs-test"
+        "mncs-test",
+        "ravel"
       ],
       "revalidationRequired": false,
       "severity": "major",
-      "status": "discovered",
+      "status": "resolved",
       "target": "language",
       "title": "No identity-bound reflective invocation for heterogeneous typed callables",
-      "unresolved": true,
+      "unresolved": false,
       "valid": true,
-      "verificationState": "failed",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 6,
-        "fail": 2,
-        "pass": 0,
+        "fail": 0,
+        "pass": 6,
         "unknown": 0
       }
     },

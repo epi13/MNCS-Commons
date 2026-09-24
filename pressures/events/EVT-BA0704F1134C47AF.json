@@ -1,0 +1,26 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:ba94842c0cb81c6b56c9524897e1d19087a143752557444c57d359ffc217b6fa",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-4F28CEEA0AD8--OBS-099551778354",
+    "MNCS-LANG-4F28CEEA0AD8--OBS-F35F67240792"
+  ],
+  "from": "implementing",
+  "id": "EVT-BA0704F1134C47AF",
+  "implementation": {
+    "capability": "callable.identity-reflective-typed-invocation",
+    "languageProfile": "0.18",
+    "ref": "mncs-language@1b60e98d2ebbbc69de104e779fce7038ed0cf66d:crates/mncs-embed/src/lib.rs",
+    "repository": "mncs-language",
+    "revision": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T21:43:51Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "previousEvent": "EVT-95C44D4AF89A555C",
+  "reason": "The canonical runtime capability is implemented and the Language repository-canonical obligations pass.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

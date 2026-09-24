@@ -1,0 +1,80 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-language": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d"
+  },
+  "contentDigest": "sha256:ac4f90766f8be02031b1997dd43fa327542a7d488cc4e1a83bf1f13c5e156f66",
+  "evidence": [
+    {
+      "id": "mncs-language:identity-callable-runtime",
+      "kind": "focused-verification",
+      "ref": "crates/mncs-embed/tests/identity_calls.rs",
+      "status": "PASS",
+      "summary": "Compiler-owned references dispatch heterogeneous module declarations and generic echo; rejection cases cover unknown/foreign/stale identities, signature metadata, arity, types, generic binding, effects, and retained revisions."
+    },
+    {
+      "id": "mncs-language:cli-test-identity",
+      "kind": "focused-verification",
+      "ref": "crates/mncs-cli/tests/test_inventory_identity.rs",
+      "status": "PASS",
+      "summary": "The CLI discovers a real compiler-issued test-case identity, executes it through the identity session, and checks callable, signature, artifact, and status receipts."
+    },
+    {
+      "id": "ravel:language-abi-boundary-plan",
+      "kind": "focused-verification",
+      "ref": "RAVEL plan 55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0; obligation plan f78a1e98dcc9e207b6bccd41c26eb9b9aceaf819ab6eaf43e28c565234dab4f7",
+      "status": "PASS",
+      "summary": "Native RAVEL classified the runtime change as abi_boundary, escalated to repository_canonical, and found a complete 104-obligation closure."
+    },
+    {
+      "id": "mncs-test:language-canonical-obligations",
+      "kind": "focused-verification",
+      "ref": "/tmp/mncs-language-identity-canonical-result-final-narrowed.json",
+      "status": "PASS",
+      "summary": "Final RAVEL-selected Language run passed all 104 obligations: 98 executed and 6 exact current records reused; duration 3,863,762.635 ms; no retries or final failures."
+    },
+    {
+      "id": "ravel:language-postrun-closure",
+      "kind": "verification-plan",
+      "ref": "RAVEL post-run plan 55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0",
+      "status": "PASS",
+      "summary": "After execution, RAVEL resolved the current repository closure to sufficient_to_stop=true with no missing obligations and no new execution required."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-099551778354",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "IMPLEMENTED_AND_VERIFIED",
+    "executed": 98,
+    "obligation_count": 104,
+    "postrun_sufficient_to_stop": true,
+    "ravel_change_class": "abi_boundary",
+    "ravel_obligation_plan_id": "f78a1e98dcc9e207b6bccd41c26eb9b9aceaf819ab6eaf43e28c565234dab4f7",
+    "ravel_plan_id": "55b7b644f9572710e0b00510269cdc76cb8dcf160ff84f8379a484b0c80bc4f0",
+    "repository_closure_complete": true,
+    "reused": 6
+  },
+  "observedAt": "2026-09-24T21:42:55Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the identity_calls and test_inventory_identity integration suites, then the RAVEL-selected repository-canonical obligations recorded in the attached verification evidence.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "branch": "main",
+    "commit": "1b60e98d2ebbbc69de104e779fce7038ed0cf66d",
+    "kind": "campaign-main",
+    "path": "crates/mncs-embed/src/lib.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "The previously missing identity-bound invocation reproducer now passes: a generic dispatcher invokes different compiler-owned callable identities from separate modules, binds runtime type arguments through existing specialization, rejects stale or malformed boundaries, and preserves effect/capability authorization. The current Test executable per-declaration dispatch has been removed.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "removed": true
+  }
+}
