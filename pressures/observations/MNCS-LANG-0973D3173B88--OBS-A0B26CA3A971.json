@@ -1,0 +1,65 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:d4b3a215f7ee555c40b22d3cbe118e3dd85f0e6c04a655d13c136be76c9dca1e",
+  "evidence": [
+    {
+      "id": "mncs-language:bounded-concurrent-runtime",
+      "kind": "runtime-concurrency-bound",
+      "ref": "crates/mncs-model/src/process_runtime.rs; crates/mncs-embed/src/scope.rs",
+      "status": "PASS",
+      "summary": "Process lifecycle active and retained counts are bounded at 16 and 128; TaskScope runs bounded artifact calls on host threads and joins them."
+    },
+    {
+      "id": "mncs-forge:event-driven-supersession",
+      "kind": "continuous-concurrency-control",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_generic_process_tree",
+      "status": "PASS",
+      "summary": "Newer generations supersede and reap stale in-flight verification without a steady-state per-job status poll."
+    }
+  ],
+  "id": "MNCS-LANG-0973D3173B88--OBS-A0B26CA3A971",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "BOUNDED_RUNTIME_CONCURRENCY",
+    "missing": [
+      "source-level scheduler semantics",
+      "general async/thread primitives"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:05Z",
+  "pressureId": "MNCS-LANG-0973D3173B88",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run cargo test -p mncs-model process_runtime::tests and the focused Forge supersession test; scope behavior is separately exercised by mncs-embed.",
+    "status": "PASS"
+  },
+  "runId": "bounded-task-process-concurrency-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "tests/test_continuous.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "crates/mncs-model/src/process_runtime.rs"
+      }
+    }
+  },
+  "summary": "Profile 0.18 TaskScope provides bounded joined host-thread concurrency, while the process runtime admits at most 16 active executions and retains at most 128 terminal handles; the Forge continuous path uses event-driven supersession. These do not provide source-level general scheduling or async/thread primitives, so the imported concurrency pressure remains partially open.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Actual concurrent scheduling remains an embed/runtime realization; MNCS source-level general scheduler and async/thread syntax are still absent."
+  }
+}

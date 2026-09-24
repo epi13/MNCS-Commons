@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:6d4a5cf09daa6e17b35ff25a599abafa3285f76224bc451ad5ca6e54951ce21f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308"
+  ],
+  "from": "discovered",
+  "id": "EVT-57060AF1E0B63FE9",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-24T04:36:44Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "previousEvent": null,
+  "reason": "Current generic process lifecycle reproduction now passes against the recovered mncs.std.process.v1 implementation and real Linux provider.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

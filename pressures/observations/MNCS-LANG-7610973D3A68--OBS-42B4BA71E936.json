@@ -1,0 +1,58 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:b167bcd3eda1329a49f04f449a3bcf10e2825414ea4900c4038d8b20cab6505a",
+  "evidence": [
+    {
+      "id": "mncs-forge:native-stale-generic-handle-cancel",
+      "kind": "event-driven-in-flight-cancellation",
+      "ref": "tests/test_continuous.py::test_superseding_generation_cancels_generic_process_tree",
+      "status": "PASS",
+      "summary": "N+1 event to native stale decision 16.765 ms; stale decision to cancel request 0.007 ms; cancel request to tree-empty/reap/cleanup 16.866 ms; N+1 arrival to dispatch 77.806 ms. No per-job generation polling; N did not establish current PASS."
+    }
+  ],
+  "id": "MNCS-LANG-7610973D3A68--OBS-42B4BA71E936",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "FORGE_RUNNING_EFFECT_VERIFIED",
+    "missing": [
+      "mncs-index current consumer verification",
+      "broader source-level cancellation semantics"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:05Z",
+  "pressureId": "MNCS-LANG-7610973D3A68",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run tests/test_continuous.py::test_superseding_generation_cancels_generic_process_tree.",
+    "status": "PASS"
+  },
+  "runId": "generic-process-supersession-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "tests/test_continuous.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The running external-effect cancellation gap is closed for Forge continuous work: Language Service generation N+1 reaches the event-driven supervisor once, native Forge returns the stale/cancel transition, and the exact generic ProcessHandle is cancelled and reaped. Generation N cannot publish current PASS; N+1 dispatches. The original broad cancellation pressure remains open for other consumers and semantics.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The generic process effect now covers the Forge running-effect path; broader cancellation semantics and the other affected consumer still need their own current verification."
+  }
+}

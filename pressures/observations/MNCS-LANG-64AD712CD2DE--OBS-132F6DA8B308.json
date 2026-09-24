@@ -1,0 +1,70 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "realization": "mncs-embed Linux systemd/cgroup v2"
+  },
+  "contentDigest": "sha256:3ccccc811de165d3dee297769e7e53a2415be53eb5f2dec24ed245b5a890c659",
+  "evidence": [
+    {
+      "id": "mncs-language:process-lifecycle-source-call",
+      "kind": "mncs-source-integration",
+      "ref": "tests/process_lifecycle_effect.mncs::cancellation_is_reaped",
+      "status": "PASS",
+      "summary": "A real MNCS call started an owned process (Running), a separate observe returned Running, a separate semantic cancel returned Cancelled, and reap returned Cancelled with cleanup=true."
+    },
+    {
+      "id": "mncs-language:linux-owned-tree-resource-contract",
+      "kind": "linux-provider-integration",
+      "ref": "crates/mncs-embed/tests/process_lifecycle.rs",
+      "status": "PASS",
+      "summary": "Five host tests passed: start/observe/cancel/reap, whole parent-child owned tree termination, tiny bounded MemoryMax exhaustion, and cleanup/launcher/tree observations; cancellation-to-tree-empty/reap was 21.95 ms in the parent-child case."
+    },
+    {
+      "id": "mncs-language:runtime-scoped-handle-bounds",
+      "kind": "runtime-contract-test",
+      "ref": "crates/mncs-model/src/process_runtime.rs::tests",
+      "status": "PASS",
+      "summary": "Four runtime tests passed; active executions are capped at 16, retained terminal handles at 128, and foreign/expired handles fail closed."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-132F6DA8B308",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "RESOLVED",
+    "consumer_status": "CURRENT_CONSUMER_VERIFIED",
+    "limitations": [
+      "systemd/cgroup v2 containment is platform-specific",
+      "resource counters unavailable after cgroup removal remain incomplete/Unknown"
+    ],
+    "platform": "Linux systemd transient user service + cgroup v2",
+    "profile": "0.18",
+    "state": "GENERIC_PROCESS_LIFECYCLE_PROVEN"
+  },
+  "observedAt": "2026-09-24T04:36:04Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run tests/process_lifecycle_effect.mncs cancellation_is_reaped; cargo test -p mncs-embed --test process_lifecycle; cargo test -p mncs-model process_runtime::tests.",
+    "status": "PASS"
+  },
+  "runId": "process-lifecycle-closure-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "The existing mncs.std.process.v1 authority now provides start/observe/cancel/reap with a runtime-scoped opaque handle and bounded resource envelope. A real MNCS source call observed Running, then a separate call cancelled and reaped the same handle; typed trace ended Cancelled with cleanup=true. Embed tests verified parent+child tree empty, launcher reaped, cleanup complete, tiny MemoryMax exhaustion classified ResourceExhausted, and foreign/expired handles fail closed. cgroup removal can prevent final counters, which remains observation_complete=false rather than fabricated zero.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "The provisional Forge process-group semantic path is replaced by the generic mncs.std.process.v1 capability. Linux systemd/cgroup v2 remains its provider realization; unsupported containment is reported as Unsupported/Unknown."
+  }
+}

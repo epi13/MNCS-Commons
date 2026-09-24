@@ -1,0 +1,54 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:f81db22c4024c589a99a5da9d3ab85e901cdc36dddb1bcfff975e049a1558f9b",
+  "evidence": [
+    {
+      "id": "mncs-forge:continuous-entry-startup-sample",
+      "kind": "continuous-startup-latency",
+      "ref": "continuous enter/start/status/stop; workspace A",
+      "status": "PASS",
+      "summary": "Entry/start took 8.653 s; 24 edit/generation changes were processed, then the supervisor stayed semantically idle for 4 s. Status took about 253 ms; pending queue and Store projection remained at zero."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-6301BB5CA354",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "ONE_WORKSPACE_BOUNDED_SAMPLE",
+    "missing": [
+      "multi-workspace startup distribution",
+      "Store recovery contribution"
+    ],
+    "sample_count": 1,
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:06Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the bounded neutral-CWD continuous enter/start/status/stop harness for the configured workspace.",
+    "status": "PASS"
+  },
+  "runId": "continuous-startup-and-idle-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "src/mncs_forge/continuous.py"
+      }
+    }
+  },
+  "summary": "Workspace-first continuous enter/start completed in 8.653 s for the bounded resident run; a 24-change burst was processed and status remained stable through 4 seconds idle, with no queued or repeated verification absent invalidation. Store projection generation stayed zero. This is a single fixture/workspace sample, not a startup tail estimate; startup/Store recovery can still dominate broader workspaces.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "This is one bounded fixture measurement; broader workspace startup and Store recovery remain uncharacterized."
+  }
+}

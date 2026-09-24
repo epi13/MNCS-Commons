@@ -1,0 +1,76 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "ravel": "59378840dc2fe0504133bb704553aa8fef4f356b"
+  },
+  "contentDigest": "sha256:958af09aeecf8461ff84b6b452b57d4fcfdec9290dbe360efa19c1f9256cc276",
+  "evidence": [
+    {
+      "id": "ravel:forge-continuous-focused-plan",
+      "kind": "verification-plan",
+      "ref": "plan 3ee9e721; obligation plan sufficient_to_stop=true",
+      "status": "PASS",
+      "summary": "RAVEL selected the exact four first-class MNCS identities declared by the Forge obligation inventory for continuous_trigger_matches and continuous_debounce_ms."
+    },
+    {
+      "id": "mncs-test:forge-continuous-first-class-cases",
+      "kind": "native-first-class-test-run",
+      "ref": "mncs:language:experiment-run:82c51fc4f647a98411297ab2ce6617028a968cd6c373f002a9b63fa435852f76",
+      "status": "PASS",
+      "summary": "All four selected trigger/debounce cases passed; assertion_count=4, no failures; current native RAVEL plan is sufficient_to_stop=true."
+    },
+    {
+      "id": "ravel:language-effect-semantics-canonical-suite",
+      "kind": "verification-plan",
+      "ref": "RAVEL impact root library/std/process.mncs; change_class=effect_semantics",
+      "status": "UNKNOWN",
+      "summary": "The language lifecycle source call and focused compiler/embed tests pass, but RAVEL policy still requires repository_canonical_suite_pass; that broad language suite was not run."
+    }
+  ],
+  "id": "MNCS-VERIFY-CF7230C4396D--OBS-CE0B187847B5",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "FOCUSED_PLAN_CURRENT_BROAD_GATES_REMAIN",
+    "focused_plan_sufficient_to_stop": true,
+    "focused_ravel_plan_id": "3ee9e721",
+    "language_effect_semantics_plan_sufficient_to_stop": false,
+    "missing": [
+      "family-owned shared verification-plan validator",
+      "language repository canonical suite for effect_semantics"
+    ],
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:36:06Z",
+  "pressureId": "MNCS-VERIFY-CF7230C4396D",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "Run the recorded RAVEL impact query for continuous_trigger_matches and continuous_debounce_ms and execute the exact selected plan; query library/std/process.mncs separately with change_class=effect_semantics.",
+    "status": "UNKNOWN"
+  },
+  "runId": "ravel-focused-continuous-proof-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": ".mncs/verification-obligations.json"
+      },
+      "ravel": {
+        "branch": "campaign/continuous-hardening-20260921",
+        "commit": "59378840dc2fe0504133bb704553aa8fef4f356b",
+        "path": "src/ravel/impact.py"
+      }
+    }
+  },
+  "summary": "RAVEL now selects four compiler-owned MNCS test identities for the native continuous trigger/debounce roots; the exact plan and obligation plan reached sufficient_to_stop=true after all four passed in mncs-test. This proves focused evidence can be selected and consumed for those roots. It does not establish one shared family-owned plan validator, and the separate language process effect_semantics plan still requires repository_canonical_suite_pass.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "RAVEL and consumers still have separate boundary validators; focused evidence does not close the family-wide canonical-validator pressure or language effect-semantics suite gate."
+  }
+}
