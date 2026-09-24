@@ -2542,6 +2542,7 @@
     {
       "affectedRepositories": [
         "mncs-forge",
+        "mncs-language",
         "mncs-store"
       ],
       "capability": "resident_verification_host_protection",
@@ -2552,13 +2553,14 @@
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-850D2AF2B8BB",
-        "observedAt": "2026-09-24T13:43:17Z",
-        "repository": "mncs-forge",
-        "summary": "RAVEL closes the declared mncs-language repository-canonical effect-semantics proof through mncs-test. All 104 required canonical regression obligations have current identity-bound PASS evidence. The broader resident-safety pressure remains open because workspace mapping, mncs-store/Forge resident behavior, and the historical Fedora low-memory cause are still unproven."
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-BA2596DE4013",
+        "observedAt": "2026-09-24T14:29:00Z",
+        "repository": "mncs-language",
+        "summary": "Current-main revalidation confirms the mncs.std.process.v1 effect-semantics change still closes through RAVEL repository_canonical planning and mncs-test evidence. All 104 required canonical obligations are current PASS and were reused under the same repository content/invalidation fingerprint after a badge-only language commit. Forge trigger/debounce remains a focused four-test direct_dependents proof. The broader resident-safety pressure remains open for long-duration bounds, workspace mapping, mncs-store consumer verification, and historical Fedora incident attribution."
       },
       "reporters": [
-        "mncs-forge"
+        "mncs-forge",
+        "mncs-language"
       ],
       "revalidationRequired": true,
       "severity": "blocking",
@@ -2569,7 +2571,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
