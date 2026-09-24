@@ -3069,10 +3069,10 @@
       "id": "MNCS-TOOLING-AB4AB0BDD168",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-23753DF729B9",
-        "observedAt": "2026-09-24T04:53:24Z",
+        "observationId": "MNCS-TOOLING-AB4AB0BDD168--OBS-850D2AF2B8BB",
+        "observedAt": "2026-09-24T13:43:17Z",
         "repository": "mncs-forge",
-        "summary": "A bounded real Linux-provider churn test now explicitly verifies cleanup-before-eviction. The retained MNCS runtime sequentially starts and reaps 129 /usr/bin/true transient user services; each must report cleanup_complete=true, tree_empty=true, and launcher_reaped before insertion can evict a terminal entry. The registry remains at 128, the expired opaque handle returns Unknown, retained handles still show cleanup proof, and active_count stays zero. A second test fills all 16 active slots with bounded /usr/bin/sleep jobs, rejects job 17, then cancels/reaps all 16. Four process_runtime tests passed in 6.65 seconds. Evidence is recorded from the Forge resident-safety pressure and cites the language provider test without broadening affectedRepositories."
+        "summary": "RAVEL closes the declared mncs-language repository-canonical effect-semantics proof through mncs-test. All 104 required canonical regression obligations have current identity-bound PASS evidence. The broader resident-safety pressure remains open because workspace mapping, mncs-store/Forge resident behavior, and the historical Fedora low-memory cause are still unproven."
       },
       "reporters": [
         "mncs-forge"
