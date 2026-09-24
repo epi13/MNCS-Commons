@@ -282,3 +282,32 @@ def test_complete_current_repository_obligations_establish_sufficient_stop() -> 
     validated = validate_obligation_plan(plan)
     assert validated["repository"]["complete"]
     assert validated["stop"]["sufficient_to_stop"]
+
+
+def test_executor_bound_host_grants_are_validated_and_preserved() -> None:
+    plan = _repository_plan()
+    host_grants = [{
+        "test_case_identity": "mncs:0.2:test-case:fixture.process::cancel",
+        "grants": [{
+            "capability": "process_capability",
+            "locator": "/usr/bin/sleep",
+            "bytes": [],
+        }],
+    }]
+    plan["obligations"][0]["executor"]["host_grants"] = host_grants
+    plan["obligation_plan_id"] = obligation_plan_identity(plan)
+    validated = validate_obligation_plan(plan)
+    assert validated["obligations"][0]["executor"]["host_grants"] == host_grants
+
+    invalid = _repository_plan()
+    invalid["obligations"][0]["executor"]["host_grants"] = [{
+        "test_case_identity": "mncs:0.2:test-case:fixture.process::cancel",
+        "grants": [{
+            "capability": "process_capability",
+            "locator": "/usr/bin/sleep",
+            "bytes": [256],
+        }],
+    }]
+    invalid["obligation_plan_id"] = obligation_plan_identity(invalid)
+    with pytest.raises(ObligationPlanError, match="between 0 and 255"):
+        validate_obligation_plan(invalid)

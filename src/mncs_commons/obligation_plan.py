@@ -14,7 +14,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-
 OBLIGATION_PLAN_SCHEMA = "mncs.verification-obligation-plan/1"
 OBLIGATION_INVENTORY_SCHEMA = "mncs-family.verification-obligation-inventory/v1"
 OBLIGATION_STATUSES = (
@@ -138,6 +137,73 @@ def _validate_executor(value: Any, path: str) -> dict[str, Any]:
         if not isinstance(timeout, int) or isinstance(timeout, bool) or not 1 <= timeout <= 3600:
             raise ObligationPlanError("INTEGER_INVALID", f"{path}.timeout_seconds", "must be between 1 and 3600")
         result["timeout_seconds"] = timeout
+    if "host_grants" in executor:
+        raw_grant_sets = executor["host_grants"]
+        if not isinstance(raw_grant_sets, list):
+            raise ObligationPlanError("TYPE_ARRAY", f"{path}.host_grants", "must be an array")
+        grant_sets: list[dict[str, Any]] = []
+        seen_test_identities: set[str] = set()
+        for index, raw_set in enumerate(raw_grant_sets):
+            grant_path = f"{path}.host_grants[{index}]"
+            grant_set = _object(raw_set, grant_path)
+            if set(grant_set) != {"test_case_identity", "grants"}:
+                raise ObligationPlanError(
+                    "FIELD_INVALID",
+                    grant_path,
+                    "must contain only test_case_identity and grants",
+                )
+            test_identity = _string(
+                grant_set.get("test_case_identity"), f"{grant_path}.test_case_identity"
+            )
+            if test_identity in seen_test_identities:
+                raise ObligationPlanError(
+                    "DUPLICATE_IDENTITY", f"{grant_path}.test_case_identity", "must be unique"
+                )
+            seen_test_identities.add(test_identity)
+            raw_grants = grant_set.get("grants")
+            if not isinstance(raw_grants, list) or not raw_grants:
+                raise ObligationPlanError(
+                    "TYPE_ARRAY", f"{grant_path}.grants", "must be a non-empty array"
+                )
+            grants: list[dict[str, Any]] = []
+            seen_grants: set[tuple[str, str]] = set()
+            for grant_index, raw_grant in enumerate(raw_grants):
+                item_path = f"{grant_path}.grants[{grant_index}]"
+                item = _object(raw_grant, item_path)
+                if set(item) - {"capability", "locator", "bytes"}:
+                    raise ObligationPlanError(
+                        "FIELD_INVALID", item_path, "contains an unsupported grant field"
+                    )
+                capability = _string(item.get("capability"), f"{item_path}.capability")
+                locator_value = item.get("locator", "")
+                if not isinstance(locator_value, str) or len(locator_value) > _IDENTITY_LENGTH:
+                    raise ObligationPlanError(
+                        "TYPE_STRING", f"{item_path}.locator", "must be a bounded string"
+                    )
+                locator = locator_value
+                raw_bytes = item.get("bytes", [])
+                if not isinstance(raw_bytes, list) or len(raw_bytes) > 4096:
+                    raise ObligationPlanError(
+                        "TYPE_ARRAY", f"{item_path}.bytes", "must be a bounded byte array"
+                    )
+                byte_values = []
+                for byte_index, byte in enumerate(raw_bytes):
+                    if not isinstance(byte, int) or isinstance(byte, bool) or not 0 <= byte <= 255:
+                        raise ObligationPlanError(
+                            "INTEGER_INVALID",
+                            f"{item_path}.bytes[{byte_index}]",
+                            "must be between 0 and 255",
+                        )
+                    byte_values.append(byte)
+                key = (capability, locator)
+                if key in seen_grants:
+                    raise ObligationPlanError(
+                        "DUPLICATE_IDENTITY", item_path, "duplicate capability and locator"
+                    )
+                seen_grants.add(key)
+                grants.append({"capability": capability, "locator": locator, "bytes": byte_values})
+            grant_sets.append({"test_case_identity": test_identity, "grants": grants})
+        result["host_grants"] = grant_sets
     return result
 
 
