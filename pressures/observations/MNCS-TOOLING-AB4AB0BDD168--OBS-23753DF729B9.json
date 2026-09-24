@@ -1,0 +1,73 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-forge": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+    "mncs-language": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:7c941675a41b8490c713981be09accd64a39c9a41b5d78ee265a405d9f3e3cdc",
+  "evidence": [
+    {
+      "id": "mncs-forge:real-provider-retention-129-cycle",
+      "kind": "bounded-process-handle-churn",
+      "ref": "mncs-language crates/mncs-model/src/process_runtime.rs::completed_handle_retention_is_bounded_and_eviction_fails_closed",
+      "status": "PASS",
+      "summary": "On the current Fedora user-systemd/cgroup-v2 host, 129 sequential /usr/bin/true executions were each reaped and verified cleanup_complete/tree_empty/launcher_reaped before eviction; registry remained at 128 and the evicted handle failed closed as Unknown. The test group completed in 6.65 seconds."
+    },
+    {
+      "id": "mncs-forge:real-provider-active-cap-16",
+      "kind": "bounded-active-process-cap",
+      "ref": "mncs-language crates/mncs-model/src/process_runtime.rs::active_execution_limit_is_enforced_and_reaped",
+      "status": "PASS",
+      "summary": "Sixteen bounded sleep executions filled active slots, execution 17 was rejected with Limit, then every owned tree was cancelled/reaped and active_count returned to zero."
+    }
+  ],
+  "id": "MNCS-TOOLING-AB4AB0BDD168--OBS-23753DF729B9",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "available": [
+      "real-provider cleanup-before-eviction",
+      "active execution cap",
+      "expired/foreign handles fail closed"
+    ],
+    "classification": "PARTIALLY_RESOLVED",
+    "consumer_status": "PROCESS_HANDLE_CHURN_BOUNDED",
+    "missing": [
+      "RAVEL language effect-semantics repository-canonical suite",
+      "longer-duration resident RSS/idle proof",
+      "historic Fedora low-memory event attribution",
+      "authoritative workspace mapping"
+    ],
+    "profile": "0.18",
+    "state": "PARTIALLY_RESOLVED"
+  },
+  "observedAt": "2026-09-24T04:53:24Z",
+  "pressureId": "MNCS-TOOLING-AB4AB0BDD168",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "timeout -k 5s 60s cargo test -p mncs-model process_runtime::tests -- --nocapture --test-threads=1",
+    "status": "PASS"
+  },
+  "runId": "systemd-process-retention-20260923",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "branch": "campaign/process-entry-continuous-closure-20260923",
+        "commit": "089e71971505d8acfca2fe1bf655dd4122fe3bd9",
+        "path": "tests/test_resident_bounds.py"
+      },
+      "mncs-language": {
+        "branch": "campaign/process-lifecycle-closure-20260923",
+        "commit": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+        "path": "crates/mncs-model/src/process_runtime.rs"
+      }
+    }
+  },
+  "summary": "A bounded real Linux-provider churn test now explicitly verifies cleanup-before-eviction. The retained MNCS runtime sequentially starts and reaps 129 /usr/bin/true transient user services; each must report cleanup_complete=true, tree_empty=true, and launcher_reaped before insertion can evict a terminal entry. The registry remains at 128, the expired opaque handle returns Unknown, retained handles still show cleanup proof, and active_count stays zero. A second test fills all 16 active slots with bounded /usr/bin/sleep jobs, rejects job 17, then cancels/reaps all 16. Four process_runtime tests passed in 6.65 seconds. Evidence is recorded from the Forge resident-safety pressure and cites the language provider test without broadening affectedRepositories.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "This closes process-handle churn and eviction cleanup; short resident idle does not establish workday-length RSS behavior or attribute the historic Fedora low-memory event."
+  }
+}
