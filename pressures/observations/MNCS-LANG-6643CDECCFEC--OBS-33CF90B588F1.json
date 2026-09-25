@@ -1,0 +1,55 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "runtime": "mncs-embed retained artifact session"
+  },
+  "contentDigest": "sha256:715d4d817aeb4481c7034b9cad371f7a81c6bab66c7d099526b79e74cb2e9e26",
+  "evidence": [
+    {
+      "id": "commons-bounded-native-pressure-fixture",
+      "ref": "tests/test_pressure_registry.py::test_bounded_native_pressure_projection_matches_consumer_selectors",
+      "status": "PASS",
+      "summary": "Mixed lifecycle, severity, reporter, repository, verification, active/resolved, selector, and native view fixture passes."
+    },
+    {
+      "id": "commons-production-archive-validation",
+      "ref": "pressures/views/",
+      "status": "PASS",
+      "summary": "Generated all ten views from the complete append-only pressure archive; pre- and post-generation registry validation each reported zero diagnostics."
+    },
+    {
+      "id": "commons-native-production-query",
+      "ref": "src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
+      "status": "PASS",
+      "summary": "Production query, lifecycle, verification classification, bounded filters, and named view selection execute through the compiler-owned typed projection kernel."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-33CF90B588F1",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true,
+    "validationScope": "artifact-bound-structured-projection-and-production-query"
+  },
+  "observedAt": "2026-09-25T05:23:39Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_pressure_registry.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "Current compiler-owned structured projection feeds the Commons production query/view path; focused bounded fixture passes and the complete pressure archive regenerates ten views with zero registry diagnostics.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

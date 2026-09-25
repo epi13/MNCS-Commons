@@ -1544,45 +1544,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-commons",
-        "mncs-language"
-      ],
-      "capability": "dynamic_query_projection",
-      "classification": "STILL_REPRODUCES",
-      "currentValidation": true,
-      "domain": "data.registry",
-      "fallbackLanguages": [
-        "python"
-      ],
-      "id": "MNCS-LANG-6643CDECCFEC",
-      "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-9CC680A5AFED",
-        "observedAt": "2026-09-21T05:12:00Z",
-        "repository": "mncs-language",
-        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
-      },
-      "reporters": [
-        "mncs-commons",
-        "mncs-language"
-      ],
-      "revalidationRequired": false,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "language",
-      "title": "Dynamic registry projection cannot yet be native MNCS",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 2,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-service"
       ],
       "capability": "legacy.svc-p-016",
@@ -3280,7 +3241,7 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 30,
-      "STILL_REPRODUCES": 28
+      "STILL_REPRODUCES": 27
     },
     "unreconciled": 0
   },

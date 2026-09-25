@@ -125,7 +125,6 @@ def build_family_agent_projection(
             _compact_pressure(registry, item)
             for item in registry.query(target="language", repository=repository, unresolved=True)
         ]
-        pressure_rows.sort(key=lambda item: str(item.get("id", "")))
         if len(pressure_rows) > max_items:
             pressure_rows = pressure_rows[:max_items]
             pressure_freshness = "truncated"
@@ -136,7 +135,9 @@ def build_family_agent_projection(
     architecture_projection = architecture_query_result.get("projection", {})
     architecture_limitations = list(architecture_projection.get("limitations", []))
     if len(architecture_query_result.get("capabilities", [])) > max_items:
-        architecture_query_result["capabilities"] = architecture_query_result["capabilities"][:max_items]
+        architecture_query_result["capabilities"] = architecture_query_result[
+            "capabilities"
+        ][:max_items]
         architecture_limitations.append("architecture projection truncated at max_items")
     architecture_validation_identity = _identity(architecture_validation)
     pressure_registry_identity = _registry_identity(pressure_root)

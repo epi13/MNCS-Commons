@@ -1,0 +1,52 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "interface": "mncs-embed artifact composite contract",
+    "profile": "0.18"
+  },
+  "contentDigest": "sha256:49fcaa4a94c37657a57e89dadd57317dff0cd374d582177d37c38599a23ef2ad",
+  "evidence": [
+    {
+      "id": "language-structured-projection-contract",
+      "ref": "crates/mncs-embed/tests/structured_projection.rs",
+      "status": "PASS",
+      "summary": "Five focused runtime tests cover records, finite values, nested bounded sequences, strict shape/type/bounds rejection, artifact mismatch, determinism, C ABI, and typed-call contract sharing."
+    },
+    {
+      "id": "language-compiler-owned-composite-metadata",
+      "ref": "crates/mncs-embed/src/lib.rs",
+      "status": "PASS",
+      "summary": "Loaded artifact metadata carries exact nominal references and compiler-emitted finite variant names."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-A3E0418E1606",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true,
+    "validationScope": "artifact-bound-structured-projection"
+  },
+  "observedAt": "2026-09-25T04:37:29Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run cargo test -p mncs-embed --test structured_projection.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "crates/mncs-embed/tests/structured_projection.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "RESOLVED: compiler-owned structured projection now materializes declared bounded composites from exact artifact-bound identities; focused record, finite, nested, bound, stale-artifact, and typed-call proofs pass.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Consumer-owned field/width/variant/nesting projection removed; Python transport remains for platform input.",
+    "removed": true
+  }
+}

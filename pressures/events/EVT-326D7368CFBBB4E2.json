@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:f689d49d79ecd849f4592dba90371fb6b5d5beb6e6be84cbdc2267b17e4cde80",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "available",
+  "id": "EVT-326D7368CFBBB4E2",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-25T05:24:32Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": "EVT-6DF91DDFE6683906",
+  "reason": "Focused compiler/runtime, Test, Actions, and Commons proofs plus canonical RAVEL-selected closure are in progress.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

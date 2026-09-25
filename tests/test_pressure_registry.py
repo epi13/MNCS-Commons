@@ -11,7 +11,6 @@ import pytest
 from mncs_commons.pressure import (
     PressureError,
     PressureRegistry,
-    _validate_transition_shape,
     extract_pressure_markers,
     known_repositories,
     pressure_id,
@@ -81,6 +80,163 @@ def test_new_pressure_has_global_id_and_deterministic_projection(tmp_path: Path)
     )
 
 
+def test_bounded_native_pressure_projection_matches_consumer_selectors(tmp_path: Path) -> None:
+    registry = PressureRegistry(tmp_path / "pressures")
+
+    blocker_spec = pressure_spec(signature="projection.discovered", repository="mncs-store")
+    blocker_spec["severity"] = "blocker"
+    blocker_spec["signals"] = {"fallbackLanguage": "python"}
+    discovered = registry.add(blocker_spec)["id"]
+
+    available_spec = pressure_spec(signature="projection.available", repository="mncs-ingest")
+    available_spec["severity"] = "major"
+    available_spec["observation"]["workaround"] = {
+        "description": "Rust adapter remains active",
+        "active": True,
+        "fallbackLanguage": "rust",
+    }
+    available = registry.add(available_spec)
+    registry.observe(
+        available["id"],
+        {
+            "repository": "mncs-actions",
+            "observedAt": "2026-09-13T00:00:00Z",
+            "summary": "Second consumer is affected.",
+            "reproduction": {"status": "PASS", "instructions": "run case"},
+            "languageProfile": "0.18",
+            "workaround": {"description": "Rust bridge", "active": True},
+        },
+    )
+    registry.transition(
+        available["id"],
+        "confirmed",
+        actor="mncs-ingest",
+        evidence_refs=[available["observation"]["id"]],
+    )
+    registry.transition(
+        available["id"],
+        "accepted",
+        actor="mncs-language",
+        reason="fixture",
+        evidence_refs=[available["observation"]["id"]],
+    )
+    registry.transition(available["id"], "implementing", actor="mncs-language", reason="fixture")
+    registry.transition(
+        available["id"],
+        "available",
+        actor="mncs-language",
+        evidence_refs=[available["observation"]["id"]],
+        implementation={"ref": "fixture", "profile": "0.18"},
+    )
+    registry.verify(
+        available["id"],
+        repository="mncs-ingest",
+        status="FAIL",
+        workaround_removed=False,
+        summary="The consumer still fails the current check.",
+        observed_at="2026-09-14T00:00:00Z",
+    )
+
+    resolved_spec = pressure_spec(signature="projection.resolved", repository="mncs-language")
+    resolved_spec["severity"] = "critical"
+    resolved_spec["languageProfile"] = "0.18"
+    resolved_spec["observation"]["metadata"] = {"currentValidation": True}
+    resolved = registry.add(resolved_spec)
+    evidence_ref = resolved["observation"]["id"]
+    registry.transition(
+        resolved["id"],
+        "confirmed",
+        actor="mncs-language",
+        evidence_refs=[evidence_ref],
+    )
+    registry.transition(
+        resolved["id"],
+        "accepted",
+        actor="mncs-language",
+        reason="fixture",
+        evidence_refs=[evidence_ref],
+    )
+    registry.transition(resolved["id"], "implementing", actor="mncs-language", reason="fixture")
+    registry.transition(
+        resolved["id"],
+        "available",
+        actor="mncs-language",
+        evidence_refs=[evidence_ref],
+        implementation={"ref": "fixture", "profile": "0.18"},
+    )
+    registry.transition(resolved["id"], "verifying", actor="mncs-language")
+    verification = registry.verify(
+        resolved["id"],
+        repository="mncs-language",
+        status="PASS",
+        workaround_removed=True,
+        summary="Native kernel proof passed.",
+        observed_at="2026-09-15T00:00:00Z",
+    )
+    registry.transition(
+        resolved["id"],
+        "resolved",
+        actor="mncs-language",
+        evidence_refs=[verification["id"]],
+    )
+
+    assert {item["id"] for item in registry.query(status="available")} == {available["id"]}
+    assert {item["id"] for item in registry.query(severity=("blocker", "critical"))} == {
+        discovered,
+        resolved["id"],
+    }
+    assert {
+        item["id"]
+        for item in registry.query(repository="mncs-actions", multi_repository=True)
+    } == {
+        available["id"]
+    }
+    assert {item["id"] for item in registry.query(unresolved=True)} == {
+        discovered,
+        available["id"],
+    }
+    assert {item["id"] for item in registry.query(awaiting_verification=True)} == {
+        available["id"]
+    }
+    assert {item["id"] for item in registry.query(python_fallback=True)} == {discovered}
+    assert {item["id"] for item in registry.query(rust_fallback=True)} == {available["id"]}
+    assert {item["id"] for item in registry.query(language_profile="0.18")} == {
+        available["id"],
+        resolved["id"],
+    }
+    assert {item["id"] for item in registry.query(needs_revalidation=True)} == {
+        discovered,
+        available["id"],
+    }
+    by_id = {item["id"]: item for item in registry.query()}
+    assert by_id[available["id"]]["verificationState"] == "failed"
+    assert by_id[resolved["id"]]["verificationState"] == "ready"
+    assert by_id[resolved["id"]]["unresolved"] is False
+
+    from mncs_commons.pressure_runtime import pressure_kernel
+
+    selectors = pressure_kernel().pressure_view_selectors()
+    assert selectors == [
+        "UNRESOLVED_LANGUAGE",
+        "BLOCKING",
+        "AWAITING_VERIFICATION",
+        "RECENTLY_RESOLVED",
+        "MULTI_REPOSITORY",
+        "RUST_FALLBACK",
+        "PYTHON_FALLBACK",
+        "NEEDS_REVALIDATION",
+    ]
+    assert registry.generate_views()["valid"]
+    unresolved_view = json.loads(
+        (registry.views_dir / "unresolved-language.json").read_text(encoding="utf-8")
+    )
+    assert {item["id"] for item in unresolved_view["pressures"]} == {
+        discovered,
+        available["id"],
+    }
+    assert registry.validate().valid
+
+
 def test_uninitialized_registry_fails_closed(tmp_path: Path) -> None:
     report = PressureRegistry(tmp_path / "pressures").validate()
     assert not report.valid
@@ -121,7 +277,9 @@ def test_existing_pressure_accumulates_another_repository_and_candidates(tmp_pat
     assert registry.validate().valid
 
 
-def test_reconciliation_is_materialized_from_append_only_observation_metadata(tmp_path: Path) -> None:
+def test_reconciliation_is_materialized_from_append_only_observation_metadata(
+    tmp_path: Path,
+) -> None:
     registry = PressureRegistry(tmp_path / "pressures")
     created = registry.add(pressure_spec())
     pressure = created["id"]
@@ -387,6 +545,10 @@ def test_concurrent_transition_heads_fail_validation(tmp_path: Path) -> None:
     assert not report.valid
     assert any(item.code == "CONCURRENT_TRANSITIONS" for item in report.diagnostics)
     assert a_event["id"] != b_event["id"]
+    projected = base.query()
+    assert len(projected) == 1
+    assert projected[0]["status"] == "conflicted"
+    assert projected[0]["valid"] is False
 
 
 def test_migration_preserves_legacy_text_and_markers(tmp_path: Path) -> None:
@@ -480,48 +642,3 @@ def test_migration_reads_nested_and_multi_entry_ledgers_without_alias_collisions
     assert migrated.data["legacy"]["sourcePath"].endswith("repros/P-001/README.md")
     assert migrated.data["legacy"]["sourceText"].startswith("# P-001")
     assert registry.validate().valid
-
-
-def test_mncs_lifecycle_mirror_has_same_transition_cells() -> None:
-    allowed = {
-        0: {1, 7, 8, 10, 11},
-        1: {2, 7, 8, 10, 9, 11},
-        2: {3, 10, 7, 9, 11},
-        3: {4, 10, 9, 11},
-        4: {5, 3, 10, 9, 11},
-        5: {6, 4, 10, 9, 11},
-        8: {9, 11},
-        10: {1, 2, 3, 11, 9},
-    }
-    for current in range(12):
-        for target in range(12):
-            expected = target in allowed.get(current, set())
-            current_name = [
-                "discovered",
-                "confirmed",
-                "accepted",
-                "implementing",
-                "available",
-                "verifying",
-                "resolved",
-                "duplicate",
-                "rejected",
-                "superseded",
-                "deferred",
-                "obsolete",
-            ][current]
-            target_name = [
-                "discovered",
-                "confirmed",
-                "accepted",
-                "implementing",
-                "available",
-                "verifying",
-                "resolved",
-                "duplicate",
-                "rejected",
-                "superseded",
-                "deferred",
-                "obsolete",
-            ][target]
-            assert (_validate_transition_shape(current_name, target_name) is None) == expected

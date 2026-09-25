@@ -1,104 +1,514 @@
-mncs 0.10;
+mncs 0.18;
 
-// Commons pressure lifecycle kernel.
+// Commons pressure semantic projection kernel.
 //
-// The host owns JSON, Git append-only storage, timestamps, and evidence
-// lookup. This pure MNCS kernel owns the closed transition law used by the
-// Python projection and the executable corpus. The numeric codes are a
-// deliberately small ABI so the language can be exercised without smuggling
-// filesystem or command authority into the source program.
-//
-// 0 discovered, 1 confirmed, 2 accepted, 3 implementing, 4 available,
-// 5 verifying, 6 resolved, 7 duplicate, 8 rejected, 9 superseded,
-// 10 deferred, 11 obsolete.
+// Filesystem enumeration, append-only JSON decoding, timestamp parsing, and
+// open repository/profile text remain in the platform adapter. Bounded row
+// material crosses the compiler-owned structured projection boundary; this
+// module owns lifecycle classification, verification state, query predicates,
+// and deterministic result order.
+// The host owns JSON and filesystem transport; this module owns bounded typed semantics.
 module commons.pressure.lifecycle;
 
-fn transition_allowed(current: i64, target: i64) -> (result: bool) {
-    if current == 0 {
-        return target == 1 || target == 7 || target == 8 || target == 10 || target == 11;
+enum PressureStatus { DISCOVERED, CONFIRMED, ACCEPTED, IMPLEMENTING, AVAILABLE, VERIFYING, RESOLVED, DUPLICATE, REJECTED, SUPERSEDED, DEFERRED, OBSOLETE, CONFLICTED }
+enum PressureTarget { LANGUAGE, COMPILER, RUNTIME, LIBRARY, TOOLING, BACKEND, VERIFICATION, PROFILE, ECOSYSTEM }
+enum PressureSeverity { BLOCKER, BLOCKING, CRITICAL, MAJOR, MODERATE, MINOR }
+enum PressureVerificationState { INCOMPLETE, READY, FAILED, UNKNOWN }
+enum PressureReconciliation { STILL_REPRODUCES, PARTIALLY_RESOLVED, CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED, BACKEND_ONLY, CONSUMER_DEBT, OBSOLETE, DUPLICATE, RESOLVED, UNRECONCILED }
+enum PressureViewSelector { UNRESOLVED_LANGUAGE, BLOCKING, AWAITING_VERIFICATION, RECENTLY_RESOLVED, MULTI_REPOSITORY, RUST_FALLBACK, PYTHON_FALLBACK, NEEDS_REVALIDATION }
+
+record PressureTransitionInput {
+    event_identity: [byte; up_to 256],
+    previous_event_identity: [byte; up_to 256],
+    from_status: PressureStatus,
+    to_status: PressureStatus
+}
+
+record PressureTransitionSearch {
+    candidate: PressureTransitionInput,
+    matches: u64
+}
+
+record PressureLifecycleState {
+    status: PressureStatus,
+    previous_event_identity: [byte; up_to 256],
+    processed: u64,
+    conflicted: bool,
+    failure_code: i64
+}
+
+record PressureQueryRow {
+    pressure_identity: [byte; up_to 128],
+    target: PressureTarget,
+    domain_identity: [byte; up_to 256],
+    severity: PressureSeverity,
+    initial_status: PressureStatus,
+    transitions: [PressureTransitionInput; up_to 256],
+    affected_repositories: [[byte; up_to 256]; up_to 32],
+    reporters: [[byte; up_to 256]; up_to 32],
+    verification_affected: i64,
+    verification_pass: i64,
+    verification_fail: i64,
+    verification_unknown: i64,
+    workarounds_removed: i64,
+    current_validation: bool,
+    workaround_active: bool,
+    fallback_rust: bool,
+    fallback_python: bool,
+    language_profile: [byte; up_to 256],
+    observation_language_profiles: [[byte; up_to 256]; up_to 32],
+    reconciliation: PressureReconciliation,
+    valid: bool
+}
+
+record PressureQueryFilter {
+    status_enabled: bool,
+    status: PressureStatus,
+    target_enabled: bool,
+    target: PressureTarget,
+    domain_enabled: bool,
+    domain_identity: [byte; up_to 256],
+    repository_enabled: bool,
+    repository_identity: [byte; up_to 256],
+    severities: [PressureSeverity; up_to 6],
+    unresolved: bool,
+    multi_repository: bool,
+    awaiting_verification: bool,
+    workaround_active: bool,
+    language_profile_enabled: bool,
+    language_profile: [byte; up_to 256],
+    rust_fallback: bool,
+    python_fallback: bool,
+    needs_revalidation: bool
+}
+
+record PressureQueryRequest {
+    rows: [PressureQueryRow; up_to 256],
+    filter: PressureQueryFilter
+}
+
+record PressureViewRequest {
+    rows: [PressureQueryRow; up_to 256],
+    selector: PressureViewSelector
+}
+
+record PressureVerificationSummary {
+    affected: i64,
+    pass: i64,
+    failed: i64,
+    unknown: i64
+}
+
+record PressureQueryItem {
+    pressure_identity: [byte; up_to 128],
+    target: PressureTarget,
+    domain_identity: [byte; up_to 256],
+    severity: PressureSeverity,
+    status: PressureStatus,
+    lifecycle_error_code: i64,
+    affected_repositories: [[byte; up_to 256]; up_to 32],
+    reporters: [[byte; up_to 256]; up_to 32],
+    verification_summary: PressureVerificationSummary,
+    verification_state: PressureVerificationState,
+    reconciliation: PressureReconciliation,
+    unresolved: bool,
+    fallback_rust: bool,
+    fallback_python: bool,
+    current_validation: bool,
+    revalidation_required: bool,
+    valid: bool
+}
+
+record PressureQueryBuilder {
+    values: [PressureQueryItem; 256],
+    length: u64
+}
+
+record PressureQueryResult {
+    rows: [PressureQueryItem; up_to 256]
+}
+
+fn status_is_terminal(value: PressureStatus) -> (result: bool) {
+    return match value {
+        RESOLVED => true,
+        DUPLICATE => true,
+        REJECTED => true,
+        SUPERSEDED => true,
+        OBSOLETE => true,
+        DISCOVERED => false,
+        CONFIRMED => false,
+        ACCEPTED => false,
+        IMPLEMENTING => false,
+        AVAILABLE => false,
+        VERIFYING => false,
+        DEFERRED => false,
+        CONFLICTED => false
+    };
+}
+
+fn status_unresolved(value: PressureStatus) -> (result: bool) {
+    return !status_is_terminal(value);
+}
+
+fn pressure_verification_state(affected: i64, passed: i64, failed: i64, unknown: i64, removed: i64) -> (result: PressureVerificationState) {
+    if affected <= 0 {
+        return PressureVerificationState.UNKNOWN;
     }
-    if current == 1 {
-        return target == 2 || target == 7 || target == 8 || target == 10 || target == 9 || target == 11;
+    if failed > 0 {
+        return PressureVerificationState.FAILED;
     }
-    if current == 2 {
-        return target == 3 || target == 10 || target == 7 || target == 9 || target == 11;
+    if unknown > 0 {
+        return PressureVerificationState.UNKNOWN;
     }
-    if current == 3 {
-        return target == 4 || target == 10 || target == 9 || target == 11;
+    if passed == affected && removed == affected {
+        return PressureVerificationState.READY;
     }
-    if current == 4 {
-        return target == 5 || target == 3 || target == 10 || target == 9 || target == 11;
+    return PressureVerificationState.INCOMPLETE;
+}
+
+fn bytes_equal(left: [byte; up_to 256], right: [byte; up_to 256]) -> (result: bool) {
+    if left.len != right.len {
+        return false;
     }
-    if current == 5 {
-        return target == 6 || target == 4 || target == 10 || target == 9 || target == 11;
+    iterate i over left carrying same: bool = true {
+        next same = same && left[i] == right[i];
     }
-    if current == 10 {
-        return target == 1 || target == 2 || target == 3 || target == 11 || target == 9;
+    return same;
+}
+
+fn contains_repository(values: [[byte; up_to 256]; up_to 32], repository: [byte; up_to 256]) -> (result: bool) {
+    iterate i over values carrying found: bool = false {
+        next found = found || bytes_equal(values[i], repository);
     }
-    if current == 8 {
-        return target == 9 || target == 11;
+    return found;
+}
+
+fn pressure_status_code(value: PressureStatus) -> (result: i64) {
+    return match value {
+        DISCOVERED => 0, CONFIRMED => 1, ACCEPTED => 2, IMPLEMENTING => 3,
+        AVAILABLE => 4, VERIFYING => 5, RESOLVED => 6, DUPLICATE => 7,
+        REJECTED => 8, SUPERSEDED => 9, DEFERRED => 10, OBSOLETE => 11,
+        CONFLICTED => 12
+    };
+}
+
+fn pressure_target_code(value: PressureTarget) -> (result: i64) {
+    return match value {
+        LANGUAGE => 0, COMPILER => 1, RUNTIME => 2, LIBRARY => 3,
+        TOOLING => 4, BACKEND => 5, VERIFICATION => 6, PROFILE => 7,
+        ECOSYSTEM => 8
+    };
+}
+
+fn pressure_severity_code(value: PressureSeverity) -> (result: i64) {
+    return match value {
+        BLOCKER => 0, BLOCKING => 1, CRITICAL => 2, MAJOR => 3,
+        MODERATE => 4, MINOR => 5
+    };
+}
+
+fn empty_pressure_transition() -> (result: PressureTransitionInput) {
+    return PressureTransitionInput {
+        event_identity: [],
+        previous_event_identity: [],
+        from_status: PressureStatus.DISCOVERED,
+        to_status: PressureStatus.DISCOVERED
+    };
+}
+
+fn include_pressure_transition(search: PressureTransitionSearch, edge: PressureTransitionInput, previous: [byte; up_to 256]) -> (result: PressureTransitionSearch) {
+    if bytes_equal(edge.previous_event_identity, previous) {
+        return PressureTransitionSearch { candidate: edge, matches: search.matches +% 1 };
     }
+    return search;
+}
+
+fn advance_pressure_lifecycle(row: PressureQueryRow, state: PressureLifecycleState) -> (result: PressureLifecycleState) {
+    if state.conflicted || state.processed >= row.transitions.len {
+        return state;
+    }
+    let initial_search: PressureTransitionSearch = PressureTransitionSearch {
+        candidate: empty_pressure_transition(),
+        matches: 0
+    };
+    iterate i over row.transitions carrying found: PressureTransitionSearch = initial_search {
+        let edge: PressureTransitionInput = row.transitions[i];
+        next found = include_pressure_transition(found, edge, state.previous_event_identity);
+    }
+    if found.matches != 1 {
+        return PressureLifecycleState {
+            status: state.status,
+            previous_event_identity: state.previous_event_identity,
+            processed: state.processed,
+            conflicted: true,
+            failure_code: select(found.matches > 1, 1, 2)
+        };
+    }
+    if pressure_status_code(found.candidate.from_status) != pressure_status_code(state.status)
+        || !transition_allowed_state(state.status, found.candidate.to_status)
+        || found.candidate.event_identity.len == 0
+    {
+        return PressureLifecycleState {
+            status: state.status,
+            previous_event_identity: state.previous_event_identity,
+            processed: state.processed,
+            conflicted: true,
+            failure_code: select(
+                pressure_status_code(found.candidate.from_status) != pressure_status_code(state.status),
+                3,
+                4
+            )
+        };
+    }
+    return PressureLifecycleState {
+        status: found.candidate.to_status,
+        previous_event_identity: found.candidate.event_identity,
+        processed: state.processed +% 1,
+        conflicted: false,
+        failure_code: 0
+    };
+}
+
+fn pressure_lifecycle_projection(row: PressureQueryRow) -> (result: PressureLifecycleState) {
+    let initial: PressureLifecycleState = PressureLifecycleState {
+        status: row.initial_status,
+        previous_event_identity: [],
+        processed: 0,
+        conflicted: false,
+        failure_code: 0
+    };
+    iterate i over row.transitions carrying state: PressureLifecycleState = initial {
+        next state = advance_pressure_lifecycle(row, state);
+    }
+    if state.conflicted {
+        return state;
+    }
+    if state.processed != row.transitions.len {
+        return PressureLifecycleState {
+            status: state.status,
+            previous_event_identity: state.previous_event_identity,
+            processed: state.processed,
+            conflicted: true,
+            failure_code: 2
+        };
+    }
+    return state;
+}
+
+fn pressure_lifecycle_status(row: PressureQueryRow) -> (result: PressureStatus) {
+    let lifecycle: PressureLifecycleState = pressure_lifecycle_projection(row);
+    if lifecycle.conflicted {
+        return PressureStatus.CONFLICTED;
+    }
+    return lifecycle.status;
+}
+
+fn severity_matches(values: [PressureSeverity; up_to 6], severity: PressureSeverity) -> (result: bool) {
+    if values.len == 0 {
+        return true;
+    }
+    iterate i over values carrying found: bool = false {
+        next found = found || pressure_severity_code(values[i]) == pressure_severity_code(severity);
+    }
+    return found;
+}
+
+fn profile_matches(row: PressureQueryRow, wanted: [byte; up_to 256]) -> (result: bool) {
+    if row.language_profile.len == wanted.len && bytes_equal(row.language_profile, wanted) {
+        return true;
+    }
+    iterate i over row.observation_language_profiles carrying found: bool = false {
+        next found = found || bytes_equal(row.observation_language_profiles[i], wanted);
+    }
+    return found;
+}
+
+fn pressure_matches(row: PressureQueryRow, filter: PressureQueryFilter) -> (result: bool) {
+    let status: PressureStatus = pressure_lifecycle_status(row);
+    let status_ok: bool = !filter.status_enabled || pressure_status_code(status) == pressure_status_code(filter.status);
+    let target_ok: bool = !filter.target_enabled || pressure_target_code(row.target) == pressure_target_code(filter.target);
+    let domain_ok: bool = !filter.domain_enabled || bytes_equal(row.domain_identity, filter.domain_identity);
+    let severity_ok: bool = severity_matches(filter.severities, row.severity);
+    let repository_ok: bool = !filter.repository_enabled
+        || contains_repository(row.affected_repositories, filter.repository_identity)
+        || contains_repository(row.reporters, filter.repository_identity);
+    let unresolved_ok: bool = !filter.unresolved || status_unresolved(status);
+    let multi_repository_ok: bool = !filter.multi_repository || row.affected_repositories.len >= 2;
+    let awaiting_verification_ok: bool = !filter.awaiting_verification || pressure_status_code(status) == 4;
+    let workaround_ok: bool = !filter.workaround_active || row.workaround_active;
+    let profile_ok: bool = !filter.language_profile_enabled || profile_matches(row, filter.language_profile);
+    let rust_ok: bool = !filter.rust_fallback || row.fallback_rust;
+    let python_ok: bool = !filter.python_fallback || row.fallback_python;
+    let revalidation_required: bool = status_unresolved(status) && !row.current_validation;
+    let revalidation_ok: bool = !filter.needs_revalidation || revalidation_required;
+    return status_ok && target_ok && domain_ok && severity_ok && repository_ok
+        && unresolved_ok && multi_repository_ok && awaiting_verification_ok
+        && workaround_ok && profile_ok && rust_ok && python_ok && revalidation_ok;
+}
+
+fn query_item(row: PressureQueryRow) -> (result: PressureQueryItem) {
+    let lifecycle: PressureLifecycleState = pressure_lifecycle_projection(row);
+    let status: PressureStatus = select(lifecycle.conflicted, PressureStatus.CONFLICTED, lifecycle.status);
+    return PressureQueryItem {
+        pressure_identity: row.pressure_identity,
+        target: row.target,
+        domain_identity: row.domain_identity,
+        severity: row.severity,
+        status: status,
+        lifecycle_error_code: lifecycle.failure_code,
+        affected_repositories: row.affected_repositories,
+        reporters: row.reporters,
+        verification_summary: PressureVerificationSummary {
+            affected: row.verification_affected,
+            pass: row.verification_pass,
+            failed: row.verification_fail,
+            unknown: row.verification_unknown
+        },
+        verification_state: pressure_verification_state(
+            row.verification_affected,
+            row.verification_pass,
+            row.verification_fail,
+            row.verification_unknown,
+            row.workarounds_removed
+        ),
+        reconciliation: row.reconciliation,
+        unresolved: status_unresolved(status),
+        fallback_rust: row.fallback_rust,
+        fallback_python: row.fallback_python,
+        current_validation: row.current_validation,
+        revalidation_required: status_unresolved(status) && !row.current_validation,
+        valid: row.valid && !lifecycle.conflicted
+    };
+}
+
+fn empty_query_item() -> (result: PressureQueryItem) {
+    return PressureQueryItem {
+        pressure_identity: [0; 0],
+        target: PressureTarget.LANGUAGE,
+        domain_identity: [0; 0],
+        severity: PressureSeverity.MINOR,
+        status: PressureStatus.DISCOVERED,
+        lifecycle_error_code: 0,
+        affected_repositories: [],
+        reporters: [],
+        verification_summary: PressureVerificationSummary { affected: 0, pass: 0, failed: 0, unknown: 0 },
+        verification_state: PressureVerificationState.UNKNOWN,
+        reconciliation: PressureReconciliation.UNRECONCILED,
+        unresolved: false,
+        fallback_rust: false,
+        fallback_python: false,
+        current_validation: false,
+        revalidation_required: false,
+        valid: false
+    };
+}
+
+fn empty_query_builder() -> (result: PressureQueryBuilder) {
+    return PressureQueryBuilder {
+        values: [empty_query_item(); 256],
+        length: 0
+    };
+}
+
+fn push_query_item(builder: PressureQueryBuilder, item: PressureQueryItem, include: bool) -> (result: PressureQueryBuilder) {
+    if !include || builder.length >= 256 {
+        return builder;
+    }
+    return PressureQueryBuilder {
+        values: replace(builder.values, builder.length, item),
+        length: builder.length +% 1
+    };
+}
+
+fn finish_query(builder: PressureQueryBuilder) -> (result: PressureQueryResult) {
+    return PressureQueryResult { rows: builder.values[0..builder.length] };
+}
+
+fn query_pressure_rows(request: PressureQueryRequest) -> (result: PressureQueryResult) {
+    iterate i over request.rows carrying builder: PressureQueryBuilder = empty_query_builder() {
+        let row: PressureQueryRow = request.rows[i];
+        next builder = push_query_item(builder, query_item(row), pressure_matches(row, request.filter));
+    }
+    return finish_query(builder);
+}
+
+fn pressure_view_matches(row: PressureQueryRow, selector: PressureViewSelector) -> (result: bool) {
+    let item: PressureQueryItem = query_item(row);
+    return match selector {
+        UNRESOLVED_LANGUAGE => pressure_target_code(item.target) == 0 && item.unresolved,
+        BLOCKING => pressure_severity_code(item.severity) <= 2,
+        AWAITING_VERIFICATION => pressure_status_code(item.status) == 4,
+        RECENTLY_RESOLVED => pressure_status_code(item.status) == 6,
+        MULTI_REPOSITORY => item.affected_repositories.len >= 2,
+        RUST_FALLBACK => item.fallback_rust,
+        PYTHON_FALLBACK => item.fallback_python,
+        NEEDS_REVALIDATION => item.revalidation_required
+    };
+}
+
+fn query_pressure_view(request: PressureViewRequest) -> (result: PressureQueryResult) {
+    iterate i over request.rows carrying builder: PressureQueryBuilder = empty_query_builder() {
+        let row: PressureQueryRow = request.rows[i];
+        next builder = push_query_item(
+            builder,
+            query_item(row),
+            pressure_view_matches(row, request.selector)
+        );
+    }
+    return finish_query(builder);
+}
+
+// Closed transition law shared by write-time admission and row replay.
+fn transition_allowed_state(current: PressureStatus, target: PressureStatus) -> (result: bool) {
+    return transition_allowed_codes(pressure_status_code(current), pressure_status_code(target));
+}
+
+fn transition_allowed_codes(current: i64, target: i64) -> (result: bool) {
+    if current == 0 { return target == 1 || target == 7 || target == 8 || target == 10 || target == 11; }
+    if current == 1 { return target == 2 || target == 7 || target == 8 || target == 10 || target == 9 || target == 11; }
+    if current == 2 { return target == 3 || target == 10 || target == 7 || target == 9 || target == 11; }
+    if current == 3 { return target == 4 || target == 10 || target == 9 || target == 11; }
+    if current == 4 { return target == 5 || target == 3 || target == 10 || target == 9 || target == 11; }
+    if current == 5 { return target == 6 || target == 4 || target == 10 || target == 9 || target == 11; }
+    if current == 10 { return target == 1 || target == 2 || target == 3 || target == 11 || target == 9; }
+    if current == 8 { return target == 9 || target == 11; }
     return false;
+}
+
+// Numeric adapters retained for the existing cross-backend lifecycle corpus.
+fn lifecycle_status_from_code(code: i64) -> (result: PressureStatus) {
+    return match code {
+        0 => PressureStatus.DISCOVERED, 1 => PressureStatus.CONFIRMED, 2 => PressureStatus.ACCEPTED, 3 => PressureStatus.IMPLEMENTING,
+        4 => PressureStatus.AVAILABLE, 5 => PressureStatus.VERIFYING, 6 => PressureStatus.RESOLVED, 7 => PressureStatus.DUPLICATE,
+        8 => PressureStatus.REJECTED, 9 => PressureStatus.SUPERSEDED, 10 => PressureStatus.DEFERRED, _ => PressureStatus.OBSOLETE
+    };
+}
+
+fn transition_allowed(current: i64, target: i64) -> (result: bool) {
+    if current < 0 || current > 11 || target < 0 || target > 11 {
+        return false;
+    }
+    return transition_allowed_codes(current, target);
 }
 
 fn unresolved(current: i64) -> (result: bool) {
-    if current == 6 || current == 7 || current == 8 || current == 9 || current == 11 {
-        return false;
-    }
-    return true;
+    return status_unresolved(lifecycle_status_from_code(current));
 }
 
 fn resolution_ready(affected: i64, passed: i64, failed: i64, unknown: i64, removed: i64) -> (result: bool) {
-    if affected <= 0 {
-        return false;
-    }
-    if passed != affected {
-        return false;
-    }
-    if failed != 0 || unknown != 0 {
-        return false;
-    }
-    return removed == affected;
+    return affected > 0 && passed == affected && failed == 0 && unknown == 0 && removed == affected;
 }
 
-// Projection classifications used by agent-facing views. These are not
-// confidence scores: incomplete, failed, and unknown evidence stay distinct.
-// verification_state: 0=incomplete, 1=ready, 2=failed, 3=unknown.
 fn verification_state(affected: i64, passed: i64, failed: i64, unknown: i64, removed: i64) -> (result: i64) {
-    if affected <= 0 {
-        return 3;
-    }
-    if failed > 0 {
-        return 2;
-    }
-    if unknown > 0 {
-        return 3;
-    }
-    if passed == affected && removed == affected {
-        return 1;
-    }
-    return 0;
+    return match pressure_verification_state(affected, passed, failed, unknown, removed) {
+        INCOMPLETE => 0, READY => 1, FAILED => 2, UNKNOWN => 3
+    };
 }
 
 fn available_awaiting_consumer(status: i64, current_validation: bool) -> (result: bool) {
-    if status != 4 {
-        return false;
-    }
-    if current_validation {
-        return false;
-    }
-    return true;
+    return status == 4 && !current_validation;
 }
 
-fn requires_revalidation(unresolved: bool, current_validation: bool) -> (result: bool) {
-    if unresolved {
-        if current_validation {
-            return false;
-        }
-        return true;
-    }
-    if current_validation {
-        return false;
-    }
-    return false;
+fn requires_revalidation(is_unresolved: bool, current_validation: bool) -> (result: bool) {
+    return is_unresolved && !current_validation;
 }

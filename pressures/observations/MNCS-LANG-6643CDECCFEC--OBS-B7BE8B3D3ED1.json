@@ -1,0 +1,66 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "profile": "0.18",
+    "runtime": "mncs-embed retained artifact session"
+  },
+  "contentDigest": "sha256:7514a734302309429dbfb9439dd34365b83b58c60e92d85ae212a96d1aad80c0",
+  "evidence": [
+    {
+      "id": "commons-bounded-native-pressure-fixture",
+      "ref": "tests/test_pressure_registry.py",
+      "status": "PASS",
+      "summary": "A three-row fixture covers discovered, available, resolved, severities, reporters, affected repositories, verification state, fallback, current-validation, selectors, native views, and lifecycle conflicts."
+    },
+    {
+      "id": "commons-production-view-parity",
+      "ref": "pressures/views/unresolved-language.json",
+      "status": "PASS",
+      "summary": "Before regenerating the checked-in view, native target=language/unresolved=true output matched all 91 row identities and compared status, target, severity, affected repositories/reporters, verification, classification, fallback, validation, and validity with zero differences."
+    },
+    {
+      "id": "commons-native-production-query",
+      "ref": "src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
+      "status": "PASS",
+      "summary": "Production query and named view selectors use the artifact-bound typed projection, native lifecycle fold, verification classifier, finite selectors, and bounded filtering."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-B7BE8B3D3ED1",
+  "kind": "reconciliation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true,
+    "hostBoundaries": [
+      "filesystem-enumeration",
+      "json-decode-encode",
+      "git-provenance",
+      "clock",
+      "publication",
+      "append-only-document-integrity"
+    ],
+    "validationScope": "production-pressure-query-and-views"
+  },
+  "observedAt": "2026-09-25T04:37:29Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "Run pytest tests/test_pressure_registry.py tests/test_mesh_pressure.py.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "src/mncs_commons/pressure.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "RESOLVED: filesystem-loaded pressure rows cross the compiler-owned structured projection boundary and production query/view selectors run through the native Commons kernel; the 91-row unresolved-language migration comparison matched with zero differences.",
+  "version": "1",
+  "workaround": {
+    "active": false,
+    "description": "Host-specific semantic query and lifecycle projection removed; Python retains platform I/O, strict historical-document validation, and bounded transport assembly.",
+    "removed": true
+  }
+}

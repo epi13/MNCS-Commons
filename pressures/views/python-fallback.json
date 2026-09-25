@@ -166,7 +166,7 @@
         "mncs-language"
       ],
       "capability": "dynamic_query_projection",
-      "classification": "STILL_REPRODUCES",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "data.registry",
       "fallbackLanguages": [
@@ -174,11 +174,11 @@
       ],
       "id": "MNCS-LANG-6643CDECCFEC",
       "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-9CC680A5AFED",
-        "observedAt": "2026-09-21T05:12:00Z",
-        "repository": "mncs-language",
-        "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-C85DC3041812",
+        "observedAt": "2026-09-25T05:49:09Z",
+        "repository": "mncs-commons",
+        "summary": "Current bounded structured projection fixture passes; all ten production Commons views regenerate from the append-only archive and the final registry validation reports zero diagnostics."
       },
       "reporters": [
         "mncs-commons",
@@ -186,16 +186,16 @@
       ],
       "revalidationRequired": false,
       "severity": "major",
-      "status": "confirmed",
+      "status": "resolved",
       "target": "language",
-      "title": "Dynamic registry projection cannot yet be native MNCS",
-      "unresolved": true,
+      "title": "Reusable bounded structured records had no compiler-owned host projection boundary",
+      "unresolved": false,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "ready",
       "verificationSummary": {
         "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -718,8 +718,8 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
       "OBSOLETE": 3,
       "PARTIALLY_RESOLVED": 4,
-      "RESOLVED": 1,
-      "STILL_REPRODUCES": 3,
+      "RESOLVED": 2,
+      "STILL_REPRODUCES": 2,
       "UNRECONCILED": 6
     },
     "unreconciled": 6

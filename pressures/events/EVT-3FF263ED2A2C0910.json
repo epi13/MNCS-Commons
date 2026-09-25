@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:3dc0e9d171547543a5f208c74238545d875fa9ff0077eb738ff5fc84d8ed8f33",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-6643CDECCFEC--OBS-A3E0418E1606",
+    "MNCS-LANG-6643CDECCFEC--OBS-B7BE8B3D3ED1"
+  ],
+  "from": "confirmed",
+  "id": "EVT-3FF263ED2A2C0910",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-25T05:24:07Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": "EVT-39E31139412FBF15",
+  "reason": "The current blocker is the missing generic artifact-bound projection membrane, now implemented and exercised by compiler-owned and Commons consumer proofs.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

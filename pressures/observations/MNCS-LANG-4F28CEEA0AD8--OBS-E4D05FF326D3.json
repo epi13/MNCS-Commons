@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:61ad7f1eb17f03dcb7ef16a737b028db5ccaf8136395b25e6e6371ec23e7518f",
+  "evidence": [
+    {
+      "id": "mncs-test-generic-provider-request-projection",
+      "ref": "tests/test_provider_projection.py",
+      "status": "PASS",
+      "summary": "The provider request is materialized through the compiler-owned ProviderRequest contract before native validation."
+    },
+    {
+      "id": "mncs-test-new-declaration-no-source-regeneration",
+      "ref": "tests/test_provider_projection.py",
+      "status": "PASS",
+      "summary": "A TestCase added after provider source compilation is visible from artifact callable metadata without regenerating an identity table."
+    },
+    {
+      "id": "mncs-test-stale-foreign-receipt-rejected",
+      "ref": "tests/test_provider_projection.py",
+      "status": "PASS",
+      "summary": "The native provider rejects receipt identity material carrying a foreign artifact identity."
+    }
+  ],
+  "id": "MNCS-LANG-4F28CEEA0AD8--OBS-E4D05FF326D3",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "currentValidation": true,
+    "localPressureId": "MNCS-TEST-P-007"
+  },
+  "observedAt": "2026-09-25T00:00:00Z",
+  "pressureId": "MNCS-LANG-4F28CEEA0AD8",
+  "repository": "mncs-test",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_provider_projection.py",
+    "repository": "mncs-test"
+  },
+  "summary": "Provider receipts remain identity-bound through compiler artifact callable metadata; generic structured projection validates the bounded native request and the generated inventory source is removed.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

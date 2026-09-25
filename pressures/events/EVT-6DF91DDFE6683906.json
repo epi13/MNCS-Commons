@@ -1,0 +1,29 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:7f01fc00c8a8c150de19525d92b93b53ad43fa5ab5c96212993a25406e599434",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-6643CDECCFEC--OBS-A3E0418E1606",
+    "MNCS-LANG-6643CDECCFEC--OBS-B7BE8B3D3ED1"
+  ],
+  "from": "implementing",
+  "id": "EVT-6DF91DDFE6683906",
+  "implementation": {
+    "language_profile": "0.18",
+    "ref": "campaign/structured-projection-20260924",
+    "repositories": [
+      "mncs-language",
+      "mncs-test",
+      "mncs-commons",
+      "mncs-actions"
+    ]
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-25T05:24:23Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": "EVT-46E63BC1D9F40AFD",
+  "reason": "",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

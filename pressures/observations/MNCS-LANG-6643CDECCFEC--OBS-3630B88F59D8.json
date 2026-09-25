@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:2fa68ac29bfca7cd036a24a8c4bdb328f1da9e26428de8952e14e0dead820222",
+  "evidence": [
+    {
+      "id": "commons-native-pressure-fixture",
+      "ref": "tests/test_pressure_registry.py",
+      "status": "PASS",
+      "summary": "Bounded multi-row consumer fixture and all query selectors pass."
+    },
+    {
+      "id": "commons-view-parity",
+      "ref": "src/mncs_commons/pressure.py",
+      "status": "PASS",
+      "summary": "The pre-migration 91-row production view matched the native query projection with zero differences."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-3630B88F59D8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-25T04:37:29Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "tests/test_pressure_registry.py",
+    "repository": "mncs-commons"
+  },
+  "summary": "Commons production structured projection, native query selectors, generated views, and registry validation pass.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

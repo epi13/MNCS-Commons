@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:de83345d1d6fa840b637eac0586695ab5645a438f4a6c23a9ec30d8e10244c71",
+  "evidence": [
+    {
+      "id": "language-structured-projection-contract",
+      "ref": "crates/mncs-embed/tests/structured_projection.rs",
+      "status": "PASS",
+      "summary": "Five focused compiler-issued identity and fail-closed projection tests pass."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-59B42B705A7C",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-09-25T04:37:29Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "crates/mncs-embed/tests/structured_projection.rs",
+    "repository": "mncs-language"
+  },
+  "summary": "Focused compiler/runtime structured-projection contract and C ABI metadata proof passes.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

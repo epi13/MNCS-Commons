@@ -3,10 +3,15 @@
     "mncs-commons"
   ],
   "capability": "dynamic_query_projection",
-  "contentDigest": "sha256:f913c4f6cca82c84fafbe2144698733af3823c18f49b3613a7a829c8faeaa534",
+  "contentDigest": "sha256:4f13b7462b1d6d74281cfda6d92d8af41bed0269e3b88caf7b649ac35a4a4b94",
   "discoveredAt": "2026-09-13T08:30:00Z",
   "discoveredBy": "mncs-commons",
   "domain": "data.registry",
+  "historicalEvidence": {
+    "languageProfile": "0.16",
+    "preserved": true,
+    "reproducer": "dynamic JSON records, dynamic strings/maps/sets, and an unbounded observation map"
+  },
   "id": "MNCS-LANG-6643CDECCFEC",
   "identity": {
     "capability": "dynamic_query_projection",
@@ -16,25 +21,20 @@
   },
   "initialStatus": "discovered",
   "languageProfile": "0.18",
-  "historicalEvidence": {
-    "languageProfile": "0.16",
-    "reproducer": "dynamic JSON records, dynamic strings/maps/sets, and an unbounded observation map",
-    "preserved": true
-  },
   "legacyIds": [],
-  "notes": "The closed lifecycle and classification laws are moved to src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs. This record tracks the remaining dynamic projection boundary, not unavoidable filesystem transport.",
+  "notes": "Historical Profile 0.16 and early Profile 0.18 observations are preserved. Current closure is about the reusable artifact-bound structured projection membrane and Commons production use of it, not dynamic maps or text. Python retains external file/JSON/Git/clock I/O, append-only document integrity validation, and bounded transport assembly.",
   "reproducer": {
-    "attemptedProgram": "mncs 0.18; module commons.pressure.projection; ingest bounded typed pressure rows and fold typed lifecycle observations",
-    "command": "mncs source-study <probe>",
-    "expected": "Profile 0.18 can express bounded typed classification and folding. It does not make unbounded dynamic JSON/maps or external filesystem enumeration native; those remain explicit host boundaries.",
-    "hostLocus": "src/mncs_commons/pressure.py:PressureRegistry.projections/query/validate/generate_views",
+    "attemptedProgram": "mncs 0.18; module commons.pressure.projection; materialize bounded external pressure material into a declared typed row and run a native query",
+    "command": "Review the pre-campaign PressureRegistry.query projection and compile the bounded lifecycle kernel",
+    "expected": "Before the generic artifact-bound projection membrane, Python selected widths, finite labels, nested record construction, and bounded sequence structure while constructing PressureQueryRow. The existing native query kernel was not the production read path.",
+    "hostLocus": "src/mncs_commons/pressure.py:PressureRegistry._project_one/query/_projection_row; src/mncs_commons/family_projection.py; src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
     "signature": "commons-pressure-dynamic-registry-projection-v1"
   },
-  "requiredBehavior": "A native Commons semantic layer should classify bounded typed pressure rows, fold lifecycle observations, and expose deterministic query predicates over structured records without re-implementing those rules in a host language. Filesystem enumeration, Git provenance, and publication may remain host boundaries.",
+  "requiredBehavior": "Given a loaded compiler artifact, an exact compiler-issued composite identity, and bounded structured input, materialize the declared MNCS value using compiler-owned field, primitive, finite, nesting, and bound contracts. Commons production queries then use native lifecycle, verification-state, selector, and filtering semantics; platform filesystem and JSON I/O remain host boundaries.",
   "schema": "commons.mncs.dev/family-pressure/v1",
   "severity": "major",
   "signals": {
-    "fallbackKind": "semantic-adapter",
+    "fallbackKind": "platform-adapter",
     "fallbackLanguage": "python",
     "hostBoundary": [
       "json",
@@ -42,7 +42,7 @@
       "git",
       "clock"
     ],
-    "nativeConversionBlocked": true
+    "nativeConversionBlocked": false
   },
   "sourceRef": {
     "commit": "89898f39ce49657523845d6790e08a1434b0b136",
@@ -50,8 +50,8 @@
     "repository": "mncs-commons",
     "symbol": "PressureRegistry.projections/query/validate/generate_views"
   },
-  "summary": "The old Profile 0.16 reproducer overclaimed a need for a Python-style dynamic object model. Against Profile 0.18, the closed lifecycle/classification and bounded typed query slice are representable; the remaining pressure is the missing reusable bounded structured-record projection plus external enumeration/publication boundaries, not dynamic registry semantics as a whole.",
+  "summary": "The old Profile 0.16 diagnosis overclaimed a need for dynamic JSON, maps, and unbounded text. Profile 0.18 already represented bounded records, finite lifecycle values, and typed query kernels. The precise gap was an artifact-bound generic boundary to materialize bounded external structured input into declared record values; Commons also needed its production query path to consume those values in native lifecycle and filter kernels.",
   "target": "language",
-  "title": "Dynamic registry projection cannot yet be native MNCS",
+  "title": "Reusable bounded structured records had no compiler-owned host projection boundary",
   "version": "1"
 }

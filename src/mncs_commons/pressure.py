@@ -164,6 +164,7 @@ class PressureProjection:
     observations: tuple[Mapping[str, Any], ...]
     relations: tuple[Mapping[str, Any], ...]
     diagnostics: tuple[PressureDiagnostic, ...] = ()
+    transition_material: tuple[Mapping[str, Any], ...] = ()
 
     @property
     def valid(self) -> bool:
@@ -260,7 +261,9 @@ def _reconciliation(projection_observations: Iterable[Mapping[str, Any]]) -> dic
         )
     if not candidates:
         return {"classification": "UNRECONCILED"}
-    _when, observation_id, classification, item = max(candidates, key=lambda value: (value[0], value[1]))
+    _when, observation_id, classification, item = max(
+        candidates, key=lambda value: (value[0], value[1])
+    )
     return {
         "classification": classification,
         "observationId": observation_id,
@@ -631,50 +634,62 @@ def _legacy_fallback_language(text: str) -> str | None:
     return None
 
 
-def _validate_transition_shape(current: str, target: str) -> str | None:
-    allowed = {
-        "discovered": {"confirmed", "rejected", "duplicate", "deferred", "obsolete"},
-        "confirmed": {"accepted", "rejected", "duplicate", "deferred", "superseded", "obsolete"},
-        "accepted": {"implementing", "deferred", "duplicate", "superseded", "obsolete"},
-        "implementing": {"available", "deferred", "superseded", "obsolete"},
-        "available": {"verifying", "implementing", "deferred", "superseded", "obsolete"},
-        "verifying": {"resolved", "available", "deferred", "superseded", "obsolete"},
-        "deferred": {"confirmed", "accepted", "implementing", "obsolete", "superseded"},
-        "rejected": {"superseded", "obsolete"},
-    }
-    if current not in allowed:
-        return f"{current} has no outgoing transitions"
-    if target not in allowed[current]:
-        return f"{current} -> {target} is not an allowed transition"
-    return None
+def _native_transition_allowed(current: str, target: str) -> bool:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
+
+    try:
+        return pressure_kernel().transition_allowed(current, target)
+    except PressureKernelError as error:
+        raise PressureError(f"native lifecycle policy failed closed: {error}") from error
 
 
-def _resolution_ready(affected: int, passed: int, failed: int, unknown: int, removed: int) -> bool:
-    """Return the count-level closure law mirrored by the MNCS kernel."""
+def _native_resolution_ready(
+    affected: int, passed: int, failed: int, unknown: int, removed: int
+) -> bool:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
 
-    return (
-        affected > 0 and passed == affected and failed == 0 and unknown == 0 and removed == affected
-    )
-
-
-def _verification_state(affected: int, passed: int, failed: int, unknown: int, removed: int) -> str:
-    """Classify verification without collapsing evidence into confidence."""
-
-    if affected <= 0:
-        return "unknown"
-    if failed > 0:
-        return "failed"
-    if unknown > 0:
-        return "unknown"
-    if passed == affected and removed == affected:
-        return "ready"
-    return "incomplete"
+    try:
+        return pressure_kernel().resolution_ready(affected, passed, failed, unknown, removed)
+    except PressureKernelError as error:
+        raise PressureError(f"native resolution policy failed closed: {error}") from error
 
 
-def _requires_revalidation(unresolved: bool, current_validation: bool) -> bool:
-    """Identify an unresolved record without a current-language validation."""
+def _native_verification_state(
+    affected: int, passed: int, failed: int, unknown: int, removed: int
+) -> int:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
 
-    return unresolved and not current_validation
+    try:
+        return pressure_kernel().verification_state(affected, passed, failed, unknown, removed)
+    except PressureKernelError as error:
+        raise PressureError(f"native verification classification failed closed: {error}") from error
+
+
+def _native_requires_revalidation(unresolved: bool, current_validation: bool) -> bool:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
+
+    try:
+        return pressure_kernel().requires_revalidation(unresolved, current_validation)
+    except PressureKernelError as error:
+        raise PressureError(f"native revalidation classification failed closed: {error}") from error
+
+
+def _native_available_awaiting_consumer(status: int, current_validation: bool) -> bool:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
+
+    try:
+        return pressure_kernel().available_awaiting_consumer(status, current_validation)
+    except PressureKernelError as error:
+        raise PressureError(f"native availability classification failed closed: {error}") from error
+
+
+def _native_unresolved(status: int) -> bool:
+    from .pressure_runtime import PressureKernelError, pressure_kernel
+
+    try:
+        return pressure_kernel().unresolved(status)
+    except PressureKernelError as error:
+        raise PressureError(f"native unresolved classification failed closed: {error}") from error
 
 
 def _is_current_validation(observation: Mapping[str, Any]) -> bool:
@@ -701,6 +716,195 @@ def _fallback_languages(projection: "PressureProjection") -> set[str]:
             if re.search(rf"\b{candidate}\b", description):
                 languages.add(candidate)
     return languages
+
+
+def _bounded_identity_bytes(value: object, field: str) -> list[int]:
+    """Encode one open-vocabulary identity; the artifact contract enforces bounds."""
+
+    if not isinstance(value, str):
+        raise PressureError(f"{field} must be text at the transport boundary")
+    return list(value.encode("utf-8"))
+
+
+def _projection_row(projection: PressureProjection) -> dict[str, Any]:
+    data = projection.as_dict()
+    summary = data.get("verificationSummary", {})
+    verification = data.get("verificationCurrent", [])
+    reconciliation = data.get("reconciliation", {}).get("classification", "UNRECONCILED")
+    fallback = _fallback_languages(projection)
+    observations = data.get("observations", [])
+    profile = data.get("languageProfile")
+    profiles = sorted(
+        {
+            item["languageProfile"]
+            for item in observations
+            if isinstance(item, Mapping) and isinstance(item.get("languageProfile"), str)
+        }
+    )
+    removed = sum(
+        item.get("workaround", {}).get("removed", "not_needed") in {True, "not_needed"}
+        for item in verification
+        if isinstance(item, Mapping)
+    )
+    workaround_active = any(
+        item.get("workaround", {}).get("active", True) is not False
+        for item in data.get("workarounds", [])
+        if isinstance(item, Mapping)
+    )
+    affected = sorted(data.get("affectedRepositories", []))
+    reporters = sorted(data.get("reporters", []))
+    return {
+        "pressure_identity": _bounded_identity_bytes(projection.id, "pressure id"),
+        "target": str(data.get("target", "language")).upper(),
+        "domain_identity": _bounded_identity_bytes(str(data.get("domain", "")), "domain"),
+        "severity": str(data.get("severity", "minor")).upper(),
+        "initial_status": str(data.get("initialStatus", "discovered")).upper(),
+        "transitions": [
+            {
+                "event_identity": _bounded_identity_bytes(
+                    str(event.get("id", "")), "pressure event id"
+                ),
+                "previous_event_identity": _bounded_identity_bytes(
+                    str(event.get("previousEvent") or ""), "previous pressure event id"
+                ),
+                "from_status": str(event.get("from", "discovered")).upper(),
+                "to_status": str(event.get("to", "discovered")).upper(),
+            }
+            for event in projection.transition_material
+        ],
+        "affected_repositories": [
+            _bounded_identity_bytes(item, "affected repository") for item in affected
+        ],
+        "reporters": [_bounded_identity_bytes(item, "reporter") for item in reporters],
+        "verification_affected": int(summary.get("affected", 0)),
+        "verification_pass": int(summary.get("pass", 0)),
+        "verification_fail": int(summary.get("fail", 0)),
+        "verification_unknown": int(summary.get("unknown", 0)),
+        "workarounds_removed": removed,
+        "current_validation": any(
+            _is_current_validation(item)
+            for item in observations
+            if isinstance(item, Mapping)
+        ),
+        "workaround_active": workaround_active,
+        "fallback_rust": "rust" in fallback,
+        "fallback_python": "python" in fallback,
+        "language_profile": _bounded_identity_bytes(profile or "", "language profile"),
+        "observation_language_profiles": [
+            _bounded_identity_bytes(item, "observation language profile") for item in profiles
+        ],
+        "reconciliation": str(reconciliation).upper(),
+        "valid": projection.valid,
+    }
+
+
+def _projection_filter(
+    *,
+    status: str | None,
+    target: str | None,
+    domain: str | None,
+    repository: str | None,
+    severity: str | Iterable[str] | None,
+    unresolved: bool,
+    multi_repository: bool,
+    awaiting_verification: bool,
+    workaround_active: bool,
+    language_profile: str | None,
+    rust_fallback: bool,
+    python_fallback: bool,
+    needs_revalidation: bool,
+) -> dict[str, Any]:
+    severities = [severity] if isinstance(severity, str) else list(severity or ())
+    return {
+        "status_enabled": status is not None,
+        "status": str(status or "discovered").upper(),
+        "target_enabled": target is not None,
+        "target": str(target or "language").upper(),
+        "domain_enabled": domain is not None,
+        "domain_identity": _bounded_identity_bytes(domain or "", "domain selector"),
+        "repository_enabled": repository is not None,
+        "repository_identity": _bounded_identity_bytes(repository or "", "repository selector"),
+        "severities": [str(item).upper() for item in severities],
+        "unresolved": unresolved,
+        "multi_repository": multi_repository,
+        "awaiting_verification": awaiting_verification,
+        "workaround_active": workaround_active,
+        "language_profile_enabled": language_profile is not None,
+        "language_profile": _bounded_identity_bytes(language_profile or "", "profile selector"),
+        "rust_fallback": rust_fallback,
+        "python_fallback": python_fallback,
+        "needs_revalidation": needs_revalidation,
+    }
+
+
+def _materialize_native_rows(
+    projections: tuple[PressureProjection, ...], serialized: Mapping[str, Any]
+) -> list[dict[str, Any]]:
+    source_by_id = {item.id: item for item in projections}
+
+    def decode(value: object) -> str:
+        if not isinstance(value, list) or any(
+            not isinstance(part, int) or part < 0 or part > 255 for part in value
+        ):
+            raise PressureError("native pressure kernel returned malformed bounded identity")
+        try:
+            return bytes(value).decode("utf-8")
+        except UnicodeDecodeError as error:
+            raise PressureError("native pressure kernel returned invalid identity UTF-8") from error
+
+    native_rows = serialized.get("rows")
+    if not isinstance(native_rows, list):
+        raise PressureError("native pressure kernel returned malformed query rows")
+    result: list[dict[str, Any]] = []
+    for row in native_rows:
+        if not isinstance(row, Mapping):
+            raise PressureError("native pressure kernel returned a malformed row")
+        record_id = decode(row.get("pressure_identity"))
+        source = source_by_id.get(record_id)
+        if source is None:
+            raise PressureError("native pressure kernel returned an unknown pressure identity")
+        data = source.data
+        verification = row.get("verification_summary")
+        if not isinstance(verification, Mapping):
+            raise PressureError("native pressure kernel omitted verification summary")
+        fallback_languages = sorted(
+            language
+            for language, field in (("rust", "fallback_rust"), ("python", "fallback_python"))
+            if row.get(field) is True
+        )
+        classification = str(row.get("reconciliation", "UNRECONCILED")).lower()
+        reconciliation = copy.deepcopy(
+            data.get("reconciliation", {"classification": "UNRECONCILED"})
+        )
+        reconciliation["classification"] = classification.upper()
+        result.append(
+            {
+                "id": record_id,
+                "title": data["title"],
+                "target": str(row["target"]).lower(),
+                "domain": decode(row["domain_identity"]),
+                "capability": data["capability"],
+                "severity": str(row["severity"]).lower(),
+                "status": str(row["status"]).lower(),
+                "affectedRepositories": [decode(value) for value in row["affected_repositories"]],
+                "reporters": [decode(value) for value in row["reporters"]],
+                "verificationSummary": {
+                    "affected": verification["affected"],
+                    "pass": verification["pass"],
+                    "fail": verification["failed"],
+                    "unknown": verification["unknown"],
+                },
+                "verificationState": str(row["verification_state"]).lower(),
+                "reconciliation": reconciliation,
+                "classification": classification.upper(),
+                "unresolved": row["unresolved"],
+                "fallbackLanguages": fallback_languages,
+                "currentValidation": row["current_validation"],
+                "revalidationRequired": row["revalidation_required"],
+                "valid": row["valid"],
+            }
+        )
+    return result
 
 
 class PressureRegistry:
@@ -1019,9 +1223,8 @@ class PressureRegistry:
             raise PressureError(
                 f"stale pressure head: expected {expected_previous!r}, current is {previous!r}"
             )
-        problem = _validate_transition_shape(current, target)
-        if problem:
-            raise PressureError(problem)
+        if not _native_transition_allowed(current, target):
+            raise PressureError(f"{current} -> {target} is not an allowed transition")
         actor_repo = _require_repository(actor, "actor")
         refs = _sorted_unique_strings(evidence_refs)
         value: dict[str, Any] = {
@@ -1110,7 +1313,7 @@ class PressureRegistry:
                 item.get("workaround", {}).get("removed", "not_needed") in {True, "not_needed"}
                 for item in verification.values()
             )
-            ready = _resolution_ready(len(affected), passed, failed, unknown, removed)
+            ready = _native_resolution_ready(len(affected), passed, failed, unknown, removed)
             for repository in sorted(affected):
                 item = verification[repository]
                 if item.get("reproduction", {}).get("status") != "PASS":
@@ -1138,6 +1341,8 @@ class PressureRegistry:
         observations: Iterable[Mapping[str, Any]],
         events: Iterable[Mapping[str, Any]],
         all_record_ids: set[str],
+        *,
+        validate_lifecycle: bool = True,
     ) -> PressureProjection:
         diagnostics: list[PressureDiagnostic] = []
         relevant_observations = tuple(
@@ -1161,7 +1366,13 @@ class PressureRegistry:
         relations = tuple(
             item for item in relevant_events if item.get("kind") == "PressureRelation"
         )
-        transitions = [item for item in relevant_events if item.get("kind") == "PressureTransition"]
+        transition_material = tuple(
+            item for item in relevant_events if item.get("kind") == "PressureTransition"
+        )
+        # Read queries transport the append-only transition documents directly
+        # to the MNCS fold. The host replay below runs only for explicit history
+        # validation and write admission diagnostics.
+        transitions = list(transition_material) if validate_lifecycle else []
         state = str(record.get("initialStatus", "discovered"))
         chain: list[Mapping[str, Any]] = []
         by_previous: dict[str | None, list[Mapping[str, Any]]] = {}
@@ -1209,11 +1420,12 @@ class PressureRegistry:
                 )
                 break
             target = str(event.get("to", ""))
-            problem = _validate_transition_shape(state, target)
-            if problem:
+            if not _native_transition_allowed(state, target):
                 diagnostics.append(
                     PressureDiagnostic(
-                        "INVALID_TRANSITION", f"pressure[{record_id}].events[{event_id}]", problem
+                        "INVALID_TRANSITION",
+                        f"pressure[{record_id}].events[{event_id}]",
+                        f"{state} -> {target} is not an allowed transition",
                     )
                 )
                 break
@@ -1290,7 +1502,10 @@ class PressureRegistry:
         reconciliation = _reconciliation(relevant_observations)
         data.update(
             {
-                "status": state if not diagnostics else "conflicted",
+            # Python retains detailed admission diagnostics for historical
+            # event documents. Production query status is replayed again by
+            # the native bounded lifecycle fold.
+            "status": state if not diagnostics else "conflicted",
                 "reporters": sorted(reporters - {"None"}),
                 "affectedRepositories": sorted(affected),
                 "evidence": sorted(evidence, key=lambda item: str(item.get("id", ""))),
@@ -1328,23 +1543,73 @@ class PressureRegistry:
             }
         )
         return PressureProjection(
-            data, tuple(chain), relevant_observations, relations, tuple(diagnostics)
+            data,
+            tuple(chain),
+            relevant_observations,
+            relations,
+            tuple(diagnostics),
+            transition_material,
         )
 
-    def projections(self) -> tuple[PressureProjection, ...]:
+    def projections(self, *, validate_lifecycle: bool = True) -> tuple[PressureProjection, ...]:
         records, observations, events = self._documents()
         return tuple(
             self._project_one(
-                record_id, records[record_id], observations.values(), events.values(), set(records)
+                record_id,
+                records[record_id],
+                observations.values(),
+                events.values(),
+                set(records),
+                validate_lifecycle=validate_lifecycle,
             )
             for record_id in sorted(records)
         )
 
     def show(self, record_id: str) -> PressureProjection:
-        for projection in self.projections():
-            if projection.id == record_id:
-                return projection
-        raise PressureError(f"pressure not found: {record_id}")
+        projection = next((item for item in self.projections() if item.id == record_id), None)
+        if projection is None:
+            raise PressureError(f"pressure not found: {record_id}")
+        native = next((item for item in self.query() if item["id"] == record_id), None)
+        if native is None:
+            raise PressureError(f"native pressure projection omitted {record_id}")
+        data = copy.deepcopy(dict(projection.data))
+        data.update(
+            {
+                "status": native["status"],
+                "unresolved": native["unresolved"],
+                "verificationState": native["verificationState"],
+                "classification": native["classification"],
+                "currentValidation": native["currentValidation"],
+                "revalidationRequired": native["revalidationRequired"],
+                "valid": native["valid"],
+            }
+        )
+        diagnostics = list(projection.diagnostics)
+        if native["status"] == "conflicted" and not any(
+            item.code in {
+                "CONCURRENT_TRANSITIONS",
+                "EVENT_CYCLE",
+                "STALE_TRANSITION",
+                "INVALID_TRANSITION",
+                "DANGLING_TRANSITION",
+            }
+            for item in diagnostics
+        ):
+            diagnostics.append(
+                PressureDiagnostic(
+                    "NATIVE_LIFECYCLE_CONFLICT",
+                    f"pressure[{record_id}].events",
+                    "the compiler-owned lifecycle fold rejected this event history",
+                )
+            )
+        return PressureProjection(
+            data,
+            projection.events,
+            projection.observations,
+            projection.relations,
+            tuple(diagnostics),
+            projection.transition_material,
+        )
 
     def validate(self) -> PressureValidationReport:
         diagnostics: list[PressureDiagnostic] = []
@@ -1770,6 +2035,29 @@ class PressureRegistry:
                     )
         return PressureValidationReport(tuple(diagnostics))
 
+    def _query_rows(
+        self,
+        projections: tuple[PressureProjection, ...],
+        *,
+        filter_spec: Mapping[str, Any] | None = None,
+        view_selector: str | None = None,
+    ) -> list[dict[str, Any]]:
+        from .pressure_runtime import pressure_kernel
+
+        kernel = pressure_kernel()
+        rows = [_projection_row(item) for item in projections]
+        if view_selector is not None:
+            request = {"rows": rows, "selector": view_selector}
+            projected = kernel.project("PressureViewRequest", request)
+            function = "query_pressure_view"
+        else:
+            request = {"rows": rows, "filter": dict(filter_spec or {})}
+            projected = kernel.project("PressureQueryRequest", request)
+            function = "query_pressure_rows"
+        called = kernel.call(function, [projected["value"]])
+        serialized = kernel.serialize("PressureQueryResult", called["returned"][0])
+        return _materialize_native_rows(projections, serialized)
+
     def query(
         self,
         *,
@@ -1787,101 +2075,34 @@ class PressureRegistry:
         python_fallback: bool = False,
         needs_revalidation: bool = False,
     ) -> list[dict[str, Any]]:
-        result: list[dict[str, Any]] = []
-        for projection in self.projections():
-            data = projection.as_dict()
-            if status and data.get("status") != status:
-                continue
-            if target and data.get("target") != target:
-                continue
-            if domain and data.get("domain") != domain:
-                continue
-            severities = {severity} if isinstance(severity, str) else set(severity or ())
-            if severities and data.get("severity") not in severities:
-                continue
-            if repository and repository not in set(data.get("affectedRepositories", [])) | set(
-                data.get("reporters", [])
-            ):
-                continue
-            if unresolved and not data.get("unresolved"):
-                continue
-            if multi_repository and len(data.get("affectedRepositories", [])) < 2:
-                continue
-            if awaiting_verification and data.get("status") != "available":
-                continue
-            if workaround_active and not any(
-                item.get("workaround", {}).get("active", True) is not False
-                for item in data.get("workarounds", [])
-            ):
-                continue
-            if (
-                language_profile
-                and data.get("languageProfile") != language_profile
-                and not any(
-                    item.get("languageProfile") == language_profile
-                    for item in data.get("observations", [])
-                )
-            ):
-                continue
-            fallback_languages = _fallback_languages(projection)
-            if rust_fallback and "rust" not in fallback_languages:
-                continue
-            if python_fallback and "python" not in fallback_languages:
-                continue
-            current_validation = any(
-                _is_current_validation(item) for item in projection.observations
+        projections = self.projections(validate_lifecycle=False)
+        return self._query_rows(
+            projections,
+            filter_spec=_projection_filter(
+                status=status,
+                target=target,
+                domain=domain,
+                repository=repository,
+                severity=severity,
+                unresolved=unresolved,
+                multi_repository=multi_repository,
+                awaiting_verification=awaiting_verification,
+                workaround_active=workaround_active,
+                language_profile=language_profile,
+                rust_fallback=rust_fallback,
+                python_fallback=python_fallback,
+                needs_revalidation=needs_revalidation,
             )
-            verification_summary = data["verificationSummary"]
-            reconciliation = copy.deepcopy(data.get("reconciliation", {"classification": "UNRECONCILED"}))
-            verification_state = _verification_state(
-                int(verification_summary["affected"]),
-                int(verification_summary["pass"]),
-                int(verification_summary["fail"]),
-                int(verification_summary["unknown"]),
-                sum(
-                    item.get("workaround", {}).get("removed", "not_needed") in {True, "not_needed"}
-                    for item in data.get("verificationCurrent", [])
-                ),
-            )
-            if needs_revalidation and not _requires_revalidation(
-                bool(data.get("unresolved")), current_validation
-            ):
-                continue
-            result.append(
-                {
-                    "id": data["id"],
-                    "title": data["title"],
-                    "target": data["target"],
-                    "domain": data["domain"],
-                    "capability": data["capability"],
-                    "severity": data["severity"],
-                    "status": data["status"],
-                    "affectedRepositories": data["affectedRepositories"],
-                    "reporters": data["reporters"],
-                    "verificationSummary": verification_summary,
-                    "verificationState": verification_state,
-                    "reconciliation": reconciliation,
-                    "classification": reconciliation["classification"],
-                    "unresolved": data["unresolved"],
-                    "fallbackLanguages": sorted(fallback_languages),
-                    "currentValidation": current_validation,
-                    "revalidationRequired": _requires_revalidation(
-                        bool(data.get("unresolved")), current_validation
-                    ),
-                    "valid": projection.valid,
-                }
-            )
-        return result
+        )
 
     def candidates(
         self, *, target: str, domain: str, capability: str, exclude: str | None = None
     ) -> list[dict[str, Any]]:
         candidates: list[dict[str, Any]] = []
         requested = set(re.findall(r"[a-z0-9]+", capability.lower()))
-        for projection in self.projections():
-            data = projection.data
+        for data in self.query():
             if (
-                projection.id == exclude
+                data["id"] == exclude
                 or data.get("target") != target
                 or data.get("domain") != domain
             ):
@@ -1892,7 +2113,7 @@ class PressureRegistry:
                 continue
             candidates.append(
                 {
-                    "id": projection.id,
+                    "id": data["id"],
                     "score": score,
                     "match": "exact capability" if score == 100 else "shared capability tokens",
                     "title": data.get("title"),
@@ -1910,22 +2131,18 @@ class PressureRegistry:
                 "cannot generate views for an invalid registry: " + _diagnostic_text(report)
             )
         views: dict[str, Any] = {}
-        selectors: dict[str, dict[str, Any]] = {
-            "unresolved-language": {"target": "language", "unresolved": True},
-            "blocking": {"severity": ("blocker", "blocking", "critical")},
-            "awaiting-verification": {"awaiting_verification": True},
-            "recently-resolved": {"status": "resolved"},
-            "multi-repository": {"multi_repository": True},
-            "rust-fallback": {"rust_fallback": True},
-            "python-fallback": {"python_fallback": True},
-            "needs-revalidation": {"needs_revalidation": True},
-        }
-        for name, selector in selectors.items():
-            pressures = self.query(**selector)
+        from .pressure_runtime import pressure_kernel
+
+        projections = self.projections(validate_lifecycle=False)
+        for selector in pressure_kernel().pressure_view_selectors():
+            name = selector.lower().replace("_", "-")
+            pressures = self._query_rows(projections, view_selector=selector)
             classification_counts: dict[str, int] = {}
             for pressure in pressures:
                 classification = str(pressure.get("classification", "UNRECONCILED"))
-                classification_counts[classification] = classification_counts.get(classification, 0) + 1
+                classification_counts[classification] = (
+                    classification_counts.get(classification, 0) + 1
+                )
             payload = {
                 "schema": "commons.mncs.dev/family-pressure-view/v1",
                 "view": name,

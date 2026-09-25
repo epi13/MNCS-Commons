@@ -1,0 +1,17 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:fb54fb88a255ef210d60447db9314d8465cc7b53133b7f8c15742c250424c5dd",
+  "details": {},
+  "evidenceRefs": [],
+  "from": "accepted",
+  "id": "EVT-46E63BC1D9F40AFD",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-25T05:24:15Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": "EVT-3FF263ED2A2C0910",
+  "reason": "Implement the shared compiler projection boundary, remove Test inventory source generation, and route Commons production queries through native semantics.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

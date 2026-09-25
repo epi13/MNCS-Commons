@@ -1,0 +1,55 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "runtime": "mncs-embed retained artifact session"
+  },
+  "contentDigest": "sha256:28a4c50dfca734ef056892e5336d10ffaea92290b2b316d21f658a177c69b5ef",
+  "evidence": [
+    {
+      "id": "commons-bounded-native-pressure-fixture",
+      "ref": "tests/test_pressure_registry.py::test_bounded_native_pressure_projection_matches_consumer_selectors",
+      "status": "PASS",
+      "summary": "The three-row consumer fixture covers mixed lifecycle, severity, verification, selectors, and native view projection."
+    },
+    {
+      "id": "commons-production-archive-validation",
+      "ref": "pressures/views/",
+      "status": "PASS",
+      "summary": "Regenerated all ten views after current adapter code and observation updates; final full-registry validation reported zero diagnostics."
+    },
+    {
+      "id": "commons-native-production-query",
+      "ref": "src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
+      "status": "PASS",
+      "summary": "Production query and named view selectors use artifact-bound generic projection and native lifecycle/query/classification kernels."
+    }
+  ],
+  "id": "MNCS-LANG-6643CDECCFEC--OBS-C85DC3041812",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "campaign": "mncs-structured-projection-2026-09",
+    "classification": "RESOLVED",
+    "currentValidation": true,
+    "validationScope": "artifact-bound-structured-projection-and-production-query"
+  },
+  "observedAt": "2026-09-25T05:49:09Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "pressures/views/",
+    "repository": "mncs-commons"
+  },
+  "summary": "Current bounded structured projection fixture passes; all ten production Commons views regenerate from the append-only archive and the final registry validation reports zero diagnostics.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

@@ -575,6 +575,45 @@
     },
     {
       "affectedRepositories": [
+        "mncs-commons",
+        "mncs-language"
+      ],
+      "capability": "dynamic_query_projection",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "data.registry",
+      "fallbackLanguages": [
+        "python"
+      ],
+      "id": "MNCS-LANG-6643CDECCFEC",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-6643CDECCFEC--OBS-C85DC3041812",
+        "observedAt": "2026-09-25T05:49:09Z",
+        "repository": "mncs-commons",
+        "summary": "Current bounded structured projection fixture passes; all ten production Commons views regenerate from the append-only archive and the final registry validation reports zero diagnostics."
+      },
+      "reporters": [
+        "mncs-commons",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Reusable bounded structured records had no compiler-owned host projection boundary",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-numerics"
       ],
@@ -1028,7 +1067,7 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "RESOLVED": 18,
+      "RESOLVED": 19,
       "STILL_REPRODUCES": 1,
       "UNRECONCILED": 9
     },

@@ -6,10 +6,12 @@ import json
 from pathlib import Path
 
 from mncs_commons.pressure import (
-    _requires_revalidation,
-    _resolution_ready,
-    _validate_transition_shape,
-    _verification_state,
+    _native_available_awaiting_consumer,
+    _native_requires_revalidation,
+    _native_resolution_ready,
+    _native_transition_allowed,
+    _native_unresolved,
+    _native_verification_state,
 )
 
 CORPUS = (
@@ -60,21 +62,15 @@ def test_pressure_corpus_is_complete_and_mirror_agrees() -> None:
             current = _integer(arguments[0])
             target = _integer(arguments[1])
             expected = (
-                target < len(states)
-                and current < len(states)
-                and _validate_transition_shape(states[current], states[target]) is None
+                _native_transition_allowed(states[current], states[target])
+                if target < len(states) and current < len(states)
+                else False
             )
         elif function == "unresolved":
             current = _integer(arguments[0])
-            expected = states[current] not in {
-                "resolved",
-                "duplicate",
-                "rejected",
-                "superseded",
-                "obsolete",
-            }
+            expected = _native_unresolved(current)
         elif function == "resolution_ready":
-            expected = _resolution_ready(*[_integer(argument) for argument in arguments])
+            expected = _native_resolution_ready(*[_integer(argument) for argument in arguments])
         else:
             raise AssertionError(f"unknown pressure kernel function: {function}")
         assert _boolean(case["expected"][0]) == expected, case["id"]
@@ -104,18 +100,17 @@ def test_projection_corpus_is_complete_and_mirror_agrees() -> None:
         arguments = case["request"]["arguments"]
         if function == "verification_state":
             values = [int(argument["integer"]["value"]) for argument in arguments]
-            states_by_code = {"incomplete": 0, "ready": 1, "failed": 2, "unknown": 3}
-            expected = states_by_code[_verification_state(*values)]
+            expected = _native_verification_state(*values)
             assert int(case["expected"][0]["integer"]["value"]) == expected, case["id"]
         elif function == "available_awaiting_consumer":
             status = int(arguments[0]["integer"]["value"])
             current = bool(arguments[1]["boolean"]["value"])
-            expected = status == 4 and not current
+            expected = _native_available_awaiting_consumer(status, current)
             assert bool(case["expected"][0]["boolean"]["value"]) == expected, case["id"]
         elif function == "requires_revalidation":
             unresolved = bool(arguments[0]["boolean"]["value"])
             current = bool(arguments[1]["boolean"]["value"])
-            assert bool(case["expected"][0]["boolean"]["value"]) == _requires_revalidation(
+            assert bool(case["expected"][0]["boolean"]["value"]) == _native_requires_revalidation(
                 unresolved, current
             ), case["id"]
         else:

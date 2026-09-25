@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-commons",
+  "contentDigest": "sha256:bd916bb0d815384b883a1c0cf3f6c1cd237eaa5e05c8b712f0f61d2fb24142af",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-LANG-6643CDECCFEC--OBS-33CF90B588F1"
+  ],
+  "from": "verifying",
+  "id": "EVT-430EDD843E7F570B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-25T05:24:40Z",
+  "pressureId": "MNCS-LANG-6643CDECCFEC",
+  "previousEvent": "EVT-326D7368CFBBB4E2",
+  "reason": "",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}
