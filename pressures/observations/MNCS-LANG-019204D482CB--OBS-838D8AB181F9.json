@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "validation": "engine-campaign-rerun-2026-09-26"
+  },
+  "contentDigest": "sha256:f2f61dd82b3134df0e9f1648adad8528f6e061e582a6c832a5e740e4a7dea454",
+  "evidence": [
+    {
+      "id": "mncs-engine:rejected-n0019:rerun",
+      "ref": "mncs-engine@67c65ba:language/mncs/pressure/rejected/n0019.mncs",
+      "status": "PASS",
+      "summary": "source-study rejects with the MNP family above (non-zero exit) on mncs 0.1.0; per-file expectations in rejected/README.md."
+    }
+  ],
+  "id": "MNCS-LANG-019204D482CB--OBS-838D8AB181F9",
+  "kind": "observation",
+  "languageProfile": "0.10",
+  "metadata": {},
+  "observedAt": "2026-09-26T00:00:00Z",
+  "pressureId": "MNCS-LANG-019204D482CB",
+  "repository": "mncs-engine",
+  "reproduction": {
+    "instructions": "Consult the inert engine ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "67c65ba4672b21fccad8b4475e57891bd49f7931",
+    "path": "mncs-engine:docs/PRESSURE.md#ENG-PRESSURE-0019",
+    "repository": "mncs-engine"
+  },
+  "summary": "STILL_REPRODUCES (remainder) from mncs-engine: generic record declarations stay rejected at pinned mncs 0.10 with shifted codes (MNP006/007/014/053/054/061/064/213; the historical MNP123 family is gone). Generic-argument *inference* was admitted at Source Profile 0.13, so only the declaration half remains. Corresponds to engine ENG-PRESSURE-0019.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Concrete record per width (FB32, FB64) with Nat-generic row algorithms; explicit <N> at every generic call site.",
+    "removed": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-engine"
+  ],
+  "capability": "engine.neighborhood-query-grid",
+  "contentDigest": "sha256:60970f50991cdb324e05cae8ac958f17f1c906ad1044b65adde9c734297b1965",
+  "discoveredAt": "2026-09-26T03:52:10Z",
+  "discoveredBy": "mncs-engine",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-3B4301B2EFAF",
+  "identity": {
+    "capability": "engine.neighborhood-query-grid",
+    "domain": "language-semantics",
+    "reproducerSignature": "mncs-engine:ENG-PRESSURE-0015:neighborhood-fold",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "description": "language/mncs/pressure/neighborhood.mncs (4-lane fold, pin nbcounts == 992) at mncs-engine@67c65ba.",
+    "signature": "mncs-engine:ENG-PRESSURE-0015:neighborhood-fold"
+  },
+  "requiredBehavior": "A uniform-grid or hash-map neighbor query (grid_query(cell) -> lanes) with deterministic iteration order, expressible in bounded MNCS.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "MNCS has no map/dictionary/grid structure with deterministic iteration, so mncs-engine neighborhoods cost O(n^2) distance tests: a 1024-lane pool would need ~10^6 tests per step with no structural way down. The 16-lane pool keeps this exact but unscalable.",
+  "target": "language",
+  "title": "No maps or spatial-index structures (deterministic associative queries)",
+  "version": "1"
+}

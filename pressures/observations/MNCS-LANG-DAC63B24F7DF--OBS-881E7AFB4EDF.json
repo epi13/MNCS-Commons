@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "validation": "engine-campaign-rerun-2026-09-26"
+  },
+  "contentDigest": "sha256:125527e0ebeeddc3f30034885e1c1800b1f5153569afc36d51eced9dd1ce11f7",
+  "evidence": [
+    {
+      "id": "mncs-engine:pressure-shr-u64:wasm",
+      "ref": "mncs-engine@67c65ba:tests/corpora/pressure-shr-u64.json",
+      "status": "PASS",
+      "summary": "PASS(2) on mncs-portable-wasm-mvp via scripts/conformance.py with an empty known-divergences list."
+    }
+  ],
+  "id": "MNCS-LANG-DAC63B24F7DF--OBS-881E7AFB4EDF",
+  "kind": "observation",
+  "languageProfile": "0.10",
+  "metadata": {},
+  "observedAt": "2026-09-26T00:00:00Z",
+  "pressureId": "MNCS-LANG-DAC63B24F7DF",
+  "repository": "mncs-engine",
+  "reproduction": {
+    "instructions": "Consult the inert engine ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "67c65ba4672b21fccad8b4475e57891bd49f7931",
+    "path": "mncs-engine:docs/PRESSURE.md#ENG-PRESSURE-0001",
+    "repository": "mncs-engine"
+  },
+  "summary": "Engine consumer verification for resolved WASM-shift pressure: `pressure-shr-u64.json` passes on mncs-portable-wasm-mvp (shr-max and shr-highbit expectation_met=true, result PASS). Corresponds to engine ENG-PRESSURE-0001, now fixed.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Arithmetic div/mod bit-emulation retained in engine sources (exact, pinned); shift-spelling cleanup awaits a profile migration.",
+    "removed": false
+  }
+}

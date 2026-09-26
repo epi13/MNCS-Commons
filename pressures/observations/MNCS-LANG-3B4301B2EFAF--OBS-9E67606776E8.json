@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "validation": "engine-campaign-rerun-2026-09-26"
+  },
+  "contentDigest": "sha256:ab0eb3ac5049c14a2598756bba954ba9803be71d3ec0d0fb75648a5fd3a36468",
+  "evidence": [
+    {
+      "id": "mncs-engine:neighborhood:nbcounts",
+      "ref": "mncs-engine@67c65ba:tests/corpora/pressure-pins.json",
+      "status": "PASS",
+      "summary": "nbcounts case returned with expectation_met=true; the fold is exact and pinned."
+    }
+  ],
+  "id": "MNCS-LANG-3B4301B2EFAF--OBS-9E67606776E8",
+  "kind": "observation",
+  "languageProfile": "0.10",
+  "metadata": {},
+  "observedAt": "2026-09-26T00:00:00Z",
+  "pressureId": "MNCS-LANG-3B4301B2EFAF",
+  "repository": "mncs-engine",
+  "reproduction": {
+    "instructions": "Consult the inert engine ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "67c65ba4672b21fccad8b4475e57891bd49f7931",
+    "path": "mncs-engine:docs/PRESSURE.md#ENG-PRESSURE-0015",
+    "repository": "mncs-engine"
+  },
+  "summary": "Initial engine observation: O(n^2) boids neighborhood fold is exact (nbcounts == 992 pinned, PASS on reference) but algorithmically capped; no map/grid structure exists through Source Profile 0.18. This is the Stage 5 scaling wall.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "O(n^2) neighborhood fold over fixed 16-lane pools.",
+    "removed": false
+  }
+}
