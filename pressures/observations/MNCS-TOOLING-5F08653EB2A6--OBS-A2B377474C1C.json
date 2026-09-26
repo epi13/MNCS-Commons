@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "validation": "tui-campaign-2026-09-26"
+  },
+  "contentDigest": "sha256:219b93496e468f2bb06676d6bfaa0b3248221dbf7d1752dcca781f8950aa577e",
+  "evidence": [
+    {
+      "id": "mncs-tui:family-status:projection",
+      "ref": "mncs-tui@b2d9657:.github/workflows/corpus/family-status.json",
+      "status": "PASS",
+      "summary": "7/7 projection cases met on research-bytecode; 9/9 native projection tests PASS via mncs test."
+    }
+  ],
+  "id": "MNCS-TOOLING-5F08653EB2A6--OBS-A2B377474C1C",
+  "kind": "observation",
+  "languageProfile": "0.8",
+  "metadata": {},
+  "observedAt": "2026-09-26T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-5F08653EB2A6",
+  "repository": "mncs-tui",
+  "reproduction": {
+    "instructions": "Consult the inert adapter and projection example named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "b2d9657f67353121179678a6d521e318296b8cd8",
+    "path": "mncs-tui:scripts/snapshot_family.py",
+    "repository": "mncs-tui"
+  },
+  "summary": "Initial TUI observation: projection contracts are pinned (7 corpus cases, 9 native tests, PFU preserved, empty-state and navigation clamped) but the snapshot feed is adapter-assembled, not canonical. Non-blocking: the adapter documents its demo policy explicitly.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Thin hand-written adapter over Atlas registry, git, and Commons records with an explicit demo verdict policy.",
+    "removed": false
+  }
+}

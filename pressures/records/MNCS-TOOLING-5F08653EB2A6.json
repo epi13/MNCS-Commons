@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-tui"
+  ],
+  "capability": "tui.per-repo-verification-query",
+  "contentDigest": "sha256:a6d3e821ceab317a02b091cd8fb9949090bfbe2219c43e2c799c927010a5f32c",
+  "discoveredAt": "2026-09-26T04:51:27Z",
+  "discoveredBy": "mncs-tui",
+  "domain": "project-state",
+  "id": "MNCS-TOOLING-5F08653EB2A6",
+  "identity": {
+    "capability": "tui.per-repo-verification-query",
+    "domain": "project-state",
+    "reproducerSignature": "mncs-tui:projection:snapshot-adapter",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "description": "scripts/snapshot_family.py at mncs-tui (demo-policy verdict mapping documented as non-canonical) plus examples/family_status.mncs projection contract.",
+    "signature": "mncs-tui:projection:snapshot-adapter"
+  },
+  "requiredBehavior": "A bounded, typed query returning per-repository verification state (identity, revision, verdict, evidence ref, staleness) consumable by projection surfaces without Git porcelain or private indexes.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "A terminal projection over the family needs one bounded query answering, per repository: latest verified revision, verdict (PASS/FAIL/UNKNOWN), and evidence link. Today that state is scattered across Forge receipts, mncs-test result files, and git trees with no single query surface, so mncs-tui snapshots are assembled by a thin hand-written adapter over Atlas/git/Commons instead of a canonical projection feed.",
+  "target": "tooling",
+  "title": "No canonical per-repo verification-state query (projection snapshots stay hand-wired)",
+  "version": "1"
+}
