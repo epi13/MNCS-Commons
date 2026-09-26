@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-math"
+  ],
+  "capability": "mncs-test.expected-trap-assertion",
+  "contentDigest": "sha256:cf2ba8b4199be1402c2b64f768648bcefea846c8bbacc0f4bf01edf0a94442c9",
+  "discoveredAt": "2026-09-26T04:12:26Z",
+  "discoveredBy": "mncs-math",
+  "domain": "test-execution",
+  "id": "MNCS-TOOLING-06EB8DF14CC3",
+  "identity": {
+    "capability": "mncs-test.expected-trap-assertion",
+    "domain": "test-execution",
+    "reproducerSignature": "mncs-math:native-testing:expected-trap-gap",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "description": "docs/native-testing.md 'Known test-system gap' at mncs-math@cb1d32b: scalar abs_checked(MIN) and float division-by-zero are pinned via traps corpora because no native assertion can own them.",
+    "signature": "mncs-math:native-testing:expected-trap-gap"
+  },
+  "requiredBehavior": "A native assertion or test-role expressing an expected structured failure (trap with operation/input/contract identity) that passes when the body traps as specified and fails otherwise.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "minor",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "mncs-test assertions cover passing values (equals_i64/bool/bytes) and the suite counts runtime failures, but a test body that traps reports a failure, never a pass. Mathematical libraries therefore cannot express 'this input must trap' natively; mncs-math keeps all trapping behavior in *-traps-corpus.json execution corpora instead.",
+  "target": "tooling",
+  "title": "Native tests cannot assert expected traps (no structured failure expectations)",
+  "version": "1"
+}

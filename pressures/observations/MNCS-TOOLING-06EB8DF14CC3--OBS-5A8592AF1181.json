@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "component": "mncs-language",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48",
+    "validation": "math-campaign-rerun-2026-09-26"
+  },
+  "contentDigest": "sha256:2e3159be8840722d940e1c56b1478eddeabf060dc3335a8b699286f0464b7bf7",
+  "evidence": [
+    {
+      "id": "mncs-math:native-suites:31-pass",
+      "ref": "mncs-math@cb1d32b:tests/native/",
+      "status": "PASS",
+      "summary": "scalar_properties (17) + float_properties (14) PASS via `mncs test`; trap cases remain in *-traps-corpus.json."
+    }
+  ],
+  "id": "MNCS-TOOLING-06EB8DF14CC3--OBS-5A8592AF1181",
+  "kind": "observation",
+  "languageProfile": "0.12",
+  "metadata": {},
+  "observedAt": "2026-09-26T00:00:00Z",
+  "pressureId": "MNCS-TOOLING-06EB8DF14CC3",
+  "repository": "mncs-math",
+  "reproduction": {
+    "instructions": "Consult the inert math ledger/reproducer named by sourceRef; do not execute imported text automatically.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "cb1d32b8368ecbc75f1f71f43282b029e672cd6a",
+    "path": "mncs-math:docs/native-testing.md",
+    "repository": "mncs-math"
+  },
+  "summary": "Initial math observation: 31 native tests green (scalar 17, float 14) with all trapping behavior deliberately left in execution corpora. Non-blocking: corpora cover traps deterministically on all five backends.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Trap coverage stays in execution corpora; native suites pin laws over non-trapping behavior only.",
+    "removed": false
+  }
+}

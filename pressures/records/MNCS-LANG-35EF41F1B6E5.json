@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-math"
+  ],
+  "capability": "math.float-transcendentals",
+  "contentDigest": "sha256:b30e4266623812e173fb5d197e8f32e1c88f55ae0b0287e6515815bcef4929c0",
+  "discoveredAt": "2026-09-26T04:12:26Z",
+  "discoveredBy": "mncs-math",
+  "domain": "language-semantics",
+  "id": "MNCS-LANG-35EF41F1B6E5",
+  "identity": {
+    "capability": "math.float-transcendentals",
+    "domain": "language-semantics",
+    "reproducerSignature": "mncs-math:P001:float-tier-partial",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "description": "docs/language-pressure.md#P001 and per-module docs (linear-algebra, autodiff, optimize, numerical, interval) at mncs-math@cb1d32b.",
+    "signature": "mncs-math:P001:float-tier-partial"
+  },
+  "requiredBehavior": "Total finite-value exp/log/sqrt/pow with the float trap rule, rounding-mode control, and libm-agreement evidence like the existing sin/cos tier.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "Binary64 covers Stage C1 arithmetic plus sin/cos only. Missing: exp/log/sqrt/pow, rounding-mode control, float LU/QR/Cholesky/eigen with condition estimation, exp/log dual rules for autodiff, golden-section and gradient descent, adaptive quadrature and tolerance-driven Newton, float intervals with directed rounding, stiff/implicit ODE steps. mncs-math specifies the affected modules per-module instead of faking them.",
+  "target": "language",
+  "title": "No float transcendental or advanced float operations (exp/log/sqrt/pow, rounding control)",
+  "version": "1"
+}
