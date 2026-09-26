@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:fc275eb943cb5cfc4850efd0ba6f7ac7af17928a3ab09586d75c7ad5f212595d",
+  "evidence": [
+    {
+      "id": "mncs-signal:import-gap:mne173",
+      "reference": "mncs-signal@292452f:pressure/reproducers/import-gap/",
+      "status": "FAIL",
+      "summary": "Importing kernel exits 1 with MNE173 at the use line."
+    },
+    {
+      "id": "mncs-signal:import-gap:sibling-control",
+      "reference": "mncs-signal@292452f:scripts/signal_check.py",
+      "status": "PASS",
+      "summary": "Sibling-only kernels: 85/85 cases met on wasm/bytecode/cranelift."
+    },
+    {
+      "id": "mncs-signal:import-gap:sqrt-mirror",
+      "reference": "mncs-signal@292452f:mncs/signal/spectrum.mncs",
+      "status": "PASS",
+      "summary": "sig_sqrt agrees with numerics sqrt_value in-process (test 7408); corpus path stays import-free."
+    }
+  ],
+  "id": "MNCS-TOOLING-E5AE988B197F--OBS-9B7DF2260452",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-26T06:11:26Z",
+  "pressureId": "MNCS-TOOLING-E5AE988B197F",
+  "repository": "mncs-signal",
+  "reproduction": {
+    "instructions": "Run the reproducer kernel via mncs experiment run; observe MNE173 with no result written.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "MNE173 reproduced at mncs-language 066897e; all 8 Signal kernels restructured to sibling-only imports and green on three backends.",
+  "version": "1",
+  "workaround": {
+    "description": "Sibling-only imports + labeled sig_sqrt mirror; removable when the resolver unifies.",
+    "removed": false
+  }
+}

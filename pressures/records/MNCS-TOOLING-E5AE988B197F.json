@@ -1,0 +1,44 @@
+{
+  "affectedRepositories": [
+    "mncs-harness",
+    "mncs-language",
+    "mncs-numerics",
+    "mncs-signal"
+  ],
+  "capability": "cross-repo-use-on-experiment-path",
+  "contentDigest": "sha256:92712dcd61751b6143653d4eff1618237de917fa07857d16afbd415ba344cba9",
+  "discoveredAt": "2026-09-26T06:11:26Z",
+  "discoveredBy": "mncs-signal",
+  "domain": "execution.imports",
+  "id": "MNCS-TOOLING-E5AE988B197F",
+  "identity": {
+    "capability": "cross-repo-use-on-experiment-path",
+    "domain": "execution.imports",
+    "reproducerSignature": "mncs-signal:SIG-PRESS-001:experiment-import-gap",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [
+    "mncs-signal:SIG-PRESS-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-signal:SIG-PRESS-001:experiment-import-gap",
+    "text": "Minimal importing kernel + exact-bit corpus fails MNE173 on experiment run; sibling-only control passes. See mncs-signal pressure/reproducers/import-gap/."
+  },
+  "requiredBehavior": "A single documented use-resolution mechanism that works identically under mncs test and mncs experiment run, or an explicit diagnostic naming the path split at the use site.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "repository-path",
+    "path": "pressure/reproducers/import-gap/",
+    "repository": "mncs-signal",
+    "revision": "292452f01934940829afcec63dc30b37cad8bc46"
+  },
+  "summary": "mncs experiment run resolves use relative to the importing file only, so any kernel importing mncs.math.* or mncs.numerics.* fails with MNE173 while the identical file passes mncs test. mncs-harness mirrored its verdict lattice and mncs-signal mirrors Newton sqrt for the same reason; mncs-numerics stays self-contained for it. One documented import mechanism for both paths is missing.",
+  "target": "tooling",
+  "title": "Cross-repo use imports fail on the experiment path (MNE173); numeric repos mirror canonical sources",
+  "version": "1"
+}

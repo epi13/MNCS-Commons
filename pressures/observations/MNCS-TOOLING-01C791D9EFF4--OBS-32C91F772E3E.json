@@ -1,0 +1,53 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:e5b256e78540c58d33b7df05969e102c24e86f1a4d03dc8a019986ea842cea83",
+  "evidence": [
+    {
+      "id": "mncs-signal:obligations:85-met-3-backends",
+      "reference": "mncs-signal@292452f:scripts/signal_check.py",
+      "status": "PASS",
+      "summary": "85/85 cases met on wasm, bytecode, and Cranelift; 85/85 returned values bit-identical."
+    },
+    {
+      "id": "mncs-signal:obligations:ring-taxonomy",
+      "reference": "mncs-signal@292452f:corpora/signal-ring-corpus.json",
+      "status": "UNKNOWN",
+      "summary": "Pure-u64 ring kernel retains 4x integer-overflow obligations with zero unmet."
+    },
+    {
+      "id": "mncs-signal:obligations:float-taxonomy",
+      "reference": "mncs-signal@292452f:docs/LANGUAGE_PRESSURES.md",
+      "status": "UNKNOWN",
+      "summary": "f64 kernels retain float-finite per op (types: 33, dft: 82, fft: 91); filters adds iteration-cost."
+    }
+  ],
+  "id": "MNCS-TOOLING-01C791D9EFF4--OBS-32C91F772E3E",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-26T06:11:57Z",
+  "pressureId": "MNCS-TOOLING-01C791D9EFF4",
+  "repository": "mncs-signal",
+  "reproduction": {
+    "instructions": "Run scripts/signal_check.py; every kernel reports UNKNOWN with zero unmet expectations.",
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "repository-path",
+    "path": "scripts/signal_check.py",
+    "repository": "mncs-signal",
+    "revision": "292452f01934940829afcec63dc30b37cad8bc46"
+  },
+  "summary": "Signal DSP evidence: 85 oracle cases x 3 backends all met, every suite UNKNOWN with retained float-finite (per f64 op), integer-overflow (per checked u64 op), and iteration-exact-resource-cost (per loop) obligations; 85/85 bit-exact cross-backend agreement.",
+  "version": "1",
+  "workaround": {
+    "description": "Gate accepts PASS-or-UNKNOWN with zero unmet + bit-exact agreement (math precedent); obligation lists reported per kernel/backend.",
+    "removed": false
+  }
+}
