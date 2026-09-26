@@ -1,0 +1,42 @@
+{
+  "affectedRepositories": [
+    "mncs-lab",
+    "mncs-language"
+  ],
+  "capability": "select-branchless-intent-undischarged",
+  "contentDigest": "sha256:a9e6e41fde67aa9c90b42a459021325a9066920f3af6bc0c5caa7883c3948350",
+  "discoveredAt": "2026-09-26T05:47:50Z",
+  "discoveredBy": "mncs-lab",
+  "domain": "execution.experiment-contract",
+  "id": "MNCS-LANG-BD5D650AC9D8",
+  "identity": {
+    "capability": "select-branchless-intent-undischarged",
+    "domain": "execution.experiment-contract",
+    "reproducerSignature": "mncs-lab:LAB-PRESS-002:select-experiment-unknown",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [
+    "mncs-lab:LAB-PRESS-002"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-lab:LAB-PRESS-002:select-experiment-unknown",
+    "text": "Two kernels with identical semantics over identical corpus shapes: select variant UNKNOWN, branch variant PASS. See mncs-lab pressure/reproducers/select-unknown/."
+  },
+  "requiredBehavior": "Either supported backends discharge the branchless-select requirement, or the toolchain names select in the unresolved-obligation diagnostic, or the contract documents select as unavailable on the experiment path. Silent all-cases-met UNKNOWN must go.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "kind": "repository-path",
+    "path": "pressure/reproducers/select-unknown/",
+    "repository": "mncs-lab",
+    "revision": "a6aa2b8e0a1ecfd2bc94fc7b8a8d9ead0fbcfd2d"
+  },
+  "summary": "Any select() in a function executed via mncs experiment run resolves every case correctly yet reports suite UNKNOWN ('compilation retained required unresolved obligations'): the frontend attaches a realization-branchless machine-intent requirement no backend discharges, and the experiment contract counts it required. mncs.test's own assertions use select pervasively, so the framework idiom and the experiment contract disagree.",
+  "target": "language",
+  "title": "select() attaches an undischarged machine-intent requirement, turning green experiment suites UNKNOWN",
+  "version": "1"
+}

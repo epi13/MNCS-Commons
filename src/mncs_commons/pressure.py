@@ -345,6 +345,7 @@ def _repository_aliases() -> dict[str, str]:
         "mncs-debug": "mncs-debug",
         "mncs-actions": "mncs-actions",
         "mncs-fabric": "mncs-fabric",
+        "mncs-lab": "mncs-lab",
         "mncs-commons": "mncs-commons",
         "ravel": "ravel",
         "forge": "mncs-forge",

@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "binary": "target/release/mncs",
+    "revision": "066897e97a8499a25ea33611d47cc7a4fcdc2b48"
+  },
+  "contentDigest": "sha256:114e2166927eb9e6fed7ffcb612a88a4500b1531e268a58e0471edee0ad01194",
+  "evidence": [
+    {
+      "id": "mncs-lab:select-unknown:select-variant",
+      "reference": "mncs-lab@a6aa2b8:pressure/reproducers/select-unknown/",
+      "status": "FAIL",
+      "summary": "select kernel: 2/2 cases met, suite UNKNOWN, machine-intent obligations retained."
+    },
+    {
+      "id": "mncs-lab:select-unknown:branch-control",
+      "reference": "mncs-lab@a6aa2b8:pressure/reproducers/select-unknown/",
+      "status": "PASS",
+      "summary": "branch kernel: 2/2 cases met, suite PASS, no obligations."
+    },
+    {
+      "id": "mncs-lab:select-unknown:lab-workaround",
+      "reference": "mncs-lab@a6aa2b8:experiments/records/LAB-EXP-001.json",
+      "status": "PASS",
+      "summary": "mncs.lab.variants uses a plain-branch helper; lab-variant corpus PASS on wasm+bytecode (LAB-EXP-001)."
+    }
+  ],
+  "id": "MNCS-LANG-BD5D650AC9D8--OBS-627A92A3712C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-26T05:47:50Z",
+  "pressureId": "MNCS-LANG-BD5D650AC9D8",
+  "repository": "mncs-lab",
+  "reproduction": {
+    "instructions": "Run both reproducer kernels via mncs experiment run; select variant is UNKNOWN with all cases met, branch variant PASS.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Minimal select/branch pair reproduces the UNKNOWN at mncs-language 066897e on portable-WASM.",
+  "version": "1",
+  "workaround": {
+    "description": "Lab kernels avoid select() on experiment-run paths (labeled use-site comment). mncs test paths still use select via mncs.test.assertions.",
+    "removed": false
+  }
+}

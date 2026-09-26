@@ -1,0 +1,45 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:5947694efa1daba99ae7512a932dad34e2640465828b00974fd9c36512d761fe",
+  "evidence": [
+    {
+      "id": "mncs-lab:no-session-api:cli-surface",
+      "reference": "mncs-lab@a6aa2b8:pressure/reproducers/no-session-api/cli-surface.txt",
+      "status": "FAIL",
+      "summary": "mncs --help offers compile/test/experiment/call/observe; no session verb exists."
+    },
+    {
+      "id": "mncs-lab:no-session-api:compiler-exclusion",
+      "reference": "mncs-lab@a6aa2b8:pressure/reproducers/no-session-api/compiler-exclusion.txt",
+      "status": "FAIL",
+      "summary": "mncs-compiler kernel.mncs: session inputs explicitly out of scope."
+    },
+    {
+      "id": "mncs-lab:no-session-api:policy-specified",
+      "reference": "mncs-lab@a6aa2b8:mncs/lab/session.mncs",
+      "status": "PASS",
+      "summary": "Session policy (lifecycle, generations, reset matrix) specified in mncs.lab.session with 11 passing native tests."
+    }
+  ],
+  "id": "MNCS-COMPILER-40CF32855108--OBS-74F8DD905099",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-09-26T05:47:50Z",
+  "pressureId": "MNCS-COMPILER-40CF32855108",
+  "repository": "mncs-lab",
+  "reproduction": {
+    "instructions": "List mncs CLI verbs (no session route) and confirm kernel.mncs session exclusion; see reproducer.",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Session capability absent at mncs-language 066897e; policy specified in MNCS without a live session.",
+  "version": "1",
+  "workaround": {
+    "description": "Policy modeled in MNCS; no host-side fake session. Workaround is the absence of a live REPL, which is intentional.",
+    "removed": false
+  }
+}

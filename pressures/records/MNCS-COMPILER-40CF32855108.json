@@ -1,0 +1,42 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler",
+    "mncs-lab"
+  ],
+  "capability": "incremental-session-api",
+  "contentDigest": "sha256:46b3b15603dfa21c96d329840d3c1e84eb31f5812c102d2122ee469b7f362e97",
+  "discoveredAt": "2026-09-26T05:47:50Z",
+  "discoveredBy": "mncs-lab",
+  "domain": "sessions.incremental",
+  "id": "MNCS-COMPILER-40CF32855108",
+  "identity": {
+    "capability": "incremental-session-api",
+    "domain": "sessions.incremental",
+    "reproducerSignature": "mncs-lab:LAB-PRESS-001:no-compiler-session-api",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [
+    "mncs-lab:LAB-PRESS-001"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-lab:LAB-PRESS-001:no-compiler-session-api",
+    "text": "mncs --help shows batch routes only; mncs-compiler kernel.mncs excludes session inputs. See mncs-lab pressure/reproducers/no-session-api/."
+  },
+  "requiredBehavior": "A compiler-owned incremental session API: create/drop a session, analyze a fragment against prior state, commit a generation, invalidate dependents, inspect artifacts - as sketched in mncs-lab docs/compiler-boundary.md.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocker",
+  "signals": {},
+  "sourceRef": {
+    "kind": "repository-path",
+    "path": "pressure/reproducers/no-session-api/",
+    "repository": "mncs-lab",
+    "revision": "a6aa2b8e0a1ecfd2bc94fc7b8a8d9ead0fbcfd2d"
+  },
+  "summary": "mncs-compiler exposes no session concept: no create/define/commit/publish/abandon API and no session verbs on the mncs CLI. A host REPL loop over batch compilation would fake persistence by rebuilding temporary programs, so Lab ships no live session and specifies the missing policy in MNCS instead (mncs.lab.session, 11 passing tests).",
+  "target": "compiler",
+  "title": "No incremental compiler session API; interactive clients cannot hold definitions, generations, or JIT bindings",
+  "version": "1"
+}
