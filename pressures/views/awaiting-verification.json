@@ -3,37 +3,6 @@
   "pressures": [
     {
       "affectedRepositories": [
-        "mncs-compiler"
-      ],
-      "capability": "legacy.cp-0014",
-      "classification": "UNRECONCILED",
-      "currentValidation": true,
-      "domain": "language-semantics",
-      "fallbackLanguages": [],
-      "id": "MNCS-COMPILER-BABFB889D075",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-compiler"
-      ],
-      "revalidationRequired": false,
-      "severity": "blocking",
-      "status": "available",
-      "target": "compiler",
-      "title": "CP-0014",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 1,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-debug",
         "mncs-forge",
         "mncs-language",
@@ -210,9 +179,9 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "UNRECONCILED": 6
+      "UNRECONCILED": 5
     },
-    "unreconciled": 6
+    "unreconciled": 5
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "awaiting-verification"

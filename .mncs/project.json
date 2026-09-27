@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-commons",
-  "revision": 5,
+  "revision": 6,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
@@ -23,7 +23,8 @@
   },
   "verification": {
     "schema_version": "mncs-family.verification-obligation-inventory/v1",
-    "obligation_inventory": ".mncs/verification-obligations.json"
+    "obligation_inventory": ".mncs/verification-obligations.json",
+    "test_runner_identity": "mncs-commons-python-tests/1"
   },
   "contracts": {
     "provides": [
@@ -35,7 +36,7 @@
       {"contract": "mncds.development-record-schema", "envelope": {"op": "any"}, "required": false}
     ],
     "tests": [
-      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api", "native-obligation-contract-law"], "obligation": "self", "command": {"argv": ["python3", "-m", "unittest", "discover", "-s", "tests"]}}
+      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api", "native-obligation-contract-law"], "obligation": "self", "invalidation_dependencies": ["src/mncs_commons/pressure.py", "tests/test_pressure_registry.py"], "command": {"argv": ["python3", "-m", "pytest", "-q", "tests"], "timeout_seconds": 1200}}
     ]
   }
 }

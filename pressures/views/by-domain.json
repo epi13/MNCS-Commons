@@ -145,6 +145,8 @@
       "MNCS-LANG-3125AEBBC1C3",
       "MNCS-LANG-31EB67112747",
       "MNCS-LANG-337C9F6113E9",
+      "MNCS-LANG-35EF41F1B6E5",
+      "MNCS-LANG-3B4301B2EFAF",
       "MNCS-LANG-3E1FBC01A96F",
       "MNCS-LANG-4130BB4C42C3",
       "MNCS-LANG-493C32111AA5",
@@ -216,8 +218,17 @@
       "MNCS-TOOLING-D695B014F6DB",
       "MNCS-TOOLING-E920D54703E3"
     ],
+    "project-state": [
+      "MNCS-TOOLING-5F08653EB2A6"
+    ],
     "provider.admission": [
       "MNCS-RUNTIME-356BE27FB865"
+    ],
+    "test-execution": [
+      "MNCS-TOOLING-06EB8DF14CC3"
+    ],
+    "tooling.bootstrap": [
+      "MNCS-COMPILER-2B5AD318F5E5"
     ],
     "tooling.environment-entry": [
       "MNCS-TOOLING-EAF30A7233B0"

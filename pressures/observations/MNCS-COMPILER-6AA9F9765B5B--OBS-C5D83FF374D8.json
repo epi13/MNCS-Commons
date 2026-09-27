@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:497752cdaf6c8cc62c8ea1b064480964532d2a68889e6da8d66adba3fca6d900",
+  "evidence": [
+    {
+      "id": "campaign-20260926-project-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-6AA9F9765B5B--OBS-C5D83FF374D8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "currentValidation": true,
+    "owner": "mncs-compiler"
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-6AA9F9765B5B",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-project-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "Current differential execution still uses the Rust/Python host test transport. Retained Cranelift sessions and narrowed requests make the campaign loop usable, but do not remove this transport boundary.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

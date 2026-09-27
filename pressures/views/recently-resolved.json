@@ -5,14 +5,53 @@
       "affectedRepositories": [
         "mncs-compiler"
       ],
+      "capability": "legacy.stage0-locked-revision-refresh",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "tooling.bootstrap",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-2B5AD318F5E5",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-2B5AD318F5E5--OBS-06ED5E1DF901",
+        "observedAt": "2026-09-27T01:01:14Z",
+        "repository": "mncs-compiler",
+        "summary": "Warm bootstrap preflight succeeds at the exact locked Stage-0 revision after refreshing the pre-existing marked checkout; the manual relocate/delete workaround is no longer required."
+      },
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "Bootstrap cannot refresh an existing pinned Stage-0 checkout",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
       "capability": "legacy.cp-0013",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-360418A1CF7A",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-360418A1CF7A--OBS-1F8781966566",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Current positive and negative contextual-next cases and the Profile 0.13/0.10 controls agree with Stage-0."
       },
       "reporters": [
         "mncs-compiler"
@@ -37,13 +76,17 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0008",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-48E3919FB30E",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-48E3919FB30E--OBS-7003245D3749",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "The exact preserved two-module CP-0008 Stage-0 reproducer is accepted at the current lock with three linked functions. The newly observed imported nominal-signature rejection in the native compiler is a narrower separate consumer gap."
       },
       "reporters": [
         "mncs-compiler"
@@ -68,13 +111,17 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0010",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-4924C0E45913",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-4924C0E45913--OBS-9F4308A8876E",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Current positive and negative Profile 0.18 integer-match cases and the old-profile gate agree with Stage-0."
       },
       "reporters": [
         "mncs-compiler"
@@ -84,6 +131,41 @@
       "status": "resolved",
       "target": "compiler",
       "title": "CP-0010",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler"
+      ],
+      "capability": "legacy.cp-0015",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-COMPILER-723468BE594D",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A",
+        "observedAt": "2026-09-27T00:59:49Z",
+        "repository": "mncs-compiler",
+        "summary": "All 21 current/negative/old-profile Profile 0.18 syntax cases pass differential comparison, including !, negative atoms, repeat literals, next, and integer match."
+      },
+      "reporters": [
+        "mncs-compiler"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "compiler",
+      "title": "CP-0015",
       "unresolved": false,
       "valid": true,
       "verificationState": "ready",
@@ -234,6 +316,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-index"
       ],
       "capability": "legacy.press-004",
@@ -250,6 +333,7 @@
         "summary": "Index now uses the singular mncs.index.digest and mncs.index.scan identities; the canonical module migration and 72 focused bridge/differential/failure tests pass."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-index"
       ],
       "revalidationRequired": false,
@@ -259,9 +343,9 @@
       "title": "Integer bitwise operators missing (P2, semantics, compiler)",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 1,
         "unknown": 0
@@ -801,6 +885,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-service"
       ],
       "capability": "legacy.svc-p-021",
@@ -817,6 +902,7 @@
         "summary": "Current clean consumer revalidation completed the generic capability migration."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-service"
       ],
       "revalidationRequired": false,
@@ -826,9 +912,9 @@
       "title": "WASM backend unsound for service-shaped code (shifting)",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 1,
         "unknown": 0
@@ -1067,11 +1153,11 @@
   ],
   "reconciliation": {
     "classificationCounts": {
-      "RESOLVED": 19,
+      "RESOLVED": 24,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 9
+      "UNRECONCILED": 6
     },
-    "unreconciled": 9
+    "unreconciled": 6
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"

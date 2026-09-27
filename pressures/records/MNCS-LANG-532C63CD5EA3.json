@@ -1,9 +1,10 @@
 {
   "affectedRepositories": [
+    "mncs-compiler",
     "mncs-store"
   ],
   "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
-  "contentDigest": "sha256:0a0c70884fe5de497697259aebf774e49b82c57bb7b25d9058096b71e1353712",
+  "contentDigest": "sha256:eb0d8dee18a60a600e67a60d27375154f831e39f347682f340719bdb28f0d9e8",
   "discoveredAt": null,
   "discoveredBy": "mncs-store",
   "domain": "type-system.records",

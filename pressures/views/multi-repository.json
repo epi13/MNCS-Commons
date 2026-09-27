@@ -148,6 +148,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-numerics"
       ],
@@ -165,6 +166,7 @@
         "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-numerics"
       ],
@@ -177,7 +179,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -440,6 +442,43 @@
         "fail": 0,
         "pass": 0,
         "unknown": 1
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-engine",
+        "mncs-index"
+      ],
+      "capability": "legacy.press-004",
+      "classification": "RESOLVED",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-337C9F6113E9",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-337C9F6113E9--OBS-916D83C986F9",
+        "observedAt": "2026-09-21T05:12:00Z",
+        "repository": "mncs-index",
+        "summary": "Index now uses the singular mncs.index.digest and mncs.index.scan identities; the canonical module migration and 72 focused bridge/differential/failure tests pass."
+      },
+      "reporters": [
+        "mncs-engine",
+        "mncs-index"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "Integer bitwise operators missing (P2, semantics, compiler)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
       }
     },
     {
@@ -715,6 +754,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-web"
       ],
@@ -732,6 +772,7 @@
         "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-web"
       ],
@@ -744,7 +785,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -790,6 +831,43 @@
         "affected": 4,
         "fail": 1,
         "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-compiler",
+        "mncs-store"
+      ],
+      "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
+      "domain": "type-system.records",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-532C63CD5EA3",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-532C63CD5EA3--OBS-FFD25E2AC0F8",
+        "observedAt": "2026-09-27T01:01:22Z",
+        "repository": "mncs-compiler",
+        "summary": "The compiler’s retained Cranelift project-to-SSA workload now passes with typed compiler-produced flow facts, and canonical callable identities cross the retained SSA boundary. The old compiler/language nested nominal wire mismatch no longer reproduces at lock 843c; the registered store facet has not been revalidated and imported nominal signatures remain unsupported here."
+      },
+      "reporters": [
+        "mncs-compiler",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Record nominal identities are brittle at the process boundary",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -1442,6 +1520,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-store"
       ],
@@ -1459,6 +1538,7 @@
         "summary": "The Store now provides generic generation-bound lookup maps and atomic multi-object publication, and Forge uses the latter to publish a receipt plus terminal verifier result in one generation. Isolated generation measurements remain approximately linear in total history bytes: 148 bytes at one record, 1,264 at ten, 6,224 at fifty, 12,424 at one hundred, 31,024 at 250, and 62,024 at 500; the sampled commit remained filesystem-barrier dominated at about 14.6-20.8 ms. The residual is representation write amplification and the separate portable-WASM resource envelope, not a cross-backend value disagreement."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-store"
       ],
@@ -1471,7 +1551,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1892,6 +1972,43 @@
         "affected": 2,
         "fail": 0,
         "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-engine",
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-021",
+      "classification": "RESOLVED",
+      "currentValidation": false,
+      "domain": "backend",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-DAC63B24F7DF",
+      "reconciliation": {
+        "classification": "RESOLVED",
+        "observationId": "MNCS-LANG-DAC63B24F7DF--OBS-C4E6DA287FCA",
+        "observedAt": "2026-09-20T23:00:00Z",
+        "repository": "mncs-service",
+        "summary": "Current clean consumer revalidation completed the generic capability migration."
+      },
+      "reporters": [
+        "mncs-engine",
+        "mncs-service"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "language",
+      "title": "WASM backend unsound for service-shaped code (shifting)",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -2860,8 +2977,8 @@
       "BACKEND_ONLY": 3,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 13,
-      "RESOLVED": 17,
+      "PARTIALLY_RESOLVED": 14,
+      "RESOLVED": 19,
       "STILL_REPRODUCES": 16,
       "UNRECONCILED": 19
     },

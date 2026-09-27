@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:705cc5ff5dd1e5c427e0bdfd71112d8c91e25a7477cff73fcab76ce17449c72a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C"
+  ],
+  "from": "discovered",
+  "id": "EVT-73260D4EF76B4F53",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:39Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": null,
+  "reason": "The original exact-pin refresh reproducer is preserved and reproduced in campaign evidence.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

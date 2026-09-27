@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:7376d6e0b0cd7f1e9f5dafe1e092120ea4e4e644206a9c5e2ef98ff02961b49b",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-06ED5E1DF901"
+  ],
+  "from": "verifying",
+  "id": "EVT-9F531740083A2A24",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:01:21Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": "EVT-E5324385E352B78A",
+  "reason": "The current warm bootstrap passes without the manual generated-tree move.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

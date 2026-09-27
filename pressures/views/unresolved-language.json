@@ -3,6 +3,7 @@
   "pressures": [
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-numerics"
       ],
@@ -20,6 +21,7 @@
         "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-numerics"
       ],
@@ -32,7 +34,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -791,6 +793,37 @@
     },
     {
       "affectedRepositories": [
+        "mncs-math"
+      ],
+      "capability": "math.float-transcendentals",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-35EF41F1B6E5",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-math"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No float transcendental or advanced float operations (exp/log/sqrt/pow, rounding control)",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-service"
       ],
       "capability": "legacy.svc-p-004",
@@ -814,6 +847,37 @@
       "status": "discovered",
       "target": "language",
       "title": "Counted-iteration ceiling and nesting bound",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-engine"
+      ],
+      "capability": "engine.neighborhood-query-grid",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-3B4301B2EFAF",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-engine"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "No maps or spatial-index structures (deterministic associative queries)",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -1151,6 +1215,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-web"
       ],
@@ -1168,6 +1233,7 @@
         "summary": "STILL_REPRODUCES: Current Profile 0.18 revalidation still reproduces the stated language/compiler/stdlib limitation."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-web"
       ],
@@ -1180,7 +1246,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -1223,25 +1289,27 @@
     },
     {
       "affectedRepositories": [
+        "mncs-compiler",
         "mncs-store"
       ],
       "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
-      "classification": "STILL_REPRODUCES",
-      "currentValidation": false,
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
       "domain": "type-system.records",
       "fallbackLanguages": [],
       "id": "MNCS-LANG-532C63CD5EA3",
       "reconciliation": {
-        "classification": "STILL_REPRODUCES",
-        "observationId": "MNCS-LANG-532C63CD5EA3--OBS-DAB679C2EABD",
-        "observedAt": "2026-09-20T23:00:00Z",
-        "repository": "mncs-store",
-        "summary": "Current Profile 0.18 revalidation still reproduces the remaining gap: Record nominal identities are brittle at the process boundary."
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-LANG-532C63CD5EA3--OBS-FFD25E2AC0F8",
+        "observedAt": "2026-09-27T01:01:22Z",
+        "repository": "mncs-compiler",
+        "summary": "The compiler’s retained Cranelift project-to-SSA workload now passes with typed compiler-produced flow facts, and canonical callable identities cross the retained SSA boundary. The old compiler/language nested nominal wire mismatch no longer reproduces at lock 843c; the registered store facet has not been revalidated and imported nominal signatures remain unsupported here."
       },
       "reporters": [
+        "mncs-compiler",
         "mncs-store"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "discovered",
       "target": "language",
@@ -1250,9 +1318,9 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -2083,6 +2151,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-engine",
         "mncs-language",
         "mncs-store"
       ],
@@ -2100,6 +2169,7 @@
         "summary": "The Store now provides generic generation-bound lookup maps and atomic multi-object publication, and Forge uses the latter to publish a receipt plus terminal verifier result in one generation. Isolated generation measurements remain approximately linear in total history bytes: 148 bytes at one record, 1,264 at ten, 6,224 at fifty, 12,424 at one hundred, 31,024 at 250, and 62,024 at 500; the sampled commit remained filesystem-barrier dominated at about 14.6-20.8 ms. The residual is representation write amplification and the separate portable-WASM resource envelope, not a cross-backend value disagreement."
       },
       "reporters": [
+        "mncs-engine",
         "mncs-language",
         "mncs-store"
       ],
@@ -2112,7 +2182,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3240,10 +3310,11 @@
       "BACKEND_ONLY": 5,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 12,
       "CONSUMER_DEBT": 16,
-      "PARTIALLY_RESOLVED": 30,
-      "STILL_REPRODUCES": 27
+      "PARTIALLY_RESOLVED": 31,
+      "STILL_REPRODUCES": 26,
+      "UNRECONCILED": 2
     },
-    "unreconciled": 0
+    "unreconciled": 2
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "unresolved-language"

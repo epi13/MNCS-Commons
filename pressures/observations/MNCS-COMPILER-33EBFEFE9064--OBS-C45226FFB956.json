@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:704c9cd3595ab51c6ac7dda47c877c1877ee0041cec0eb7ef5336e1d85a11b9d",
+  "evidence": [
+    {
+      "id": "CP-0011-recursive-call",
+      "status": "PASS"
+    },
+    {
+      "id": "campaign-20260926-declaration-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-33EBFEFE9064--OBS-C45226FFB956",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "Language call recursion is now available, but the compiler’s explicit parser machines and their maintenance cost remain."
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-33EBFEFE9064",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-pressure-refresh-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "The exact recursive-call source is accepted by current Profile 0.18, so the historical language ban no longer reproduces. The native compiler still uses explicit expression and block machines; no recursive parser refactor is part of this slice.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

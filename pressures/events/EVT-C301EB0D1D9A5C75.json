@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:43a2988927f3144563786f54d76f1aea2a6ddc8080e73a7301c3a4da5d1af6df",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A"
+  ],
+  "from": "verifying",
+  "id": "EVT-C301EB0D1D9A5C75",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:31Z",
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "previousEvent": "EVT-6BD65CCBA99847A0",
+  "reason": "Current Profile 0.18 positive/negative forms and older-profile gates match Stage-0.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

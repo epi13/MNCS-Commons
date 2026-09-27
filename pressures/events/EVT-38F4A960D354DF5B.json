@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:ae2fa03e3c14e80ca6d783febf3aa4fa875241eb8425f69813d0c7d1c1119fca",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A"
+  ],
+  "from": "implementing",
+  "id": "EVT-38F4A960D354DF5B",
+  "implementation": {
+    "ref": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "repository": "mncs-compiler",
+    "scope": "Profile 0.18 syntax frontend"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:14Z",
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "previousEvent": "EVT-5B7E183AA21F1C49",
+  "reason": "Current frontend implementation and differential evidence are committed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

@@ -1,0 +1,120 @@
+{
+  "evidence": [],
+  "excluded": [
+    {
+      "identity": "mncs-commons.family-projection.conformance",
+      "lifecycle": "permanent",
+      "reason": "no compiler-owned subject, dependency, or guarantee-domain intersection"
+    },
+    {
+      "identity": "mncs-commons.obligation-plan.transport",
+      "lifecycle": "permanent",
+      "reason": "no compiler-owned subject, dependency, or guarantee-domain intersection"
+    },
+    {
+      "identity": "mncs-commons.obligation-contract.native-laws",
+      "lifecycle": "permanent",
+      "reason": "no compiler-owned subject, dependency, or guarantee-domain intersection"
+    },
+    {
+      "identity": "mncs-commons.substrate-topology.reconcile",
+      "lifecycle": "permanent",
+      "reason": "no compiler-owned subject, dependency, or guarantee-domain intersection"
+    }
+  ],
+  "impact": {
+    "change_kinds": [
+      "private_implementation"
+    ],
+    "guarantee_domains": [
+      "compiler",
+      "runtime",
+      "semantic"
+    ],
+    "roots": [
+      "mncs:0.2:function:commons.pressure.lifecycle::pressure_lifecycle_projection"
+    ]
+  },
+  "impact_identity": "e992336a4c65ed7f0ffb95ae2d5d64f08f7fbcd18a81e6b33d99219a16cfdd5c",
+  "inventory": {
+    "identity": "5ec32eca5485a48668478a059167956d138525af73d49953d682126454d18caf",
+    "repository": "mncs-commons",
+    "revision": 3
+  },
+  "obligation_plan_id": "98e505b56a3738f962f5480ce7eedcdfadd5337e6b495bb132b05fc3af1aa632",
+  "obligations": [
+    {
+      "definition_identity": "ebc73edd27d81c69added16c8e3b26e94e349c4468b4d38707f286d5a1d5b781",
+      "evidence_identities": [],
+      "evidence_role": "canonical_regression",
+      "executor": {
+        "argv": [
+          "python3",
+          "-m",
+          "pytest",
+          "-q",
+          "tests"
+        ],
+        "declaration_identities": [],
+        "entrypoint": "project-test:commons-tests",
+        "kind": "external_integration",
+        "library_paths": [],
+        "provider": "mncs-test",
+        "source_paths": [],
+        "target_identity": "commons-tests",
+        "test_case_identities": [],
+        "timeout_seconds": 1200,
+        "verifier_identity": "Python 3.14.7",
+        "working_directory": "."
+      },
+      "executor_identity": "2f2aa5b5245e7d3f2ab94ed5c1792ee4d4f64aad9ca5e4fb68786c41116b050d",
+      "guarantee_domain": "integration",
+      "identity": "mncs-commons.project-test.commons-tests",
+      "invalidation_identity": "c175591e788a1392c248fe811d56755e2f0478f48ec4bbcf58cab28a0c5f89e5",
+      "lifecycle": "permanent",
+      "reason": "no identity-bound evidence is available",
+      "scope": "repository_canonical",
+      "status": "new_execution_required",
+      "subject_fingerprint": "1a2d187528f16f6cbe7cebc265f0e35b3fb02aaace12666bdc848c443eac5ee0",
+      "subject_identity": "mncs.repository-test:mncs-commons:commons-tests",
+      "test_case_identities": [],
+      "verifier_identity": "0a7cf5c3bdbc75dca32923bb47084d0912f5d7ccecb1e27fec22115164a56d86"
+    }
+  ],
+  "repository": {
+    "compiler_test_inventories": [],
+    "complete": true,
+    "fingerprint": "e054379f7566cbd88f4e11bee50bd036045190180473bef0ec5d3236d64066f2",
+    "identity": "mncs-commons",
+    "inventory_identity": "e67d7a7c8b046a569b47e83bd1b75448059e2b0fa800b41a878748f42461c1c8",
+    "missing_obligation_identities": [],
+    "required_obligation_identities": [
+      "mncs-commons.project-test.commons-tests"
+    ],
+    "revision": "fa6d38922c18dc7ffe32431af876e856dafe40dd",
+    "scope": "repository_canonical",
+    "selected_obligation_identities": [
+      "mncs-commons.project-test.commons-tests"
+    ]
+  },
+  "schema_version": "mncs.verification-obligation-plan/1",
+  "source": {
+    "path": "/home/epi13/Documents/Projects/.worktrees/compiler-value-ssa-20260926/MNCS-Commons/src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
+    "sha256": "073ceedf72e8581e49b5debf45dd618bd5cd0ee4cc036b9d02e2102f391ac835"
+  },
+  "stop": {
+    "boundary": "repository",
+    "escalation_reasons": [
+      "direct_dependents_affected",
+      "public_contract_changed"
+    ],
+    "new_execution_required": [
+      "mncs-commons.project-test.commons-tests"
+    ],
+    "required_obligation_identities": [
+      "mncs-commons.project-test.commons-tests"
+    ],
+    "sufficient_to_stop": false
+  },
+  "verification_plan_id": "060967a1bf83c5197c68f65bfc9d25bc44898282a2833952906fa76d58f03f0b"
+}

@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:6e94e3826cb5b4624868fe173ce6db6527fabbf4348052728c535f35a9fb6522",
+  "evidence": [
+    {
+      "id": "unbounded-scan",
+      "status": "PASS"
+    },
+    {
+      "id": "campaign-20260926-frontend-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-0D3D67141BA4--OBS-5C0B98907BAB",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "Reference-interpreter early-exit cost is still unmeasured; native Cranelift step counts are not a substitute."
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-0D3D67141BA4",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-pressure-suite-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "The current Stage-0 pressure suite still rejects the unbounded while reproducer with MNP106. Retained Cranelift suites execute one native step per request, but do not measure interpreter no-op scan cost; that cost remains unknown.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

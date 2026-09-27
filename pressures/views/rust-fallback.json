@@ -6,20 +6,24 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0006",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "io.filesystem",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-COMPILER-38B9F401EC5C",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-COMPILER-38B9F401EC5C--OBS-4D00958347CD",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "The exact leading-comment envelope probe still returns MNE002 at the locked Profile 0.18 pin; it remains a Stage-0 tooling/envelope mismatch."
       },
       "reporters": [
         "mncs-compiler"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "compiler",
@@ -30,7 +34,7 @@
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -39,8 +43,8 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0005",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python",
@@ -48,12 +52,16 @@
       ],
       "id": "MNCS-COMPILER-6AA9F9765B5B",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-COMPILER-6AA9F9765B5B--OBS-C5D83FF374D8",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Current differential execution still uses the Rust/Python host test transport. Retained Cranelift sessions and narrowed requests make the campaign loop usable, but do not remove this transport boundary."
       },
       "reporters": [
         "mncs-compiler"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "compiler",
@@ -64,7 +72,7 @@
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -73,30 +81,34 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0002",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "rust"
       ],
       "id": "MNCS-COMPILER-9E5BAB7F55A8",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-COMPILER-9E5BAB7F55A8--OBS-9B086F5D36CD",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Stage-0 accepts the Profile 0.18 café module; native kernel lex_summary returns unsupported-source code 3 with no tokens. Unicode decoding/classification remains a compiler-owned gap."
       },
       "reporters": [
         "mncs-compiler"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "compiler",
       "title": "Byte text helpers do not provide Stage-0 Unicode classification",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "failed",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -997,9 +1009,10 @@
     "classificationCounts": {
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 3,
       "PARTIALLY_RESOLVED": 4,
-      "UNRECONCILED": 21
+      "STILL_REPRODUCES": 3,
+      "UNRECONCILED": 18
     },
-    "unreconciled": 21
+    "unreconciled": 18
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "rust-fallback"

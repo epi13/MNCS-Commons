@@ -1,0 +1,2 @@
+# Commons currently declares external Python verification through .mncs/project.json.
+# It has no first-class MNCS-native test module or host-grant declarations.

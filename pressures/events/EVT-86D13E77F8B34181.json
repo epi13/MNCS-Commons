@@ -1,0 +1,23 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:143ae99f8e41dc2bb9022a50d2a755805d6db807351901dcb6555dbb644d4dde",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C"
+  ],
+  "from": "implementing",
+  "id": "EVT-86D13E77F8B34181",
+  "implementation": {
+    "ref": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "repository": "mncs-compiler",
+    "scope": "tools/bootstrap.sh exact Stage-0 refresh"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:01:05Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": "EVT-9AB131120188594C",
+  "reason": "Bootstrap refresh fix is committed and warm preflight passes.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

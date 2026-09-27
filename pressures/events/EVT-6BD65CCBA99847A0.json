@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:6e9450251cdaf86362a2b1222749e58db7bf736ef5d199dcbd3af2c13ea1f57a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A"
+  ],
+  "from": "available",
+  "id": "EVT-6BD65CCBA99847A0",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:23Z",
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "previousEvent": "EVT-38F4A960D354DF5B",
+  "reason": "Verify current and negative forms against the exact locked Stage-0 profile.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

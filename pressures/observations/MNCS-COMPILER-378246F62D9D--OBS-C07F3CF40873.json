@@ -1,0 +1,50 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:12b14f9e89b75698638d37682141e85f6c0cfefcd68bc29ed7ffef9710489b6a",
+  "evidence": [
+    {
+      "id": "CP-0001-source-65-profile-018",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-0001-source-capacity-1025",
+      "status": "PASS"
+    },
+    {
+      "id": "campaign-20260926-project-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-378246F62D9D--OBS-C07F3CF40873",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "Native source content remains capped at 1,024 bytes per file; compiler modules exceed that size."
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-378246F62D9D",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-pressure-refresh-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "Profile 0.18 accepts the preserved 65-byte source and rejects 1,025-byte source sequences with MNE105. The native two-module project path accepts 1,103 aggregate source bytes at the 1,024 per-file ceiling; source ownership beyond 1,024 bytes per file remains unsupported.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

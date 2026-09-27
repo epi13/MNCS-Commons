@@ -1,0 +1,42 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:28a9cf5cde2e43ec9c5f27dc8fa5e54d3e93ddb1b0ad49e1f142aac1b5623c71",
+  "evidence": [
+    {
+      "id": "campaign-20260926-project-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-LANG-532C63CD5EA3--OBS-FFD25E2AC0F8",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "Compiler facet passes; store facet is unverified; imported nominal signature/effect identity is the next compiler gap."
+  },
+  "observedAt": "2026-09-27T01:01:22Z",
+  "pressureId": "MNCS-LANG-532C63CD5EA3",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-project-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "The compiler’s retained Cranelift project-to-SSA workload now passes with typed compiler-produced flow facts, and canonical callable identities cross the retained SSA boundary. The old compiler/language nested nominal wire mismatch no longer reproduces at lock 843c; the registered store facet has not been revalidated and imported nominal signatures remain unsupported here.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

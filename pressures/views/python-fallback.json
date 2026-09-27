@@ -6,8 +6,8 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0005",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "STILL_REPRODUCES",
+      "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [
         "python",
@@ -15,12 +15,16 @@
       ],
       "id": "MNCS-COMPILER-6AA9F9765B5B",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "STILL_REPRODUCES",
+        "observationId": "MNCS-COMPILER-6AA9F9765B5B--OBS-C5D83FF374D8",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Current differential execution still uses the Rust/Python host test transport. Retained Cranelift sessions and narrowed requests make the campaign loop usable, but do not remove this transport boundary."
       },
       "reporters": [
         "mncs-compiler"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "compiler",
@@ -31,7 +35,7 @@
       "verificationSummary": {
         "affected": 1,
         "fail": 0,
-        "pass": 0,
+        "pass": 1,
         "unknown": 0
       }
     },
@@ -719,10 +723,10 @@
       "OBSOLETE": 3,
       "PARTIALLY_RESOLVED": 4,
       "RESOLVED": 2,
-      "STILL_REPRODUCES": 2,
-      "UNRECONCILED": 6
+      "STILL_REPRODUCES": 3,
+      "UNRECONCILED": 5
     },
-    "unreconciled": 6
+    "unreconciled": 5
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "python-fallback"

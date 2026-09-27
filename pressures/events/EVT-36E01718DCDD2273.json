@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:e0eab341a0f51eeb070bfbec4c81b91b6f6d361815525bed8b1a785def5f270f",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C"
+  ],
+  "from": "confirmed",
+  "id": "EVT-36E01718DCDD2273",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:48Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": "EVT-73260D4EF76B4F53",
+  "reason": "Accept the bootstrap refresh fix because the campaign must provision the new locked revision without an out-of-band tree move.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

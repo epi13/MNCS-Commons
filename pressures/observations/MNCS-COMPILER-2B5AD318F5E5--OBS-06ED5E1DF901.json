@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:5a11930f0880862de006a41d40594edc4827bcaeb35e69d923398ef562217c8a",
+  "evidence": [
+    {
+      "id": "campaign-20260926-bootstrap-results.json",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-2B5AD318F5E5--OBS-06ED5E1DF901",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "RESOLVED",
+    "currentValidation": true,
+    "owner": "mncs-compiler"
+  },
+  "observedAt": "2026-09-27T01:01:14Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-bootstrap-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "Warm bootstrap preflight succeeds at the exact locked Stage-0 revision after refreshing the pre-existing marked checkout; the manual relocate/delete workaround is no longer required.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

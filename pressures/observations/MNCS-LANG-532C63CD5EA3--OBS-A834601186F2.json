@@ -1,0 +1,41 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "mncs-language": "4f9e1224e7f3cdb67fa4687d8f496717da1354aa"
+  },
+  "contentDigest": "sha256:8968eb3b8132ae88e8eed39ca7b3874009890f8215989b480203b3a83ba9b882",
+  "evidence": [
+    {
+      "id": "campaign-20260926-ssa-contract-mismatch",
+      "status": "FAIL"
+    }
+  ],
+  "id": "MNCS-LANG-532C63CD5EA3--OBS-A834601186F2",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "minimal real native-compiler workload with compiler-produced wire facts",
+    "classification": "STILL_REPRODUCES",
+    "owner": "mncs-language/crates/mncs-codegen/src/support.rs",
+    "remainingGap": "Nested nominal field resolution must use the declaring module; the original store host-side canonical identity construction concern remains."
+  },
+  "observedAt": "2026-09-26T20:47:22Z",
+  "pressureId": "MNCS-LANG-532C63CD5EA3",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Using the current compiler campaign source, compile a one-module ProjectSnapshot with compile_project, preserve the returned typed flow.LoweredUnit wire value, then call mncs.compiler.ssa.v1::lower_value_ssa<N=1024> in a retained Cranelift session. It returns invalid_request with expected finite identity mncs.compiler.ssa.v1::FunctionList and received mncs.compiler.flow.v1::FunctionList.",
+    "status": "PASS"
+  },
+  "runId": "compiler-value-ssa-20260926-nominal-contract-repro",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-nominal-contract-collision.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "A retained Cranelift execution of the compiler-produced flow.LoweredUnit passed to mncs.compiler.ssa.v1::lower_value_ssa reproduces a nested nominal contract mismatch at argument 1.functions: flow.FunctionList is decoded as ssa.FunctionList because the language-owned backend contract builder resolves the nested field by short name. The original mncs-store host-spelling limitation remains a separate part of this record.",
+  "version": "1",
+  "workaround": {
+    "removed": "not_needed"
+  }
+}

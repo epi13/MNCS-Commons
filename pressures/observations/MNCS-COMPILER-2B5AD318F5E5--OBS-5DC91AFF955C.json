@@ -1,0 +1,41 @@
+{
+  "agent": "codex",
+  "compiler": {
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:62d64b6f2b185cc4572b83e20a428d58f3139b2c318a9badb68ebc60784bb55c",
+  "evidence": [
+    {
+      "id": "campaign-20260926-stage0-refresh-repro",
+      "status": "FAIL"
+    }
+  ],
+  "id": "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "basis": "current compiler bootstrap with an exact updated main pin",
+    "classification": "STILL_REPRODUCES",
+    "owner": "mncs-compiler/tools/bootstrap.sh"
+  },
+  "observedAt": "2026-09-26T20:57:23Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "With .bootstrap/revision set to 4f9e1224e7f3cdb67fa4687d8f496717da1354aa and mncs-language.lock.json set to 843c5bcca7476bb6600218f6410a3da7ef5d96d5, run bash tools/bootstrap.sh; it exits 1 before build.",
+    "status": "PASS"
+  },
+  "runId": "compiler-value-ssa-20260926-stage0-refresh-repro",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-nominal-contract-collision.json",
+    "repository": "mncs-compiler",
+    "scope": "pin-update-reproduction"
+  },
+  "summary": "After updating the compiler lock to the merged current Stage-0 commit, the existing marked .bootstrap tree still carried the former revision and tools/bootstrap.sh exited 1 before either Rust build, with no actionable diagnostic. The manual workaround would be to relocate or delete the generated tree.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Manual move/removal of the generated .bootstrap tree before rerunning the bootstrap."
+  }
+}

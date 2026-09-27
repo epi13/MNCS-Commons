@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:d0bcef3fa5332a400d88297492d752f5188fb7b48d7896ff3ef9c7fb2e578c6e",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A"
+  ],
+  "from": "accepted",
+  "id": "EVT-5B7E183AA21F1C49",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:06Z",
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "previousEvent": "EVT-6998AABD3776A966",
+  "reason": "Extend the existing declaration parser/compiler and preserve the project fact pipeline.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

@@ -6,13 +6,17 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0008",
-      "classification": "UNRECONCILED",
+      "classification": "RESOLVED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-48E3919FB30E",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "RESOLVED",
+        "observationId": "MNCS-COMPILER-48E3919FB30E--OBS-7003245D3749",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "The exact preserved two-module CP-0008 Stage-0 reproducer is accepted at the current lock with three linked functions. The newly observed imported nominal-signature rejection in the native compiler is a narrower separate consumer gap."
       },
       "reporters": [
         "mncs-compiler"
@@ -37,28 +41,32 @@
         "mncs-compiler"
       ],
       "capability": "legacy.cp-0014",
-      "classification": "UNRECONCILED",
+      "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
       "currentValidation": true,
       "domain": "language-semantics",
       "fallbackLanguages": [],
       "id": "MNCS-COMPILER-BABFB889D075",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+        "observationId": "MNCS-COMPILER-BABFB889D075--OBS-4094EE26D699",
+        "observedAt": "2026-09-27T00:27:09Z",
+        "repository": "mncs-compiler",
+        "summary": "Current Stage-0 accepts the exact Profile 0.18 bool-payload fixture. The native project compiler rejects it before producing a typed CFG: parser cursor 73, error span 142..145, no structured diagnostic. CP-0014 therefore remains a native parser gap."
       },
       "reporters": [
         "mncs-compiler"
       ],
       "revalidationRequired": false,
       "severity": "blocking",
-      "status": "available",
+      "status": "verifying",
       "target": "compiler",
       "title": "CP-0014",
       "unresolved": true,
       "valid": true,
-      "verificationState": "incomplete",
+      "verificationState": "failed",
       "verificationSummary": {
         "affected": 1,
-        "fail": 0,
+        "fail": 1,
         "pass": 0,
         "unknown": 0
       }
@@ -507,12 +515,14 @@
   ],
   "reconciliation": {
     "classificationCounts": {
+      "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 1,
       "OBSOLETE": 4,
       "PARTIALLY_RESOLVED": 4,
+      "RESOLVED": 1,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 5
+      "UNRECONCILED": 3
     },
-    "unreconciled": 5
+    "unreconciled": 3
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "blocking"

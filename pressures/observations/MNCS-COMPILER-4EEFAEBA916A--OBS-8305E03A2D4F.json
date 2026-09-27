@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:34f6d0416ccfc80bf11c8d61b39e5b5820683f7b928549859364e4a673bfe289",
+  "evidence": [
+    {
+      "id": "CP-0009-counted-bound-256",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-0009-counted-bound-1025",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-4EEFAEBA916A--OBS-8305E03A2D4F",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "The 1,024 iteration ceiling and hand-chained fuel remain; reference-interpreter no-op cost is unknown."
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-4EEFAEBA916A",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-pressure-refresh-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "Current Profile 0.18 accepts the preserved up_to 256 probe and rejects up_to 1025 with MNE142. The 1,024 ceiling and the compiler’s remaining bounded-fuel chains persist; interpreter cost is not measured by the retained Cranelift loop.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

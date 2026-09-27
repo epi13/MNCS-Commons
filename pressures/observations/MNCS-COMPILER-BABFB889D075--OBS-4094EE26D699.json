@@ -1,0 +1,46 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:1cd5e033f3379ca31ae5dd138f200ebecb4ce02f4242d1b988999b9f225cf997",
+  "evidence": [
+    {
+      "id": "campaign-20260926-cp0014-native-results.json",
+      "status": "FAIL"
+    },
+    {
+      "id": "CP-0014-bool-payload-stage0",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-BABFB889D075--OBS-4094EE26D699",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "Native enum payload matching/construction is beyond the current frontend/SSA slice."
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-BABFB889D075",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-cp0014-native-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "Current Stage-0 accepts the exact Profile 0.18 bool-payload fixture. The native project compiler rejects it before producing a typed CFG: parser cursor 73, error span 142..145, no structured diagnostic. CP-0014 therefore remains a native parser gap.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

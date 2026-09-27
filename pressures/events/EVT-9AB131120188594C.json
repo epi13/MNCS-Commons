@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:0de9ca6374805ee6fff464cb9c874f27cb3b804b99e93054aef18325da0986e1",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C"
+  ],
+  "from": "accepted",
+  "id": "EVT-9AB131120188594C",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:00:56Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": "EVT-36E01718DCDD2273",
+  "reason": "Make tools/bootstrap.sh reconcile an existing marked checkout with the updated lock.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

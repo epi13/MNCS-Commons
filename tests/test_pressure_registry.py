@@ -477,6 +477,87 @@ def test_lifecycle_keeps_available_distinct_from_resolved_and_requires_all_consu
     assert registry.validate().valid
 
 
+def test_later_observation_does_not_rewrite_a_historical_resolution_check(
+    tmp_path: Path,
+) -> None:
+    registry = PressureRegistry(tmp_path / "pressures")
+    created = registry.add(pressure_spec())
+    pressure = created["id"]
+    initial_observation = created["observation"]["id"]
+    registry.transition(
+        pressure,
+        "confirmed",
+        actor="mncs-store",
+        evidence_refs=[initial_observation],
+        occurred_at="2026-09-12T01:00:00Z",
+    )
+    registry.transition(
+        pressure,
+        "accepted",
+        actor="mncs-language",
+        reason="fix the shared capability",
+        evidence_refs=[initial_observation],
+        occurred_at="2026-09-12T02:00:00Z",
+    )
+    registry.transition(
+        pressure,
+        "implementing",
+        actor="mncs-language",
+        reason="implement atomic publication",
+        occurred_at="2026-09-12T03:00:00Z",
+    )
+    registry.transition(
+        pressure,
+        "available",
+        actor="mncs-language",
+        evidence_refs=[initial_observation],
+        implementation={"ref": "mncs-language:commit:atomic-publish"},
+        occurred_at="2026-09-13T00:00:00Z",
+    )
+    registry.transition(
+        pressure,
+        "verifying",
+        actor="mncs-store",
+        occurred_at="2026-09-14T00:00:00Z",
+    )
+    verification = registry.verify(
+        pressure,
+        repository="mncs-store",
+        status="PASS",
+        workaround_removed=True,
+        summary="The declared consumer passes without its host shim.",
+        observed_at="2026-09-14T00:00:01Z",
+    )
+    registry.transition(
+        pressure,
+        "resolved",
+        actor="mncs-store",
+        evidence_refs=[verification["id"]],
+        occurred_at="2026-09-14T00:00:02Z",
+    )
+
+    registry.observe(
+        pressure,
+        {
+            "repository": "mncs-ingest",
+            "observedAt": "2026-09-26T00:00:00Z",
+            "summary": "A later consumer report names the same capability.",
+            "reproduction": {"status": "PASS", "instructions": "run the consumer case"},
+        },
+    )
+
+    projection = registry.show(pressure)
+    assert projection.status == "resolved"
+    assert projection.data["affectedRepositories"] == ["mncs-ingest", "mncs-store"]
+    assert projection.data["verificationSummary"] == {
+        "affected": 2,
+        "pass": 1,
+        "fail": 0,
+        "unknown": 0,
+    }
+    assert registry.validate().valid
+
+
 def test_duplicate_preserves_both_records_and_requires_explicit_relationship(
     tmp_path: Path,
 ) -> None:

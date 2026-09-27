@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:30a9147b44fd35fc3bc6da4f91459581e2aaa20efab9de98887aa3e4e640ca5b",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-BABFB889D075--OBS-4094EE26D699"
+  ],
+  "from": "available",
+  "id": "EVT-BEF2101C6E4402C7",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T00:59:49Z",
+  "pressureId": "MNCS-COMPILER-BABFB889D075",
+  "previousEvent": "EVT-C8D2F0A6961F81CA",
+  "reason": "Rechecked current Profile 0.18: Stage-0 accepts the bool-payload fixture but native project frontend stops before the finite match/constructor body.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

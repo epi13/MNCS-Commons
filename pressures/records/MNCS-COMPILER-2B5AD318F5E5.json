@@ -1,0 +1,37 @@
+{
+  "affectedRepositories": [
+    "mncs-compiler"
+  ],
+  "capability": "legacy.stage0-locked-revision-refresh",
+  "contentDigest": "sha256:a0b416c445b0523ae1571d0222afcb369d940a4160445ecb371c057804d5d686",
+  "discoveredAt": "2026-09-26T20:57:39Z",
+  "discoveredBy": "mncs-compiler",
+  "domain": "tooling.bootstrap",
+  "id": "MNCS-COMPILER-2B5AD318F5E5",
+  "identity": {
+    "capability": "legacy.stage0-locked-revision-refresh",
+    "domain": "tooling.bootstrap",
+    "reproducerSignature": "compiler:tools/bootstrap.sh:marked-lock-revision-mismatch",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "compiler:tools/bootstrap.sh:marked-lock-revision-mismatch"
+  },
+  "requiredBehavior": "Provision and verify the exact locked Stage-0 revision when the pin changes, while preserving the existing fail-closed check for unmarked trees.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "ref": "tools/bootstrap.sh",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "tools/bootstrap.sh rejects a valid new mncs-language.lock.json revision whenever .bootstrap already contains a different marked revision, so the required compiler reference cannot be provisioned without an out-of-band tree move.",
+  "target": "compiler",
+  "title": "Bootstrap cannot refresh an existing pinned Stage-0 checkout",
+  "version": "1"
+}

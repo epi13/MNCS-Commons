@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "f257e699bda7e101649e41ef693a6e5b25ba12f6",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:354d1d8092be5da56e496e5ab76c62e1a891bdf433907e102c3be636eccac5a5",
+  "evidence": [
+    {
+      "id": "leading-comment-envelope",
+      "status": "PASS"
+    }
+  ],
+  "id": "MNCS-COMPILER-38B9F401EC5C--OBS-4D00958347CD",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "currentValidation": true,
+    "owner": "mncs-compiler"
+  },
+  "observedAt": "2026-09-27T00:27:09Z",
+  "pressureId": "MNCS-COMPILER-38B9F401EC5C",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260926-pressure-suite-results.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260926"
+  },
+  "summary": "The exact leading-comment envelope probe still returns MNE002 at the locked Profile 0.18 pin; it remains a Stage-0 tooling/envelope mismatch.",
+  "version": "1",
+  "workaround": {
+    "removed": false
+  }
+}

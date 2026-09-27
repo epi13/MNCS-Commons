@@ -1429,6 +1429,21 @@ class PressureRegistry:
                     )
                 )
                 break
+            event_references = set(event.get("evidenceRefs", []))
+            event_time = _instant_key(event.get("occurredAt"))
+            # Explicit evidence references are part of the event even when
+            # producer timestamps are later or unavailable. Unreferenced
+            # observations recorded after the event must not rewrite its
+            # historical affected-repository requirements.
+            visible_observations = tuple(
+                item
+                for item in relevant_observations
+                if str(item.get("id", "")) in event_references
+                or (
+                    _instant(item.get("observedAt"), allow_none=False)
+                    and _instant_key(item.get("observedAt")) < event_time
+                )
+            )
             pre_data = copy.deepcopy(dict(record))
             pre_data["affectedRepositories"] = sorted(
                 {
@@ -1438,14 +1453,14 @@ class PressureRegistry:
                 | {
                     normalize_repository(item.get("repository"))
                     or str(item.get("repository"))
-                    for item in relevant_observations
+                    for item in visible_observations
                     if isinstance(item.get("repository"), str)
                 }
             )
             pre_projection = PressureProjection(
                 pre_data,
                 tuple(chain),
-                relevant_observations,
+                visible_observations,
                 relations,
                 (),
             )
@@ -1884,7 +1899,6 @@ class PressureRegistry:
                         )
                     )
         relation_targets: list[tuple[str, str, str]] = []
-        transition_events_by_pressure: dict[str, list[Mapping[str, Any]]] = {}
         for filename, event in events.items():
             path = f"events/{filename}.json"
             if event.get("schema") != EVENT_SCHEMA or event.get("version") != PRESSURE_VERSION:
@@ -1964,7 +1978,6 @@ class PressureRegistry:
                             "DANGLING_TRANSITION", path, "transition points to a missing pressure"
                         )
                     )
-                transition_events_by_pressure.setdefault(str(pressure), []).append(event)
                 if normalize_repository(event.get("actor")) is None:
                     diagnostics.append(
                         PressureDiagnostic(
@@ -2019,20 +2032,6 @@ class PressureRegistry:
             visit(node)
         for projection in self.projections():
             diagnostics.extend(projection.diagnostics)
-            transitions = transition_events_by_pressure.get(projection.id, [])
-            for event in transitions:
-                target = event.get("to")
-                requirements = self._validate_transition_requirements(projection, event)
-                # Requirements are checked against the event's predecessor
-                # view below for write-time safety; replay still checks the
-                # state transition itself and preserves diagnostics if a
-                # history was edited or merged incorrectly.
-                if target == "resolved" and requirements:
-                    diagnostics.append(
-                        PressureDiagnostic(
-                            "RESOLUTION_EVIDENCE_REQUIRED", f"events/{event['id']}", requirements
-                        )
-                    )
         return PressureValidationReport(tuple(diagnostics))
 
     def _query_rows(

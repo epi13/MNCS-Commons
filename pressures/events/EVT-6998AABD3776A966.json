@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:76f39d2afedc46d00e3236448759b6ba68b8129a615c5ecbce3e5332ad52d649",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-723468BE594D--OBS-48E0BFAA265A"
+  ],
+  "from": "confirmed",
+  "id": "EVT-6998AABD3776A966",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T00:59:57Z",
+  "pressureId": "MNCS-COMPILER-723468BE594D",
+  "previousEvent": "EVT-38140D3B8626B13B",
+  "reason": "Accept the remaining Profile 0.18 frontend gap for native compiler implementation.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

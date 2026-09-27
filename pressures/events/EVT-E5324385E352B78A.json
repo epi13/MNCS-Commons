@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-compiler",
+  "contentDigest": "sha256:939e57516daff6be3fa61c58ecd22b039bcfc017e028c3a4afec0b8711b1b646",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-COMPILER-2B5AD318F5E5--OBS-5DC91AFF955C"
+  ],
+  "from": "available",
+  "id": "EVT-E5324385E352B78A",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-27T01:01:13Z",
+  "pressureId": "MNCS-COMPILER-2B5AD318F5E5",
+  "previousEvent": "EVT-86D13E77F8B34181",
+  "reason": "Verify warm bootstrap on the exact current lock after the pin refresh.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}
