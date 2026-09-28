@@ -1,0 +1,6 @@
+{
+  "domains": {},
+  "generatedFrom": "commons.mncs.dev/family-pressure/v1",
+  "schema": "commons.mncs.dev/family-pressure-view/v1",
+  "view": "by-domain"
+}

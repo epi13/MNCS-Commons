@@ -151,6 +151,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-compiler",
         "mncs-service"
       ],
       "capability": "legacy.svc-p-018",
@@ -161,12 +162,13 @@
       "id": "MNCS-LANG-0E9B8377967C",
       "reconciliation": {
         "classification": "CONSUMER_DEBT",
-        "observationId": "MNCS-LANG-0E9B8377967C--OBS-988106CDE76D",
-        "observedAt": "2026-09-20T23:00:00Z",
-        "repository": "mncs-service",
-        "summary": "Current evidence treats this as consumer/tooling policy or ergonomics debt rather than a new generic language gap: Chained `a.b.c[i]` projections do not parse."
+        "observationId": "MNCS-LANG-0E9B8377967C--OBS-379D0E9647A3",
+        "observedAt": "2026-09-27T13:10:00Z",
+        "repository": "mncs-compiler",
+        "summary": "Reproduced the chained member/subscript spelling in canonical_record_type_identity. Stage-0 rejected identity.bytes[offset] as the existing parser issue. Splitting this into local identity and component bindings let the compiler decl module elaborate; the next run moved the diagnostics to SSA. Later focused and full project invocations exceeded their declared timeouts, so overall compiler differential status remains UNKNOWN. This remains a source workaround for the existing parser pressure."
       },
       "reporters": [
+        "mncs-compiler",
         "mncs-service"
       ],
       "revalidationRequired": true,
@@ -178,7 +180,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0

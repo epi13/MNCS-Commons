@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-commons",
-  "revision": 6,
+  "revision": 7,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
@@ -9,16 +9,120 @@
   "organization": {
     "layout": "mncs.repository-layout/1",
     "surfaces": [
-      {"path": "family/architecture-model-v1.json", "class": "canonical", "authority": "mncs-commons", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}},
-      {"path": "pressures/records/", "class": "canonical", "authority": "mncs-commons", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}},
-      {"path": "pressures/views/", "class": "generated", "note": "Bounded projections; never edit by hand.", "classification": {"authority": "none", "lifecycle": "generated", "boundary_kind": "none", "semantic_role": "generated"}},
-      {"path": "src/mncs_commons/pressure.py", "class": "canonical", "authority": "mncs-commons", "note": "Canonical pressure lifecycle/query projection; filesystem reads are its external input boundary.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "filesystem", "semantic_role": "canonical-host-semantic"}},
-      {"path": "src/mncs_commons/family_projection.py", "class": "canonical", "authority": "mncs-commons", "note": "Canonical bounded architecture/pressure read projection; it owns validation and freshness binding.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "filesystem", "semantic_role": "canonical-host-semantic"}},
-      {"path": "src/mncs_commons/architecture.py", "class": "canonical", "authority": "mncs-commons", "note": "Canonical architecture model validation/query semantics.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "filesystem", "semantic_role": "canonical-host-semantic"}},
-      {"path": "src/mncs_commons/remote.py", "class": "host-boundary", "note": "Remote protocol transport adapter.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "protocol", "semantic_role": "platform-adapter"}},
-      {"path": "src/mncs_commons/http_server.py", "class": "host-boundary", "note": "HTTP service transport adapter.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "protocol", "semantic_role": "platform-adapter"}},
-      {"path": "src/mncs_commons/mesh/mncs/", "class": "canonical", "note": "Native semantic kernels where the current profile permits them.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}},
-      {"path": "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs", "class": "canonical", "authority": "mncs-commons", "note": "Shared native obligation lifecycle/status/executor contract law consumed by RAVEL and mncs-test.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}}
+      {
+        "path": "family/architecture-model-v1.json",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      },
+      {
+        "path": "pressures/records/",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      },
+      {
+        "path": "pressures/views/",
+        "class": "generated",
+        "note": "Bounded projections; never edit by hand.",
+        "classification": {
+          "authority": "none",
+          "lifecycle": "generated",
+          "boundary_kind": "none",
+          "semantic_role": "generated"
+        }
+      },
+      {
+        "path": "src/mncs_commons/pressure.py",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "note": "Canonical pressure lifecycle/query projection; filesystem reads are its external input boundary.",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "filesystem",
+          "semantic_role": "canonical-host-semantic"
+        }
+      },
+      {
+        "path": "src/mncs_commons/family_projection.py",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "note": "Canonical bounded architecture/pressure read projection; it owns validation and freshness binding.",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "filesystem",
+          "semantic_role": "canonical-host-semantic"
+        }
+      },
+      {
+        "path": "src/mncs_commons/architecture.py",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "note": "Canonical architecture model validation/query semantics.",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "filesystem",
+          "semantic_role": "canonical-host-semantic"
+        }
+      },
+      {
+        "path": "src/mncs_commons/remote.py",
+        "class": "host-boundary",
+        "note": "Remote protocol transport adapter.",
+        "classification": {
+          "authority": "none",
+          "lifecycle": "active",
+          "boundary_kind": "protocol",
+          "semantic_role": "platform-adapter"
+        }
+      },
+      {
+        "path": "src/mncs_commons/http_server.py",
+        "class": "host-boundary",
+        "note": "HTTP service transport adapter.",
+        "classification": {
+          "authority": "none",
+          "lifecycle": "active",
+          "boundary_kind": "protocol",
+          "semantic_role": "platform-adapter"
+        }
+      },
+      {
+        "path": "src/mncs_commons/mesh/mncs/",
+        "class": "canonical",
+        "note": "Native semantic kernels where the current profile permits them.",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      },
+      {
+        "path": "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs",
+        "class": "canonical",
+        "authority": "mncs-commons",
+        "note": "Shared native obligation lifecycle/status/executor contract law consumed by RAVEL and mncs-test.",
+        "classification": {
+          "authority": "canonical",
+          "lifecycle": "active",
+          "boundary_kind": "none",
+          "semantic_role": "canonical-semantic"
+        }
+      }
     ]
   },
   "verification": {
@@ -28,15 +132,103 @@
   },
   "contracts": {
     "provides": [
-      {"contract": "family-architecture", "version": "1", "kind": "coordination-model", "stability": "experimental", "fingerprint_sources": ["family/architecture-model-v1.json", "family/architecture-delta-history-v1.json", "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"]},
-      {"contract": "pressure-registry", "version": "1", "kind": "development-pressure-coordination", "stability": "experimental", "fingerprint_sources": ["pressures/records/", "pressures/views/"]},
-      {"contract": "record-store-api", "version": "0.5.0.dev1", "kind": "protocol", "stability": "experimental", "fingerprint_sources": ["src/mncs_commons/store.py", "schemas/"]}
+      {
+        "contract": "family-architecture",
+        "version": "1",
+        "kind": "coordination-model",
+        "stability": "experimental",
+        "fingerprint_sources": [
+          "family/architecture-model-v1.json",
+          "family/architecture-delta-history-v1.json",
+          "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"
+        ]
+      },
+      {
+        "contract": "pressure-registry",
+        "version": "1",
+        "kind": "development-pressure-coordination",
+        "stability": "experimental",
+        "fingerprint_sources": [
+          "pressures/records/",
+          "pressures/views/"
+        ]
+      },
+      {
+        "contract": "record-store-api",
+        "version": "0.5.0.dev1",
+        "kind": "protocol",
+        "stability": "experimental",
+        "fingerprint_sources": [
+          "src/mncs_commons/store.py",
+          "schemas/"
+        ]
+      }
     ],
     "consumes": [
-      {"contract": "mncds.development-record-schema", "envelope": {"op": "any"}, "required": false}
+      {
+        "contract": "mncds.development-record-schema",
+        "envelope": {
+          "op": "any"
+        },
+        "required": false
+      }
     ],
     "tests": [
-      {"test": "commons-tests", "covers": ["family-architecture", "pressure-registry", "record-store-api", "native-obligation-contract-law"], "obligation": "self", "invalidation_dependencies": ["src/mncs_commons/pressure.py", "tests/test_pressure_registry.py"], "command": {"argv": ["python3", "-m", "pytest", "-q", "tests"], "timeout_seconds": 1200}}
+      {
+        "test": "commons-tests",
+        "covers": [
+          "family-architecture",
+          "pressure-registry",
+          "record-store-api",
+          "native-obligation-contract-law"
+        ],
+        "obligation": "self",
+        "invalidation_dependencies": [
+          "src/mncs_commons/pressure.py",
+          "tests/test_pressure_registry.py"
+        ],
+        "command": {
+          "argv": [
+            "python3",
+            "-m",
+            "pytest",
+            "-q",
+            "tests"
+          ],
+          "timeout_seconds": 1200,
+          "toolchain": {
+            "repository": "mncs-language",
+            "path": "."
+          },
+          "toolchain_env": "MNCS_LANGUAGE_CHECKOUT"
+        }
+      },
+      {
+        "test": "pressure-view-generation-atomicity",
+        "covers": [
+          "pressure-registry"
+        ],
+        "obligation": "mncs-commons.pressure-view-generation.atomicity",
+        "invalidation_dependencies": [
+          "src/mncs_commons/pressure.py",
+          "tests/test_pressure_registry.py"
+        ],
+        "command": {
+          "argv": [
+            "python3",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_pressure_registry.py::test_view_generation_reuses_projection_and_publishes_only_after_queries_succeed"
+          ],
+          "timeout_seconds": 120,
+          "toolchain": {
+            "repository": "mncs-language",
+            "path": "."
+          },
+          "toolchain_env": "MNCS_LANGUAGE_CHECKOUT"
+        }
+      }
     ]
   }
 }

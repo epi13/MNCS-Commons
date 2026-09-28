@@ -224,6 +224,43 @@
     },
     {
       "affectedRepositories": [
+        "mncs-compiler",
+        "mncs-service"
+      ],
+      "capability": "legacy.svc-p-018",
+      "classification": "CONSUMER_DEBT",
+      "currentValidation": false,
+      "domain": "language-semantics",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-0E9B8377967C",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-LANG-0E9B8377967C--OBS-379D0E9647A3",
+        "observedAt": "2026-09-27T13:10:00Z",
+        "repository": "mncs-compiler",
+        "summary": "Reproduced the chained member/subscript spelling in canonical_record_type_identity. Stage-0 rejected identity.bytes[offset] as the existing parser issue. Splitting this into local identity and component bindings let the compiler decl module elaborate; the next run moved the diagnostics to SSA. Later focused and full project invocations exceeded their declared timeouts, so overall compiler differential status remains UNKNOWN. This remains a source workaround for the existing parser pressure."
+      },
+      "reporters": [
+        "mncs-compiler",
+        "mncs-service"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Chained `a.b.c[i]` projections do not parse",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-language",
         "mncs-web"
       ],
@@ -2592,6 +2629,45 @@
     {
       "affectedRepositories": [
         "mncs-doctor",
+        "mncs-language"
+      ],
+      "capability": "legacy.doc-p-020",
+      "classification": "CONSUMER_DEBT",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-71B72613B11B",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4",
+        "observedAt": "2026-09-28T03:40:23Z",
+        "repository": "mncs-language",
+        "summary": "The generic safe retained typed batch-call capability is available in mncs-embed::Session::call_batch. The environment-bound cold/warm/batch canary passed: artifact compile 120.673 ms, Session open 6.423 ms, first retained call 0.091 ms, and 200 retained calls in 4.816 ms total (0.024 ms/call). mncs test uses the retained session batch API. This narrows the generic API gap; mncs-doctor remains the affected consumer and has not yet migrated. Standalone mncs call invocations still pay per-process setup."
+      },
+      "reporters": [
+        "mncs-doctor",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "moderate",
+      "status": "available",
+      "target": "tooling",
+      "title": "No Rust `Session` batch-call API",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-doctor",
         "ravel"
       ],
       "capability": "legacy.doc-p-019",
@@ -2976,6 +3052,7 @@
     "classificationCounts": {
       "BACKEND_ONLY": 3,
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
+      "CONSUMER_DEBT": 2,
       "OBSOLETE": 6,
       "PARTIALLY_RESOLVED": 14,
       "RESOLVED": 19,

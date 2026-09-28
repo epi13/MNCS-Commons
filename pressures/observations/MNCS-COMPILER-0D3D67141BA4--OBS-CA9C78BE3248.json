@@ -1,0 +1,48 @@
+{
+  "agent": null,
+  "compiler": {
+    "mncs-compiler": "5e43e5b6a2d390b37b611809a6ec91a3e3ec47dc",
+    "mncs-language": "843c5bcca7476bb6600218f6410a3da7ef5d96d5"
+  },
+  "contentDigest": "sha256:a845221a744ccb7165a56bf04a9c13595a3fed170490eb2a2a1fb3c39294e7b5",
+  "evidence": [
+    {
+      "id": "campaign-20260927-imported-nominal-budget-probe.json",
+      "status": "PASS"
+    },
+    {
+      "id": "evidence/campaign-20260927-lexer-smoke-results.json",
+      "status": "PASS"
+    },
+    {
+      "id": "imported-nominal-verified-ssa",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-COMPILER-0D3D67141BA4--OBS-CA9C78BE3248",
+  "kind": "verification",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "STILL_REPRODUCES",
+    "currentValidation": true,
+    "owner": "mncs-compiler",
+    "remainingGap": "The 100000-step imported nominal project probe still exhausts before proof or SSA, at lexer.next_token::seqlen. The focused lexical smoke passes, but full project execution cost and nominal SSA remain unverified. Cold Cranelift execution-status initialization exceeded the 75-second capability timeout."
+  },
+  "observedAt": "2026-09-27T17:53:36Z",
+  "pressureId": "MNCS-COMPILER-0D3D67141BA4",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the Environment-bound imported-nominal SSA differential with a 100000 native step budget and reference interpreter.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "evidence/campaign-20260927-imported-nominal-budget-probe.json",
+    "repository": "mncs-compiler",
+    "scope": "compiler-value-ssa-20260927"
+  },
+  "summary": "The compiler cursor-scan pressure still reproduces. A bounded imported nominal project call exhausted its 100000-step budget after 8.644326 seconds at mncs.compiler.lexer.v1::next_token::seqlen; no semantic proof or value SSA result was returned. The Environment-bound lexical smoke passed against pinned Stage-0 revision 843c5bcca7476bb6600218f6410a3da7ef5d96d5 with 63 requests and 76355 steps. The existing pressure remains unresolved.",
+  "version": "1",
+  "workaround": {}
+}

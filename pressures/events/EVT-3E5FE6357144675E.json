@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:5f9f3ca044ca6f65c4e800fc6a9557ed73b71820d2693391f31d6521f5079259",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4"
+  ],
+  "from": "accepted",
+  "id": "EVT-3E5FE6357144675E",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-28T03:42:00Z",
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "previousEvent": "EVT-3D4A4C91624F4816",
+  "reason": "Reconcile the existing record with the delivered generic Session::call_batch capability while leaving mncs-doctor migration as the remaining consumer work.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "implementing",
+  "version": "1"
+}

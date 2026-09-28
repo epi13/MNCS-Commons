@@ -664,6 +664,53 @@ def test_migration_preserves_legacy_text_and_markers(tmp_path: Path) -> None:
     assert registry.validate().valid
 
 
+def test_view_generation_reuses_projection_and_publishes_only_after_queries_succeed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    registry = PressureRegistry(tmp_path / "pressures")
+    registry.add(pressure_spec())
+    registry.generate_views()
+    registry.add(pressure_spec(signature="fs.atomic-publish.extra.v1"))
+    before = {
+        path.name: path.read_bytes()
+        for path in registry.views_dir.glob("*.json")
+    }
+
+    projection_calls = 0
+    original_projections = registry.projections
+
+    def track_projections(*, validate_lifecycle: bool = True):
+        nonlocal projection_calls
+        projection_calls += 1
+        return original_projections(validate_lifecycle=validate_lifecycle)
+
+    query_calls = 0
+
+    def fail_during_query(projections, *, filter_spec=None, view_selector=None):
+        nonlocal query_calls
+        query_calls += 1
+        if query_calls == 2:
+            raise PressureError("injected view query failure")
+        return original_query_rows(
+            projections, filter_spec=filter_spec, view_selector=view_selector
+        )
+
+    original_query_rows = registry._query_rows
+    monkeypatch.setattr(registry, "projections", track_projections)
+    monkeypatch.setattr(registry, "_query_rows", fail_during_query)
+
+    with pytest.raises(PressureError, match="injected view query failure"):
+        registry.generate_views()
+
+    after = {
+        path.name: path.read_bytes()
+        for path in registry.views_dir.glob("*.json")
+    }
+    assert projection_calls == 1
+    assert query_calls == 2
+    assert after == before
+
+
 def test_generated_views_are_deterministic_and_repositories_are_descriptive(tmp_path: Path) -> None:
     registry = PressureRegistry(tmp_path / "pressures")
     registry.add(pressure_spec())

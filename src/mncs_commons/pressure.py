@@ -1626,7 +1626,9 @@ class PressureRegistry:
             projection.transition_material,
         )
 
-    def validate(self) -> PressureValidationReport:
+    def validate(
+        self, *, _projections: tuple[PressureProjection, ...] | None = None
+    ) -> PressureValidationReport:
         diagnostics: list[PressureDiagnostic] = []
         required_paths = (
             self.root,
@@ -2030,7 +2032,8 @@ class PressureRegistry:
 
         for node in sorted(duplicate_graph):
             visit(node)
-        for projection in self.projections():
+        projections = _projections if _projections is not None else self.projections()
+        for projection in projections:
             diagnostics.extend(projection.diagnostics)
         return PressureValidationReport(tuple(diagnostics))
 
@@ -2124,15 +2127,14 @@ class PressureRegistry:
 
     def generate_views(self) -> dict[str, Any]:
         self.init()
-        report = self.validate()
+        projections = self.projections()
+        report = self.validate(_projections=projections)
         if not report.valid:
             raise PressureError(
                 "cannot generate views for an invalid registry: " + _diagnostic_text(report)
             )
         views: dict[str, Any] = {}
         from .pressure_runtime import pressure_kernel
-
-        projections = self.projections(validate_lifecycle=False)
         for selector in pressure_kernel().pressure_view_selectors():
             name = selector.lower().replace("_", "-")
             pressures = self._query_rows(projections, view_selector=selector)
@@ -2154,10 +2156,9 @@ class PressureRegistry:
                     "unreconciled": classification_counts.get("UNRECONCILED", 0),
                 },
             }
-            _write_json(self.views_dir / f"{name}.json", payload)
             views[name] = payload
         by_repository: dict[str, list[str]] = {}
-        for projection in self.projections():
+        for projection in projections:
             for repository in projection.data.get("affectedRepositories", []):
                 by_repository.setdefault(repository, []).append(projection.id)
         repository_payload = {
@@ -2166,10 +2167,9 @@ class PressureRegistry:
             "generatedFrom": PRESSURE_SCHEMA,
             "repositories": {key: sorted(value) for key, value in sorted(by_repository.items())},
         }
-        _write_json(self.views_dir / "by-repository.json", repository_payload)
         views["by-repository"] = repository_payload
         by_domain: dict[str, list[str]] = {}
-        for projection in self.projections():
+        for projection in projections:
             by_domain.setdefault(str(projection.data.get("domain", "unknown")), []).append(
                 projection.id
             )
@@ -2179,14 +2179,15 @@ class PressureRegistry:
             "generatedFrom": PRESSURE_SCHEMA,
             "domains": {key: sorted(value) for key, value in sorted(by_domain.items())},
         }
-        _write_json(self.views_dir / "by-domain.json", domain_payload)
         views["by-domain"] = domain_payload
         index = {
             "schema": "commons.mncs.dev/family-pressure-view-index/v1",
             "valid": True,
             "views": sorted(views),
         }
-        _write_json(self.views_dir / "index.json", index)
+        views["index"] = index
+        for name, payload in sorted(views.items()):
+            _write_json(self.views_dir / f"{name}.json", payload)
         return {**index, "output": str(self.views_dir)}
 
     def migrate_legacy(

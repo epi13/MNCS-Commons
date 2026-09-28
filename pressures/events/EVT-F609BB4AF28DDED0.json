@@ -1,0 +1,22 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:2415b0fdd346d1e0b56cb65805c3f4365fd0d2bc6b148d7f73228307004f8ab6",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4"
+  ],
+  "from": "implementing",
+  "id": "EVT-F609BB4AF28DDED0",
+  "implementation": {
+    "ref": "cbd638b1dcb06f3577851628c37bfb77b355b7f8:crates/mncs-embed/src/lib.rs::Session::call_batch",
+    "repository": "mncs-language"
+  },
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-28T03:42:29Z",
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "previousEvent": "EVT-3E5FE6357144675E",
+  "reason": "The generic safe retained typed batch-call capability is available and verified; consumer adoption remains outstanding.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "available",
+  "version": "1"
+}

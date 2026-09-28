@@ -1,0 +1,61 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c9a7322d5e55a13ea611438f0684a2babb5f7615bc3b462e05ca2c353b703087",
+  "evidence": [
+    {
+      "id": "mncs-embed::Session::call_batch-safe-typed-retained-interface",
+      "status": "PASS",
+      "summary": "Public safe Rust API returns ordered per-call results while retaining the compiled artifact/session."
+    },
+    {
+      "id": "mncs-embed:cold_warm_retained_and_batch_costs_are_reported",
+      "status": "PASS",
+      "summary": "Measured cold artifact compile, retained session open, first call, and 200-call batch."
+    },
+    {
+      "id": "mncs-cli:mncs-test-retained-batch-consumer",
+      "status": "PASS",
+      "summary": "The test command reuses one compiler session and calls Session::call_batch."
+    }
+  ],
+  "id": "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "caveat": "The measurements establish retained/batched cost, not standalone subprocess startup savings.",
+    "classification": "CONSUMER_DEBT",
+    "currentValidation": true,
+    "environmentSession": "ses_bbd9ddb1d01bcd40",
+    "retainedBatchMs": {
+      "artifactCompile": 120.673,
+      "calls": 200,
+      "firstCall": 0.091,
+      "mean": 0.024,
+      "sessionOpen": 6.423,
+      "total": 4.816
+    }
+  },
+  "observedAt": "2026-09-28T03:40:23Z",
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "repository": "mncs-language",
+  "reproduction": {
+    "instructions": "Run the Environment-bound mncs-language:test/language-tests-mncs-embed capability filtered to cold_warm_retained_and_batch_costs_are_reported; inspect Session::call_batch and mncs test batch usage in the exact selected checkout.",
+    "status": "PASS"
+  },
+  "runId": "compiler-parity-20260927",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "cbd638b1dcb06f3577851628c37bfb77b355b7f8",
+    "ref": "crates/mncs-embed/src/lib.rs::Session::call_batch; crates/mncs-embed/tests/embedding.rs::cold_warm_retained_and_batch_costs_are_reported",
+    "repository": "mncs-language",
+    "scope": "Environment-selected checkout"
+  },
+  "summary": "The generic safe retained typed batch-call capability is available in mncs-embed::Session::call_batch. The environment-bound cold/warm/batch canary passed: artifact compile 120.673 ms, Session open 6.423 ms, first retained call 0.091 ms, and 200 retained calls in 4.816 ms total (0.024 ms/call). mncs test uses the retained session batch API. This narrows the generic API gap; mncs-doctor remains the affected consumer and has not yet migrated. Standalone mncs call invocations still pay per-process setup.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "mncs-doctor still uses its current process-retained runtime; its migration to safe call_batch remains consumer work.",
+    "fallbackLanguage": "rust"
+  }
+}

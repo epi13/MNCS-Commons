@@ -14,6 +14,7 @@
       "contract_revision": "1",
       "exported_identity": "mncs-commons:pressure-registry",
       "evidence": "src/mncs_commons/pressure.py",
+      "effects": ["write"],
       "canonical_entrypoint": "mncs-commons pressure",
       "status": "implemented",
       "invocation": {

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-language",
+  "contentDigest": "sha256:29d7af8b0d3819f4de22b5b6ae4830605dc948910e2b18c8d92b81dcf8393bed",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4"
+  ],
+  "from": "confirmed",
+  "id": "EVT-3D4A4C91624F4816",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-28T03:41:30Z",
+  "pressureId": "MNCS-TOOLING-71B72613B11B",
+  "previousEvent": "EVT-4E9F7D9A45BEE52B",
+  "reason": "The safe retained typed batch API is present and its current cold/warm/batched canary passes; accept the generic API gap as consumer debt scoped to mncs-doctor.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

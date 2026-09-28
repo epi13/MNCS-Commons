@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.verification-obligation-inventory/v1",
   "repository": "mncs-commons",
-  "revision": 3,
+  "revision": 4,
   "obligations": [
     {
       "identity": "mncs-commons.family-projection.conformance",
@@ -10,17 +10,31 @@
       "evidence_role": "conformance",
       "lifecycle": "permanent",
       "scope": "family",
-      "subjects": ["mncs.family-architecture/1", "mncs.pressure-registry/1"],
-      "invalidation_dependencies": ["src/mncs_commons/family_projection.py", "src/mncs_commons/pressure.py"],
+      "subjects": [
+        "mncs.family-architecture/1",
+        "mncs.pressure-registry/1"
+      ],
+      "invalidation_dependencies": [
+        "src/mncs_commons/family_projection.py",
+        "src/mncs_commons/pressure.py"
+      ],
       "executor": {
         "provider": "mncs-commons",
         "kind": "external_integration",
         "entrypoint": "python3 -m unittest discover -s tests"
       },
       "evidence_identity": {
-        "subject_fields": ["projection_identity", "registry_identity"],
-        "definition_fields": ["architecture_schema_identity", "pressure_schema_identity"],
-        "execution_fields": ["validation_identity"]
+        "subject_fields": [
+          "projection_identity",
+          "registry_identity"
+        ],
+        "definition_fields": [
+          "architecture_schema_identity",
+          "pressure_schema_identity"
+        ],
+        "execution_fields": [
+          "validation_identity"
+        ]
       }
     },
     {
@@ -30,17 +44,31 @@
       "evidence_role": "conformance",
       "lifecycle": "permanent",
       "scope": "consumer",
-      "subjects": ["mncs.verification-obligation-plan/1"],
-      "invalidation_dependencies": ["src/mncs_commons/obligation_plan.py", "schemas/mncs-verification-obligation-plan-1.schema.json", "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"],
+      "subjects": [
+        "mncs.verification-obligation-plan/1"
+      ],
+      "invalidation_dependencies": [
+        "src/mncs_commons/obligation_plan.py",
+        "schemas/mncs-verification-obligation-plan-1.schema.json",
+        "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs"
+      ],
       "executor": {
         "provider": "mncs-commons",
         "kind": "compile_experiment",
         "entrypoint": "tests/test_obligation_plan.py"
       },
       "evidence_identity": {
-        "subject_fields": ["impact_identity", "source_identity"],
-        "definition_fields": ["inventory_identity", "plan_identity"],
-        "execution_fields": ["evidence_identity"]
+        "subject_fields": [
+          "impact_identity",
+          "source_identity"
+        ],
+        "definition_fields": [
+          "inventory_identity",
+          "plan_identity"
+        ],
+        "execution_fields": [
+          "evidence_identity"
+        ]
       }
     },
     {
@@ -50,17 +78,29 @@
       "evidence_role": "canonical_regression",
       "lifecycle": "permanent",
       "scope": "family",
-      "subjects": ["mncs.commons.family.obligations.v1"],
-      "invalidation_dependencies": ["src/mncs_commons/mesh/mncs/commons/family/obligations.mncs", "tests/fixtures/native-obligation-contract-probe.mncs"],
+      "subjects": [
+        "mncs.commons.family.obligations.v1"
+      ],
+      "invalidation_dependencies": [
+        "src/mncs_commons/mesh/mncs/commons/family/obligations.mncs",
+        "tests/fixtures/native-obligation-contract-probe.mncs"
+      ],
       "executor": {
         "provider": "mncs-commons",
         "kind": "compile_experiment",
         "entrypoint": "tests/test_native_obligation_contract.py"
       },
       "evidence_identity": {
-        "subject_fields": ["native_contract_identity"],
-        "definition_fields": ["lifecycle_vocabulary", "status_vocabulary"],
-        "execution_fields": ["result_identity"]
+        "subject_fields": [
+          "native_contract_identity"
+        ],
+        "definition_fields": [
+          "lifecycle_vocabulary",
+          "status_vocabulary"
+        ],
+        "execution_fields": [
+          "result_identity"
+        ]
       }
     },
     {
@@ -70,10 +110,65 @@
       "evidence_role": "conformance",
       "lifecycle": "permanent",
       "scope": "family",
-      "subjects": ["mncs.family-architecture/1", "mncs.store.persistent-state/1", "mncs.index.derived-index/1", "mncs.service.resident-query/1"],
-      "invalidation_dependencies": ["src/mncs_commons/family_registry.py", "family/participation-v1.json", "family/semantic-edges-v1.json"],
-      "executor": {"provider": "mncs-commons", "kind": "external_integration", "entrypoint": "scripts/reconcile_semantic_edges.py"},
-      "evidence_identity": {"subject_fields": ["declaration_identity", "edge_identity"], "definition_fields": ["registry_revision"], "execution_fields": ["reconciliation_identity"]}
+      "subjects": [
+        "mncs.family-architecture/1",
+        "mncs.store.persistent-state/1",
+        "mncs.index.derived-index/1",
+        "mncs.service.resident-query/1"
+      ],
+      "invalidation_dependencies": [
+        "src/mncs_commons/family_registry.py",
+        "family/participation-v1.json",
+        "family/semantic-edges-v1.json"
+      ],
+      "executor": {
+        "provider": "mncs-commons",
+        "kind": "external_integration",
+        "entrypoint": "scripts/reconcile_semantic_edges.py"
+      },
+      "evidence_identity": {
+        "subject_fields": [
+          "declaration_identity",
+          "edge_identity"
+        ],
+        "definition_fields": [
+          "registry_revision"
+        ],
+        "execution_fields": [
+          "reconciliation_identity"
+        ]
+      }
+    },
+    {
+      "identity": "mncs-commons.pressure-view-generation.atomicity",
+      "title": "Pressure view generation reuses one validated projection and publishes only complete results",
+      "guarantee_domain": "family_contract",
+      "evidence_role": "canonical_regression",
+      "lifecycle": "permanent",
+      "scope": "family",
+      "subjects": [
+        "mncs.pressure-registry/1"
+      ],
+      "invalidation_dependencies": [
+        "src/mncs_commons/pressure.py",
+        "tests/test_pressure_registry.py"
+      ],
+      "executor": {
+        "provider": "mncs-commons",
+        "kind": "external_integration",
+        "entrypoint": "tests/test_pressure_registry.py::test_view_generation_reuses_projection_and_publishes_only_after_queries_succeed"
+      },
+      "evidence_identity": {
+        "subject_fields": [
+          "pressure_view_identity"
+        ],
+        "definition_fields": [
+          "pressure_registry_identity"
+        ],
+        "execution_fields": [
+          "verification_identity"
+        ]
+      }
     }
   ]
 }

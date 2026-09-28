@@ -1,0 +1,51 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8cf51ec0e13545d8686b2fb2093bd273e619e20072e490232f5399ad643aa248",
+  "evidence": [
+    {
+      "id": "mncs-compiler.project-source-differential:chained-access-reproduction",
+      "status": "PASS"
+    },
+    {
+      "id": "mncs-compiler.project-source-differential:decl-elaborates-after-binding-rewrite",
+      "status": "PASS"
+    },
+    {
+      "id": "mncs-compiler.imported-nominal-ssa-differential:bounded-run",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "mncs-compiler.project-source-differential:bounded-run",
+      "status": "UNKNOWN"
+    }
+  ],
+  "id": "MNCS-LANG-0E9B8377967C--OBS-379D0E9647A3",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "classification": "CONSUMER_DEBT",
+    "environmentSession": "ses_bbd9ddb1d01bcd40",
+    "verification": "UNKNOWN"
+  },
+  "observedAt": "2026-09-27T13:10:00Z",
+  "pressureId": "MNCS-LANG-0E9B8377967C",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Stage-0 project-source-differential reproduced the chained access at src/compiler/decl.mncs; after rewriting the access, Stage-0 elaborated decl and reported downstream SSA diagnostics.",
+    "status": "PASS"
+  },
+  "runId": "compiler-parity-20260927",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "ref": "campaign/compiler-parity-native-20260927",
+    "repository": "mncs-compiler",
+    "scope": "Environment-selected checkout"
+  },
+  "summary": "Reproduced the chained member/subscript spelling in canonical_record_type_identity. Stage-0 rejected identity.bytes[offset] as the existing parser issue. Splitting this into local identity and component bindings let the compiler decl module elaborate; the next run moved the diagnostics to SSA. Later focused and full project invocations exceeded their declared timeouts, so overall compiler differential status remains UNKNOWN. This remains a source workaround for the existing parser pressure.",
+  "version": "1",
+  "workaround": {
+    "change": "use intermediate bindings for member then byte-index access",
+    "status": "still-required"
+  }
+}

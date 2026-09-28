@@ -1,0 +1,16 @@
+{
+  "schema": "commons.mncs.dev/family-pressure-view-index/v1",
+  "valid": true,
+  "views": [
+    "awaiting-verification",
+    "blocking",
+    "by-domain",
+    "by-repository",
+    "multi-repository",
+    "needs-revalidation",
+    "python-fallback",
+    "recently-resolved",
+    "rust-fallback",
+    "unresolved-language"
+  ]
+}

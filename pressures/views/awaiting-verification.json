@@ -143,6 +143,45 @@
     },
     {
       "affectedRepositories": [
+        "mncs-doctor",
+        "mncs-language"
+      ],
+      "capability": "legacy.doc-p-020",
+      "classification": "CONSUMER_DEBT",
+      "currentValidation": true,
+      "domain": "language-semantics",
+      "fallbackLanguages": [
+        "rust"
+      ],
+      "id": "MNCS-TOOLING-71B72613B11B",
+      "reconciliation": {
+        "classification": "CONSUMER_DEBT",
+        "observationId": "MNCS-TOOLING-71B72613B11B--OBS-69724E137BC4",
+        "observedAt": "2026-09-28T03:40:23Z",
+        "repository": "mncs-language",
+        "summary": "The generic safe retained typed batch-call capability is available in mncs-embed::Session::call_batch. The environment-bound cold/warm/batch canary passed: artifact compile 120.673 ms, Session open 6.423 ms, first retained call 0.091 ms, and 200 retained calls in 4.816 ms total (0.024 ms/call). mncs test uses the retained session batch API. This narrows the generic API gap; mncs-doctor remains the affected consumer and has not yet migrated. Standalone mncs call invocations still pay per-process setup."
+      },
+      "reporters": [
+        "mncs-doctor",
+        "mncs-language"
+      ],
+      "revalidationRequired": false,
+      "severity": "moderate",
+      "status": "available",
+      "target": "tooling",
+      "title": "No Rust `Session` batch-call API",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-forge"
@@ -179,6 +218,7 @@
   ],
   "reconciliation": {
     "classificationCounts": {
+      "CONSUMER_DEBT": 1,
       "UNRECONCILED": 5
     },
     "unreconciled": 5
