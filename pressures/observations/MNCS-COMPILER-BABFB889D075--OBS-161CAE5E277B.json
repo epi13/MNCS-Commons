@@ -1,0 +1,73 @@
+{
+  "agent": "Codex campaign ses_e86dbd34de001d1e",
+  "compiler": {
+    "referenceMode": "locked",
+    "repository": "mncs-compiler",
+    "revision": "fceb8eeb4b7ab7776257d65dd3902d34422fcc45",
+    "stage0Revision": "a3ac17df69e68f6373cbff336db0a572667d73da"
+  },
+  "contentDigest": "sha256:a29ef7a217e9049231f4be63cb666f21f3cc815984692d10325f2779a40605c8",
+  "evidence": [
+    {
+      "id": "mncs-env:cap_ecea1a3c9a503ff6",
+      "kind": "verification-executor",
+      "ref": "sessions/ses_e86dbd34de001d1e/artifacts/142eafe3480dc2da/campaign-20260929-project-results.json#enum_construction_value_ssa",
+      "status": "PASS",
+      "summary": "Native project and value SSA valid; Stage-0 project valid; 10 functions, 4 finite switches, 4 payload extracts, 7 enum constructors, 1 exact sequence repeat; 10 corrupted SSA cases rejected; deterministic repeated result."
+    },
+    {
+      "id": "mncs-env:cap_76f869f7dae37d6f",
+      "kind": "verification-executor",
+      "ref": "mncs-compiler.semantic-proof-differential; Stage-0 a3ac17df69e68f6373cbff336db0a572667d73da",
+      "status": "PASS",
+      "summary": "103 semantic cases and 7 proof verdicts passed twice identically after typed finite-arm operation verification."
+    },
+    {
+      "id": "mncs-env:cap_f927adc843c681b9",
+      "kind": "verification-executor",
+      "ref": "mncs-compiler.flow-cfg-differential; Stage-0 a3ac17df69e68f6373cbff336db0a572667d73da",
+      "status": "PASS",
+      "summary": "21 flow/CFG requests passed twice identically after the compiler changes."
+    },
+    {
+      "id": "mncs-env:cap_214b05ea401866f4",
+      "kind": "verification-executor",
+      "ref": "mncs-compiler.bootstrap-integrity",
+      "status": "PASS",
+      "summary": "Bootstrap integrity passed after the repeat instruction was added."
+    }
+  ],
+  "id": "MNCS-COMPILER-BABFB889D075--OBS-161CAE5E277B",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "focusedCaseSha256": "af77bf07b1cf6838eb7aba5e821bed7003a562c9113f88afa7822c29fa7176b2",
+    "lifecycleRecommendation": "verifying",
+    "nextValueSsaBoundary": "integer scalar TMatch",
+    "resultSha256": "6edaa27ba682f2baf486a9624343d9038be987bf6ca9c68ca86017585a1d626c"
+  },
+  "observedAt": "2026-09-29T20:45:28Z",
+  "pressureId": "MNCS-COMPILER-BABFB889D075",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the Environment-bound mncs-compiler.value-ssa-differential capability in retained Cranelift mode against the exact locked Stage-0 revision recorded above. Full result: sessions/ses_e86dbd34de001d1e/artifacts/142eafe3480dc2da/campaign-20260929-project-results.json.",
+    "status": "PASS"
+  },
+  "runId": "ses_e86dbd34de001d1e/cap_ecea1a3c9a503ff6",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "environment-campaign-working-tree",
+    "languageRevision": "a10486e613a20c00e393752bb1b9e451455fe457",
+    "path": "evidence/campaign-20260929-cp0014-value-ssa.json",
+    "repository": "mncs-compiler",
+    "revision": "fceb8eeb4b7ab7776257d65dd3902d34422fcc45",
+    "stage0Revision": "a3ac17df69e68f6373cbff336db0a572667d73da"
+  },
+  "summary": "CP-0014 finite match and enum construction now lower to verified native value SSA; the exact bool-payload reproducer and broader zero/one/multi-payload, nested nominal, binding, join, and corruption cases pass against locked Stage-0. Sequence repetition was the next boundary and is also represented and verifier-checked. Backend/runtime lowering remains unverified, so this narrows rather than resolves CP-0014.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "The supported path ends at verified value SSA; enum construction, finite switching, payload extraction, and sequence repetition still have no verified backend/runtime lowering or compiler-proof-to-backend admission evidence.",
+    "removed": false
+  }
+}

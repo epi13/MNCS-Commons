@@ -1,0 +1,52 @@
+{
+  "agent": "Codex campaign ses_e86dbd34de001d1e",
+  "compiler": {
+    "referenceMode": "locked",
+    "repository": "mncs-compiler",
+    "revision": "3f678c3992b99dd2355d27a9620c4d52c87d1972",
+    "stage0Revision": "a3ac17df69e68f6373cbff336db0a572667d73da"
+  },
+  "contentDigest": "sha256:11197c1ffb481de49d283b17e5178d48d5d069801714713de543d3e6fd7d917a",
+  "evidence": [
+    {
+      "id": "mncs-env:cap_ecea1a3c9a503ff6",
+      "kind": "verification-executor",
+      "ref": "mncs-compiler@3f678c3992b99dd2355d27a9620c4d52c87d1972:evidence/campaign-20260929-cp0014-value-ssa.json; sessions/ses_e86dbd34de001d1e/artifacts/142eafe3480dc2da/campaign-20260929-project-results.json",
+      "status": "PASS",
+      "summary": "Native project/value SSA and Stage-0 project valid; 10 verified functions, 4 finite switches, 4 payload extracts, 7 enum constructors, 1 repeat instruction; all 10 SSA corruption cases rejected; deterministic repetitions matched."
+    }
+  ],
+  "id": "MNCS-COMPILER-BABFB889D075--OBS-7B474473D174",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {
+    "focusedCaseSha256": "af77bf07b1cf6838eb7aba5e821bed7003a562c9113f88afa7822c29fa7176b2",
+    "lifecycleRecommendation": "verifying",
+    "nextValueSsaBoundary": "integer scalar TMatch",
+    "resultSha256": "6edaa27ba682f2baf486a9624343d9038be987bf6ca9c68ca86017585a1d626c"
+  },
+  "observedAt": "2026-09-29T21:05:01Z",
+  "pressureId": "MNCS-COMPILER-BABFB889D075",
+  "repository": "mncs-compiler",
+  "reproduction": {
+    "instructions": "Run the Environment-bound mncs-compiler.value-ssa-differential capability in retained Cranelift mode against the exact locked Stage-0 revision recorded above. Full result: sessions/ses_e86dbd34de001d1e/artifacts/142eafe3480dc2da/campaign-20260929-project-results.json.",
+    "status": "PASS"
+  },
+  "runId": "ses_e86dbd34de001d1e/cap_ecea1a3c9a503ff6",
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "kind": "environment-campaign-commit",
+    "languageRevision": "a10486e613a20c00e393752bb1b9e451455fe457",
+    "path": "evidence/campaign-20260929-cp0014-value-ssa.json",
+    "repository": "mncs-compiler",
+    "revision": "3f678c3992b99dd2355d27a9620c4d52c87d1972",
+    "stage0Revision": "a3ac17df69e68f6373cbff336db0a572667d73da"
+  },
+  "summary": "Committed CP-0014 implementation (3f678c3992b99dd2355d27a9620c4d52c87d1972) retains the PASS differential: finite matches, payload extraction, enum construction, and exact sequence repetition reach verified native value SSA against locked Stage-0. The compiler evidence file records the focused coverage and corruption rejections. Backend/runtime lowering remains unverified; lifecycle stays verifying.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Verified value SSA is implemented, but enum construction, finite switches, payload extraction, and sequence repetition still lack verified backend/runtime lowering or compiler-proof-to-backend admission evidence.",
+    "removed": false
+  }
+}
