@@ -1,0 +1,34 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:db86c0323313b9489ce48729bd5f2f8d620574e29cdf5488ec04b57569513a73",
+  "evidence": [
+    {
+      "id": "baseline-process-input-capacity",
+      "reference": "mncs-forge@25085e028571b740bec884e346a00faab7c75279:tests/test_micro_verifiers.py",
+      "status": "PASS",
+      "summary": "Exact baseline replay preserves structured UNKNOWN; process was not executed. Ambient PATH1447 also exceeds std.process environment value capacity1024."
+    }
+  ],
+  "id": "MNCS-LANG-9342C3B5FB80--OBS-F8FB3D3EDA80",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T04:10:58Z",
+  "pressureId": "MNCS-LANG-9342C3B5FB80",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "Use selected Language 425de201 CLI/embed and real Store with unchanged Forge main 25085e0. Instantiate tests/conftest project fixture, begin_and_register, invoke verifier_run(verify-pass, changed_paths=[candidate/main.py], scope=file).",
+    "status": "PASS",
+    "summary": "Baseline main returns UNKNOWN/PROCESS_EFFECT_UNKNOWN: MNCS_TYPED_VALUE argument 0.stdin: sequence exceeds capacity 1024, received 1158. The broad Forge suite reproduced verifier and execution-receipt failures before being interrupted after 31%; affected resident suites and native epoch/tests pass."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "No product workaround. Use controlled finite environment inputs for affected process contract tests; keep oversized real verifier requests UNKNOWN and record the provider/runtime boundary.",
+    "removed": false
+  }
+}

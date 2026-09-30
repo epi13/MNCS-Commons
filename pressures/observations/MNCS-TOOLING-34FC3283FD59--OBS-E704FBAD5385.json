@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c9b8ea496ca59488639643e714558ad1280c63ff8618d3e302b58e2958fa96dd",
+  "evidence": [
+    {
+      "id": "mncs-environment-resident-contract-proof",
+      "reference": "mncs-environment@d02bcdc3aa65759deb2b4e8ff1a288124c96e7eb:scripts/forge_resident_proof.py",
+      "status": "PASS",
+      "summary": "129 Environment tests, vertical Store proof, 17/17 campaign proofs and real-provider proof PASS. Fresh/subdirectory/repeated entry, stopped restoration, invalid descriptor block, foreign-checkout rejection, cwd-independent actions, native Test and Forge epoch, Store checkpoint/resume/handoff all verified. Deliberately invalid ambient compiler, service, Store and native-mode selectors do not replace selected bindings."
+    }
+  ],
+  "id": "MNCS-TOOLING-34FC3283FD59--OBS-E704FBAD5385",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T04:10:54Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "d02bcdc3aa65759deb2b4e8ff1a288124c96e7eb",
+    "path": "scripts/forge_resident_proof.py"
+  },
+  "summary": "129 Environment tests, vertical Store proof, 17/17 campaign proofs and real-provider proof PASS. Fresh/subdirectory/repeated entry, stopped restoration, invalid descriptor block, foreign-checkout rejection, cwd-independent actions, native Test and Forge epoch, Store checkpoint/resume/handoff all verified. Deliberately invalid ambient compiler, service, Store and native-mode selectors do not replace selected bindings.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

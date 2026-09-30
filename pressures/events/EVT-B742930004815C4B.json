@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:6546b4b1c46490aefc32ee8ad06575c20ffcb5a8cc421a06382e0233e061a4cc",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-34FC3283FD59--OBS-1966DE22532A"
+  ],
+  "from": "confirmed",
+  "id": "EVT-B742930004815C4B",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-30T04:10:48Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "previousEvent": "EVT-DD7EC0A3A26A5BDD",
+  "reason": "Forge owns resident semantics; Environment composes explicit selected invocation contracts.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

@@ -19,6 +19,13 @@ from mncs_commons.pressure import (
 WHEN = "2026-09-12T00:00:00Z"
 
 
+def test_environment_can_report_pressure_with_its_own_identity(tmp_path):
+    registry = PressureRegistry(tmp_path / "pressures")
+    created = registry.add(pressure_spec(repository="mncs-environment"))
+    assert created["record"]["discoveredBy"] == "mncs-environment"
+    assert any(item["id"] == "mncs-environment" for item in known_repositories())
+
+
 def pressure_spec(
     *, signature: str = "fs.atomic-publish.v1", repository: str = "mncs-store"
 ) -> dict:

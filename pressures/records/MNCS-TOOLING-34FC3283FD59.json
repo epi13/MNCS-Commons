@@ -1,0 +1,39 @@
+{
+  "affectedRepositories": [
+    "mncs-environment",
+    "mncs-forge"
+  ],
+  "capability": "resident-provider-status-reconciliation",
+  "contentDigest": "sha256:276dac7f0f5c5ca389350d52da96c8699a4a13b7ee37b31ccf161fa26546269f",
+  "discoveredAt": "2026-09-30T03:43:02Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "tooling.environment-entry",
+  "id": "MNCS-TOOLING-34FC3283FD59",
+  "identity": {
+    "capability": "resident-provider-status-reconciliation",
+    "domain": "tooling.environment-entry",
+    "reproducerSignature": "mncs-environment:dcbee05:forge-main-25085e0:resident-invocation-undeclared",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [
+    "mncs-environment:prs_5d267ebe29779379:forge"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-environment:dcbee05:forge-main-25085e0:resident-invocation-undeclared"
+  },
+  "requiredBehavior": "Forge-owned bounded read-only status and idempotent reconciliation invocation descriptors, selected checkout/runtime identity, real usability evidence, structured recovery and follow-up readiness.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "dcbee05be702fef381efa93215736544cbca51a7",
+    "path": "docs/ENTRY.md"
+  },
+  "summary": "Durable Environment entry cannot compose selected Forge resident machinery when provider metadata offers only source evidence.",
+  "target": "tooling",
+  "title": "Forge resident machinery lacks callable Environment readiness and reconciliation",
+  "version": "1"
+}

@@ -1,0 +1,32 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:6bca3dea7cd718972cb820ce97a27cdc23982ed5dccc8882a54aafc03a45170c",
+  "evidence": [
+    {
+      "id": "environment-resident-path",
+      "reference": "mncs-environment:scripts/forge_resident_proof.py",
+      "status": "PASS",
+      "summary": "Real Store/Forge/Language Service composition, no sibling or ambient Forge adoption."
+    }
+  ],
+  "id": "MNCS-TOOLING-EAF30A7233B0--OBS-749C2B886AD4",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T03:43:02Z",
+  "pressureId": "MNCS-TOOLING-EAF30A7233B0",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Explicit Environment-owned project configuration and selected provider descriptors enable bounded resident entry. Forge self-project configuration and family context selection remain separate boundaries."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "scripts/forge_resident_proof.py"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {}
+}

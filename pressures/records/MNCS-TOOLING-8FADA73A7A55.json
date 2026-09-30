@@ -1,0 +1,33 @@
+{
+  "affectedRepositories": [
+    "mncs-environment"
+  ],
+  "capability": "governed-repository-publication",
+  "contentDigest": "sha256:cc6ff9365fb098923bf8ec63076a76b9b26a0f06e8e35ff23159043911161995",
+  "discoveredAt": "2026-09-30T03:43:02Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "tooling.environment-delivery",
+  "id": "MNCS-TOOLING-8FADA73A7A55",
+  "identity": {
+    "capability": "governed-repository-publication",
+    "domain": "tooling.environment-delivery",
+    "reproducerSignature": "mncs-environment:resident-development:host-git-delivery",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-environment:resident-development:host-git-delivery"
+  },
+  "requiredBehavior": "Owning delivery provider publishes explicit invocation/effects and immutable selected-head validation for authorized fast-forward main publication. Environment composes it rather than implements Git governance.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "moderate",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "Development uses selected native providers and durable authority, but landing verified heads still requires host Git outside Environment.",
+  "target": "tooling",
+  "title": "Environment has no governed repository delivery capability",
+  "version": "1"
+}

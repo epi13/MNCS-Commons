@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:f6e9e3d5643b774e2162d86b68ce5a09c0925bd1eece519261f861fa9a011e12",
+  "evidence": [
+    {
+      "id": "resident-provider-before",
+      "reference": "mncs-forge@25085e0:.mncs/project.json",
+      "status": "PASS",
+      "summary": "Resident machinery exists without authoritative invocation descriptors."
+    }
+  ],
+  "id": "MNCS-TOOLING-34FC3283FD59--OBS-1966DE22532A",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T03:43:02Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Canonical entry finds Forge source fingerprints but no callable bounded resident status/reconciliation on Forge main 25085e0."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "dcbee05be702fef381efa93215736544cbca51a7",
+    "path": "docs/ENTRY.md"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Explicit provider service composition remains noncallable until provider descriptors exist; no guessed commands.",
+    "removed": false
+  }
+}

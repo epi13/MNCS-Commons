@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:c68b837ad4e48b2b03b71347eec3cf03e74ec283ae9bdc8f865a8e7564a9683a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-34FC3283FD59--OBS-1966DE22532A"
+  ],
+  "from": "available",
+  "id": "EVT-B932209CEB7E3E3A",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-30T04:10:54Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "previousEvent": "EVT-D17B0109B1297A72",
+  "reason": "Re-run consumer entry and provider ownership/failure contracts against committed selected checkouts.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "verifying",
+  "version": "1"
+}

@@ -1,0 +1,41 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:1694b88b71c19cb2fd0caa9a4d1a06d6b0bc904815f112c8c868b278c8d9db28",
+  "evidence": [
+    {
+      "id": "stale-embed-symbol",
+      "reference": "mncs-language@425de201:crates/mncs-embed/src/lib.rs",
+      "status": "FAIL",
+      "summary": "Prebuilt debug library missing source-declared mncs_session_composite_types."
+    },
+    {
+      "id": "isolated-rebuild",
+      "reference": "mncs-language@425de201:Cargo.toml",
+      "status": "PASS",
+      "summary": "Built selected CLI/embed with Cargo, then native Commons lookup succeeded."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-F242580C51A0",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T03:43:02Z",
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Selected Language source exports mncs_session_composite_types, but its prebuilt debug embed lacked that symbol. Commons pressure lookup failed until an isolated rebuild. Forge status hashes identify artifact bytes, not build origin."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "path": "docs/ENTRY.md"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Build isolated selected compiler/embed and bind exact paths; no ambient runtime fallback.",
+    "removed": false
+  }
+}

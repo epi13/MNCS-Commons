@@ -74,6 +74,12 @@
     },
     {
       "authority": "descriptive-only",
+      "id": "mncs-environment",
+      "repository": "epi13/mncs-environment",
+      "role": "environment composition consumer"
+    },
+    {
+      "authority": "descriptive-only",
       "id": "mncs-fabric",
       "repository": "epi13/mncs-fabric",
       "role": "family participant"

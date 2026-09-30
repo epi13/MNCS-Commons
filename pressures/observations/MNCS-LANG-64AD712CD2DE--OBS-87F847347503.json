@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:5c623a76e933d3ba2786d49786968d0849debe8aef63bd0feb0828ca1009dd7e",
+  "evidence": [
+    {
+      "id": "resident-linux-process-boundary",
+      "reference": "mncs-forge@94826a27dc8fbcddb99324fc92973359e306d170:src/mncs_forge/resident.py",
+      "status": "PASS",
+      "summary": "Linux-specific owned lifecycle control is documented, bounded and tested; assurance remains native MNCS."
+    }
+  ],
+  "id": "MNCS-LANG-64AD712CD2DE--OBS-87F847347503",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T04:10:58Z",
+  "pressureId": "MNCS-LANG-64AD712CD2DE",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "UNKNOWN",
+    "summary": "Resident reconciliation now uses a Linux host process adapter with verified boot/start identity and pidfd signalling. Native generic process capacity and source-owned aggregate/cancellation proof are separate; this run does not resolve the original language pressure."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "94826a27dc8fbcddb99324fc92973359e306d170",
+    "path": "src/mncs_forge/resident.py"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Provider-owned Linux pidfd/birth/socket platform adapter; no host assurance decisions.",
+    "removed": false
+  }
+}

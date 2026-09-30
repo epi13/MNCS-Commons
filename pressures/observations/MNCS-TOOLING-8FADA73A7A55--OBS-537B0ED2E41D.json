@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:b63c2755745b041f398ec5b403c81c618d942cf82c2f0ea1101f88851037de9b",
+  "evidence": [
+    {
+      "id": "host-git-delivery",
+      "reference": "mncs-environment:docs/ENTRY.md",
+      "status": "PASS",
+      "summary": "Publication remains outside the bound Environment actions."
+    }
+  ],
+  "id": "MNCS-TOOLING-8FADA73A7A55--OBS-537B0ED2E41D",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T03:43:02Z",
+  "pressureId": "MNCS-TOOLING-8FADA73A7A55",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Entry exposes inspect/health/reconcile/capabilities; delivery uses host Git because selected providers expose no governed publish operation."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "User-authorized isolated commits and fast-forward-only Git push with exact refs.",
+    "removed": false
+  }
+}

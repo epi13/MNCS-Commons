@@ -14,6 +14,7 @@
     {"id": "mncs-debug", "repository": "epi13/mncs-debug", "role": "canonical debugger provider", "authority": "descriptive-only"},
     {"id": "mncs-doctor", "repository": "epi13/mncs-doctor", "role": "consumer remediation", "authority": "descriptive-only"},
     {"id": "mncs-engine", "repository": "epi13/mncs-engine", "role": "family participant", "authority": "descriptive-only"},
+    {"id": "mncs-environment", "repository": "epi13/mncs-environment", "role": "environment composition consumer", "authority": "descriptive-only"},
     {"id": "mncs-fabric", "repository": "epi13/mncs-fabric", "role": "family participant", "authority": "descriptive-only"},
     {"id": "mncs-forge", "repository": "epi13/mncs-forge", "role": "family participant", "authority": "descriptive-only", "aliases": ["forge", "mncs-forge-mcp"]},
     {"id": "mncs-geometry", "repository": "epi13/mncs-geometry", "role": "family participant", "authority": "descriptive-only"},

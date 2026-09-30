@@ -325,6 +325,7 @@ def _repository_aliases() -> dict[str, str]:
     # not work-queue members of the older v0alpha1 registry.
     aliases: dict[str, str] = {}
     extras = {
+        "mncs-environment": "mncs-environment",
         "mncs-compiler": "mncs-compiler",
         "mncs-numerics": "mncs-numerics",
         "mncs-store": "mncs-store",

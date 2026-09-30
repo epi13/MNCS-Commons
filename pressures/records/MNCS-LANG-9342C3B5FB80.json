@@ -1,0 +1,46 @@
+{
+  "affectedRepositories": [
+    "mncs-environment",
+    "mncs-forge",
+    "mncs-language"
+  ],
+  "capability": "declared-process-input-capacity",
+  "contentDigest": "sha256:7dcdc3e0792cc5db3d5b2fddd1a55dcddfa95337ac2d74902277203e0c20734e",
+  "discoveredAt": "2026-09-30T04:10:58Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "io.process-runtime",
+  "id": "MNCS-LANG-9342C3B5FB80",
+  "identity": {
+    "capability": "declared-process-input-capacity",
+    "domain": "io.process-runtime",
+    "reproducerSignature": "mncs-forge:25085e0:verify-pass:ProcessRequest.stdin-1158-capacity-1024",
+    "target": "language"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": "0.18",
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "mncs-forge:25085e0:verify-pass:ProcessRequest.stdin-1158-capacity-1024"
+  },
+  "requiredBehavior": "A source-visible bounded process input contract that can admit real declared verification request sizes, through explicit capacity selection or bounded streaming while preserving authority, finite serialization, deadlines and output limits. Forge should adapt to the declared contract without host semantic fallback or silent input truncation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "repositories": {
+      "mncs-forge": {
+        "commit": "25085e028571b740bec884e346a00faab7c75279",
+        "path": "tests/test_micro_verifiers.py"
+      },
+      "mncs-language": {
+        "commit": "425de2016a1273b66fa44609ea75aa25e04f0a0f",
+        "path": "library/std/process.mncs"
+      }
+    }
+  },
+  "summary": "Current std.process finite stdin and environment value capacities are 1024 bytes. Real selected Forge verifier requests exceed stdin capacity before process execution; host ambient PATH can independently exceed the same bound. These are explicit refusals, not assurance failures.",
+  "target": "language",
+  "title": "Typed process transport cannot carry real Forge verification requests",
+  "version": "1"
+}

@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:e4933362d1b9ac970059f8997670f719c5941b5eee7423ba74ec765336fefa47",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-34FC3283FD59--OBS-1966DE22532A"
+  ],
+  "from": "discovered",
+  "id": "EVT-DD7EC0A3A26A5BDD",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-30T04:10:45Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "previousEvent": null,
+  "reason": "Baseline canonical entry exposes Forge source evidence without callable resident descriptors.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

@@ -1,0 +1,35 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:a4b79bff36477b799b0a2056800596dd244268ad1912e668afadf983943439e6",
+  "evidence": [
+    {
+      "id": "mncs-forge-resident-contract-proof",
+      "reference": "mncs-forge@94826a27dc8fbcddb99324fc92973359e306d170:tests/test_resident_provider.py",
+      "status": "PASS",
+      "summary": "All 73 affected Forge tests PASS; compatibility snapshot check PASS. Status read-only with total time/output bounds, live challenge/current stream required, Linux birth/pidfd control, malformed/legacy/foreign leases fail closed, repeated reconcile reuses. Real selected native Forge/Store/Language Service path PASS. Broader existing verifier/MCP failures excluded from this scoped resident contract closure and recorded separately."
+    }
+  ],
+  "id": "MNCS-TOOLING-34FC3283FD59--OBS-EDE29BFA5793",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-09-30T04:10:55Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "94826a27dc8fbcddb99324fc92973359e306d170",
+    "path": "tests/test_resident_provider.py"
+  },
+  "summary": "All 73 affected Forge tests PASS; compatibility snapshot check PASS. Status read-only with total time/output bounds, live challenge/current stream required, Linux birth/pidfd control, malformed/legacy/foreign leases fail closed, repeated reconcile reuses. Real selected native Forge/Store/Language Service path PASS. Broader existing verifier/MCP failures excluded from this scoped resident contract closure and recorded separately.",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}

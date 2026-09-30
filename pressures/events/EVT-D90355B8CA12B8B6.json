@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:46ad00e548f966e70d374e897a4362687b5595620f8e22173ee5b8f0b5fc2bd7",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-34FC3283FD59--OBS-E704FBAD5385",
+    "MNCS-TOOLING-34FC3283FD59--OBS-EDE29BFA5793"
+  ],
+  "from": "verifying",
+  "id": "EVT-D90355B8CA12B8B6",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-09-30T04:10:56Z",
+  "pressureId": "MNCS-TOOLING-34FC3283FD59",
+  "previousEvent": "EVT-B932209CEB7E3E3A",
+  "reason": "Both affected consumers/providers verify the delivered resident contract; no guessed commands or ambient Forge adoption needed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}
