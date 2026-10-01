@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mncs.remediation-envelope/1",
+  "title": "Family remediation envelope",
+  "description": "Authoritative JSON projection of mncs.commons.family.remediation.v1 RemediationEnvelope. Providers print exactly one envelope on stdout. Orchestrators require schema_version to match and ignore unknown fields.",
+  "type": "object",
+  "required": ["schema_version", "provider", "scope", "dry_run", "summary", "remaining", "repairs", "reconciliations", "budget", "validation"],
+  "properties": {
+    "schema_version": {"const": "mncs.remediation/1"},
+    "provider": {"type": "string", "minLength": 1, "maxLength": 256},
+    "provider_version": {"type": "string", "maxLength": 64},
+    "scope": {
+      "type": "object",
+      "required": ["domain", "target"],
+      "properties": {
+        "domain": {"type": "string", "minLength": 1, "maxLength": 64},
+        "target": {"type": "string", "minLength": 1, "maxLength": 1024}
+      }
+    },
+    "dry_run": {"type": "boolean"},
+    "summary": {
+      "type": "object",
+      "required": ["repaired", "reconciled", "degraded", "blockers"],
+      "properties": {
+        "repaired": {"type": "integer", "minimum": 0},
+        "reconciled": {"type": "integer", "minimum": 0},
+        "degraded": {"type": "integer", "minimum": 0},
+        "blockers": {"type": "integer", "minimum": 0}
+      }
+    },
+    "remaining": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 256}},
+    "remaining_truncated": {"type": "boolean"},
+    "repairs": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/repair"}},
+    "reconciliations": {"type": "array", "maxItems": 64, "items": {"$ref": "#/$defs/repair"}},
+    "escalations": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/escalation"}, "description": "Optional on stdout: escalation ids in remaining are mandatory, full records may live only behind the evidence reference."},
+    "evidence": {"type": ["string", "null"], "maxLength": 1024},
+    "budget": {
+      "type": "object",
+      "required": ["max_items", "items_done", "rounds", "exhausted"],
+      "properties": {
+        "max_items": {"type": "integer", "minimum": 1},
+        "items_done": {"type": "integer", "minimum": 0},
+        "rounds": {"type": "integer", "minimum": 0},
+        "exhausted": {"type": "boolean"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["passed", "errors_before", "errors_after", "idempotent_known", "idempotent"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "errors_before": {"type": "integer", "minimum": 0},
+        "errors_after": {"type": "integer", "minimum": 0},
+        "idempotent_known": {"type": "boolean"},
+        "idempotent": {"type": "boolean"}
+      }
+    },
+    "notes": {"type": "array", "maxItems": 64, "items": {"type": "string", "maxLength": 1024}}
+  },
+  "$defs": {
+    "repair": {
+      "type": "object",
+      "required": ["id", "class", "provider", "detail", "validated"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "class": {"enum": ["safe_automatic", "bounded_reconciliation", "escalation"]},
+        "provider": {"type": "string", "minLength": 1, "maxLength": 256},
+        "target": {"type": "string", "maxLength": 1024},
+        "detail": {"type": "string", "maxLength": 1024},
+        "before_fingerprint": {"type": ["string", "null"], "maxLength": 128},
+        "after_fingerprint": {"type": ["string", "null"], "maxLength": 128},
+        "validated": {"type": "boolean"}
+      }
+    },
+    "escalation": {
+      "type": "object",
+      "required": ["id", "code", "severity", "action"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "target": {"type": "string", "maxLength": 1024},
+        "severity": {"enum": ["error", "warning", "info"]},
+        "action": {"type": "string", "minLength": 1, "maxLength": 1024}
+      }
+    }
+  }
+}

@@ -26,6 +26,15 @@
         },
         "toolchain_env": "MNCS_LANGUAGE_CHECKOUT"
       }
+    },
+    {
+      "contract_identity": "mncs.remediation/1",
+      "contract_revision": "1",
+      "exported_identity": "mncs-commons:remediation",
+      "evidence": "src/mncs_commons/mesh/mncs/commons/family/remediation/v1.mncs",
+      "schema": "schemas/mncs-remediation-v1.schema.json",
+      "policy": "family/remediation-policy-v1.json",
+      "status": "implemented"
     }
   ],
   "consumes": [

@@ -1,0 +1,8 @@
+{
+  "schema_version": "mncs.remediation-policy/1",
+  "contract": "mncs.remediation/1",
+  "retry": {
+    "base_delay_secs": 60,
+    "max_delay_secs": 900
+  }
+}

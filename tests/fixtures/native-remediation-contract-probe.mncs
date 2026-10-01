@@ -1,0 +1,140 @@
+mncs 0.18;
+
+module tests.native_remediation_contract_probe;
+
+use mncs.commons.family.remediation.v1 as rem;
+
+record RemediationProbe {
+    classify_ok: bool,
+    stop_ok: bool,
+    residual_ok: bool,
+    retry_ok: bool,
+    envelope_schema: [byte; up_to 64],
+    evidence_schema: [byte; up_to 64]
+}
+
+fn is_auto(class: rem.RemediationClass) -> (result: bool) {
+    return match class {
+        rem.RemediationClass.safe_automatic => true,
+        rem.RemediationClass.bounded_reconciliation => false,
+        rem.RemediationClass.escalation => false
+    };
+}
+
+fn is_reconcile(class: rem.RemediationClass) -> (result: bool) {
+    return match class {
+        rem.RemediationClass.safe_automatic => false,
+        rem.RemediationClass.bounded_reconciliation => true,
+        rem.RemediationClass.escalation => false
+    };
+}
+
+fn is_escalation(class: rem.RemediationClass) -> (result: bool) {
+    return match class {
+        rem.RemediationClass.safe_automatic => false,
+        rem.RemediationClass.bounded_reconciliation => false,
+        rem.RemediationClass.escalation => true
+    };
+}
+
+fn is_error(severity: rem.RemediationSeverity) -> (result: bool) {
+    return match severity {
+        rem.RemediationSeverity.error => true,
+        rem.RemediationSeverity.warning => false,
+        rem.RemediationSeverity.info => false
+    };
+}
+
+fn is_warning(severity: rem.RemediationSeverity) -> (result: bool) {
+    return match severity {
+        rem.RemediationSeverity.error => false,
+        rem.RemediationSeverity.warning => true,
+        rem.RemediationSeverity.info => false
+    };
+}
+
+fn is_attempt(verdict: rem.RetryVerdict) -> (result: bool) {
+    return match verdict {
+        rem.RetryVerdict.attempt => true,
+        rem.RetryVerdict.suppress => false
+    };
+}
+
+fn is_suppress(verdict: rem.RetryVerdict) -> (result: bool) {
+    return match verdict {
+        rem.RetryVerdict.attempt => false,
+        rem.RetryVerdict.suppress => true
+    };
+}
+
+fn not(value: bool) -> (result: bool) {
+    return select(value, false, true);
+}
+
+fn classify_ok() -> (result: bool) {
+    let safe_granted: bool = is_auto(rem.classify_repair(0, true));
+    let safe_denied: bool = is_escalation(rem.classify_repair(0, false));
+    let proven_granted: bool = is_reconcile(rem.classify_repair(1, true));
+    let proven_denied: bool = is_escalation(rem.classify_repair(1, false));
+    let review: bool = is_escalation(rem.classify_repair(2, true));
+    let manual: bool = is_escalation(rem.classify_repair(3, false));
+    let unknown: bool = is_escalation(rem.classify_repair(9, true));
+    let negative: bool = is_escalation(rem.classify_repair(0 - 1, true));
+    return safe_granted && safe_denied && proven_granted && proven_denied && review && manual && unknown && negative;
+}
+
+fn stop_ok() -> (result: bool) {
+    let fixpoint: rem.StopDisposition = rem.classify_stop(0, true);
+    let budget: rem.StopDisposition = rem.classify_stop(1, true);
+    let osc_bad: rem.StopDisposition = rem.classify_stop(2, false);
+    let osc_ok: rem.StopDisposition = rem.classify_stop(2, true);
+    let conflict: rem.StopDisposition = rem.classify_stop(3, true);
+    let unknown: rem.StopDisposition = rem.classify_stop(9, true);
+    let fix_ok: bool = not(fixpoint.escalate);
+    let budget_ok: bool = budget.escalate && is_warning(budget.severity);
+    let osc_bad_ok: bool = osc_bad.escalate && is_error(osc_bad.severity);
+    let osc_ok_ok: bool = osc_ok.escalate && is_warning(osc_ok.severity);
+    let conflict_ok: bool = conflict.escalate && is_error(conflict.severity);
+    let unknown_ok: bool = unknown.escalate && is_error(unknown.severity);
+    return fix_ok && budget_ok && osc_bad_ok && osc_ok_ok && conflict_ok && unknown_ok;
+}
+
+fn residual_ok() -> (result: bool) {
+    let err: rem.ResidualDisposition = rem.classify_residual(0);
+    let warn: rem.ResidualDisposition = rem.classify_residual(1);
+    let info: rem.ResidualDisposition = rem.classify_residual(2);
+    let unknown: rem.ResidualDisposition = rem.classify_residual(9);
+    let err_ok: bool = err.escalate && not(err.degraded);
+    let warn_ok: bool = not(warn.escalate) && warn.degraded;
+    let info_ok: bool = not(info.escalate) && not(info.degraded);
+    let unknown_ok: bool = unknown.escalate && not(unknown.degraded);
+    return err_ok && warn_ok && info_ok && unknown_ok;
+}
+
+fn retry_ok() -> (result: bool) {
+    let d0: bool = rem.retry_delay_secs(60, 900, 0) == 0;
+    let d1: bool = rem.retry_delay_secs(60, 900, 1) == 60;
+    let d2: bool = rem.retry_delay_secs(60, 900, 2) == 120;
+    let d3: bool = rem.retry_delay_secs(60, 900, 3) == 240;
+    let d4: bool = rem.retry_delay_secs(60, 900, 4) == 480;
+    let cap: bool = rem.retry_delay_secs(60, 900, 5) == 900;
+    let saturate: bool = rem.retry_delay_secs(60, 900, 100) == 900;
+    let base_over_cap: bool = rem.retry_delay_secs(5000, 900, 1) == 900;
+    let eligible_no: bool = not(rem.retry_eligible(60, 900, 1, 59));
+    let eligible_yes: bool = rem.retry_eligible(60, 900, 1, 60);
+    let first_immediate: bool = rem.retry_eligible(60, 900, 0, 0);
+    let verdict: bool = is_attempt(rem.retry_verdict(60, 900, 1, 200));
+    let verdict_suppress: bool = is_suppress(rem.retry_verdict(60, 900, 2, 100));
+    return d0 && d1 && d2 && d3 && d4 && cap && saturate && base_over_cap && eligible_no && eligible_yes && first_immediate && verdict && verdict_suppress;
+}
+
+fn all() -> (result: RemediationProbe) {
+    return RemediationProbe {
+        classify_ok: classify_ok(),
+        stop_ok: stop_ok(),
+        residual_ok: residual_ok(),
+        retry_ok: retry_ok(),
+        envelope_schema: rem.remediation_envelope_schema(),
+        evidence_schema: rem.remediation_evidence_schema()
+    };
+}
