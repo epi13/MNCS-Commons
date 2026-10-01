@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:adfa2c5aec06b7b795ddaf0e8ffeb02f9876997e0a52c15338838a5e844e918b",
+  "evidence": [
+    {
+      "id": "adaptive-codec-json-amplification",
+      "reference": "mncs-store:docs/evidence/adaptive-integration-after.json",
+      "status": "PASS",
+      "summary": "Selected Language 425de201, Store a15e8e2 adaptive workload: payload524288B, envelope inspect769B, selective materialized65536B, RLE exact transfer307704B, retained calls33337, batches226, request JSON45816050B, response JSON46416944B. Native codecs and exact verification succeed. Retained in-process execution exists; binary aggregate byte transport does not."
+    },
+    {
+      "id": "adaptive-environment-consumer",
+      "reference": "mncs-environment:scripts/adaptive_store_proof.py",
+      "status": "PASS",
+      "summary": "Real Store selected through Environment descriptors; fresh-process tagged retrieval succeeds with unrelated chunk absent, and coded/base exact bytes agree. Physical inventory evolves under CAS without changing logical/content identity; old snapshots and crash recovery remain valid."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-EE1A6BEFBC51",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T02:50:48Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Use selected release MNCS compiler/embed at Language425de201. PYTHONPATH=python python3 tests/measure_adaptive_store.py --blocks 8 --block-kb 64. Current integration adds transport counters; see docs/evidence/adaptive-integration-after.json.",
+    "status": "PASS",
+    "summary": "Selected Language 425de201, Store a15e8e2 adaptive workload: payload524288B, envelope inspect769B, selective materialized65536B, RLE exact transfer307704B, retained calls33337, batches226, request JSON45816050B, response JSON46416944B. Native codecs and exact verification succeed. Retained in-process execution exists; binary aggregate byte transport does not."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "a15e8e25d1ad4ac4aedd4c4092e29834bae0fe96",
+    "path": "pressure/P3-001-bulk-codec-window-costs.md"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Keep native 64-byte codec windows, retained batch transport, and explicit finite budgets. Host loops frame windows, fold native tournament/monotone closure verdicts, and traverse selected filesystem chunks. No host codec or ranking semantics. Required substrate: general bounded binary retained byte arguments/results or native bulk calls with explicit lifetime, byte count, budgets, failures and authority. The existing in-process ABI itself is no longer missing.",
+    "removed": false
+  }
+}

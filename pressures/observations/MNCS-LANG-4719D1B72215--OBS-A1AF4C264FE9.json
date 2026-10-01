@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:f683aa7e902a6f5270911f958b21d6d81cb823d879aa7761f3d50dbf5d8fba1f",
+  "evidence": [
+    {
+      "id": "unchanged-c11-canary-now-exact",
+      "reference": "mncs-store:tests/corpora/canary-corpus.json",
+      "status": "PASS",
+      "summary": "No arithmetic semantics or oracle values changed; stale exception removed. Other overflow obligation consumers require their own proof."
+    }
+  ],
+  "id": "MNCS-LANG-4719D1B72215--OBS-A1AF4C264FE9",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T03:40:31Z",
+  "pressureId": "MNCS-LANG-4719D1B72215",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Select Language425de201 release compiler, run tests/test_mncs_corpora.py across all five backends after removing the stale known-divergence entry.",
+    "status": "PASS",
+    "summary": "Unchanged C11 decode-plain-max returns4294967294 exactly; former allowlist correctly fails its stale-entry guard. All44 Store semantic corpus tests now PASS across the complete backend matrix after bounded Wasm generation scan budgets were measured and corrected. Source/build provenance remains an independent unresolved contract."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "35996e4afe6e771f391b35ff1601402c4dac8cdb",
+    "path": "tests/test_mncs_corpora.py"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "The canary allowlist is removed. Store wrapping arithmetic remains unchanged; no claim that source/binary provenance or every arithmetic compilation obligation is discharged.",
+    "removed": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:a5f49702d0c394d56d330f71ec5a4c85e816c03b585cdf47bc7f9034a9e5a35a",
+  "evidence": [
+    {
+      "id": "selected-embed-origin-still-unproven",
+      "reference": "mncs-language@425de2016a1273b66fa44609ea75aa25e04f0a0f:crates/mncs-embed/src/lib.rs",
+      "status": "PASS",
+      "summary": "Selected paths/artifact hashes prove byte identity and native Store execution, not source/build origin or all exported ABI contracts. No compiler source change was needed for adaptive Store."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-84D0E7CD6DC0",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T02:50:48Z",
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Environment selects original Language425de201 release compiler/embed and adaptive Store works. Original release embed still lacks mncs_session_composite_types required by Commons pressure projection; nm -D confirms absence. Commons observations explicitly use the already-built isolated Language425de201 pair from the resident campaign; this is disclosed selection, not ambient fallback."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "d02bcdc3aa65759deb2b4e8ff1a288124c96e7eb",
+    "path": "mncs_env/session_store.py"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Explicitly select isolated source-matching rebuilt compiler/embed for Commons pressure machinery; keep Environment/Store selected original pair and preserve build-origin pressure.",
+    "removed": false
+  }
+}

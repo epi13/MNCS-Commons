@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c9816de5b0a46a2900743b03828e5426924d7c89e3b0b66cc877480273277b80",
+  "evidence": [
+    {
+      "id": "exact-head-adaptive-provider-proof",
+      "reference": "mncs-environment@f239fad28513e91429f3b78ce5ee9c4fb1c78ca9:scripts/adaptive_store_proof.py",
+      "status": "PASS",
+      "summary": "Provider-owned operations and native block-constrained ranking eliminate consumer command construction and opaque encoding choice for explicit partial requests. Added immutable inventory generation preserves logical/content identities and historical inventories."
+    }
+  ],
+  "id": "MNCS-LANG-8F49A242F22D--OBS-79D41609F310",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T03:35:33Z",
+  "pressureId": "MNCS-LANG-8F49A242F22D",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Run the fixed eight-by-64KiB measurement and Environment scripts/adaptive_store_proof.py with explicitly selected Language425de201 release compiler/embed. Four unchanged generation table_contains Wasm vectors need bounded request budget1048576 (262144 still exhausts), reporting13240496 steps. No oracle weakened.",
+    "status": "PASS",
+    "summary": "Final native artifact7531a86b: retained calls33349, batches229, request JSON45856277B, response JSON46421924B. Real canonical campaign sessionses_0c58063ab8ce603d on Store71ccb4f/Environmentf239fad: envelope783B, selective65536B of524288B, unrelated chunk absent, exact SHA1f8cb9e28fe6c4d69d7d3a4b043eecc7d0f5538344bb16a81ed5e67ac83a830f. First bounded Store probe ready through selected writable session cache; repeated entry and handoff preserve binding. Optional missing providers project degraded without blockers."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "71ccb4fd99baefa2c4a580edbee41bdc8071c43b",
+    "path": "docs/evidence/adaptive-integration-after.json"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Do not move codec semantics to host code. Retained JSON transport and finite windows remain; generic bounded bulk byte arguments/results or aggregate native operations should remove transport amplification. Warm provider artifacts in writable selected session cache to eliminate repeated compilation at entry; this narrows startup friction, not byte ABI pressure. Backend budgets are not directly comparable execution-step counts.",
+    "removed": false
+  }
+}

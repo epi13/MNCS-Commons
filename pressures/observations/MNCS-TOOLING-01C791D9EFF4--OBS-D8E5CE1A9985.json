@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:eb8f327d40cfb7faa17bdd8b0ed6bd3607243449dba7f9093c1a0d0331218158",
+  "evidence": [
+    {
+      "id": "commons-observations-vs-required-obligations",
+      "reference": "MNCS-Commons@7edf497271ebe534d934254f186ac4b7bef59a23:tests/test_mesh_interop.py",
+      "status": "PASS",
+      "summary": "Bounded backend agreement PASS does not discharge required compilation obligations. No tests weakened and no compiler semantics added to host code."
+    }
+  ],
+  "id": "MNCS-TOOLING-01C791D9EFF4--OBS-D8E5CE1A9985",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T03:24:17Z",
+  "pressureId": "MNCS-TOOLING-01C791D9EFF4",
+  "repository": "mncs-commons",
+  "reproduction": {
+    "status": "PASS",
+    "summary": "Unmodified Commons lifecycle and projection corpora on explicitly selected rebuilt Language425de201 return every expected value with expectation_met=true, but experiment status is UNKNOWN: compilation retained required unresolved obligations. Broader suite75PASS/2FAIL expects aggregatePASS for lifecycle across research/wasm. Pressure registry/mesh-pressure19PASS and validation remain green."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "7edf497271ebe534d934254f186ac4b7bef59a23",
+    "path": "tests/test_mesh_interop.py"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Preserve global UNKNOWN and report broader suite failure separately from correct observed values, Store provider integration, and pressure registry validation.",
+    "removed": false
+  }
+}
