@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:09dc657e12c14523301ec9b96a5f86a95a2df4535ee3dc45c233b6c3d63c29c1",
+  "evidence": [
+    {
+      "id": "immutable-session-collision",
+      "reference": "mncs-environment:tests/test_entry.py",
+      "status": "PASS",
+      "summary": "Store rejection translated at Environment ownership boundary; no snapshot overwrite or capability replay added."
+    }
+  ],
+  "id": "MNCS-TOOLING-754ECD2785F3--OBS-FE079368D138",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T03:54:06Z",
+  "pressureId": "MNCS-TOOLING-754ECD2785F3",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "Use two overlapping participating commands on one Store-backed durable session. Controlled equivalent: publish snapshot revision1 then publish differing state at revision1 through StoreSessionStore; SnapshotConflict must preserve the first snapshot.",
+    "status": "PASS",
+    "summary": "Real overlapping canonical re-entry and claimed Store test invocation raised Store IDENTITY_CONFLICT on the Environment snapshot. Native selected Store controlled replay preserves first snapshot. CLI now reports session-snapshot-conflict, snapshot_saved=false and capability_may_have_run=true for invoke. Focused diagnostic2PASS; selected native Store development capability13PASS after serialization."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "bc58ecfa13b2c67a2cf1bd4d14573e4ac60699ca",
+    "path": "docs/ENTRY.md"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Serialize mutating commands per durable session. Resume and inspect durable events and invocation artifacts before retrying a conflict. Read-only inspection is independent. Entry reuse lock alone does not serialize subsequent participants.",
+    "removed": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-environment"
+  ],
+  "capability": "concurrent-snapshot-convergence",
+  "contentDigest": "sha256:eb6a75bb55017024f0b62b8e0371fd7afd4295232e7e8e8fb77de623bf75efdf",
+  "discoveredAt": "2026-10-01T03:54:06Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "environment.session",
+  "id": "MNCS-TOOLING-754ECD2785F3",
+  "identity": {
+    "capability": "concurrent-snapshot-convergence",
+    "domain": "environment.session",
+    "reproducerSignature": "environment.session.concurrent-participant.snapshot-revision/1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "path": "mncs_env/sessions.py:_save",
+    "signature": "environment.session.concurrent-participant.snapshot-revision/1"
+  },
+  "requiredBehavior": "Environment coordinates concurrent participating session mutations with explicit revision/CAS semantics and complete durable invocation receipts. Reject stale state before avoidable effects where possible; do not replay a completed capability, invent a higher snapshot sequence containing stale state, or overwrite committed snapshots. Store continues to own generic immutable/CAS persistence.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "Overlapping entry and selected Store test invocation loaded one snapshot revision. Store correctly rejected different contents under that immutable identity after the invocation had completed; Environment had exposed a raw traceback. Structured diagnostics now preserve the conflict and warn against automatic replay, but convergence and recoverable result receipts remain missing.",
+  "target": "tooling",
+  "title": "Concurrent durable session mutations lack snapshot convergence and complete invocation receipts",
+  "version": "1"
+}

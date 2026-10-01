@@ -1,0 +1,37 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c0fde510730277ab091d35d16aa4cafeae212dc419d8679f2948a763a1fda14c",
+  "evidence": [
+    {
+      "id": "selected-development-capability-no-ambient-store",
+      "reference": "mncs-store@31468e657d33f8d90a6bdb24f27e8896b8158f73:tests/test_provider.py",
+      "status": "PASS",
+      "summary": "Declared tests pin selected MNCS_BIN and clear MNCS_STORE_ARTIFACT. Standalone consumers retain intentional explicit artifact override. No compiler or codec semantics changed."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-8A05365D769B",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-01T03:55:50Z",
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-store",
+  "reproduction": {
+    "instructions": "Enter Store local definition, claim owned selected Store worktree, invoke mncs-store:test/store-adaptive-representations from Environment/docs with MNCS_STORE_ARTIFACT=/foreign/artifact and focused -k read_only/representation_evolution/native_block tests.",
+    "status": "PASS",
+    "summary": "Before: authoritative test command inherited a raw ambient Store artifact and native fixture failed or could test foreign bytes. After: provider-owned test descriptors clear the override; Environment invokes the selected native compiler/runtime from another cwd and13testsPASS (29deselected). Environment persistence and adaptive provider already suppress ambient raw artifacts. Selected artifact cache/startup and exact byte identity are observable; build-source origin/export proof remains open."
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "31468e657d33f8d90a6bdb24f27e8896b8158f73",
+    "path": ".mncs/project.json"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Exact checkout/toolchain selection and provider-owned override suppression prevent this ambient substitution. Compiler/embed build-origin and export contract attestation are still required to resolve the root pressure.",
+    "removed": false
+  }
+}
