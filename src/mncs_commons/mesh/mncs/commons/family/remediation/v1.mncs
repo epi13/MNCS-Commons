@@ -1,0 +1,298 @@
+mncs 0.18;
+
+// mncs.commons.family.remediation.v1
+//
+// Family-standard remediation contract. Commons owns the vocabulary,
+// the envelope shape, the classification law, and the retry law.
+// Providers own diagnosis and repair of their domain. Doctor
+// orchestrates remediation policy. Environment owns session, context,
+// claims, and lifecycle.
+//
+// Host / native split (deliberate, cf. commons.mesh.lifecycle): the host
+// projects observations to the closed codes below, produces digests,
+// reads wall clocks, transports argv/JSON, and executes subprocesses.
+// This module owns every finite decision: which class an outcome lands
+// in, whether a degraded service is eligible for another attempt, and
+// what the envelope must contain. Hosts must not reimplement these
+// decisions with parallel logic.
+//
+// Classification input codes (host-projected, closed):
+//   Applicability: 0=safe 1=semantically_proven 2=review 3=manual
+//   Stop: 0=fixpoint 1=budget_exhausted 2=oscillation 3=edit_conflict
+//   Severity: 0=error 1=warning 2=info
+// Unknown codes fail closed to escalation, never to automatic repair.
+//
+// Retry law inputs (host-measured): attempts counts CONSECUTIVE failed
+// attempts against the SAME failure identity; the host resets it when
+// the identity changes. elapsed_secs is now minus last attempt. The
+// decision is pure: eligible exactly when the bounded exponential
+// window has expired. Suppression never hides state: observers still
+// report the live degraded verdict; only the repeated recovery ACTION
+// is withheld.
+//
+// Failure identity composition (normative, hashed by the host with the
+// family digest): service identity, status, code, canonical observation
+// bytes, provider revision identity, recovery-capability availability.
+// Any meaningful change rotates the identity and re-enables recovery
+// immediately. The host must hash exactly this material, in this order.
+module mncs.commons.family.remediation.v1;
+
+enum RemediationClass { safe_automatic, bounded_reconciliation, escalation }
+
+enum RemediationSeverity { error, warning, info }
+
+enum RetryVerdict { attempt, suppress }
+
+// Schema identifiers are contract-owned values. Hosts import these
+// functions instead of copying spellings into each implementation.
+fn remediation_envelope_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 114, 101, 109, 101, 100, 105, 97, 116, 105, 111, 110, 47, 49];
+}
+
+fn remediation_evidence_schema() -> (result: [byte; up_to 64]) {
+    return [109, 110, 99, 115, 46, 114, 101, 109, 101, 100, 105, 97, 116, 105, 111, 110, 45, 101, 118, 105, 100, 101, 110, 99, 101, 47, 49];
+}
+
+// Remediation scope: which domain and target a request addresses.
+// The repository domain is fully standardized here; new domains extend
+// this vocabulary through Commons, never bilaterally.
+record RemediationScope {
+    domain: [byte; up_to 64],
+    target: [byte; up_to 1024]
+}
+
+fn repository_domain() -> (result: [byte; up_to 64]) {
+    return [114, 101, 112, 111, 115, 105, 116, 111, 114, 121];
+}
+
+// Terse machine counts. Repaired and reconciled count validated
+// actions this run performed; degraded counts currently degraded
+// items; blockers counts error-severity escalations.
+record RemediationSummary {
+    repaired: u64,
+    reconciled: u64,
+    degraded: u64,
+    blockers: u64
+}
+
+// One validated repair or reconciliation action. Fingerprints are raw
+// sha256 with explicit presence; the JSON envelope carries them as
+// lowercase hex or null.
+record RepairRecord {
+    id: [byte; up_to 256],
+    class: RemediationClass,
+    provider: [byte; up_to 256],
+    target_present: bool,
+    target: [byte; up_to 1024],
+    detail: [byte; up_to 1024],
+    before_present: bool,
+    before_fingerprint: [byte; 32],
+    after_present: bool,
+    after_fingerprint: [byte; 32],
+    validated: bool
+}
+
+// One escalation: the smallest sufficient evidence package. Full
+// detail lives behind the evidence reference, never inline.
+record EscalationRecord {
+    id: [byte; up_to 256],
+    code: [byte; up_to 128],
+    target_present: bool,
+    target: [byte; up_to 1024],
+    severity: RemediationSeverity,
+    action: [byte; up_to 1024]
+}
+
+record BudgetResult {
+    max_items: u64,
+    items_done: u64,
+    rounds: u64,
+    exhausted: bool
+}
+
+record ValidationResult {
+    passed: bool,
+    errors_before: u64,
+    errors_after: u64,
+    idempotent_known: bool,
+    idempotent: bool
+}
+
+// Complete native remediation envelope. stdout carries the JSON
+// projection of exactly this shape; the schema_version selects it.
+record RemediationEnvelope {
+    schema_version: [byte; up_to 64],
+    provider: [byte; up_to 256],
+    scope: RemediationScope,
+    dry_run: bool,
+    summary: RemediationSummary,
+    remaining: [[byte; up_to 256]; up_to 64],
+    repairs: [RepairRecord; up_to 256],
+    reconciliations: [RepairRecord; up_to 64],
+    escalations: [EscalationRecord; up_to 256],
+    evidence_present: bool,
+    evidence: [byte; up_to 1024],
+    budget: BudgetResult,
+    validation: ValidationResult
+}
+
+// Failure identity material for the retry law. The host hashes the
+// canonical concatenation; this record names the fields so no
+// implementation silently drops or adds one.
+record FailureIdentityMaterial {
+    service: [byte; up_to 256],
+    status: [byte; up_to 64],
+    code: [byte; up_to 128],
+    observation_digest: [byte; 32],
+    provider_revision: [byte; up_to 128],
+    recovery_available: bool
+}
+
+record RetryPolicy {
+    base_delay_secs: u64,
+    max_delay_secs: u64
+}
+
+// Classification law: repair applicability to remediation class.
+// `granted` is whether the invocation explicitly authorized this class
+// (safe is granted by default repair entrypoints; proven only by an
+// explicit opt-in such as --proven; review and manual are never
+// grantable). Granted safe repairs run automatically; granted proven
+// repairs reconcile (attempt, validate, escalate on failure); anything
+// ungranted or unknown escalates (fail closed).
+fn classify_repair(code: i64, granted: bool) -> (result: RemediationClass) {
+    if code == 0 {
+        return select(granted, RemediationClass.safe_automatic, RemediationClass.escalation);
+    }
+    if code == 1 {
+        return select(granted, RemediationClass.bounded_reconciliation, RemediationClass.escalation);
+    }
+    return RemediationClass.escalation;
+}
+
+record StopDisposition {
+    escalate: bool,
+    severity: RemediationSeverity
+}
+
+// Classification law: convergence stop to escalation disposition.
+// A fixpoint needs nothing. Budget exhaustion escalates as a warning
+// (a re-run continues). Oscillation and edit conflicts escalate, as
+// errors when the outcome is unvalidated. Unknown codes escalate as
+// errors (fail closed).
+fn classify_stop(code: i64, validated: bool) -> (result: StopDisposition) {
+    if code == 0 {
+        return StopDisposition { escalate: false, severity: RemediationSeverity.info };
+    }
+    if code == 1 {
+        return StopDisposition { escalate: true, severity: RemediationSeverity.warning };
+    }
+    if code == 2 {
+        if validated {
+            return StopDisposition { escalate: true, severity: RemediationSeverity.warning };
+        }
+        return StopDisposition { escalate: true, severity: RemediationSeverity.error };
+    }
+    if code == 3 {
+        return StopDisposition { escalate: true, severity: RemediationSeverity.error };
+    }
+    return StopDisposition { escalate: true, severity: RemediationSeverity.error };
+}
+
+record ResidualDisposition {
+    escalate: bool,
+    degraded: bool
+}
+
+// Classification law: residual diagnostic severity. Errors escalate,
+// warnings mark degradation without escalation, infos are silent.
+// Unknown severities escalate (fail closed).
+fn classify_residual(severity_code: i64) -> (result: ResidualDisposition) {
+    if severity_code == 0 {
+        return ResidualDisposition { escalate: true, degraded: false };
+    }
+    if severity_code == 1 {
+        return ResidualDisposition { escalate: false, degraded: true };
+    }
+    if severity_code == 2 {
+        return ResidualDisposition { escalate: false, degraded: false };
+    }
+    return ResidualDisposition { escalate: true, degraded: false };
+}
+
+// Retry law: bounded exponential suppression window in seconds.
+// `attempts` counts consecutive failed attempts against the same
+// failure identity. Zero failures means no suppression (the initial
+// attempt is always immediate); after the first failure the window is
+// the base delay, doubling per further failure and saturating at
+// max_delay_secs. The ladder saturates past 64 attempts and the cap is
+// clamped to 2^32-1, so doubling can never overflow.
+fn retry_delay_secs(base_delay_secs: u64, max_delay_secs: u64, attempts: u64) -> (result: u64) {
+    if attempts == 0 {
+        return 0;
+    }
+    let limit: u64 = select(max_delay_secs > 4294967295, 4294967295, max_delay_secs);
+    let start: u64 = select(base_delay_secs > limit, limit, base_delay_secs);
+    let window: [u64; 64] = [0; 64];
+    iterate i over window carrying d: u64 = start {
+        let live: bool = i + 1 < attempts && i < window.len;
+        next d = select(live && d < limit, d + d, d);
+    }
+    if d > limit {
+        return limit;
+    }
+    return d;
+}
+
+// Retry law: eligibility. A new attempt is eligible exactly when the
+// suppression window for its consecutive-attempt count has expired.
+// The host resets attempts when the failure identity rotates, so any
+// meaningful change re-enables recovery immediately.
+fn retry_eligible(base_delay_secs: u64, max_delay_secs: u64, attempts: u64, elapsed_secs: u64) -> (result: bool) {
+    return elapsed_secs >= retry_delay_secs(base_delay_secs, max_delay_secs, attempts);
+}
+
+fn retry_verdict(base_delay_secs: u64, max_delay_secs: u64, attempts: u64, elapsed_secs: u64) -> (result: RetryVerdict) {
+    return select(
+        retry_eligible(base_delay_secs, max_delay_secs, attempts, elapsed_secs),
+        RetryVerdict.attempt,
+        RetryVerdict.suppress
+    );
+}
+
+// Identity material is deliberately explicit. Fields that do not
+// affect remediation meaning (timestamps, transport notes) are absent
+// here and therefore never rotate an identity.
+record RemediationEnvelopeIdentityMaterial {
+    schema_version: [byte; up_to 64],
+    provider: [byte; up_to 256],
+    scope: RemediationScope,
+    dry_run: bool,
+    summary: RemediationSummary,
+    remaining: [[byte; up_to 256]; up_to 64],
+    repairs: [RepairRecord; up_to 256],
+    reconciliations: [RepairRecord; up_to 64],
+    escalations: [EscalationRecord; up_to 256],
+    evidence_present: bool,
+    evidence: [byte; up_to 1024],
+    budget: BudgetResult,
+    validation: ValidationResult
+}
+
+fn remediation_envelope_identity_material(envelope: RemediationEnvelope) -> (result: RemediationEnvelopeIdentityMaterial) {
+    return RemediationEnvelopeIdentityMaterial {
+        schema_version: envelope.schema_version,
+        scope: envelope.scope,
+        provider: envelope.provider,
+        dry_run: envelope.dry_run,
+        summary: envelope.summary,
+        remaining: envelope.remaining,
+        repairs: envelope.repairs,
+        reconciliations: envelope.reconciliations,
+        escalations: envelope.escalations,
+        evidence_present: envelope.evidence_present,
+        evidence: envelope.evidence,
+        budget: envelope.budget,
+        validation: envelope.validation
+    };
+}

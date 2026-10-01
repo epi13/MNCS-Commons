@@ -1,0 +1,2 @@
+module conformance.bad.v1 {
+// unbalanced brace, no close
