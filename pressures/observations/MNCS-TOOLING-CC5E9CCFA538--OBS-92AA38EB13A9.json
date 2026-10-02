@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:8649d1461761929d43c797fc2661fc3523d5d2292528f1313f70fdd2dd46116f",
+  "evidence": [
+    {
+      "id": "provider-resident-report",
+      "ref": "mncs-environment:docs/PROVIDER_RESIDENT_REPORT.md",
+      "status": "PASS",
+      "summary": "Exact real Automation build/execution receipts, resident routing fixtures and warm selection measurements."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-92AA38EB13A9",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "sol-provider-resident-coherence",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-10-02T22:10:18Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Recoverable CAS-safe Environment selection index reduces unchanged entry from 10 to 4 high-level Store reads and approximately 2.2 to 1.7 seconds while retaining zero Git/native/process launches and Store writes. Store admission cost remains; resident boundaries currently reopen Store and consume feed/LS cursors through the same router. This does not resolve all continuous supervisor startup latency.",
+  "version": "1",
+  "workaround": {}
+}

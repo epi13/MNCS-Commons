@@ -1,0 +1,26 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:6bdbfc33963d26c01aaaa7962aece21900684c8e676c0ab5066cf049058c431f",
+  "evidence": [],
+  "id": "MNCS-TOOLING-FB775D7FEC85--OBS-F596F5A696A7",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "sol-provider-resident-coherence",
+    "classification": "UNRESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-10-02T22:11:39Z",
+  "pressureId": "MNCS-TOOLING-FB775D7FEC85",
+  "repository": "mncs-forge",
+  "reproduction": {
+    "status": "FAIL"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Correct selected release compiler/embed and dedicated stdlib reproduce MNCS_TYPED_VALUE capacity 1024, received 1737. Foreign stdlib/compiler work protected.",
+  "version": "1",
+  "workaround": {}
+}

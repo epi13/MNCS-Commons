@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-forge"
+  ],
+  "capability": "bounded_process_environment",
+  "contentDigest": "sha256:c98e7d1d134a060443c7d06f7233551c65f22e58c9aa65b6575525f4ce05f370",
+  "discoveredAt": "2026-10-02T22:11:39Z",
+  "discoveredBy": "mncs-forge",
+  "domain": "tooling.provider-runtime-binding",
+  "id": "MNCS-TOOLING-FB775D7FEC85",
+  "identity": {
+    "capability": "bounded_process_environment",
+    "domain": "tooling.provider-runtime-binding",
+    "reproducerSignature": "forge.workflow.environment-value-1737-capacity-1024.v1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": "Effective stdlib owner is the active mncs-stdlib extraction. The pressure repository catalog has not admitted that repository yet.",
+  "reproducer": {
+    "path": "mncs-forge:tests/test_execution_receipt_integration.py::test_declared_workflow_persists_action_binding_and_result",
+    "signature": "forge.workflow.environment-value-1737-capacity-1024.v1"
+  },
+  "requiredBehavior": "Owner admission must establish an exact bounded relevant environment or support larger native values without semantic truncation.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "blocking",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "Real Forge workflow rejects inherited PATH of 1737 bytes against native environment-value capacity 1024.",
+  "target": "tooling",
+  "title": "Selected process environment exceeds native wire capacity",
+  "version": "1"
+}
