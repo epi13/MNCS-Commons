@@ -198,6 +198,23 @@ fn executor_is_native_test(value: ExecutorKind) -> (result: bool) {
     };
 }
 
+// External integrations are satisfied by evidence their owning
+// external provider produced (for example CI receipts admitted through
+// mncs-actions), never by native test execution. This predicate keeps
+// that routing decision in the family contract so consumers cannot
+// silently widen external obligations into local runners.
+fn executor_is_external(value: ExecutorKind) -> (result: bool) {
+    return match value {
+        ExecutorKind.native_first_class_test => false,
+        ExecutorKind.compile_experiment => false,
+        ExecutorKind.diagnostic_test => false,
+        ExecutorKind.backend_check => false,
+        ExecutorKind.differential_oracle => false,
+        ExecutorKind.migration_parity => false,
+        ExecutorKind.external_integration => true
+    };
+}
+
 fn obligation_scope_is_repository_canonical(value: ObligationScope) -> (result: bool) {
     return match value {
         ObligationScope.local => false,

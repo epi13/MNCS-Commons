@@ -8,7 +8,9 @@ record ContractProbe {
     active: bool,
     reference_only_excluded: bool,
     new_execution_required: bool,
-    native_test_executor: bool
+    native_test_executor: bool,
+    external_executor: bool,
+    native_is_not_external: bool
 }
 
 fn all() -> (result: ContractProbe) {
@@ -16,6 +18,8 @@ fn all() -> (result: ContractProbe) {
         active: contracts.lifecycle_is_active(contracts.ObligationLifecycle.permanent),
         reference_only_excluded: contracts.lifecycle_is_ordinary_excluded(contracts.ObligationLifecycle.reference_only),
         new_execution_required: contracts.status_requires_execution(contracts.ObligationStatus.new_execution_required),
-        native_test_executor: contracts.executor_is_native_test(contracts.ExecutorKind.native_first_class_test)
+        native_test_executor: contracts.executor_is_native_test(contracts.ExecutorKind.native_first_class_test),
+        external_executor: contracts.executor_is_external(contracts.ExecutorKind.external_integration),
+        native_is_not_external: !contracts.executor_is_external(contracts.ExecutorKind.native_first_class_test)
     };
 }
