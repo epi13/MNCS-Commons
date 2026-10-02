@@ -1,0 +1,39 @@
+{
+  "affectedRepositories": [
+    "mncs-environment"
+  ],
+  "capability": "context.ambient-budget",
+  "contentDigest": "sha256:f66642040568612b21ae18b5187fefa214b7017814d00805b4b3f70640142e73",
+  "discoveredAt": "2026-10-02T04:08:50Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "family.coherence",
+  "id": "MNCS-TOOLING-660287B78610",
+  "identity": {
+    "capability": "context.ambient-budget",
+    "domain": "family.coherence",
+    "reproducerSignature": "whole-system-coherence-20261001:context.ambient-budget",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [
+    "mncs-environment:prs_fa6251ccbcf6646e"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "whole-system-coherence-20261001:context.ambient-budget"
+  },
+  "requiredBehavior": "Bound all seven ambient blocks with complete content-addressed expansions; keep healthy omission and preserve reasons.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/WHOLE_SYSTEM_REPORT.md",
+    "repository": "mncs-environment"
+  },
+  "summary": "Ambient layers grew independently without shared healthy/degraded/aggregate byte limits and expansion handles.",
+  "target": "tooling",
+  "title": "Ambient provider blocks have no common bounded expansion policy",
+  "version": "1"
+}

@@ -84,6 +84,17 @@
       "MNCS-LANG-A89E82F1C80D",
       "MNCS-LANG-D1F8531E3172"
     ],
+    "environment.session": [
+      "MNCS-TOOLING-754ECD2785F3"
+    ],
+    "evidence.identity": [
+      "MNCS-TOOLING-9FEE08F6756E"
+    ],
+    "family.coherence": [
+      "MNCS-TOOLING-608926A83401",
+      "MNCS-TOOLING-660287B78610",
+      "MNCS-TOOLING-B24EC76686BB"
+    ],
     "identity": [
       "MNCS-LANG-9DE65A412CF7",
       "MNCS-LANG-CD0DEF98FD10",
@@ -113,7 +124,8 @@
       "MNCS-TOOLING-C5FD211E05C1"
     ],
     "io.process-runtime": [
-      "MNCS-LANG-64AD712CD2DE"
+      "MNCS-LANG-64AD712CD2DE",
+      "MNCS-LANG-9342C3B5FB80"
     ],
     "language-semantics": [
       "MNCS-COMPILER-2EA21F85084E",
@@ -230,7 +242,11 @@
     "tooling.bootstrap": [
       "MNCS-COMPILER-2B5AD318F5E5"
     ],
+    "tooling.environment-delivery": [
+      "MNCS-TOOLING-8FADA73A7A55"
+    ],
     "tooling.environment-entry": [
+      "MNCS-TOOLING-34FC3283FD59",
       "MNCS-TOOLING-EAF30A7233B0"
     ],
     "tooling.event-delivery": [

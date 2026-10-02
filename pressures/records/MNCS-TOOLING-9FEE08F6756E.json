@@ -1,0 +1,44 @@
+{
+  "affectedRepositories": [
+    "mncs-actions",
+    "mncs-debug",
+    "mncs-environment",
+    "mncs-test"
+  ],
+  "capability": "producer-bound-equivalence",
+  "contentDigest": "sha256:89fb55d1c0267165eb9ae7070c13414e358963b0d938ba9f6e092f987414e39d",
+  "discoveredAt": "2026-10-02T04:09:05Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "evidence.identity",
+  "id": "MNCS-TOOLING-9FEE08F6756E",
+  "identity": {
+    "capability": "producer-bound-equivalence",
+    "domain": "evidence.identity",
+    "reproducerSignature": "verification-path-revision-borrowed-inventory-debug-library-provenance-v1",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [
+    "mncs-debug:MNCS-DEBUG-P-013",
+    "mncs-environment:prs_diagnostic_xsession_dedup",
+    "mncs-environment:prs_verify_xsession_dedup"
+  ],
+  "notes": null,
+  "reproducer": {
+    "signature": "verification-path-revision-borrowed-inventory-debug-library-provenance-v1"
+  },
+  "requiredBehavior": "Producer-bound source/request/operation/provider/executor/compiler/library/inventory/environment identities before cross-session or CI/local reuse.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/WHOLE_SYSTEM_COHERENCE.md",
+    "repository": "mncs-environment"
+  },
+  "summary": "Verification path/revision and borrowed inventory, Debug missing effective library roots, and remote routing identities cannot establish exact evidence equivalence.",
+  "target": "tooling",
+  "title": "Cross-session evidence lacks exact producer toolchain/library/inventory provenance",
+  "version": "1"
+}

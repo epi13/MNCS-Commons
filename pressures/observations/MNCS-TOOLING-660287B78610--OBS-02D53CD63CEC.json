@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:3a181aa90214d20d9df4818d497893aa299072454cbe2768465352633a4da275",
+  "evidence": [
+    {
+      "id": "initial-pressure",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "PASS",
+      "summary": "Ambient layers grew independently without shared healthy/degraded/aggregate byte limits and expansion handles."
+    }
+  ],
+  "id": "MNCS-TOOLING-660287B78610--OBS-02D53CD63CEC",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-02T04:08:50Z",
+  "pressureId": "MNCS-TOOLING-660287B78610",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "Inspect captured initial failure/source and run the original focused reproducer.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Explicit file bootstrap or manual inspection before the verified owner fix.",
+    "removed": false
+  }
+}

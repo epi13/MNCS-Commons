@@ -2192,6 +2192,39 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "capability": "declared-process-input-capacity",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "io.process-runtime",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-9342C3B5FB80",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Typed process transport cannot carry real Forge verification requests",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
@@ -3314,9 +3347,9 @@
       "CONSUMER_DEBT": 16,
       "PARTIALLY_RESOLVED": 31,
       "STILL_REPRODUCES": 26,
-      "UNRECONCILED": 2
+      "UNRECONCILED": 3
     },
-    "unreconciled": 2
+    "unreconciled": 3
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "unresolved-language"

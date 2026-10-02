@@ -1103,6 +1103,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
         "mncs-forge",
         "mncs-language"
       ],
@@ -1120,6 +1121,7 @@
         "summary": "The existing mncs.std.process.v1 authority now provides start/observe/cancel/reap with a runtime-scoped opaque handle and bounded resource envelope. A real MNCS source call observed Running, then a separate call cancelled and reaped the same handle; typed trace ended Cancelled with cleanup=true. Embed tests verified parent+child tree empty, launcher reaped, cleanup complete, tiny MemoryMax exhaustion classified ResourceExhausted, and foreign/expired handles fail closed. cgroup removal can prevent final counters, which remains observation_complete=false rather than fabricated zero."
       },
       "reporters": [
+        "mncs-environment",
         "mncs-forge",
         "mncs-language"
       ],
@@ -1130,9 +1132,9 @@
       "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 2,
         "unknown": 0
@@ -1584,6 +1586,39 @@
       "status": "discovered",
       "target": "language",
       "title": "Step-cost and boundary-crossing pressure at store scale",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "capability": "declared-process-input-capacity",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "io.process-runtime",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-9342C3B5FB80",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Typed process transport cannot carry real Forge verification requests",
       "unresolved": true,
       "valid": true,
       "verificationState": "incomplete",
@@ -2490,6 +2525,39 @@
     },
     {
       "affectedRepositories": [
+        "mncs-commons",
+        "mncs-doctor"
+      ],
+      "capability": "legacy.doc-p-021",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "backend",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-01C791D9EFF4",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-commons",
+        "mncs-doctor"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Pure backend values pass with unresolved obligations",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug"
       ],
@@ -2590,6 +2658,39 @@
         "affected": 2,
         "fail": 0,
         "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "capability": "resident-provider-status-reconciliation",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.environment-entry",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-34FC3283FD59",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Forge resident machinery lacks callable Environment readiness and reconciliation",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -2703,6 +2804,75 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-store"
+      ],
+      "capability": "legacy.forge-p-0001",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "identity",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-9E7E149C94D9",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-store"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "toolchain build identity for stale-binary detection",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-actions",
+        "mncs-debug",
+        "mncs-environment",
+        "mncs-test"
+      ],
+      "capability": "producer-bound-equivalence",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "evidence.identity",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-9FEE08F6756E",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "confirmed",
+      "target": "tooling",
+      "title": "Cross-session evidence lacks exact producer toolchain/library/inventory provenance",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 4,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-forge"
@@ -2771,6 +2941,39 @@
         "affected": 3,
         "fail": 0,
         "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment",
+        "mncs-store"
+      ],
+      "capability": "stdlib.store.selected-roots",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "family.coherence",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-B24EC76686BB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Store stdlib admission/compile/cache split blocks normal entry",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
         "unknown": 0
       }
     },
@@ -2967,6 +3170,43 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "capability": "continuous_entry_workspace_binding",
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": false,
+      "domain": "tooling.environment-entry",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-EAF30A7233B0",
+      "reconciliation": {
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-EAF30A7233B0--OBS-F1440540F673",
+        "observedAt": "2026-09-24T04:36:05Z",
+        "repository": "mncs-forge",
+        "summary": "Explicit workspace resolution is now shared by continuous enter/start/status/stop and works from a neutral CWD for two distinct configured workspaces without cross-attachment. Tests also prove mismatch, ambiguity, and no-config failures are precise and never fall back to CWD. Discovery remains a bounded bootstrap walk (depth 8, 4096 directories, 64 configs); authoritative workspace-to-project mapping is still outstanding."
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Continuous entry cannot bind the requested workspace",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-forge",
@@ -3054,12 +3294,12 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
       "CONSUMER_DEBT": 2,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 14,
+      "PARTIALLY_RESOLVED": 15,
       "RESOLVED": 19,
       "STILL_REPRODUCES": 16,
-      "UNRECONCILED": 19
+      "UNRECONCILED": 25
     },
-    "unreconciled": 19
+    "unreconciled": 25
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "multi-repository"

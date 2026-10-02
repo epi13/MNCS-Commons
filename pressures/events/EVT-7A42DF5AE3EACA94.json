@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:ca60e6cee355a0023d8fcd57fb75a46a121ba5b709c5906145c49a830c22a01a",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-660287B78610--OBS-02D53CD63CEC"
+  ],
+  "from": "confirmed",
+  "id": "EVT-7A42DF5AE3EACA94",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-10-02T04:08:56Z",
+  "pressureId": "MNCS-TOOLING-660287B78610",
+  "previousEvent": "EVT-5B82E71AF2846745",
+  "reason": "Verified coherence slice under explicit worktree claims.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "accepted",
+  "version": "1"
+}

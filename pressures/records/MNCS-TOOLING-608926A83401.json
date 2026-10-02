@@ -1,0 +1,37 @@
+{
+  "affectedRepositories": [
+    "mncs-environment"
+  ],
+  "capability": "family.observation.no-op",
+  "contentDigest": "sha256:c5cc05f3f60822295818781fea2a0b894880c7d7822d959febbfb2fb26e70108",
+  "discoveredAt": "2026-10-02T04:08:34Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "family.coherence",
+  "id": "MNCS-TOOLING-608926A83401",
+  "identity": {
+    "capability": "family.observation.no-op",
+    "domain": "family.coherence",
+    "reproducerSignature": "whole-system-coherence-20261001:family.observation.no-op",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "whole-system-coherence-20261001:family.observation.no-op"
+  },
+  "requiredBehavior": "Quiet family observation must not write rows, save epochs repeatedly, or spawn native decisions.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/WHOLE_SYSTEM_REPORT.md",
+    "repository": "mncs-environment"
+  },
+  "summary": "Prior family observation increments presence/row versions without changed semantic facts, causing durable churn.",
+  "target": "tooling",
+  "title": "Unchanged family presence and reconciliation rows republish",
+  "version": "1"
+}

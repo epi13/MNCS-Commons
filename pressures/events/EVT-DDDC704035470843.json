@@ -1,0 +1,20 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:3a0d4340fc489f829d2329e7f7ee9001a8ad2d23f0b57d7db78e4545d58018d4",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-B24EC76686BB--OBS-5F9FA5AF7AC2",
+    "MNCS-TOOLING-B24EC76686BB--OBS-6100163C352F"
+  ],
+  "from": "verifying",
+  "id": "EVT-DDDC704035470843",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-10-02T04:08:34Z",
+  "pressureId": "MNCS-TOOLING-B24EC76686BB",
+  "previousEvent": "EVT-47A634EB9CE028F3",
+  "reason": "Every affected scoped consumer contributes PASS; workaround removed.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "resolved",
+  "version": "1"
+}

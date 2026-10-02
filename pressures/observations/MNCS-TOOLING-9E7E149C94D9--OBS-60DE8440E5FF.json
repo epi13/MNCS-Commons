@@ -1,0 +1,43 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:c5839db453ca100847e774ca9dfa97d095231c57a414e8967cb231b4d3b14dd4",
+  "evidence": [
+    {
+      "id": "stale-interface",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "FAIL",
+      "summary": "Prebuilt embed lacks composite ABI; prebuilt LS host rejects service_status."
+    },
+    {
+      "id": "isolated-main-build",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "PASS",
+      "summary": "Isolated committed compiler/embed enables native pressure queries; rebuilt LS host passes 8 lifecycle tests."
+    }
+  ],
+  "id": "MNCS-TOOLING-9E7E149C94D9--OBS-60DE8440E5FF",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-02T04:09:05Z",
+  "pressureId": "MNCS-TOOLING-9E7E149C94D9",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "Compare the prebuilt CLI/embed/LS interfaces with source, then build committed source in isolated artifact directories.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/WHOLE_SYSTEM_REPORT.md",
+    "repository": "mncs-environment"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Bind explicit matching compiler/embed/provider paths; source build identity/admission remains open.",
+    "removed": false
+  }
+}
