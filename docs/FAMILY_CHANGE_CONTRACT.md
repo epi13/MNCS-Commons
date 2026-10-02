@@ -67,7 +67,8 @@ functions, never `==` on variants):
 - `classify_consumer` — current / reconcilable / occupied / blocked /
   pending_verification / semantic_required / incompatible / unknown
 - `gate_repair` — repair / defer / escalate
-- `adopt_convergence` — adopt a verified repair
+- `adopt_convergence` — legacy five-fact verified-generation admission
+- `adopt_post_repair` — additionally require renewed owning proof after repair
 - `transform_admit` — deterministic operation admission
 - `revisit_due` — backoff expiry for deferred work
 - `contributor_live` — presence liveness
@@ -89,6 +90,12 @@ observed and canonical generations, repair state (`no_repair`,
 `applied_unknown`, `applied_pass`, `applied_fail`), attempts, and
 detail. Writers use compare-and-swap; races observe the winner.
 `applied_unknown` adopts only on PASS verdicts for every owning obligation.
+New repairs record each obligation's pre-effect evidence digest. Every owning
+proof must change before `adopt_post_repair` admits adoption; old PASS/FAIL and
+partially renewed evidence remain pending. Row timestamps do not count as proof.
+Historical pending rows without the marker require explicit revalidation rather
+than optimistic adoption. This is a conservative local freshness gate; it does
+not establish cross-session semantic/evidence equivalence.
 
 The row payload and native consumer law remain v1; Environment owns physical
 row routing, not new lifecycle or consumer-class policy.

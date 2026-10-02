@@ -146,7 +146,7 @@ def test_native_family_change_laws_are_executable() -> None:
     failed = [name for name, value in sorted(fields.items())
               if value != {"boolean": {"value": True}}]
     assert not failed, failed
-    assert len(fields) == 40
+    assert len(fields) == 44
 
 
 def test_native_family_classification_batch_preserves_order_and_scalar_law():

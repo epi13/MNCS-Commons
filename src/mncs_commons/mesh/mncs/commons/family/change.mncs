@@ -300,6 +300,22 @@ fn adopt_convergence(
     return Adopt.adopted;
 }
 
+// A repair cannot adopt a proof captured before its effects. The host supplies
+// exact before/after evidence identity facts; domain admission remains here.
+fn adopt_post_repair(
+    version_seen: u64,
+    version_now: u64,
+    verdict: u64,
+    observed_gen: u64,
+    canonical_gen: u64,
+    proof_renewed: u64
+) -> (result: Adopt) {
+    if proof_renewed != 1 {
+        return Adopt.stale_regeneration;
+    }
+    return adopt_convergence(version_seen, version_now, verdict, observed_gen, canonical_gen);
+}
+
 // --- transform admission --------------------------------------------------
 
 fn op_code(op: TransformOp) -> (result: u64) {
