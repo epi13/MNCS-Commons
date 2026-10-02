@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-commons",
-  "revision": 7,
+  "revision": 8,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics."
@@ -161,6 +161,16 @@
         "fingerprint_sources": [
           "src/mncs_commons/store.py",
           "schemas/"
+        ]
+      },
+      {
+        "contract": "family-change",
+        "version": "1",
+        "kind": "coordination-contract",
+        "stability": "experimental",
+        "fingerprint_sources": [
+          "src/mncs_commons/family_change.py",
+          "src/mncs_commons/mesh/mncs/commons/family/change.mncs"
         ]
       }
     ],

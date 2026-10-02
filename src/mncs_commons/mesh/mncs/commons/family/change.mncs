@@ -204,6 +204,17 @@ fn classify_consumer(
 
 // --- repair gate ---------------------------------------------------------
 
+// One bounded request for independent consumer observations. Ordering and
+// scalar law are identical; batching never mixes domain authorities.
+fn classify_consumers(facts: [[u64; 8]; up_to 32]) -> (result: [u64; up_to 32]) {
+    iterate i over facts carrying codes: [u64; 32] = [0; 32] {
+        let row: [u64; 8] = facts[i];
+        next codes = replace(codes, i, class_code(classify_consumer(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])));
+    }
+    return codes[0..facts.len];
+}
+
 fn gate_code(gate: Gate) -> (result: u64) {
     return match gate {
         proceed => 0,

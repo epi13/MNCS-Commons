@@ -63,6 +63,7 @@ All take small integer fact vectors over the `mncs call` boundary
 functions, never `==` on variants):
 
 - `lifecycle_legal` — transition admission
+- `classify_consumers` — one ordered bounded request for up to 32 consumer fact vectors
 - `classify_consumer` — current / reconcilable / occupied / blocked /
   pending_verification / semantic_required / incompatible / unknown
 - `gate_repair` — repair / defer / escalate
@@ -76,11 +77,21 @@ defer, never optimistic repair.
 
 ## Reconciliation rows
 
-`family:recon/<change>/<consumer>` rows carry the consumer class,
+Environment now addresses reconciliation rows as
+`family:recon/<change>/<consumer>/wc:<checkout-address-digest>`. The checkout
+suffix is local physical addressing inside the selected Store namespace, not
+semantic/evidence equivalence across machines. Observers of the same checkout
+share adoption; different worktrees establish independent adoption. Legacy
+repository-only rows remain durable but cannot authorize checkout adoption.
+
+Rows carry the consumer class,
 observed and canonical generations, repair state (`no_repair`,
 `applied_unknown`, `applied_pass`, `applied_fail`), attempts, and
 detail. Writers use compare-and-swap; races observe the winner.
-`applied_unknown` adopts only on owning PASS verdicts.
+`applied_unknown` adopts only on PASS verdicts for every owning obligation.
+
+The row payload and native consumer law remain v1; Environment owns physical
+row routing, not new lifecycle or consumer-class policy.
 
 ## Compatibility
 

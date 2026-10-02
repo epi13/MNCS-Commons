@@ -34,6 +34,7 @@ mncs_commons = [
   "data/*.json",
   "mesh/mncs/commons/mesh/*.mncs",
   "mesh/mncs/commons/pressure/*.mncs",
+  "mesh/mncs/commons/family/*.mncs",
   "mesh/mncs/corpora/*.json",
 ]
 
