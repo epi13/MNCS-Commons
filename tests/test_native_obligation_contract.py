@@ -47,4 +47,6 @@ def test_native_obligation_contract_laws_are_executable() -> None:
         "reference_only_excluded": {"boolean": {"value": True}},
         "new_execution_required": {"boolean": {"value": True}},
         "native_test_executor": {"boolean": {"value": True}},
+        "external_executor": {"boolean": {"value": True}},
+        "native_is_not_external": {"boolean": {"value": True}},
     }
