@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:bcce0a77f4a4754480747d34677f2e66cb144e793d2cab18e29effd02962c630",
+  "evidence": [
+    {
+      "id": "incremental-warm-entry",
+      "ref": "mncs-environment:docs/INCREMENTAL_COHERENCE_REPORT.md",
+      "status": "PASS",
+      "summary": "129 to zero Git launches and 12 to zero Store puts on unchanged warm entry."
+    }
+  ],
+  "id": "MNCS-TOOLING-CC5E9CCFA538--OBS-135AC2332B96",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "sol-incremental-ambience",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true,
+    "git_launches_after": 0,
+    "git_launches_before": 129,
+    "logical_store_puts_after": 0,
+    "logical_store_puts_before": 12
+  },
+  "observedAt": "2026-10-02T14:39:02Z",
+  "pressureId": "MNCS-TOOLING-CC5E9CCFA538",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Warm entry routing eliminates repeated discovery: zero Git/native/provider processes and zero logical Store puts. Profile now locates warm latency in Store opening/verified historical payloads and snapshot decoding. Highest snapshot revision is selected before JSON decoding; no Store byte verification is bypassed.",
+  "version": "1",
+  "workaround": {
+    "description": "Retain Store verification and replay; remaining cold/reopen cost needs owner-level publication/verified-state work.",
+    "removed": false
+  }
+}

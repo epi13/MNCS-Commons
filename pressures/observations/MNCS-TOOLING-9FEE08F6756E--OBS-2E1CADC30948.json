@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:78129825941712b019b11e06d740503b789a45a6490d6f378808d63f34999bf2",
+  "evidence": [
+    {
+      "id": "incremental-identity-audit",
+      "ref": "mncs-environment:docs/INCREMENTAL_COHERENCE.md",
+      "status": "PASS",
+      "summary": "Actual artifact and stdlib content identity observed; unknown origin remains explicit."
+    }
+  ],
+  "id": "MNCS-TOOLING-9FEE08F6756E--OBS-2E1CADC30948",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "sol-incremental-ambience",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-10-02T14:36:03Z",
+  "pressureId": "MNCS-TOOLING-9FEE08F6756E",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "UNKNOWN"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Incremental observations now bind actual executable/compiler/embed bytes and effective stdlib file content. Build-origin/ABI and producer-specific fresh inventory/environment applicability remain unestablished; cross-session Test/Debug/CI reuse and shared remote dispatch remain deferred.",
+  "version": "1",
+  "workaround": {
+    "description": "Retain exact session-local evidence and independent dispatch; actual byte observation does not prove current source build origin.",
+    "removed": false
+  }
+}

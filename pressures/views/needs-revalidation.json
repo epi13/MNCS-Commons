@@ -2931,40 +2931,6 @@
     },
     {
       "affectedRepositories": [
-        "mncs-actions",
-        "mncs-debug",
-        "mncs-environment",
-        "mncs-test"
-      ],
-      "capability": "producer-bound-equivalence",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
-      "domain": "evidence.identity",
-      "fallbackLanguages": [],
-      "id": "MNCS-TOOLING-9FEE08F6756E",
-      "reconciliation": {
-        "classification": "UNRECONCILED"
-      },
-      "reporters": [
-        "mncs-environment"
-      ],
-      "revalidationRequired": true,
-      "severity": "major",
-      "status": "confirmed",
-      "target": "tooling",
-      "title": "Cross-session evidence lacks exact producer toolchain/library/inventory provenance",
-      "unresolved": true,
-      "valid": true,
-      "verificationState": "incomplete",
-      "verificationSummary": {
-        "affected": 4,
-        "fail": 0,
-        "pass": 0,
-        "unknown": 0
-      }
-    },
-    {
-      "affectedRepositories": [
         "mncs-forge",
         "mncs-language",
         "mncs-store"
@@ -3375,9 +3341,9 @@
       "PARTIALLY_RESOLVED": 29,
       "RESOLVED": 1,
       "STILL_REPRODUCES": 12,
-      "UNRECONCILED": 26
+      "UNRECONCILED": 25
     },
-    "unreconciled": 26
+    "unreconciled": 25
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "needs-revalidation"

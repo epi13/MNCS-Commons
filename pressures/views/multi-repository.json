@@ -2845,18 +2845,22 @@
         "mncs-test"
       ],
       "capability": "producer-bound-equivalence",
-      "classification": "UNRECONCILED",
-      "currentValidation": false,
+      "classification": "PARTIALLY_RESOLVED",
+      "currentValidation": true,
       "domain": "evidence.identity",
       "fallbackLanguages": [],
       "id": "MNCS-TOOLING-9FEE08F6756E",
       "reconciliation": {
-        "classification": "UNRECONCILED"
+        "classification": "PARTIALLY_RESOLVED",
+        "observationId": "MNCS-TOOLING-9FEE08F6756E--OBS-2E1CADC30948",
+        "observedAt": "2026-10-02T14:36:03Z",
+        "repository": "mncs-environment",
+        "summary": "Incremental observations now bind actual executable/compiler/embed bytes and effective stdlib file content. Build-origin/ABI and producer-specific fresh inventory/environment applicability remain unestablished; cross-session Test/Debug/CI reuse and shared remote dispatch remain deferred."
       },
       "reporters": [
         "mncs-environment"
       ],
-      "revalidationRequired": true,
+      "revalidationRequired": false,
       "severity": "major",
       "status": "confirmed",
       "target": "tooling",
@@ -3098,6 +3102,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
         "mncs-forge",
         "mncs-store"
       ],
@@ -3109,12 +3114,13 @@
       "id": "MNCS-TOOLING-CC5E9CCFA538",
       "reconciliation": {
         "classification": "PARTIALLY_RESOLVED",
-        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-6301BB5CA354",
-        "observedAt": "2026-09-24T04:36:06Z",
-        "repository": "mncs-forge",
-        "summary": "Workspace-first continuous enter/start completed in 8.653 s for the bounded resident run; a 24-change burst was processed and status remained stable through 4 seconds idle, with no queued or repeated verification absent invalidation. Store projection generation stayed zero. This is a single fixture/workspace sample, not a startup tail estimate; startup/Store recovery can still dominate broader workspaces."
+        "observationId": "MNCS-TOOLING-CC5E9CCFA538--OBS-135AC2332B96",
+        "observedAt": "2026-10-02T14:39:02Z",
+        "repository": "mncs-environment",
+        "summary": "Warm entry routing eliminates repeated discovery: zero Git/native/provider processes and zero logical Store puts. Profile now locates warm latency in Store opening/verified historical payloads and snapshot decoding. Highest snapshot revision is selected before JSON decoding; no Store byte verification is bypassed."
       },
       "reporters": [
+        "mncs-environment",
         "mncs-forge"
       ],
       "revalidationRequired": false,
@@ -3126,7 +3132,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3294,12 +3300,12 @@
       "CAPABILITY_AVAILABLE_CONSUMER_NOT_MIGRATED": 2,
       "CONSUMER_DEBT": 2,
       "OBSOLETE": 6,
-      "PARTIALLY_RESOLVED": 15,
+      "PARTIALLY_RESOLVED": 16,
       "RESOLVED": 19,
       "STILL_REPRODUCES": 16,
-      "UNRECONCILED": 25
+      "UNRECONCILED": 24
     },
-    "unreconciled": 25
+    "unreconciled": 24
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "multi-repository"
