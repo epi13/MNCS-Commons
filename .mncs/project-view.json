@@ -78,7 +78,7 @@
   "purpose": "Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics.",
   "repository": "mncs-commons",
   "schema_version": "mncs.project-view/1",
-  "source_identity": "sha256:8eeec76433aedf058cff1faf7da8214f63d7037339b49793f6600877a09c2a66",
+  "source_identity": "sha256:55e2c3d321bc0ada5bfd8baf541ced17becf0327c1162bc089f75fb67dc81b72",
   "structure": {
     "layout": "mncs.repository-layout/1",
     "surfaces": [
