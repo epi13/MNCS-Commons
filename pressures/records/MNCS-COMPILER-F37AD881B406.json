@@ -1,0 +1,34 @@
+{
+  "affectedRepositories": [
+    "mncs-environment"
+  ],
+  "capability": "pressure-kernel-bound-obligations",
+  "contentDigest": "sha256:1a93c0c746bbcec9aded1ed91b08a3f4409589a0fd00d733d11a7c3fcd6533d8",
+  "discoveredAt": "2026-10-02T23:39:09Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "compiler.assurance",
+  "id": "MNCS-COMPILER-F37AD881B406",
+  "identity": {
+    "capability": "pressure-kernel-bound-obligations",
+    "domain": "compiler.assurance",
+    "reproducerSignature": "commons.pressure.lifecycle-profile018-required-obligations",
+    "target": "compiler"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "path": "src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs",
+    "signature": "commons.pressure.lifecycle-profile018-required-obligations"
+  },
+  "requiredBehavior": "Discharge exact-resource-cost, machine-intent, sequence-replace-bounds and view-range-valid obligations without replacing UNKNOWN with prose PASS.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {},
+  "summary": "All 13 pressure lifecycle cases agree; compiler result remains UNKNOWN with 13 visible required obligations.",
+  "target": "compiler",
+  "title": "Pressure kernel runtime agreement retains compilation obligations",
+  "version": "1"
+}

@@ -83,9 +83,10 @@ class _EmbedRuntime:
             raise PressureKernelError(f"MNCS compiler is missing: {binary}")
         environment = dict(os.environ)
         mesh_mncs = Path(__file__).resolve().parent / "mesh" / "mncs"
-        environment["MNCS_LIBRARY_PATH"] = os.pathsep.join(
-            (str(self.checkout / "library"), str(mesh_mncs))
-        )
+        selected_stdlib = Path(os.environ.get('MNCS_STDLIB_ROOT',
+            str(self.checkout.parent / 'mncs-stdlib')))
+        stdlib = selected_stdlib / 'library' if (selected_stdlib / 'library').is_dir() else selected_stdlib
+        environment["MNCS_LIBRARY_PATH"] = os.pathsep.join((str(stdlib), str(mesh_mncs)))
         with tempfile.TemporaryDirectory(prefix="mncs-pressure-kernel-") as directory:
             output = Path(directory)
             completed = subprocess.run(

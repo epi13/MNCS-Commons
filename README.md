@@ -1,5 +1,22 @@
 # MNCS Commons
 
+<!-- MNCS:generated:begin -->
+## Project entry
+
+Commons owns family coordination, institutional-memory records, architecture/convergence facts, and pressure lifecycle; it does not own sibling application semantics.
+
+Declared capabilities (declarations do not establish execution health):
+
+- `family-architecture/1` — coordination-model (experimental)
+- `family-change/1` — coordination-contract (experimental)
+- `mncs-commons.provider-provenance/1` — native-content-provenance-law (experimental)
+- `pressure-registry/1` — development-pressure-coordination (experimental)
+- `record-store-api/0.5.0.dev1` — protocol (experimental)
+- `semantic-projection/1` — owner-neutral-semantic-projection-contract (experimental)
+
+Semantic sources and ownership: `.mncs/projections.json`.
+<!-- MNCS:generated:end -->
+
 ![MNCS badge](docs/mncs-badge.svg)
 
 MNCS Harness can expose this controller-local Agent Node directly to a human

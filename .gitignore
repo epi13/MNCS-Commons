@@ -13,3 +13,6 @@ mncs-commons-store/
 workspace/
 .mncs-forge/
 .joern-agent/
+
+# Discardable native application artifacts
+.mncs/cache/
