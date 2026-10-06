@@ -204,6 +204,17 @@ fn classify_consumer(
 
 // --- repair gate ---------------------------------------------------------
 
+// One bounded request for independent consumer observations. Ordering and
+// scalar law are identical; batching never mixes domain authorities.
+fn classify_consumers(facts: [[u64; 8]; up_to 32]) -> (result: [u64; up_to 32]) {
+    iterate i over facts carrying codes: [u64; 32] = [0; 32] {
+        let row: [u64; 8] = facts[i];
+        next codes = replace(codes, i, class_code(classify_consumer(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])));
+    }
+    return codes[0..facts.len];
+}
+
 fn gate_code(gate: Gate) -> (result: u64) {
     return match gate {
         proceed => 0,
@@ -287,6 +298,22 @@ fn adopt_convergence(
         return Adopt.regression_refused;
     }
     return Adopt.adopted;
+}
+
+// A repair cannot adopt a proof captured before its effects. The host supplies
+// exact before/after evidence identity facts; domain admission remains here.
+fn adopt_post_repair(
+    version_seen: u64,
+    version_now: u64,
+    verdict: u64,
+    observed_gen: u64,
+    canonical_gen: u64,
+    proof_renewed: u64
+) -> (result: Adopt) {
+    if proof_renewed != 1 {
+        return Adopt.stale_regeneration;
+    }
+    return adopt_convergence(version_seen, version_now, verdict, observed_gen, canonical_gen);
 }
 
 // --- transform admission --------------------------------------------------

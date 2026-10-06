@@ -19,7 +19,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 from .canonical import canonical_json
 from .family_registry import canonical_project_identity
@@ -1344,6 +1344,7 @@ class PressureRegistry:
         all_record_ids: set[str],
         *,
         validate_lifecycle: bool = True,
+        transition_policy: Callable[[str, str], bool] | None = None,
     ) -> PressureProjection:
         diagnostics: list[PressureDiagnostic] = []
         relevant_observations = tuple(
@@ -1421,7 +1422,8 @@ class PressureRegistry:
                 )
                 break
             target = str(event.get("to", ""))
-            if not _native_transition_allowed(state, target):
+            allowed = (transition_policy or _native_transition_allowed)(state, target)
+            if not allowed:
                 diagnostics.append(
                     PressureDiagnostic(
                         "INVALID_TRANSITION",
@@ -1569,6 +1571,16 @@ class PressureRegistry:
 
     def projections(self, *, validate_lifecycle: bool = True) -> tuple[PressureProjection, ...]:
         records, observations, events = self._documents()
+        transition_policy = None
+        if validate_lifecycle and any(
+            item.get("kind") == "PressureTransition" for item in events.values()
+        ):
+            # Bind and validate the selected policy runtime once per snapshot.
+            # Looking it up for every event would repeatedly rescan the same
+            # immutable source/toolchain identities while folding one ledger.
+            from .pressure_runtime import pressure_kernel
+
+            transition_policy = pressure_kernel().transition_allowed
         return tuple(
             self._project_one(
                 record_id,
@@ -1577,6 +1589,7 @@ class PressureRegistry:
                 events.values(),
                 set(records),
                 validate_lifecycle=validate_lifecycle,
+                transition_policy=transition_policy,
             )
             for record_id in sorted(records)
         )
@@ -2077,8 +2090,10 @@ class PressureRegistry:
         rust_fallback: bool = False,
         python_fallback: bool = False,
         needs_revalidation: bool = False,
+        _projections: tuple[PressureProjection, ...] | None = None,
     ) -> list[dict[str, Any]]:
-        projections = self.projections(validate_lifecycle=False)
+        projections = (_projections if _projections is not None
+                       else self.projections(validate_lifecycle=False))
         return self._query_rows(
             projections,
             filter_spec=_projection_filter(

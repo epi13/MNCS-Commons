@@ -622,6 +622,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
         "mncs-forge",
         "mncs-language"
       ],
@@ -639,6 +640,7 @@
         "summary": "The existing mncs.std.process.v1 authority now provides start/observe/cancel/reap with a runtime-scoped opaque handle and bounded resource envelope. A real MNCS source call observed Running, then a separate call cancelled and reaped the same handle; typed trace ended Cancelled with cleanup=true. Embed tests verified parent+child tree empty, launcher reaped, cleanup complete, tiny MemoryMax exhaustion classified ResourceExhausted, and foreign/expired handles fail closed. cgroup removal can prevent final counters, which remains observation_complete=false rather than fabricated zero."
       },
       "reporters": [
+        "mncs-environment",
         "mncs-forge",
         "mncs-language"
       ],
@@ -649,9 +651,9 @@
       "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles",
       "unresolved": false,
       "valid": true,
-      "verificationState": "ready",
+      "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 2,
+        "affected": 3,
         "fail": 0,
         "pass": 2,
         "unknown": 0
@@ -1070,6 +1072,134 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "capability": "resident-provider-status-reconciliation",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.environment-entry",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-34FC3283FD59",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-forge"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Forge resident machinery lacks callable Environment readiness and reconciliation",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment"
+      ],
+      "capability": "family.observation.no-op",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "family.coherence",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-608926A83401",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Unchanged family presence and reconciliation rows republish",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment"
+      ],
+      "capability": "context.ambient-budget",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "family.coherence",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-660287B78610",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Ambient provider blocks have no common bounded expansion policy",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 1,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment",
+        "mncs-store"
+      ],
+      "capability": "stdlib.store.selected-roots",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "family.coherence",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-B24EC76686BB",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment",
+        "mncs-store"
+      ],
+      "revalidationRequired": false,
+      "severity": "major",
+      "status": "resolved",
+      "target": "tooling",
+      "title": "Store stdlib admission/compile/cache split blocks normal entry",
+      "unresolved": false,
+      "valid": true,
+      "verificationState": "ready",
+      "verificationSummary": {
+        "affected": 2,
+        "fail": 0,
+        "pass": 2,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-actions",
         "mncs-debug",
         "mncs-forge",
@@ -1155,9 +1285,9 @@
     "classificationCounts": {
       "RESOLVED": 24,
       "STILL_REPRODUCES": 1,
-      "UNRECONCILED": 6
+      "UNRECONCILED": 10
     },
-    "unreconciled": 6
+    "unreconciled": 10
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "recently-resolved"

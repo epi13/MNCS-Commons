@@ -1,0 +1,25 @@
+{
+  "schema_version": "mncs.semantic-projection-contract/1",
+  "declaration_schema": "schemas/semantic-projection-1.schema.json",
+  "authorities": {
+    "source": "declared subject owner",
+    "meaning": "selected semantic owner",
+    "rendering": "selected renderer owner",
+    "health": "mncs-doctor",
+    "execution": "mncs-forge",
+    "reconciliation": "mncs-automation",
+    "persistence": "mncs-store",
+    "composition": "mncs-environment"
+  },
+  "classes": [
+    "authoritative",
+    "derived",
+    "mixed",
+    "interpretation"
+  ],
+  "identity": "selected semantic values + declaration + renderer/schema identities",
+  "ownership": "explicit whole-file or bounded region; protected manual edits; occupied targets require exact bootstrap preimage",
+  "refresh": "semantic source/renderer/schema changes invalidate; output writes never become source events",
+  "recovery": "CAS rows + exact pending write identities + claims + preimage revalidation + renewed post-write verification",
+  "interpretation": "the same semantic state serves ephemeral queries and outward files; rendered files never establish completion evidence"
+}

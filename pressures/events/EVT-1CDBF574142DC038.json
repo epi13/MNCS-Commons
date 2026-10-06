@@ -1,0 +1,19 @@
+{
+  "actor": "mncs-environment",
+  "contentDigest": "sha256:66ac85226b1397709b85685f8bcabdfd02f839c633ef7a1ed3a19aaeafd6f864",
+  "details": {},
+  "evidenceRefs": [
+    "MNCS-TOOLING-9FEE08F6756E--OBS-F4CB4ECBA88B"
+  ],
+  "from": "discovered",
+  "id": "EVT-1CDBF574142DC038",
+  "implementation": {},
+  "kind": "PressureTransition",
+  "occurredAt": "2026-10-02T04:09:09Z",
+  "pressureId": "MNCS-TOOLING-9FEE08F6756E",
+  "previousEvent": null,
+  "reason": "Exact missing identity material demonstrated by current producer fields.",
+  "schema": "commons.mncs.dev/family-pressure-event/v1",
+  "to": "confirmed",
+  "version": "1"
+}

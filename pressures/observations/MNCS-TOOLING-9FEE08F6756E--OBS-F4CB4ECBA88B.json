@@ -1,0 +1,32 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:fd9ecada49c55971bf5ee8434f69f07183c06cd9c0ecec59fe2c52a5a17b0cba",
+  "evidence": [
+    {
+      "id": "identity-audit",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "PASS",
+      "summary": "Producer identity fields inspected; the required exact equivalence material is absent."
+    }
+  ],
+  "id": "MNCS-TOOLING-9FEE08F6756E--OBS-F4CB4ECBA88B",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-02T04:09:06Z",
+  "pressureId": "MNCS-TOOLING-9FEE08F6756E",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Retain session-local evidence and independent remote dispatch; never weaken provenance.",
+    "removed": false
+  }
+}

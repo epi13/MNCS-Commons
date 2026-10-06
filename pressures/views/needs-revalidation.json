@@ -1587,6 +1587,39 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-language"
+      ],
+      "capability": "declared-process-input-capacity",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "io.process-runtime",
+      "fallbackLanguages": [],
+      "id": "MNCS-LANG-9342C3B5FB80",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "language",
+      "title": "Typed process transport cannot carry real Forge verification requests",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 3,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-store"
       ],
       "capability": "legacy.p1-007.single-result-functions-force-parse-then-project-access-patterns",
@@ -2442,6 +2475,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-commons",
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-021",
@@ -2454,6 +2488,7 @@
         "classification": "UNRECONCILED"
       },
       "reporters": [
+        "mncs-commons",
         "mncs-doctor"
       ],
       "revalidationRequired": true,
@@ -2465,7 +2500,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -2735,6 +2770,68 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment"
+      ],
+      "capability": "concurrent-snapshot-convergence",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "environment.session",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-754ECD2785F3",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "major",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Concurrent durable session mutations lack snapshot convergence and complete invocation receipts",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
+        "mncs-environment"
+      ],
+      "capability": "governed-repository-publication",
+      "classification": "UNRECONCILED",
+      "currentValidation": false,
+      "domain": "tooling.environment-delivery",
+      "fallbackLanguages": [],
+      "id": "MNCS-TOOLING-8FADA73A7A55",
+      "reconciliation": {
+        "classification": "UNRECONCILED"
+      },
+      "reporters": [
+        "mncs-environment"
+      ],
+      "revalidationRequired": true,
+      "severity": "moderate",
+      "status": "discovered",
+      "target": "tooling",
+      "title": "Environment has no governed repository delivery capability",
+      "unresolved": true,
+      "valid": true,
+      "verificationState": "incomplete",
+      "verificationSummary": {
+        "affected": 1,
+        "fail": 0,
+        "pass": 0,
+        "unknown": 0
+      }
+    },
+    {
+      "affectedRepositories": [
         "mncs-doctor"
       ],
       "capability": "legacy.doc-p-014",
@@ -2799,7 +2896,9 @@
     },
     {
       "affectedRepositories": [
-        "mncs-forge"
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-store"
       ],
       "capability": "legacy.forge-p-0001",
       "classification": "UNRECONCILED",
@@ -2811,7 +2910,9 @@
         "classification": "UNRECONCILED"
       },
       "reporters": [
-        "mncs-forge"
+        "mncs-environment",
+        "mncs-forge",
+        "mncs-store"
       ],
       "revalidationRequired": true,
       "severity": "major",
@@ -2822,7 +2923,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 3,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3132,6 +3233,7 @@
     },
     {
       "affectedRepositories": [
+        "mncs-environment",
         "mncs-forge"
       ],
       "capability": "continuous_entry_workspace_binding",
@@ -3148,6 +3250,7 @@
         "summary": "Explicit workspace resolution is now shared by continuous enter/start/status/stop and works from a neutral CWD for two distinct configured workspaces without cross-attachment. Tests also prove mismatch, ambiguity, and no-config failures are precise and never fall back to CWD. Discovery remains a bounded bootstrap walk (depth 8, 4096 directories, 64 configs); authoritative workspace-to-project mapping is still outstanding."
       },
       "reporters": [
+        "mncs-environment",
         "mncs-forge"
       ],
       "revalidationRequired": true,
@@ -3159,7 +3262,7 @@
       "valid": true,
       "verificationState": "incomplete",
       "verificationSummary": {
-        "affected": 1,
+        "affected": 2,
         "fail": 0,
         "pass": 0,
         "unknown": 0
@@ -3238,9 +3341,9 @@
       "PARTIALLY_RESOLVED": 29,
       "RESOLVED": 1,
       "STILL_REPRODUCES": 12,
-      "UNRECONCILED": 22
+      "UNRECONCILED": 25
     },
-    "unreconciled": 22
+    "unreconciled": 25
   },
   "schema": "commons.mncs.dev/family-pressure-view/v1",
   "view": "needs-revalidation"

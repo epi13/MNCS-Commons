@@ -1,0 +1,39 @@
+{
+  "agent": null,
+  "compiler": {
+    "revision": "425de2016a1273b66fa44609ea75aa25e04f0a0f"
+  },
+  "contentDigest": "sha256:bd11800514fe67005c94eb4f03c4de73d4f0d1df7a40617d23f85fa464ddf2b8",
+  "evidence": [
+    {
+      "id": "mncs:language:experiment:result:e4e1319b857a81ace2594231957abe3ba0d710d16e565c2f64c881e6f34610c3",
+      "kind": "test",
+      "ref": "tests/test_mesh_interop.py",
+      "status": "UNKNOWN",
+      "summary": "Runtime agreement established; required compilation obligations remain."
+    }
+  ],
+  "id": "MNCS-COMPILER-F37AD881B406--OBS-DE3323457289",
+  "kind": "observation",
+  "languageProfile": "0.18",
+  "metadata": {},
+  "observedAt": "2026-10-02T23:39:09Z",
+  "pressureId": "MNCS-COMPILER-F37AD881B406",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "mncs experiment run src/mncs_commons/mesh/mncs/commons/pressure/lifecycle.mncs --backend mncs-research-bytecode --corpus src/mncs_commons/mesh/mncs/corpora/pressure-lifecycle-corpus.json",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Native research-bytecode experiment returns all corpus expectations; translation validation PASS, compilation UNKNOWN.",
+  "version": "1",
+  "workaround": {
+    "active": true,
+    "description": "Interop battery uses explicit agreement mode, preserving UNKNOWN assurance.",
+    "locations": [
+      "tests/test_mesh_interop.py"
+    ]
+  }
+}

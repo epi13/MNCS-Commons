@@ -32,8 +32,12 @@
     {
       "previous_content_identity": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
       "current_content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
-      "changed_capabilities": ["family.agent-context"],
-      "added_contracts": ["mncs.family-agent-context/1"],
+      "changed_capabilities": [
+        "family.agent-context"
+      ],
+      "added_contracts": [
+        "mncs.family-agent-context/1"
+      ],
       "removed_contracts": [],
       "ownership_changes": [
         {
@@ -47,27 +51,69 @@
     {
       "previous_content_identity": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
       "current_content_identity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
-      "changed_capabilities": ["actions.family-verification", "debug.decision-policy", "family.agent-context"],
-      "added_contracts": ["commons.mncs.family-agent-projection/1"],
+      "changed_capabilities": [
+        "actions.family-verification",
+        "debug.decision-policy",
+        "family.agent-context"
+      ],
+      "added_contracts": [
+        "commons.mncs.family-agent-projection/1"
+      ],
       "removed_contracts": [],
       "ownership_changes": [],
       "shadow_state_transitions": [
-        {"capability": "actions.family-verification", "change": "classification now distinguishes temporary host semantic policy from external process transport", "state": "pending"},
-        {"capability": "debug.decision-policy", "change": "classification now distinguishes temporary host semantic policy from external process transport", "state": "pending"}
+        {
+          "capability": "actions.family-verification",
+          "change": "classification now distinguishes temporary host semantic policy from external process transport",
+          "state": "pending"
+        },
+        {
+          "capability": "debug.decision-policy",
+          "change": "classification now distinguishes temporary host semantic policy from external process transport",
+          "state": "pending"
+        }
       ]
     },
     {
       "previous_content_identity": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
       "current_content_identity": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
-      "changed_capabilities": ["actions.family-verification", "debug.decision-policy"],
+      "changed_capabilities": [
+        "actions.family-verification",
+        "debug.decision-policy"
+      ],
       "added_contracts": [],
       "removed_contracts": [],
       "ownership_changes": [],
       "shadow_state_transitions": [
-        {"capability": "actions.family-verification", "change": "native family admission, receipt reuse, traversal, and proof composition promoted; Python remains an explicit compatibility adapter", "state": "retired"},
-        {"capability": "debug.decision-policy", "change": "native outcome, sufficiency, escalation, and stop policy promoted; Python remains an artifact/protocol compatibility adapter", "state": "retired"}
+        {
+          "capability": "actions.family-verification",
+          "change": "native family admission, receipt reuse, traversal, and proof composition promoted; Python remains an explicit compatibility adapter",
+          "state": "retired"
+        },
+        {
+          "capability": "debug.decision-policy",
+          "change": "native outcome, sufficiency, escalation, and stop policy promoted; Python remains an artifact/protocol compatibility adapter",
+          "state": "retired"
+        }
+      ]
+    },
+    {
+      "previous_content_identity": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
+      "current_content_identity": "sha256:daf2d175e30e909f9294ab6267fc7bf946f2129c75fdd92b02ac55d25725d20e",
+      "changed_capabilities": [
+        "test.provider"
+      ],
+      "added_contracts": [],
+      "removed_contracts": [],
+      "ownership_changes": [],
+      "shadow_state_transitions": [
+        {
+          "capability": "test.provider",
+          "change": "retired inventory generator removed from active architecture after selected-provider inspection",
+          "state": "retired"
+        }
       ]
     }
   ],
-  "history_identity": "sha256:bedb8d4a6db8a084c266348bf1468ea39f5dbbad66ab8e20a38a7b9ca2457b54"
+  "history_identity": "sha256:462035416c18619288b7628e63d63b8b457cfa72dc47d9884e29b33f6a712ed8"
 }

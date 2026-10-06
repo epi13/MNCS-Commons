@@ -1,7 +1,7 @@
 {
   "schema_version": "commons.mncs.architecture-model/1",
   "schema_identity": "commons.mncs.architecture-model/1",
-  "content_identity": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
+  "content_identity": "sha256:daf2d175e30e909f9294ab6267fc7bf946f2129c75fdd92b02ac55d25725d20e",
   "policy": {
     "default_evolution": "in_place",
     "implementation_versions": "forbidden",
@@ -138,10 +138,6 @@
         {
           "path": "tools/mncs_test.py",
           "role": "differential_oracle"
-        },
-        {
-          "path": "tools/generate_provider.py",
-          "role": "adapter"
         }
       ],
       "evidence": [
@@ -372,13 +368,6 @@
       "path": "scripts/generate_language_capabilities.py",
       "classification": "essential_deterministic_projection",
       "retirement_condition": "none; replace only when compiler/library facts expose an equivalent authoritative projection"
-    },
-    {
-      "id": "test.provider-inventory",
-      "owner": "mncs-test",
-      "path": "tools/generate_provider.py",
-      "classification": "essential_deterministic_projection",
-      "retirement_condition": "remove only when the compiler can expose the same typed inventory binding without source generation"
     }
   ]
 }

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -33,6 +34,99 @@ UNAVAILABLE_REGISTRY_IDENTITY = hashlib.sha256(
 
 class FamilyGraphError(ValueError):
     pass
+
+
+def repository_contracts(checkout: Path) -> tuple[set[str], set[str]]:
+    """Read declared architectural edges, separately from semantic facts.
+
+    Bare manifest exports are qualified by the manifest's repository identity,
+    never by a checkout directory name. Native semantic declarations retain
+    their exact contract identity. No aliases or source-derived edges are
+    admitted as authority by this reader.
+    """
+    manifest = json.loads((checkout / ".mncs/project.json").read_text())
+    repository = manifest["repository"]
+    contracts = manifest.get("contracts", {})
+    provided = set()
+    consumed = set()
+    for item in contracts.get("provides", []):
+        name = item["contract"] if isinstance(item, Mapping) else item
+        if isinstance(name, str) and name:
+            provided.add(name if "." in name or "/" in name else f"{repository}.{name}")
+    for item in contracts.get("consumes", []):
+        name = item["contract"] if isinstance(item, Mapping) else item
+        if isinstance(name, str) and name:
+            consumed.add(name)
+    semantic = checkout / "family-semantic-contracts-v1.json"
+    if semantic.is_file():
+        declaration = validate_declaration(json.loads(semantic.read_text()))
+        provided.update(item["contract_identity"] for item in declaration["provides"])
+        consumed.update(item["contract_identity"] for item in declaration["consumes"])
+    return provided, consumed
+
+
+def audit_stdlib_dependencies(checkouts: Mapping[str, Path], stdlib: Path) -> dict[str, Any]:
+    """Observe provider-indexed imports and report missing declared edges.
+
+    This is an explicit validation scan, never a runtime coordination scan.
+    Only MNCS sources named by active provides evidence are inspected; tests
+    and examples are excluded. Source observations propose edges, they never
+    change a manifest or authorize repair. The stdlib module index is verified
+    against its exact source bytes before it can ground an observation.
+    """
+    manifest = json.loads((stdlib / "stdlib-manifest.json").read_text())
+    provider = json.loads((stdlib / ".mncs/project.json").read_text())["repository"]
+    provided, _ = repository_contracts(stdlib)
+    contract = f"{provider}.stdlib-source"
+    if contract not in provided:
+        raise FamilyGraphError("stdlib source contract is undeclared")
+    modules = set()
+    library = (stdlib / manifest["library_path"]).resolve()
+    if not library.is_relative_to(stdlib.resolve()):
+        raise FamilyGraphError("stdlib index library escapes provider")
+    for item in manifest["modules"]:
+        path = (library / item["path"]).resolve()
+        if not path.is_relative_to(library) or not path.is_file():
+            raise FamilyGraphError("stdlib index module path is unavailable or unconfined")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != item["content_sha256"]:
+            raise FamilyGraphError(f"stdlib index stale for {item['name']}")
+        modules.add(item["name"])
+    observations = []
+    missing = []
+    for name, checkout in sorted(checkouts.items()):
+        metadata = json.loads((checkout / ".mncs/project.json").read_text())
+        _, consumed = repository_contracts(checkout)
+        paths = set()
+        for entry in metadata.get("contracts", {}).get("provides", []):
+            for relative in entry.get("fingerprint_sources", []):
+                path = (checkout / relative).resolve()
+                if not path.is_relative_to(checkout.resolve()):
+                    raise FamilyGraphError(f"unconfined contract evidence in {name}")
+                candidates = path.rglob("*.mncs") if path.is_dir() else [path]
+                for candidate in candidates:
+                    if not candidate.resolve().is_relative_to(checkout.resolve()):
+                        raise FamilyGraphError(f"unconfined native evidence in {name}")
+                    rel = candidate.relative_to(checkout.resolve())
+                    if candidate.suffix == ".mncs" and candidate.is_file() and not any(
+                            part in ("tests", "examples", "fixtures") for part in rel.parts):
+                        paths.add(candidate)
+        evidence = []
+        for path in sorted(paths):
+            source = re.sub(r"/\*.*?\*/|//[^\n]*", "", path.read_text(), flags=re.S)
+            for module in re.findall(r"\buse\s+([A-Za-z_][A-Za-z_0-9.]*)\b", source):
+                if module in modules:
+                    evidence.append({"source": str(path.relative_to(checkout.resolve())),
+                                     "module": module})
+        if evidence and checkout.resolve() != stdlib.resolve():
+            observation = {"consumer": metadata["repository"], "checkout": name,
+                           "contract": contract, "evidence": evidence,
+                           "declared": contract in consumed}
+            observations.append(observation)
+            if not observation["declared"]:
+                missing.append(observation)
+    return {"schema_version": "commons.mncs.family-dependency-audit/1",
+            "provider": provider, "observed": observations,
+            "missing_consumes": missing}
 
 
 def validate_generated_provider_metadata(

@@ -1,0 +1,38 @@
+{
+  "affectedRepositories": [
+    "mncs-environment",
+    "mncs-store"
+  ],
+  "capability": "stdlib.store.selected-roots",
+  "contentDigest": "sha256:5560f125fc7fcd3949176738670269ac4f7c9547abf53ed322acf7406c15bade",
+  "discoveredAt": "2026-10-02T04:08:18Z",
+  "discoveredBy": "mncs-environment",
+  "domain": "family.coherence",
+  "id": "MNCS-TOOLING-B24EC76686BB",
+  "identity": {
+    "capability": "stdlib.store.selected-roots",
+    "domain": "family.coherence",
+    "reproducerSignature": "whole-system-coherence-20261001:stdlib.store.selected-roots",
+    "target": "tooling"
+  },
+  "initialStatus": "discovered",
+  "languageProfile": null,
+  "legacyIds": [],
+  "notes": null,
+  "reproducer": {
+    "signature": "whole-system-coherence-20261001:stdlib.store.selected-roots"
+  },
+  "requiredBehavior": "Use identical selected stdlib roots in admission, compilation and cache identity; persist explicit provider bindings on resume.",
+  "schema": "commons.mncs.dev/family-pressure/v1",
+  "severity": "major",
+  "signals": {},
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/WHOLE_SYSTEM_REPORT.md",
+    "repository": "mncs-environment"
+  },
+  "summary": "Store compilation replaced effective roots with removed Language library; MNE173 prevented canonical Store entry.",
+  "target": "tooling",
+  "title": "Store stdlib admission/compile/cache split blocks normal entry",
+  "version": "1"
+}

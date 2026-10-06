@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:081a00c6bb7998872e81276e27a625bc2aa6d15340c9d60317285cf84d15afd2",
+  "evidence": [
+    {
+      "id": "provider-resident-report",
+      "ref": "mncs-environment:docs/PROVIDER_RESIDENT_REPORT.md",
+      "status": "PASS",
+      "summary": "Exact real Automation build/execution receipts, resident routing fixtures and warm selection measurements."
+    }
+  ],
+  "id": "MNCS-TOOLING-9FEE08F6756E--OBS-F68CE3D883E6",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {
+    "campaign": "sol-provider-resident-coherence",
+    "classification": "PARTIALLY_RESOLVED",
+    "currentValidation": true
+  },
+  "observedAt": "2026-10-02T22:10:18Z",
+  "pressureId": "MNCS-TOOLING-9FEE08F6756E",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "Commons now owns provider build/execution provenance vocabulary and native equality admission. Real Automation artifacts are owner-reconciled through native Doctor eligibility and Forge retained execution; compiler and executor bytes, dependency content, ABI/configuration and fresh function inventory are bound. Compiler build origin and Test/Debug/CI producer subject/obligation/environment provenance remain unestablished; domain evidence reuse and shared external dispatch remain deferred.",
+  "version": "1",
+  "workaround": {}
+}

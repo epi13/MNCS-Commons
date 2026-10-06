@@ -1,0 +1,78 @@
+{
+  "schema_version": "mncs.provider-provenance-vocabulary/1",
+  "authority": "MNCS-Commons",
+  "build_receipt_schema": "mncs.provider-build-receipt/1",
+  "execution_provenance_schema": "mncs.provider-execution-provenance/1",
+  "forge_extension": "mncs:provider-provenance",
+  "identity": {
+    "algorithm": "sha256",
+    "material": "canonical UTF-8 JSON core; sort object keys; compact separators; preserve array order; no non-finite numbers",
+    "excluded": [
+      "observation timestamps",
+      "filesystem mtime",
+      "output absolute path",
+      "Git archaeology"
+    ],
+    "build_core_required": [
+      "inputs",
+      "artifact",
+      "inventory_identity",
+      "build_capability",
+      "build_invocation_identity",
+      "remediation_admission"
+    ],
+    "build_inputs_required": [
+      "provider",
+      "declaration_identity",
+      "source_inputs",
+      "compiler_artifact_sha256",
+      "build_transport_sha256",
+      "configuration",
+      "dependency_roots",
+      "stdlib",
+      "abi"
+    ],
+    "artifact_required": [
+      "address",
+      "sha256",
+      "identity",
+      "payload_sha256",
+      "interface_identity",
+      "schema_version",
+      "backend",
+      "target"
+    ],
+    "execution_core_required": [
+      "provider",
+      "build_receipt",
+      "artifact_identity",
+      "artifact_sha256",
+      "executor_sha256",
+      "abi",
+      "operation",
+      "input_identity",
+      "inventory_identity",
+      "result_identity",
+      "subject_identity"
+    ]
+  },
+  "laws": {
+    "artifact_state": {
+      "unknown": 0,
+      "current": 1,
+      "stale": 2
+    },
+    "evidence_applicability": "complete exact provenance equality AND independent owner verdict admission; this law never establishes Test PASS or Debug witness admission",
+    "root_identity": "ordered declared root bindings and content identity; paths alone are not identity",
+    "abi": "actual compiled backend schema/interface + successful declared executor ABI admission, bound to executor bytes",
+    "build_assurance": "owner build receipt records observed compilation, not source-to-binary compiler self-attestation or verification PASS",
+    "subject": "native decision receipts bind the closed argument subject only; Test/Debug/Actions must add their exact domain subject/obligation/failure/request and owner applicability; native decision receipt equality never equates two source failures"
+  },
+  "generation_roles": {
+    "build_receipt": "content identity; repeats idempotently",
+    "Store_generation": "durable publication snapshot",
+    "semantic_generation": "LS observed semantic state",
+    "row_CAS_version": "concurrency; not content/evidence generation"
+  },
+  "source_revision": "optional observation metadata; exact actual source bytes and compiler/executor bytes are required; a prebuilt compiler without an owner build receipt retains unknown source origin"
+}

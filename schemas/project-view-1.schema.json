@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mncs.project-view/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_identity",
+    "repository",
+    "purpose",
+    "capabilities",
+    "dependencies",
+    "structure",
+    "entry"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "mncs.project-view/1"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "repository": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array"
+    },
+    "dependencies": {
+      "type": "array"
+    },
+    "structure": {
+      "type": "object"
+    },
+    "entry": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

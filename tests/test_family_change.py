@@ -146,4 +146,20 @@ def test_native_family_change_laws_are_executable() -> None:
     failed = [name for name, value in sorted(fields.items())
               if value != {"boolean": {"value": True}}]
     assert not failed, failed
-    assert len(fields) == 40
+    assert len(fields) == 44
+
+
+def test_native_family_classification_batch_preserves_order_and_scalar_law():
+    mncs = Path(os.environ.get("MNCS_BINARY", LANGUAGE_ROOT / "target/debug/mncs"))
+    if not mncs.is_file():
+        pytest.skip("mncs toolchain unavailable")
+    rows = [[0, 1, 0, 0, 0, 1, 1, 1], [1, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 0, 0, 0, 1, 1, 1], [1, 1, 0, 1, 0, 1, 1, 1]]
+    args = [{"sequence": {"values": [{"sequence": {"values": [
+        {"integer": {"value": value}} for value in row]}} for row in rows]}}]
+    result = subprocess.run([str(mncs), "call", str(ROOT / "src/mncs_commons/mesh/mncs/commons/family/change.mncs"),
+        "--module", "mncs.commons.family.change.v1", "--function", "classify_consumers",
+        "--args-json", json.dumps(args)], capture_output=True, text=True, timeout=30)
+    assert result.returncode == 0, result.stderr
+    values = json.loads(result.stdout)["call"]["returned"][0]["sequence"]["values"]
+    assert [item["integer"]["value"] for item in values] == [0, 7, 1, 3]

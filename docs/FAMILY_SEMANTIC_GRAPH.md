@@ -36,3 +36,26 @@ reports registered family projects, explicit nonparticipants, and
 unclassified projects. A selected-repository proof must not describe the
 participant count as the total family size; incomplete registry coverage keeps
 full consumer closure UNKNOWN while still allowing a bounded known-edge proof.
+
+## Runtime contract-edge audit
+
+`repository_contracts()` reads both repository manifests and validated explicit
+semantic declarations. Bare manifest exports are qualified by their declared
+repository identity; consumes edges stay exact. Environment uses this structural
+reader for architectural consumer discovery. Language Service impact is observed
+semantic evidence and does not manufacture declarations or repair authority.
+
+For the demonstrated stdlib ownership migration, validate provider-indexed native
+runtime imports with:
+
+```bash
+python3 scripts/audit_repository_dependencies.py --workspace <family-root> \
+  --stdlib <selected-stdlib> --repository mncs-store --repository mncs-test
+```
+
+The audit verifies the selected provider's module content index, inspects native
+source evidence named by provides declarations, excludes dev/test/example trees,
+and reports missing consumes edges (exit 5), unavailable/stale evidence (exit 2),
+or a complete selected audit (exit 0). It does not write manifests. This is a
+validation command, not a source scan on every coordination pass. It proves only
+the bounded selected provider/consumer closure; it is not a universal import graph.

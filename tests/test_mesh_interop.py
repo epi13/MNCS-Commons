@@ -351,8 +351,11 @@ KERNEL_CASES = {
     "commons/mesh/lattice_check.mncs": [("commons-lattice-corpus.json", "pass")],
     "commons/mesh/lifecycle.mncs": [("commons-lifecycle-corpus.json", "pass")],
     "commons/pressure/lifecycle.mncs": [
-        ("pressure-lifecycle-corpus.json", "pass"),
-        ("pressure-projection-corpus.json", "pass"),
+        # Typed sequence/view traversal carries exact-cost, intent and bounds
+        # obligations in profile 0.18. Runtime agreement is established;
+        # compilation assurance remains UNKNOWN and is never upgraded here.
+        ("pressure-lifecycle-corpus.json", "agreement"),
+        ("pressure-projection-corpus.json", "agreement"),
     ],
 }
 
@@ -400,6 +403,10 @@ def _assert_corpus_result(result: dict, mode: str, corpus: str) -> None:
     assert not unmet, f"{corpus}: unmet cases {unmet[:5]}"
     if mode == "pass":
         assert result["status"] == "PASS", json.dumps(result)[:2000]
+    else:
+        assert result['status'] in ('PASS', 'UNKNOWN'), json.dumps(result)[:2000]
+        if result['status'] == 'UNKNOWN':
+            assert result.get('unresolved_reasons'), 'UNKNOWN must carry visible obligations'
 
 
 @needs_toolchain

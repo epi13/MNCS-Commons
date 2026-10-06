@@ -1,0 +1,33 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:77fab678d37f1493c1eeb024b1c7cc36e3206b293eff629a73c78a35c9db8445",
+  "evidence": [
+    {
+      "id": "initial-pressure",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "PASS",
+      "summary": "Store compilation replaced effective roots with removed Language library; MNE173 prevented canonical Store entry."
+    }
+  ],
+  "id": "MNCS-TOOLING-B24EC76686BB--OBS-153C2FA88327",
+  "kind": "observation",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-02T04:08:18Z",
+  "pressureId": "MNCS-TOOLING-B24EC76686BB",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "Inspect captured initial failure/source and run the original focused reproducer.",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {},
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "description": "Explicit file bootstrap or manual inspection before the verified owner fix.",
+    "removed": false
+  }
+}

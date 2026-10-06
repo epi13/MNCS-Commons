@@ -1,0 +1,36 @@
+{
+  "agent": null,
+  "compiler": null,
+  "contentDigest": "sha256:6a2eb25e2994f8be94f944ec7b092482ab670f9fbe99316d272e1f3a291eff0a",
+  "evidence": [
+    {
+      "id": "owner-focused-proof",
+      "ref": "mncs-environment@70bf05f:docs/WHOLE_SYSTEM_REPORT.md",
+      "status": "PASS",
+      "summary": "Focused native/backend/entry/expansion tests and recorded measurements pass for this scoped pressure."
+    }
+  ],
+  "id": "MNCS-TOOLING-608926A83401--OBS-7E57BBAC7E95",
+  "kind": "verification",
+  "languageProfile": null,
+  "metadata": {},
+  "observedAt": "2026-10-02T04:08:47Z",
+  "pressureId": "MNCS-TOOLING-608926A83401",
+  "repository": "mncs-environment",
+  "reproduction": {
+    "instructions": "re-run the originating consumer reproducer",
+    "status": "PASS"
+  },
+  "runId": null,
+  "schema": "commons.mncs.dev/family-pressure-observation/v1",
+  "sourceRef": {
+    "commit": "70bf05f",
+    "path": "docs/coherence-20261001/evidence.json",
+    "repository": "mncs-environment"
+  },
+  "summary": "",
+  "version": "1",
+  "workaround": {
+    "removed": true
+  }
+}
