@@ -35,28 +35,29 @@ def _registry_identity(root: Path) -> str:
     return _identity(entries)
 
 
-def _compact_pressure(registry: PressureRegistry, item: dict[str, Any]) -> dict[str, Any]:
-    projection = registry.show(str(item["id"]))
+def _compact_pressure(projection: Any, item: dict[str, Any]) -> dict[str, Any]:
+    """Join a native row with its already-validated source projection."""
     data = projection.data
     return {
-        "id": item.get("id"),
-        "title": item.get("title"),
-        "target": item.get("target"),
-        "domain": item.get("domain"),
-        "severity": item.get("severity"),
-        "status": item.get("status"),
-        "verificationState": item.get("verificationState"),
-        "unresolved": item.get("unresolved"),
+        "id": item["id"],
+        "title": item["title"],
+        "target": item["target"],
+        "domain": item["domain"],
+        "severity": item["severity"],
+        "status": item["status"],
+        "verificationState": item["verificationState"],
+        "unresolved": item["unresolved"],
         "affectedRepositories": item.get("affectedRepositories", []),
         "requiredBehavior": data.get("requiredBehavior", data.get("required_behavior")),
-        "valid": projection.valid,
+        "valid": bool(item.get("valid")) and projection.valid,
     }
 
 
 def _verified_pressure_view(
     registry: PressureRegistry,
     pressure_root: Path,
-) -> tuple[dict[str, Any] | None, str, str | None]:
+    projections: tuple[Any, ...],
+) -> tuple[dict[str, Any] | None, str, str | None, list[dict[str, Any]]]:
     """Prove that the generated unresolved-language view matches the registry.
 
     ``PressureRegistry.validate`` owns record/event lifecycle validation, but it
@@ -69,8 +70,10 @@ def _verified_pressure_view(
     try:
         view = json.loads(view_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError):
-        return None, "unavailable", "generated unresolved-language pressure view is unavailable"
-    expected = registry.query(target="language", unresolved=True)
+        return (None, "unavailable",
+                "generated unresolved-language pressure view is unavailable", [])
+    expected = registry.query(target="language", unresolved=True,
+                              _projections=projections)
     if (
         not isinstance(view, dict)
         or view.get("schema") != "commons.mncs.dev/family-pressure-view/v1"
@@ -78,8 +81,8 @@ def _verified_pressure_view(
         or view.get("generatedFrom") != "commons.mncs.dev/family-pressure/v1"
         or view.get("pressures") != expected
     ):
-        return None, "stale", "generated unresolved-language pressure view is stale"
-    return view, "current", None
+        return None, "stale", "generated unresolved-language pressure view is stale", expected
+    return view, "current", None, expected
 
 
 def build_family_agent_projection(
@@ -110,21 +113,25 @@ def build_family_agent_projection(
 
     pressure_root = root_path / "pressures"
     registry = PressureRegistry(pressure_root)
-    pressure_validation = registry.validate()
+    # Reuse one provider-owned projection snapshot for validation, view
+    # comparison, and the repository slice. Otherwise every context query
+    # repeats lifecycle folding and record materialization three times.
+    pressure_projections = registry.projections()
+    pressure_validation = registry.validate(_projections=pressure_projections)
     pressure_rows: list[dict[str, Any]] = []
     pressure_limitations: list[str] = []
     pressure_freshness = "invalid"
     pressure_view: dict[str, Any] | None = None
     if pressure_validation.valid:
-        pressure_view, pressure_freshness, view_limitation = _verified_pressure_view(
-            registry, pressure_root
+        pressure_view, pressure_freshness, view_limitation, unresolved_rows = _verified_pressure_view(
+            registry, pressure_root, pressure_projections
         )
         if view_limitation is not None:
             pressure_limitations.append(view_limitation)
-        pressure_rows = [
-            _compact_pressure(registry, item)
-            for item in registry.query(target="language", repository=repository, unresolved=True)
-        ]
+        source_by_id = {item.id: item for item in pressure_projections}
+        pressure_rows = [_compact_pressure(source_by_id[item["id"]], item)
+                         for item in unresolved_rows
+                         if repository in item.get("affectedRepositories", [])]
         if len(pressure_rows) > max_items:
             pressure_rows = pressure_rows[:max_items]
             pressure_freshness = "truncated"
